@@ -1,20 +1,21 @@
 "use client";
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import {
+  SUITS, SUIT_NAMES, RS, SB, BB,
+  makeDeck, shuffle, ck, cv, cardStr, valName, valNameL, valShort,
+} from "@/lib/poker/cards";
+import { bestHand, cmpK } from "@/lib/poker/eval";
+import { monteCarloEquity, mulberry32, setSimRng } from "@/lib/poker/equity";
+import { preflopHandTier, preflopThresholds } from "@/lib/poker/ranges";
+import { distributePots } from "@/lib/poker/pots";
+import type { CardObj, HandResult, Draw, HoldingResult, BoardAnalysis, Decision, PlayerInfo } from "@/lib/poker/types";
 
 // ═══════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════
-const SUITS = ["♠", "♥", "♦", "♣"];
-const SUIT_NAMES: Record<string, string> = { "♠": "spades", "♥": "hearts", "♦": "diamonds", "♣": "clubs" };
-const RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-const RV: Record<string, number> = { 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, J: 11, Q: 12, K: 13, A: 14 };
-const RN: Record<number, string> = { 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Jack", 12: "Queen", 13: "King", 14: "Ace" };
-const RNL: Record<number, string> = { 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "jack", 12: "queen", 13: "king", 14: "ace" };
-const RS: Record<number, string> = { 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9", 10: "10", 11: "J", 12: "Q", 13: "K", 14: "A" };
 const POS_SHORT: Record<string, string> = { "Small Blind": "SB", "Big Blind": "BB", "UTG": "UTG", "Dealer": "BTN" };
 const PLAYER_NAMES = ["Alice", "Bob", "Carol", "Dan"];
-const SB = 5, BB = 10;
 // Position assigned by offset from dealer index
 const POSITIONS_ORDER = ["Dealer", "Small Blind", "Big Blind", "UTG"];
 
@@ -50,261 +51,15 @@ const T = {
 // ═══════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════
-interface CardObj { rank: string; suit: string; }
-interface HandResult { rank: number; name: string; kickers: number[]; cards?: CardObj[]; }
-interface Draw { type: string; suit?: string; outs: number; holeCards?: CardObj[]; highCard?: number; isNut?: boolean; dirty?: boolean; desc: string; drawType?: string; completionRanks?: number[]; }
-interface HoldingResult { hand: HandResult; draws: Draw[]; pairSource: string | null; realStrength: string; details: string; }
-interface BoardAnalysis { vals: number[]; suits: string[]; pairs: number[]; trips: number[]; isMonotone: boolean; twoTone: boolean; flushSuit: string | null; flushCount: number; isRainbow: boolean; connected: boolean; straightDanger: boolean; highCard: number; lowCard: number; maxRun: number; }
-interface Decision { action: string; amount?: number; equity?: number; dialogue: string; reasoning: string; thoughts: string[]; math: string[]; }
-interface PlayerInfo { name: string; pos: string; posShort: string; }
 interface SessionEntry { hand: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; aiReasoning: string; }
 interface Stage {
   type: string; street?: string; title?: string; board: CardObj[]; pot: number; folded: boolean[];
   description?: string; note?: string; playerIdx?: number; bets?: number[]; decision?: Decision;
   aiDecision?: Decision; // AI's recommendation — stored on hero stages for comparison
   currentBet?: number; results?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>; winner?: number; foldWin?: boolean;
-  stacks?: number[];
+  stacks?: number[]; payouts?: number[]; chop?: boolean;
   rankedResults?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>;
   holeCards?: CardObj[];
-}
-
-// ═══════════════════════════════════════════
-// DECK & UTILITIES
-// ═══════════════════════════════════════════
-const makeDeck = (): CardObj[] => { const d: CardObj[] = []; for (const s of SUITS) for (const r of RANKS) d.push({ rank: r, suit: s }); return d; };
-const shuffle = (a: CardObj[]): CardObj[] => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
-// Seeded RNG for deterministic simulation — reset per deal so useMemo reruns produce identical villain decisions
-let _simRNG: (() => number) | null = null;
-function mulberry32(seed: number): () => number {
-  let s = seed >>> 0;
-  return () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = Math.imul(t ^ (t >>> 7), 61 | t) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-}
-const ck = (c: CardObj) => c.rank + c.suit;
-const cv = (c: CardObj) => RV[c.rank];
-const cardStr = (c: CardObj) => c.rank + " " + c.suit;
-const valName = (v: number) => RN[v] || String(v);
-const valNameL = (v: number) => RNL[v] || String(v);
-const valShort = (v: number) => RS[v] || String(v);
-
-// ═══════════════════════════════════════════
-// HAND EVALUATION
-// ═══════════════════════════════════════════
-function getCombos(arr: CardObj[], k: number): CardObj[][] {
-  if (k === 0) return [[]];
-  if (arr.length < k) return [];
-  const [f, ...r] = arr;
-  return [...getCombos(r, k - 1).map((c: CardObj[]) => [f, ...c]), ...getCombos(r, k)];
-}
-
-function evalHand(cards: CardObj[]): HandResult {
-  const vals = cards.map(cv).sort((a, b) => b - a);
-  const suits = cards.map(c => c.suit);
-  const isFlush = suits.every(s => s === suits[0]);
-  const counts: Record<number, number> = {};
-  vals.forEach(v => { counts[v] = (counts[v] || 0) + 1; });
-  const groups = Object.entries(counts).map(([v, c]) => ({ val: +v, count: c })).sort((a, b) => b.count - a.count || b.val - a.val);
-  const isStraight = checkStr(vals);
-  if (isFlush && isStraight && vals.includes(14) && vals.includes(13)) return { rank: 9, name: "Royal Flush", kickers: vals };
-  if (isFlush && isStraight) return { rank: 8, name: "Straight Flush", kickers: isStraight };
-  if (groups[0].count === 4) return { rank: 7, name: "Four of a Kind", kickers: [groups[0].val, groups[1].val] };
-  if (groups[0].count === 3 && groups[1]?.count === 2) return { rank: 6, name: "Full House", kickers: [groups[0].val, groups[1].val] };
-  if (isFlush) return { rank: 5, name: "Flush", kickers: vals };
-  if (isStraight) return { rank: 4, name: "Straight", kickers: isStraight };
-  if (groups[0].count === 3) return { rank: 3, name: "Three of a Kind", kickers: [groups[0].val, ...groups.slice(1).map(g => g.val)] };
-  if (groups[0].count === 2 && groups[1]?.count === 2) return { rank: 2, name: "Two Pair", kickers: [groups[0].val, groups[1].val, groups[2]?.val] };
-  if (groups[0].count === 2) return { rank: 1, name: "Pair", kickers: [groups[0].val, ...groups.slice(1).map(g => g.val)] };
-  return { rank: 0, name: "High Card", kickers: vals };
-}
-
-function checkStr(vals: number[]): number[] | false {
-  const u = [...new Set(vals)].sort((a, b) => b - a);
-  if (u.length < 5) return false;
-  for (let i = 0; i <= u.length - 5; i++) { if (u[i] - u[i + 4] === 4) { const s = u.slice(i, i + 5); if (new Set(s).size === 5) return s; } }
-  if (u.includes(14) && u.includes(5) && u.includes(4) && u.includes(3) && u.includes(2)) return [5, 4, 3, 2, 1];
-  return false;
-}
-
-function bestHand(hole: CardObj[], board: CardObj[]): HandResult {
-  const all = [...hole, ...board];
-  if (all.length < 5) return { rank: 0, name: "Incomplete", kickers: [] };
-  const combos = getCombos(all, 5);
-  let best: HandResult | null = null;
-  for (const c of combos) { const e = evalHand(c); if (!best || e.rank > best.rank || (e.rank === best.rank && cmpK(e.kickers, best.kickers) > 0)) { best = e; best.cards = c; } }
-  return best!;
-}
-
-function cmpK(a: number[], b: number[]): number {
-  for (let i = 0; i < Math.min(a.length, b.length); i++) { if (a[i] !== b[i]) return a[i] - b[i]; }
-  return 0;
-}
-
-// ═══════════════════════════════════════════
-// MONTE CARLO EQUITY
-// ═══════════════════════════════════════════
-
-// Numeric hand score for head-to-head comparison (higher = better)
-function handScore(hole: CardObj[], board: CardObj[]): number {
-  const all = [...hole, ...board];
-  if (all.length < 5) return 0;
-  const combos = getCombos(all, 5);
-  let best = -1;
-  for (const c of combos) {
-    const vals = c.map(cv).sort((a, b) => b - a);
-    const suits = c.map(x => x.suit);
-    const isFlush = suits.every(s => s === suits[0]);
-    const freq: Record<number, number> = {};
-    vals.forEach(v => { freq[v] = (freq[v] ?? 0) + 1; });
-    const groups = Object.entries(freq).map(([v, ct]) => ({ v: +v, ct: +ct })).sort((a, b) => b.ct - a.ct || b.v - a.v);
-    const isStraight = checkStr(vals);
-    let cat = 0; let tb: number[] = vals;
-    if (isFlush && isStraight)                              { cat = 8; tb = isStraight; }
-    else if (groups[0].ct === 4)                            { cat = 7; tb = groups.map(g => g.v); }
-    else if (groups[0].ct === 3 && groups[1]?.ct === 2)    { cat = 6; tb = groups.map(g => g.v); }
-    else if (isFlush)                                       { cat = 5; tb = vals; }
-    else if (isStraight)                                    { cat = 4; tb = isStraight; }
-    else if (groups[0].ct === 3)                            { cat = 3; tb = groups.map(g => g.v); }
-    else if (groups[0].ct === 2 && groups[1]?.ct === 2)    { cat = 2; tb = groups.map(g => g.v); }
-    else if (groups[0].ct === 2)                            { cat = 1; tb = groups.map(g => g.v); }
-    let score = cat * 100_000_000;
-    tb.forEach((t, i) => { score += t * (15 ** (5 - i)); });
-    if (score > best) best = score;
-  }
-  return best;
-}
-
-// Fraction of sims where hero beats all opponents (higher = hero wins more)
-// Opponents are dealt from a range-filtered hand pool, not random junk —
-// prevents equity inflation when villains bet with strong ranges.
-function monteCarloEquity(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims = 1000, style: "gto" | "loose" | "wild" = "gto"): number {
-  const allCards: CardObj[] = [];
-  for (const s of ["♠", "♥", "♦", "♣"]) for (const r of ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]) allCards.push({ rank: r, suit: s });
-  const knownKeys = new Set([...heroHole, ...board].map(ck));
-  const remaining = allCards.filter(c => !knownKeys.has(ck(c)));
-  const boardNeeded = 5 - board.length;
-  if (remaining.length < numOpponents * 2 + boardNeeded) return 0.5;
-
-  // GTO = tight (tier ≤ 4), Loose = semi-loose (tier ≤ 5), Wild = anything
-  const maxTier = style === "wild" ? 6 : style === "loose" ? 5 : 4;
-
-  // Pre-compute all playable (index-pair) combos — C(47,2) = 1081 iters, done once
-  const playablePairs: [number, number][] = [];
-  for (let i = 0; i < remaining.length; i++) {
-    for (let j = i + 1; j < remaining.length; j++) {
-      const c1 = remaining[i], c2 = remaining[j];
-      const hv = [cv(c1), cv(c2)];
-      const hi = Math.max(...hv), lo = Math.min(...hv);
-      if (preflopHandTier(hi, lo, c1.suit === c2.suit) <= maxTier) playablePairs.push([i, j]);
-    }
-  }
-
-  let wins = 0;
-  for (let sim = 0; sim < numSims; sim++) {
-    // Pick non-overlapping opponent hands from playable combos
-    const usedIdx = new Set<number>();
-    const oppHoles: CardObj[][] = [];
-
-    for (let op = 0; op < numOpponents; op++) {
-      let hand: CardObj[] | null = null;
-      for (let attempt = 0; attempt < 40 && !hand; attempt++) {
-        const [i, j] = playablePairs[Math.floor((_simRNG ?? Math.random)() * playablePairs.length)];
-        if (!usedIdx.has(i) && !usedIdx.has(j)) {
-          hand = [remaining[i], remaining[j]];
-          usedIdx.add(i); usedIdx.add(j);
-        }
-      }
-      if (!hand) {
-        // Fallback: first two unused cards (rare — keeps sim going)
-        for (let i = 0; i < remaining.length && !hand; i++) {
-          if (usedIdx.has(i)) continue;
-          for (let j = i + 1; j < remaining.length && !hand; j++) {
-            if (usedIdx.has(j)) continue;
-            hand = [remaining[i], remaining[j]]; usedIdx.add(i); usedIdx.add(j);
-          }
-        }
-      }
-      if (hand) oppHoles.push(hand);
-    }
-
-    if (oppHoles.length < numOpponents) { wins += 0.5; continue; }
-
-    // Board completion: shuffle unused remaining cards
-    const boardPool = remaining.filter((_, i) => !usedIdx.has(i));
-    for (let i = boardPool.length - 1; i > 0; i--) { const j = Math.floor((_simRNG ?? Math.random)() * (i + 1)); [boardPool[i], boardPool[j]] = [boardPool[j], boardPool[i]]; }
-    const simBoard = [...board];
-    let bi = 0;
-    while (simBoard.length < 5) simBoard.push(boardPool[bi++]);
-
-    const heroScore = handScore(heroHole, simBoard);
-    const oppScores = oppHoles.map(opp => handScore(opp, simBoard));
-    const bestOpp = Math.max(...oppScores);
-    if (heroScore > bestOpp) wins += 1;
-    else if (heroScore === bestOpp) wins += 0.5; // split pot
-  }
-  return wins / numSims;
-}
-
-// ═══════════════════════════════════════════
-// GTO PREFLOP RANGES (4-handed NLHE)
-// ═══════════════════════════════════════════
-
-// Hand tier 1 (premium) → 6 (garbage)
-function preflopHandTier(hi: number, lo: number, suited: boolean): number {
-  if (hi === lo) { if (hi >= 11) return 1; if (hi >= 7) return 2; if (hi >= 5) return 3; return 4; }
-  if (hi === 14) {
-    if (lo >= 13)         return 1;
-    if (lo >= 10)         return suited ? 1 : 2;
-    if (lo >= 7)          return suited ? 2 : 4;
-                          return suited ? 3 : 5;
-  }
-  if (hi === 13) {
-    if (lo >= 12)         return suited ? 1 : 2;
-    if (lo >= 10)         return suited ? 2 : 3;
-    if (lo >= 9)          return suited ? 3 : 4;
-                          return suited ? 4 : 6;
-  }
-  if (hi === 12) {
-    if (lo >= 11)         return suited ? 2 : 3;
-    if (lo >= 9)          return suited ? 3 : 4;
-                          return suited ? 4 : 6;
-  }
-  if (hi === 11) {
-    if (lo >= 10)         return suited ? 2 : 3;
-    if (lo >= 8)          return suited ? 3 : 5;
-                          return suited ? 4 : 6;
-  }
-  if (hi === 10) {
-    if (lo === 9)         return suited ? 2 : 3;
-    if (lo === 8)         return suited ? 3 : 5;
-                          return suited ? 4 : 6;
-  }
-  const gap = hi - lo;
-  if (suited && gap <= 1) return 3;
-  if (suited && gap <= 2) return 4;
-  if (suited)             return 5;
-  return 6;
-}
-
-// [raiseTier, callTier] — play hand if its tier <= threshold
-// numRaisesAhead: 0 = no raise yet (opening), 1 = facing one raise (3-bet or call), 2+ = facing 4-bet+
-function preflopThresholds(posShort: string, numRaisesAhead: number, style: "gto" | "loose" | "wild" = "gto"): [number, number] {
-  const cap = (n: number) => Math.min(n, 6) as number;
-  if (numRaisesAhead >= 2) {
-    // 4-bet war: only the nuts survive regardless of style
-    const b = style === "wild" ? 1 : 0;
-    return [cap(1 + b), cap(1 + b)];
-  }
-  if (numRaisesAhead === 1) {
-    // Facing a 3-bet: tighten significantly vs opening range
-    const b = style === "loose" ? 1 : style === "wild" ? 2 : 0;
-    return [cap(2 + b), cap(3 + b)];
-  }
-  // Opening ranges — full style bonus applies
-  const b = style === "loose" ? 2 : style === "wild" ? 4 : 0;
-  if (posShort === "UTG") return [cap(3+b), cap(3+b)];   // 4-handed UTG ≈ CO; raise ~top 27%, raise-or-fold
-  if (posShort === "BTN") return [cap(4+b), cap(5+b)];
-  if (posShort === "SB")  return [cap(4+b), cap(5+b)];   // 4-handed SB opens ~top 45%
-  if (posShort === "BB")  return [cap(2+b), cap(5+b)];   // BB re-raises premiums, defends ~55% vs raise
-  return [cap(3+b), cap(4+b)];
 }
 
 // ═══════════════════════════════════════════
@@ -652,17 +407,23 @@ function generateFullDecision(
     thoughts.push(`Slight edge — thin value bet to extract from marginal hands.`);
     return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `~${equityPct}% equity — ${frac} thin value.`, thoughts, math };
   }
-  const bluffSeed = (playerIdx * 31 + board.length * 17 + pot) % 7;
-  if (!isRiver && bluffSeed === 0 && maxBetGlobal >= BB) {
+  // Semi-bluff: no bets in front, and a hand that still has real equity to improve
+  // (~30–52% — a draw or overcards, not pure air). Fire at a fixed frequency. This is a
+  // simple heuristic, NOT a solver-derived mixed strategy: real GTO would balance bluffs
+  // against a value range so the two are indifferent. The hash keeps the choice
+  // deterministic across the useMemo re-runs (see equity.ts) without a stateful RNG.
+  const BLUFF_FREQUENCY = 0.3;
+  const bluffRoll = ((playerIdx * 2654435761 + Math.round(pot) * 40503 + board.length * 92821) >>> 0) / 4294967296;
+  if (!isRiver && equity >= 0.3 && bluffRoll < BLUFF_FREQUENCY && maxBetGlobal >= BB) {
     const betSize = snapToBB(pot * 0.55, maxBetGlobal);
     const frac = potFractionLabel(betSize, pot);
     const foldPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`Only ~${equityPct}% equity, but bluffing for fold equity.`);
+    math.push(`~${equityPct}% equity with room to improve — semi-bluffing for fold equity (fixed ${Math.round(BLUFF_FREQUENCY * 100)}% frequency, a heuristic, not a balanced range).`);
     math.push(`${frac} bluff (${betSize}): breakeven fold% = ${betSize} ÷ (${pot} + ${betSize}) = ${foldPct}%.`);
     math.push(`Proof: EV = fold% × ${pot} − (1−fold%) × ${betSize} = 0 → fold% = ${foldPct}%.`);
-    math.push(`Breakeven fold% = pot odds villain faces — mirrors by design. Villain folding > ${foldPct}% → bluff is +EV.`);
-    thoughts.push(`Weak equity, but nobody else has bet — time to bluff.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Bluff — only ${equityPct}% equity, but ${frac} bet needs ${foldPct}% folds to break even.`, thoughts, math };
+    math.push(`Breakeven fold% = pot odds villain faces — mirrors by design. Villain folding > ${foldPct}% → bluff is +EV even before our equity when called.`);
+    thoughts.push(`Weak-ish but live hand, nobody has bet — mix in a semi-bluff.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — ~${equityPct}% equity, ${frac} bet needs ${foldPct}% folds to break even.`, thoughts, math };
   }
   math.push(`${equityPct}% equity — not enough to bet for value. Check.`);
   thoughts.push(`Not strong enough to bet. Check.`);
@@ -922,10 +683,10 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
       <div style={{ padding: "14px", background: T.panelAlt, borderTop: `2px solid ${T.accent}`, borderBottom: `1px solid ${T.hair}` }}>
         <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>Showdown</div>
         <div style={{ fontFamily: T.mono, fontSize: 17, fontWeight: 600, color: T.ink, lineHeight: 1.25, marginBottom: 4 }}>
-          {s.foldWin ? `${winnerName} wins — everyone else folded.` : `${winnerName} wins with ${winningHand}.`}
+          {s.foldWin ? `${winnerName} wins — everyone else folded.` : s.chop ? `Split pot — tied with ${winningHand}.` : `${winnerName} wins with ${winningHand}.`}
         </div>
         <div style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, marginBottom: s.rankedResults && s.rankedResults.length > 1 ? 10 : 0 }}>
-          Takes the {s.pot}-chip pot.
+          {s.chop ? `${s.pot} chips split.` : `Takes the ${s.pot}-chip pot.`}
         </div>
         {!s.foldWin && s.rankedResults && s.rankedResults.length > 1 && (
           <div style={{ paddingTop: 10, borderTop: `1px solid ${T.hairSoft}` }}>
@@ -1407,7 +1168,7 @@ export default function PokerSim() {
     handNumberRef.current = handNumberRef.current + 1;
     setHandNumber(handNumberRef.current);
     setHandScore({ matches: 0, total: 0 });
-    setHeroIdx(0);
+    setHeroIdx(Math.floor(Math.random() * 4));
     const deck = shuffle(makeDeck());
     const hands = [[deck[0], deck[1]], [deck[2], deck[3]], [deck[4], deck[5]], [deck[6], deck[7]]];
     const board = [deck[8], deck[9], deck[10], deck[11], deck[12]];
@@ -1431,7 +1192,7 @@ export default function PokerSim() {
     // Build a Decision object so the simulation can execute the hero's actual choice
     let heroDec: Decision;
     const heroStack = curStg.stacks?.[curStg.playerIdx ?? 0] ?? 200;
-    const heroName = players[0]?.name ?? "Alice";
+    const heroName = players[curStg.playerIdx ?? heroIdxRef.current ?? 0]?.name ?? "you";
     if (normalizedAction === "fold") {
       heroDec = { action: "fold", dialogue: "You fold.", reasoning: `${heroName} folds.`, thoughts: [], math: [] };
     } else if (normalizedAction === "check") {
@@ -1463,7 +1224,7 @@ export default function PokerSim() {
 
   const stages = useMemo((): Stage[] => {
     if (!gs) return [];
-    _simRNG = mulberry32(gs.seed);
+    setSimRng(mulberry32(gs.seed));
     const { hands, board } = gs;
     const all: Stage[] = [];
     let folded = [false, false, false, false];
@@ -1562,10 +1323,15 @@ export default function PokerSim() {
     if (folded.filter(f => !f).length > 1) {
       const finalBoard = board.slice(0, 5);
       const results = hands.map((h, i) => folded[i] ? { idx: i, folded: true, hand: null } : { idx: i, folded: false, hand: bestHand(h, finalBoard) });
-      const active = results.filter(r => !r.folded).sort((a, b) => { if (a.hand!.rank !== b.hand!.rank) return b.hand!.rank - a.hand!.rank; return cmpK(b.hand!.kickers, a.hand!.kickers); });
-      const winner = active[0].idx;
-      stacks[winner] += pot;
-      all.push({ type: "showdown", board: finalBoard, pot, folded: [...folded], results, rankedResults: active, winner, stacks: [...stacks] });
+      // Distribute by contribution (startingStack − currentStack) so side pots and
+      // split pots pay out correctly — not the whole pot to a single seat.
+      const contributions = startingStacks.map((s, i) => s - stacks[i]);
+      const { payouts, rankedResults } = distributePots(contributions, folded, hands, finalBoard);
+      payouts.forEach((amt, i) => { stacks[i] += amt; });
+      const top = rankedResults[0], second = rankedResults[1];
+      const chop = !!(top?.hand && second?.hand && top.hand.rank === second.hand.rank && cmpK(top.hand.kickers, second.hand.kickers) === 0);
+      const winner = top?.idx ?? results.find(r => !r.folded)!.idx;
+      all.push({ type: "showdown", board: finalBoard, pot, folded: [...folded], results, rankedResults, winner, payouts, chop, stacks: [...stacks] });
     } else {
       const w = folded.findIndex(f => !f);
       if (w >= 0) {
@@ -1624,14 +1390,14 @@ export default function PokerSim() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
           <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table style</span>
           <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
-            {([["gto", "GTO"], ["loose", "Loose"], ["wild", "Wild"]] as const).map(([s, label]) => (
+            {([["gto", "Tight"], ["loose", "Loose"], ["wild", "Wild"]] as const).map(([s, label]) => (
               <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
                 {label}
               </button>
             ))}
           </div>
           <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, minHeight: "2.5em", display: "block" }}>
-            {gameStyle === "gto" ? "Mathematically optimal — the hardest benchmark." : gameStyle === "loose" ? "Wider ranges, more calls — common recreational style." : "Unpredictable and aggressive — high variance."}
+            {gameStyle === "gto" ? "Tight, disciplined ranges — the toughest benchmark." : gameStyle === "loose" ? "Wider ranges, more calls — common recreational style." : "Unpredictable and aggressive — high variance."}
           </span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
@@ -1881,7 +1647,7 @@ export default function PokerSim() {
                 return (
                   <div style={{ padding: "12px 14px 14px", background: T.panelAlt, borderBottom: `1px solid ${T.hair}` }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: playingAI ? 0 : 8 }}>
-                      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>GTO play</div>
+                      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>Model line</div>
                       <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                         {!playingAI && (
                           <button
@@ -2033,7 +1799,7 @@ export default function PokerSim() {
                 <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
                   {(["gto", "loose", "wild"] as const).map(s => (
                     <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
-                      {s}
+                      {s === "gto" ? "tight" : s}
                     </button>
                   ))}
                 </div>
