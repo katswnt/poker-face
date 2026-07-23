@@ -7,6 +7,20 @@ body {
   color: #d4d4cf;
 }
 
+/* Visible keyboard focus for all interactive elements (buttons + role="button" rows). */
+:focus-visible {
+  outline: 2px solid #7dd3a0;
+  outline-offset: 2px;
+}
+/* Don't show the focus ring for mouse users. */
+:focus:not(:focus-visible) { outline: none; }
+
+/* Respect users who prefer reduced motion: no smooth-scroll, near-instant transitions.
+   The step auto-advance is also disabled in JS when this is set (see PokerSim). */
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
 /* Custom scrollbar for the feed panels */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

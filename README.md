@@ -57,6 +57,12 @@ Earlier versions labeled the model's move "GTO play" and the tight table style "
 were overclaims and have been renamed ("Model line" and "Tight"). The internal style key is
 still `"gto"` for historical reasons; it's never shown to the user.
 
+**Where there IS a real equilibrium.** For the one game that's actually tractable — heads-up
+preflop push/fold — there's a standalone **Nash solver** at [`/solver`](https://pokerface.katswint.com/solver):
+a true equilibrium computed by fictitious play over a precomputed 169×169 equity matrix,
+verifiable against published charts (at 10bb it shoves the SB 58% / calls the BB 37.5%). It's
+deliberately separate from the 4-handed heuristic trainer — see [METHODOLOGY.md](METHODOLOGY.md).
+
 ---
 
 ## How decisions are made
@@ -92,17 +98,21 @@ odds (`toCall ÷ (pot + toCall)`), EV, bet sizing, and the semi-bluff breakeven
 
 ```
 src/
-  app/                     Next.js App Router shell + SEO/OG metadata
-  components/PokerSim.tsx   UI, rendering, and decision prose (one component, by design*)
+  app/                     Next.js App Router shell + SEO/OG metadata + /solver demo
+  components/PokerSim.tsx   UI + rendering (one component, by design*)
   lib/poker/                pure, UI-free, unit-tested domain core
     cards.ts                deck, rank/suit constants, formatting helpers
     eval.ts                 hand evaluation — evalHand + handScore on one shared core
     ranges.ts               preflop tiers & position thresholds
-    equity.ts               Monte Carlo + the determinism seam (see below)
+    equity.ts               Monte Carlo, exact-equity validation, the determinism seam
     pots.ts                 side-pot & split-pot distribution
     engine.ts               one betting round, shared by preflop & postflop
+    decide.ts               the full decision engine (board/holding analysis + choice)
     types.ts                shared domain types
+  lib/solver/               heads-up push/fold Nash solver + precomputed equity matrix
 test/                       node:test suites that import the REAL lib/ (not copies)
+bench/                      equity throughput + memoization benchmark (npm run bench)
+.github/workflows/ci.yml    lint + type-check + tests + build on every push
 ```
 
 **The determinism seam** (`equity.ts`) is the core correctness insight. The whole hand is
@@ -125,13 +135,12 @@ loop existed **twice** — inline for preflop and a near-duplicate for postflop 
 `engine.runBettingRound` with the decision function injected, so the tests drive it with
 scripted actions (blinds, raises re-opening action, all-in caps, hero-index accounting).
 
-\* **Why is the component still one file?** `PokerSim.tsx` holds the UI, the per-deal
-`useMemo` game loop, and the ~300 lines of decision *prose* (dialogue, "inner thoughts,"
-board/threat analysis). Those are tightly coupled to rendering and change together;
-splitting them adds indirection without adding testability, because the parts that benefit
-from isolation — evaluation, equity, ranges, pots, and now the betting engine — already live
-in `lib/`. Extracting the prose generator is the next split (see roadmap); it's a conscious
-sequencing choice, not an oversight.
+\* **Why is the component still one file?** After extracting `decide.ts`, `PokerSim.tsx` is
+now essentially UI: the per-deal `useMemo` game loop and rendering. The entire decision
+engine — board/holding/threat analysis and the full per-spot choice — lives in
+`lib/poker/decide.ts` and is unit-tested directly. What remains in the component is
+genuinely view-layer and changes together with the markup; splitting the presentational
+sub-components into their own files is cosmetic, not a testability win.
 
 ---
 
@@ -145,13 +154,26 @@ fixed). Coverage:
   `evalHand` and `handScore` never disagree.
 - **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
   against the real function.
-- **equity** — purity (same inputs → identical result), memoization consistency, AA ≈ 85%
-  heads-up, monotonicity, and equity falling as opponents are added.
+- **equity** — purity, memoization consistency, monotonicity, and — the load-bearing one —
+  **Monte Carlo converges to exact enumerated equity** (river & turn) within its own
+  confidence interval, proving the sampler is unbiased.
+- **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
+  against the real function.
 - **pots** — single winner, even chop, odd-chip splitting, a short all-in main-pot/side-pot
   split, and uncalled-excess return.
 - **engine** — a betting round driven by scripted decisions: checks move no chips, a bet
-  re-opens action, folds drop seats, over-bets cap at all-in, and the preflop raise counter
-  and hero-action index advance correctly.
+  re-opens action, folds drop seats, over-bets cap at all-in, raise counter + hero index.
+- **decide** — the full decision engine: premiums raise / trash folds preflop, value bets
+  and folds-to-price postflop, and board/holding/threat analysis.
+- **invariants** (`fast-check` fuzzing) — **chip conservation** (Σ payouts = Σ contributions,
+  no chips created/destroyed) across 1,000 random pots, side-pot eligibility, betting-round
+  conservation, evaluator-ordering consistency. Found no bugs — after thousands of inputs,
+  that's the point.
+- **solver** — Nash push/fold: equity symmetry, AA always in, monotone shove range vs depth,
+  and `score7` proven byte-identical to `handScore` over 100k hands.
+
+CI (`.github/workflows/ci.yml`) runs lint + type-check + tests + build on every push.
+See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, validation, and error bounds.
 
 **Money handling is now correct.** Showdown distribution used to award the entire pot to the
 single best hand — no side pots, and ties weren't actually split despite the UI announcing
@@ -174,20 +196,19 @@ because stacks carry across hands.
 | Per-spot-seeded, memoized equity | Keeps the `useMemo`-recompute model consistent (the determinism seam) and makes re-simulated streets free |
 | Pure logic in `lib/`, UI + prose in one component | Isolate and test what benefits from it; don't over-split coupled UI/prose |
 | Inline styles, no CSS framework | A single self-contained terminal aesthetic; Tailwind would be dead weight here |
-| Heuristic engine, labeled honestly | A real solver is out of scope; the value is a measurable baseline + transparent math |
+| Heuristic 4-handed trainer + a real HU push/fold solver | The trainer teaches fundamentals with transparent math; the solver shows a genuine equilibrium where one is tractable |
 
-**Known limitations (honest scope, candidate roadmap):**
+**Known limitations (honest scope):**
 
-- **Not a solver.** No range-vs-range, mixed strategies, blockers, or bet/fold. (See above.)
-- **Fixed 4-handed, 5/10 blinds, ~200bb.** No table-size or stake variation yet.
-- **Multiway equity is approximate.** Hero equity-to-win-the-whole-pot is compared to
-  heads-up pot odds; the model doesn't fully account for multiway dynamics.
-- **The decision *prose* still lives in the component.** Evaluation, equity, ranges, pots,
-  and the betting engine are all extracted and tested; the ~300-line narrative generator
-  (`generateFullDecision` + board/threat analysis) is the next split into `lib/poker/decide.ts`
-  so the full decision — not just its primitives — is unit-tested.
-- **Accessibility gaps.** History rows are click-only `<div>`s and tooltips are
-  hover-first; keyboard/SR support needs work.
+- **The 4-handed trainer is heuristic, not a solver.** No range-vs-range, mixed strategies,
+  blockers, or bet/fold. (Real GTO for 4-max is a research problem — see "Is this GTO?".
+  Where it *is* tractable, heads-up push/fold, there's a real Nash solver at `/solver`.)
+- **Fixed 4-handed, 5/10 blinds, ~200bb.** No table-size/stake variation — the tier ranges
+  are calibrated for 4-handed and would need re-tuning per table size, which is its own
+  correctness project; kept scoped deliberately rather than shipped wrong.
+- **Multiway equity is a defensible approximation.** The equity itself (P(win vs N)) is
+  multiway-correct and value-bet **sizing is now scaled by opponent count**; the residual
+  approximation is comparing to heads-up-style pot odds and ignoring equity realization.
 
 ---
 
@@ -195,17 +216,25 @@ because stacks carry across hands.
 
 - Next.js 16 (App Router) · React 19 · TypeScript
 - Inline styles, JetBrains Mono, terminal aesthetic
-- `node:test` + `tsx` for the domain test suite
+- `node:test` + `tsx` for the domain suite; `fast-check` for property/fuzz tests
+- GitHub Actions CI (lint + types + tests + build)
 - Deployed on Vercel
 
 ## Local development
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm test         # domain test suite (lib/poker)
+npm run dev      # http://localhost:3000  (and /solver for the Nash solver)
+npm test         # domain + property test suite (58 assertions)
+npm run bench    # equity throughput + memoization benchmark
 npm run build    # production build
 ```
+
+## Accessibility
+
+Interactive controls are real buttons; history rows are keyboard-operable (`role="button"`,
+Enter/Space); cards carry text alternatives (`aria-label`); a polite live region announces
+each step; focus is visible; and step auto-advance respects `prefers-reduced-motion`.
 
 ## Navigation
 

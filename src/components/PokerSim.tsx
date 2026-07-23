@@ -1,21 +1,16 @@
 "use client";
 
-import { useState, useCallback, useMemo, useRef, useEffect } from "react";
-import {
-  SUITS, SUIT_NAMES, RS, SB, BB,
-  makeDeck, shuffle, ck, cv, cardStr, valName, valNameL, valShort,
-} from "@/lib/poker/cards";
+import { useState, useCallback, useMemo, useRef, useEffect, useSyncExternalStore } from "react";
+import { SB, BB, SUIT_NAMES, makeDeck, shuffle, cardStr, valNameL } from "@/lib/poker/cards";
 import { bestHand, cmpK } from "@/lib/poker/eval";
-import { monteCarloEquity, equityStandardError } from "@/lib/poker/equity";
-import { preflopHandTier, preflopThresholds } from "@/lib/poker/ranges";
 import { distributePots } from "@/lib/poker/pots";
 import { runBettingRound } from "@/lib/poker/engine";
-import type { CardObj, HoldingResult, BoardAnalysis, Decision, PlayerInfo, Stage } from "@/lib/poker/types";
+import { generateFullDecision, snapToBB, analyzeBoard, POS_SHORT } from "@/lib/poker/decide";
+import type { CardObj, Decision, PlayerInfo, Stage } from "@/lib/poker/types";
 
 // ═══════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════
-const POS_SHORT: Record<string, string> = { "Small Blind": "SB", "Big Blind": "BB", "UTG": "UTG", "Dealer": "BTN" };
 const PLAYER_NAMES = ["Alice", "Bob", "Carol", "Dan"];
 // Position assigned by offset from dealer index
 const POSITIONS_ORDER = ["Dealer", "Small Blind", "Big Blind", "UTG"];
@@ -54,386 +49,6 @@ const T = {
 // ═══════════════════════════════════════════
 interface SessionEntry { hand: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; aiReasoning: string; }
 
-// ═══════════════════════════════════════════
-// BOARD ANALYSIS
-// ═══════════════════════════════════════════
-function analyzeBoard(board: CardObj[]): BoardAnalysis | null {
-  if (!board.length) return null;
-  const vals = board.map(cv);
-  const suits = board.map(c => c.suit);
-  const valCounts: Record<number, number> = {};
-  vals.forEach(v => { valCounts[v] = (valCounts[v] || 0) + 1; });
-  const pairs = Object.entries(valCounts).filter(([, c]) => c >= 2).map(([v]) => +v);
-  const trips = Object.entries(valCounts).filter(([, c]) => c >= 3).map(([v]) => +v);
-  const suitCounts: Record<string, number> = {};
-  suits.forEach(s => { suitCounts[s] = (suitCounts[s] || 0) + 1; });
-  const maxSuit = Object.entries(suitCounts).sort((a, b) => b[1] - a[1])[0];
-  const isMonotone = board.length >= 3 && maxSuit[1] === board.length;
-  const twoTone = board.length >= 3 && maxSuit[1] >= 2 && !isMonotone;
-  const flushSuit = maxSuit[1] >= 2 ? maxSuit[0] : null;
-  const flushCount = maxSuit[1];
-  const isRainbow = board.length >= 3 && maxSuit[1] === 1;
-  const sorted = [...new Set(vals)].sort((a, b) => a - b);
-  let maxRun = 1, run = 1;
-  for (let i = 1; i < sorted.length; i++) { if (sorted[i] - sorted[i - 1] === 1) { run++; maxRun = Math.max(maxRun, run); } else { run = 1; } }
-  const connected = maxRun >= 2;
-  const highCard = Math.max(...vals);
-  const lowCard = Math.min(...vals);
-  const straightDanger = maxRun >= 3;
-  return { vals, suits, pairs, trips, isMonotone, twoTone, flushSuit, flushCount, isRainbow, connected, straightDanger, highCard, lowCard, maxRun };
-}
-
-// ═══════════════════════════════════════════
-// HAND-vs-BOARD ANALYSIS
-// ═══════════════════════════════════════════
-function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnalysis): HoldingResult {
-  const hand = bestHand(hole, board);
-  const hv = hole.map(cv);
-  const bv = board.map(cv);
-  const hs = hole.map(c => c.suit);
-  const result: HoldingResult = { hand, draws: [], pairSource: null, realStrength: "weak", details: "" };
-
-  if (hand.rank === 1) {
-    const pairVal = hand.kickers[0];
-    const boardCount = bv.filter(v => v === pairVal).length;
-    const holeCount = hv.filter(v => v === pairVal).length;
-    if (boardCount >= 2) {
-      result.pairSource = "board"; result.realStrength = "weak";
-      const bestKicker = Math.max(...hv);
-      result.details = `The pair of ${valNameL(pairVal)}s is on the board — everyone has it. Really just playing ${valShort(bestKicker)}-high.`;
-    } else if (holeCount >= 1 && boardCount >= 1) {
-      const sortedBV = [...bv].sort((a, b) => b - a);
-      if (pairVal === sortedBV[0]) { result.pairSource = "top"; const kicker = hv.find(v => v !== pairVal) || hv[0]; result.realStrength = "good"; result.details = `Top pair, ${valNameL(pairVal)}s, with ${valShort(kicker)} kicker.`; }
-      else if (pairVal === sortedBV[sortedBV.length - 1]) { result.pairSource = "bottom"; result.realStrength = "weak"; result.details = `Bottom pair, ${valNameL(pairVal)}s. Vulnerable — any higher pair beats it.`; }
-      else { result.pairSource = "middle"; result.realStrength = "decent"; result.details = `Middle pair, ${valNameL(pairVal)}s.`; }
-    } else if (holeCount === 2) {
-      result.pairSource = "pocket"; result.realStrength = pairVal > ba.highCard ? "good" : "decent";
-      result.details = `Pocket ${valNameL(pairVal)}s — ${pairVal > ba.highCard ? "overpair to the board" : "underpair, any board card pairing an opponent beats this"}.`;
-    }
-  }
-  if (hand.rank === 2) {
-    const p1 = hand.kickers[0], p2 = hand.kickers[1];
-    const holeContrib1 = hv.includes(p1), holeContrib2 = hv.includes(p2);
-    const boardPaired = ba.pairs.length > 0;
-    if (!holeContrib1 && !holeContrib2) { result.realStrength = "weak"; result.details = `Two pair is entirely on the board. Everyone has it. Playing kicker only.`; }
-    else if (boardPaired && (holeContrib1 || holeContrib2)) {
-      const contributed = holeContrib1 ? p1 : p2;
-      result.realStrength = contributed >= ba.highCard ? "good" : "decent";
-      result.details = `Two pair: ${valNameL(p1)}s and ${valNameL(p2)}s. One pair is the board pair (everyone has it) — the real value is the ${valNameL(contributed)}s from the hole card.`;
-    } else { result.realStrength = "good"; result.details = `Two pair: ${valNameL(p1)}s and ${valNameL(p2)}s using hole cards. Solid hand.`; }
-  }
-  if (hand.rank === 3) {
-    const tripVal = hand.kickers[0]; const holeCount = hv.filter(v => v === tripVal).length;
-    if (holeCount === 2) { result.realStrength = "monster"; result.details = `Set of ${valNameL(tripVal)}s (pocket pair hit the board). Hidden and strong — opponents can't easily see this.`; }
-    else if (holeCount === 1) {
-      const boardPairCount = bv.filter(v => v === tripVal).length;
-      if (boardPairCount >= 2) { result.realStrength = "strong"; result.details = `Trips — ${valNameL(tripVal)}s using the board pair + hole card. Visible to opponents since the pair is on board.`; }
-      else { result.realStrength = "strong"; result.details = `Three of a kind, ${valNameL(tripVal)}s.`; }
-    } else { result.realStrength = "decent"; result.details = `Trips are on the board. Everyone has them. Playing kicker.`; }
-  }
-  if (hand.rank === 4) { result.realStrength = "monster"; result.details = `Straight: ${hand.kickers.map(valShort).join("-")}.`; }
-  if (hand.rank === 5) { result.realStrength = "monster"; result.details = `Flush in ${SUIT_NAMES[hole.find(c => board.some(b => b.suit === c.suit))?.suit || hole[0].suit]}s.`; }
-  if (hand.rank === 6) { result.realStrength = "monster"; result.details = `Full house: ${valNameL(hand.kickers[0])}s full of ${valNameL(hand.kickers[1])}s.`; }
-  if (hand.rank >= 7) { result.realStrength = "monster"; result.details = `${hand.name}!`; }
-  if (hand.rank === 0) {
-    const hi = Math.max(...hv); result.realStrength = "weak";
-    result.details = hi === 14 ? `Ace-high. No pair yet but the ace is a potential out.` : `${valName(hi)}-high. No pair, no draw. Nothing connects.`;
-  }
-
-  const allSuits = [...hs, ...board.map(c => c.suit)];
-  const suitBuckets: Record<string, number> = {};
-  allSuits.forEach(s => { suitBuckets[s] = (suitBuckets[s] || 0) + 1; });
-  for (const [suit, count] of Object.entries(suitBuckets)) {
-    const holeInSuit = hole.filter(c => c.suit === suit);
-    const boardInSuit = board.filter(c => c.suit === suit);
-    if (count === 4 && holeInSuit.length >= 1) {
-      const highFlushCard = Math.max(...holeInSuit.map(cv));
-      const isNut = highFlushCard === 14;
-      result.draws.push({ type: "flush", suit, outs: 13 - count, holeCards: holeInSuit, highCard: highFlushCard, isNut, dirty: highFlushCard <= 8, desc: `Flush draw in ${SUIT_NAMES[suit]} (${holeInSuit.map(cardStr).join("+")} from hand, ${boardInSuit.map(cardStr).join("+")} on board). ${isNut ? "Nut flush draw — best possible." : highFlushCard <= 8 ? "Low flush draw — could lose to a higher flush." : "Decent flush card."}` });
-    }
-    if (count === 3 && holeInSuit.length >= 1 && board.length === 3) {
-      result.draws.push({ type: "backdoor_flush", suit, outs: 0, desc: `Backdoor flush draw in ${SUIT_NAMES[suit]} (need runner-runner — unlikely, don't count these outs).` });
-    }
-  }
-
-  const allVals = [...new Set([...hv, ...bv])];
-  if (allVals.includes(14)) allVals.push(1);
-  const completionRanks = new Map<number, number[][]>();
-  for (let low = 1; low <= 10; low++) {
-    const window = [low, low + 1, low + 2, low + 3, low + 4];
-    const have = window.filter(r => allVals.includes(r));
-    const missing = window.filter(r => !allVals.includes(r));
-    if (have.length === 4 && missing.length === 1) {
-      const holeInWindow = window.filter(r => hv.includes(r) || (r === 1 && hv.includes(14)) || (r === 14 && hv.includes(14)));
-      if (holeInWindow.length >= 1) {
-        const missRank = missing[0] === 1 ? 14 : missing[0];
-        if (!completionRanks.has(missRank)) completionRanks.set(missRank, []);
-        completionRanks.get(missRank)!.push(window.map(v => v === 1 ? 14 : v));
-      }
-    }
-  }
-  if (completionRanks.size > 0 && hand.rank < 4) {
-    const ranks = [...completionRanks.keys()];
-    const knownKeys = new Set([...hole, ...board].map(ck));
-    let actualOuts = 0;
-    for (const r of ranks) { const rStr = RS[r]; for (const s of SUITS) { if (!knownKeys.has(rStr + s)) actualOuts++; } }
-    let drawType = "gutshot";
-    if (ranks.length >= 2) {
-      const sortedHave = [...new Set([...hv, ...bv])].filter(v => v >= 2).sort((a, b) => a - b);
-      const consecutive: number[][] = []; let run = [sortedHave[0]];
-      for (let i = 1; i < sortedHave.length; i++) { if (sortedHave[i] - sortedHave[i - 1] === 1) run.push(sortedHave[i]); else { if (run.length >= 4) consecutive.push([...run]); run = [sortedHave[i]]; } }
-      if (run.length >= 4) consecutive.push(run);
-      drawType = consecutive.some(r => r.length >= 4) ? "open-ended straight" : "double gutshot straight";
-    }
-    result.draws.push({ type: "straight", drawType, completionRanks: ranks, outs: actualOuts, desc: `${drawType.charAt(0).toUpperCase() + drawType.slice(1)} draw — need a ${ranks.map(r => valName(r)).join(" or ")} to complete. That's ${ranks.length} rank${ranks.length > 1 ? "s" : ""} × 4 suits = ${actualOuts} outs.` });
-  }
-  return result;
-}
-
-// ═══════════════════════════════════════════
-// THREAT ASSESSMENT
-// ═══════════════════════════════════════════
-function assessThreats(ba: BoardAnalysis | null): string[] {
-  if (!ba) return [];
-  const threats: string[] = [];
-  if (ba.pairs.length > 0) for (const p of ba.pairs) threats.push(`Board is paired (${valNameL(p)}s) — anyone holding a ${valShort(p)} has trips.`);
-  if (ba.isMonotone) threats.push(`All ${ba.suits.length} cards are ${SUIT_NAMES[ba.flushSuit!]} — anyone with one ${SUIT_NAMES[ba.flushSuit!]} has a flush draw, and two already has a flush.`);
-  else if (ba.flushCount >= 3) threats.push(`Three ${SUIT_NAMES[ba.flushSuit!]} on board — anyone with two ${SUIT_NAMES[ba.flushSuit!]} has a flush.`);
-  else if (ba.twoTone && ba.flushCount === 2) threats.push(`Two ${SUIT_NAMES[ba.flushSuit!]} on board — flush draw possible for anyone with two ${SUIT_NAMES[ba.flushSuit!]}.`);
-  if (ba.straightDanger) { const sorted = [...new Set(ba.vals)].sort((a, b) => a - b); threats.push(`Connected board (${sorted.map(valShort).join("-")}) — straight draws are likely out there.`); }
-  if (ba.highCard === 14) threats.push(`Ace on board — anyone holding an ace has at least a pair of aces.`);
-  return threats;
-}
-
-// ═══════════════════════════════════════════
-// DECISION ENGINE
-// ═══════════════════════════════════════════
-function potOddsNote(pot: number, toCall: number): string {
-  const potAfter = pot + toCall;
-  const pct = Math.round((toCall / potAfter) * 100);
-  return `Pot odds: ${toCall} to call into ${potAfter} total pot → need ${pct}% equity to break even.`;
-}
-
-function snapToBB(amount: number, max: number): number {
-  return Math.min(Math.max(Math.round(amount / BB) * BB, BB), Math.max(max, 0));
-}
-
-function potFractionLabel(bet: number, pot: number): string {
-  const r = bet / pot;
-  if (r < 0.28) return "¼-pot";
-  if (r < 0.42) return "⅓-pot";
-  if (r < 0.58) return "½-pot";
-  if (r < 0.72) return "⅔-pot";
-  if (r < 0.92) return "¾-pot";
-  if (r < 1.2) return "pot-sized";
-  return `${Math.round(r * 100)}%-pot`;
-}
-
-function generateFullDecision(
-  playerIdx: number,
-  hole: CardObj[],
-  board: CardObj[],
-  pot: number,
-  currentBet: number,
-  playerBet: number,
-  street: string,
-  folded: boolean,
-  playerName: string,
-  playerPos: string,
-  playerStack: number,
-  numActive = 3,
-  style: "gto" | "loose" | "wild" = "gto",
-  numRaisesAhead = 0,
-  dealSeed = 0,
-): Decision {
-  if (folded) return { action: "already_folded", dialogue: "", reasoning: "", thoughts: [], math: [] };
-  const toCall = Math.max(0, currentBet - playerBet);
-  const maxBetGlobal = playerStack;
-  const hv = hole.map(cv);
-  const highHole = Math.max(...hv), lowHole = Math.min(...hv);
-  const suited = hole[0].suit === hole[1].suit;
-  const pocket = hole[0].rank === hole[1].rank;
-  const posShort = POS_SHORT[playerPos] ?? "UTG";
-  const numOpponents = Math.max(1, numActive - 1);
-
-  if (street === "preflop") {
-    const tier = preflopHandTier(highHole, lowHole, suited);
-    const [raiseThr, callThr] = preflopThresholds(posShort, numRaisesAhead, style);
-    const raiseAmt = snapToBB(Math.max(currentBet * 2.5, BB * 2.5), playerStack + playerBet);
-    const handLabel = pocket
-      ? `pocket ${valNameL(highHole)}s`
-      : `${valShort(highHole)}${valShort(lowHole)}${suited ? "s" : "o"}`;
-    // Call gate: a hand in the calling range calls if the PRICE is right, rather than
-    // being capped at a flat 3bb (which folded strong hands to any larger 3-bet regardless
-    // of odds). The pot odds we're asked to lay (toCall / (pot + toCall)) must be within a
-    // ceiling that scales with hand strength — premiums deeper in the range tolerate worse
-    // prices. Still a heuristic (no true preflop equity), but odds-aware, not a magic cap.
-    const priceNeeded = toCall > 0 ? toCall / (pot + toCall) : 0;
-    const priceCeiling = 0.30 + Math.max(0, callThr - tier) * 0.06;
-    const pfAction = tier <= raiseThr ? "raise"
-      : (tier <= callThr && (toCall === 0 || priceNeeded <= priceCeiling)) ? (toCall === 0 ? "check" : "call")
-      : (toCall === 0 && posShort === "BB") ? "check"
-      : "fold";
-    const gap = highHole - lowHole;
-    const connStr = gap <= 1 ? "connected" : gap <= 2 ? "one-gap" : gap <= 3 ? "two-gap" : "disconnected";
-    const handQuality = pocket
-      ? `${cardStr(hole[0])} ${cardStr(hole[1])} — pocket ${valNameL(highHole)}s. A made pair preflop.`
-      : `${cardStr(hole[0])} ${cardStr(hole[1])} — ${valNameL(highHole)}-${valNameL(lowHole)} ${suited ? "suited" : "offsuit"}, ${connStr}.${tier <= 2 ? " Premium." : tier <= 4 ? " Playable." : tier === 5 ? " Marginal." : " Weak — few strong hands it can make."}`;
-    const rangeDesc = (() => {
-      if (numRaisesAhead >= 2) {
-        const range = style === "wild" ? "TT+, AK, AQs" : style === "loose" ? "JJ+, AK, AQs" : "QQ+, AK — premiums only";
-        return `Two re-raises in — 4-bet territory. Only ${range} can continue. Anything else is a fold.`;
-      }
-      if (numRaisesAhead === 1) {
-        const threeRange = style === "wild" ? "JJ+, AK, AQs, suited broadways" : style === "loose" ? "QQ+, AK, AJs+" : "QQ+, AK only";
-        if (pfAction === "raise") return `Facing a raise — you 3-bet with premiums: ${threeRange}. Everything else folds or calls.`;
-        if (pfAction === "call") return `Facing a raise — premiums 3-bet (${threeRange}), medium-strength hands call, the rest fold. ${handLabel} sits in the calling range from ${posShort}.`;
-        return `Facing a raise — 3-bet premiums (${threeRange}) or fold. ${handLabel} falls below the calling threshold here.`;
-      }
-      if (posShort === "UTG") return style === "wild"
-        ? "UTG opens ~top 45%: any pair, any ace, broadway, suited connectors."
-        : style === "loose"
-        ? "UTG opens ~top 35%: pairs 66+, any ace suited, AJ+/KQ+, suited connectors 87s+."
-        : "UTG opens ~top 27%: pairs TT+, aces A8s+/AJo+, broadway KTs+/KQo, suited connectors 87s+. In 4-handed, UTG is CO-equivalent — wider than full-ring.";
-      if (posShort === "BTN") return style === "wild"
-        ? "BTN opens ~top 75%: almost any two cards with upside — only pure junk folds."
-        : style === "loose"
-        ? "BTN opens ~top 60%: any pair, any ace, broadway, suited connectors and gappers."
-        : "BTN opens ~top 45%: any pair, aces, broadway, suited connectors, suited one-gappers.";
-      if (posShort === "SB") return style === "wild"
-        ? "SB plays ~top 65%: pairs, any ace, any broadway, suited anything."
-        : style === "loose"
-        ? "SB plays ~top 55%: pairs, any ace, broadway, suited connectors/gappers, offsuit broadways."
-        : "SB plays ~top 45%: pairs, aces A2s+/A7o+, broadway KTo+/KTs+, suited connectors. In 4-handed, SB is nearly heads-up vs BB.";
-      return toCall > 0
-        ? style === "wild" ? "BB defends very wide vs a raise — only folds pure garbage."
-          : style === "loose" ? "BB defends ~65% vs raise: pairs, aces, broadways, suited connectors/gappers, most suited hands."
-          : "BB defends ~55% vs raise: pairs, aces A2s+/A7o+, broadway KTo+, suited connectors, suited gappers. Pot odds are good — defend wide."
-        : "BB checks for free — always correct to see a flop.";
-    })();
-    const decisionLine = pfAction === "fold"
-      ? numRaisesAhead >= 2
-        ? `${handLabel} can't continue vs two re-raises. 4-bet range is KK+. Fold.`
-        : numRaisesAhead === 1
-        ? `${handLabel} doesn't qualify for ${posShort}'s 3-bet/call range. Fold.`
-        : `${handLabel} outside ${posShort}'s opening range. Fold.`
-      : pfAction === "raise"
-        ? numRaisesAhead >= 2 ? `${handLabel} strong enough to 4-bet. Raise.`
-          : numRaisesAhead === 1 ? `${handLabel} in ${posShort}'s 3-bet range. Raise.`
-          : `${handLabel} in ${posShort}'s opening range. Raise.`
-      : pfAction === "call" ? `${handLabel} worth calling at this price. Call.`
-      : `BB takes a free flop. Always correct.`;
-    const math = [handQuality, rangeDesc, decisionLine];
-    const thoughts = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
-    if (pocket) {
-      if (pfAction === "raise") { thoughts.push(`Pocket ${valNameL(highHole)}s — ${tier === 1 ? "premium pair" : "strong pair"}${numRaisesAhead >= 2 ? ", 4-betting" : numRaisesAhead === 1 ? ", 3-betting" : ", raising"}.`); return { action: "raise", amount: raiseAmt, dialogue: `${playerName} sees the pocket pair and sits up straighter. "Raise to ${raiseAmt}."`, reasoning: `Pocket ${valShort(highHole)}s — raise.`, thoughts, math }; }
-      if (pfAction === "call") { thoughts.push(`Pocket ${valNameL(highHole)}s — set-mining. ~12% (1-in-8.5) to flop a set.`); math.push(`Set odds: ~12%. Need ~7.5:1 implied odds to break even vs small raises.`); return { action: "call", dialogue: `${playerName} peeks at the pocket pair and quietly calls. "Call."`, reasoning: `Pocket ${valShort(highHole)}s — set-mining.`, thoughts, math }; }
-      thoughts.push(`Pocket ${valNameL(highHole)}s — too small to play at this price from ${posShort}.`);
-      return { action: "fold", dialogue: `${playerName} glances at the cards and folds. "Fold."`, reasoning: `Pocket ${valShort(highHole)}s too weak here.`, thoughts, math };
-    }
-    if (pfAction === "raise") { thoughts.push(`${handLabel} — ${numRaisesAhead >= 2 ? "strong enough to 4-bet" : numRaisesAhead === 1 ? `in ${posShort}'s 3-bet range` : `within ${posShort}'s opening range`}.`); return { action: "raise", amount: raiseAmt, dialogue: `${playerName} slides chips forward. "Raise to ${raiseAmt}."`, reasoning: `${handLabel} — raise from ${posShort}.`, thoughts, math }; }
-    if (pfAction === "call") {
-      thoughts.push(`${handLabel} — playable from ${posShort} at this price.`);
-      if (toCall > 0) {
-        const pfPotOddsPct = Math.round(toCall / (pot + toCall) * 100);
-        math.push(`Pot odds: ${toCall} to call into ${pot + toCall} total pot → need ~${pfPotOddsPct}% equity to break even.`);
-        if (highHole === 14) {
-          math.push(`Ace-high value: any ace on the flop gives top pair. You also "dominate" villains holding weaker aces (A2–A${valShort(lowHole - 1) ?? "x"}) — they need to hit the same pair but lose at showdown.`);
-          math.push(`A-x hands run ~52–58% equity vs a typical opening range. At ${pfPotOddsPct}% pot odds, this is a clear +EV call.`);
-        } else if (suited) {
-          math.push(`Suited adds ~3–4% equity vs the offsuit equivalent — flush draw potential on wet boards and the occasional backdoor flush.`);
-          math.push(`Running ~50–55% equity vs a typical opening range at ${pfPotOddsPct}% pot odds — profitable to call.`);
-        } else if (highHole >= 12) {
-          math.push(`Broadway high card: strong showdown value, top pair on many boards, good blocker equity. Running ~50–54% equity at ${pfPotOddsPct}% pot odds.`);
-        } else {
-          math.push(`At ${pfPotOddsPct}% pot odds needed, this hand has enough equity vs the opening range to call — particularly with implied odds if you hit the board hard.`);
-        }
-        if (posShort === "SB") math.push(`Note: calling from SB means you'll be out of position postflop — a real cost. Play straightforwardly on the flop; avoid fancy plays OOP.`);
-      }
-      return { action: "call", dialogue: `${playerName} considers, then calls. "Call."`, reasoning: `${handLabel} — call from ${posShort}.`, thoughts, math };
-    }
-    if (pfAction === "check") { thoughts.push(`BB gets a free look — always take it.`); return { action: "check", dialogue: `${playerName} taps the table. "Check."`, reasoning: `BB takes a free flop.`, thoughts, math }; }
-    thoughts.push(`${handLabel} — outside range${numRaisesAhead >= 2 ? " vs two re-raises" : numRaisesAhead === 1 ? " facing a raise" : ""} from ${posShort}. Fold.`);
-    return { action: "fold", dialogue: `${playerName} glances at the cards and slides them away. "Fold."`, reasoning: `${handLabel} — outside range. Fold.`, thoughts, math };
-  }
-
-  // ── POSTFLOP ─────────────────────────────────────────────────────────────
-  const SIMS = 1000;
-  const equity = monteCarloEquity(hole, board, numOpponents, SIMS, style, dealSeed);
-  const equityPct = Math.round(equity * 100);
-  const sePct = (equityStandardError(equity, SIMS) * 100).toFixed(1);
-  // Value bets get sized thinner as the pot goes multiway — more players to get through.
-  const mwFactor = Math.max(0.4, 1 - 0.18 * (numOpponents - 1));
-  const isRiver = street === "river";
-  const potOddsPctPost = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
-  const styleDiscount = style === "loose" ? 8 : style === "wild" ? 18 : 0;
-  const callThreshold = potOddsPctPost - styleDiscount;
-  const thoughts: string[] = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
-  const rangeLabel = style === "wild" ? "any two" : style === "loose" ? "semi-loose range" : "tight range";
-  const math: string[] = [`Monte Carlo: ~${equityPct}% ± ${sePct}% equity vs ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} (${SIMS.toLocaleString()} sims, SE = √(p(1−p)/n); opponents on ${rangeLabel}).`];
-
-  // Position note
-  if (playerPos === "Dealer") thoughts.push("In position (BTN) — acting last this round. Major structural advantage.");
-  else if (playerPos === "Small Blind") thoughts.push("Out of position (SB) — first to act postflop. Harder to play without reads.");
-  else if (playerPos === "Big Blind") thoughts.push("Out of position (BB) — acting early postflop.");
-  else thoughts.push("UTG postflop — acting after the blinds, before the button. Some positional disadvantage.");
-
-  if (toCall > 0) {
-    const ev = Math.round(equity * pot - (1 - equity) * toCall);
-    math.push(`Pot odds: ${toCall} to call ÷ (${pot} + ${toCall}) = ${potOddsPctPost}% needed equity.`);
-    if (equityPct >= callThreshold) {
-      math.push(`${equityPct}% ≥ ${callThreshold}% → call is +EV.`);
-      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
-      thoughts.push(`Equity beats pot odds — call.`);
-      return { action: "call", equity, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: `~${equityPct}% equity vs ${potOddsPctPost}% needed — call.`, thoughts, math };
-    } else {
-      math.push(`${equityPct}% < ${callThreshold}% → fold.${isRiver ? " (River: no implied odds — breakeven is exactly pot odds.)" : ""}`);
-      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
-      thoughts.push(`Not enough equity at this price — fold.`);
-      return { action: "fold", equity, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: `Only ~${equityPct}% equity vs ${potOddsPctPost}% needed — fold.`, thoughts, math };
-    }
-  }
-  if (equity >= 0.65) {
-    const betSize = snapToBB(pot * Math.min(equity - 0.20, 0.85) * mwFactor, maxBetGlobal);
-    const frac = potFractionLabel(betSize, pot);
-    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`${equityPct}% equity → value bet.`);
-    if (numOpponents > 1) math.push(`Sized ×${mwFactor.toFixed(2)} for ${numOpponents}-way — thinner value with more players left to beat.`);
-    math.push(`${frac} bet (${betSize}): villain needs ${betSize} ÷ (${pot} + ${betSize}) = ${villainCallPct}% equity to call profitably.`);
-    thoughts.push(`Strong equity — bet for value.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `~${equityPct}% equity — ${frac} value bet.`, thoughts, math };
-  }
-  if (equity >= 0.52) {
-    const betSize = snapToBB(pot * 0.33 * mwFactor, maxBetGlobal);
-    const frac = potFractionLabel(betSize, pot);
-    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`${equityPct}% equity → thin value bet.`);
-    math.push(`${frac} bet (${betSize}): villain needs ${villainCallPct}% equity to call — small enough to get calls from worse hands.`);
-    thoughts.push(`Slight edge — thin value bet to extract from marginal hands.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `~${equityPct}% equity — ${frac} thin value.`, thoughts, math };
-  }
-  // Semi-bluff: no bets in front, and a hand that still has real equity to improve
-  // (~30–52% — a draw or overcards, not pure air). Fire at a fixed frequency. This is a
-  // simple heuristic, NOT a solver-derived mixed strategy: real GTO would balance bluffs
-  // against a value range so the two are indifferent. The hash keeps the choice
-  // deterministic across the useMemo re-runs (see equity.ts) without a stateful RNG.
-  const BLUFF_FREQUENCY = 0.3;
-  const bluffRoll = ((playerIdx * 2654435761 + Math.round(pot) * 40503 + board.length * 92821) >>> 0) / 4294967296;
-  if (!isRiver && equity >= 0.3 && bluffRoll < BLUFF_FREQUENCY && maxBetGlobal >= BB) {
-    const betSize = snapToBB(pot * 0.55, maxBetGlobal);
-    const frac = potFractionLabel(betSize, pot);
-    const foldPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`~${equityPct}% equity with room to improve — semi-bluffing for fold equity (fixed ${Math.round(BLUFF_FREQUENCY * 100)}% frequency, a heuristic, not a balanced range).`);
-    math.push(`${frac} bluff (${betSize}): breakeven fold% = ${betSize} ÷ (${pot} + ${betSize}) = ${foldPct}%.`);
-    math.push(`Proof: EV = fold% × ${pot} − (1−fold%) × ${betSize} = 0 → fold% = ${foldPct}%.`);
-    math.push(`Breakeven fold% = pot odds villain faces — mirrors by design. Villain folding > ${foldPct}% → bluff is +EV even before our equity when called.`);
-    thoughts.push(`Weak-ish but live hand, nobody has bet — mix in a semi-bluff.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — ~${equityPct}% equity, ${frac} bet needs ${foldPct}% folds to break even.`, thoughts, math };
-  }
-  math.push(`${equityPct}% equity — not enough to bet for value. Check.`);
-  thoughts.push(`Not strong enough to bet. Check.`);
-  return { action: "check", equity, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `~${equityPct}% equity — check.`, thoughts, math };
-}
 
 
 // ═══════════════════════════════════════════
@@ -485,12 +100,12 @@ const RULES = [
 function PlayingCard({ card, dimmed, size = "sm", placeholder, faceDown }: { card?: CardObj; dimmed?: boolean; size?: "sm" | "md" | "lg"; placeholder?: boolean; faceDown?: boolean; }) {
   const D = size === "sm" ? { w: 30, h: 42, rank: 12, suit: 12 } : size === "md" ? { w: 38, h: 54, rank: 15, suit: 16 } : { w: 48, h: 68, rank: 18, suit: 22 };
   if (placeholder) {
-    return <div style={{ width: D.w, height: D.h, borderRadius: T.radius, background: "transparent", border: `1px dashed ${T.hair}`, flexShrink: 0, opacity: 0.55 }} />;
+    return <div aria-hidden="true" style={{ width: D.w, height: D.h, borderRadius: T.radius, background: "transparent", border: `1px dashed ${T.hair}`, flexShrink: 0, opacity: 0.55 }} />;
   }
   if (faceDown) {
     return (
-      <div style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, borderRadius: 0 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+      <div role="img" aria-label="Face-down card" style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, borderRadius: 0 }}>
+        <div aria-hidden="true" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
           {(["♠","♣","♥","♦"] as const).map(s => (
             <span key={s} style={{ fontFamily: T.mono, fontSize: Math.round(D.suit * 0.62), color: "#2a2e34", lineHeight: 1, textAlign: "center" as const }}>{s}</span>
           ))}
@@ -498,12 +113,12 @@ function PlayingCard({ card, dimmed, size = "sm", placeholder, faceDown }: { car
       </div>
     );
   }
-  if (!card) return <div style={{ width: D.w, height: D.h, flexShrink: 0 }} />;
+  if (!card) return <div aria-hidden="true" style={{ width: D.w, height: D.h, flexShrink: 0 }} />;
   const color = T.suitColors[card.suit];
   return (
-    <div style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0, opacity: dimmed ? 0.32 : 1, fontFamily: T.mono, color, borderRadius: 0 }}>
-      <span style={{ fontSize: D.rank, fontWeight: 600, lineHeight: 1 }}>{card.rank}</span>
-      <span style={{ fontSize: D.suit, lineHeight: 1 }}>{card.suit}</span>
+    <div role="img" aria-label={`${card.rank} of ${SUIT_NAMES[card.suit]}`} style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0, opacity: dimmed ? 0.32 : 1, fontFamily: T.mono, color, borderRadius: 0 }}>
+      <span aria-hidden="true" style={{ fontSize: D.rank, fontWeight: 600, lineHeight: 1 }}>{card.rank}</span>
+      <span aria-hidden="true" style={{ fontSize: D.suit, lineHeight: 1 }}>{card.suit}</span>
     </div>
   );
 }
@@ -595,7 +210,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
           {d.dialogue}
         </div>
         <div style={{ display: "flex", gap: 7, marginBottom: 8 }}>
-          <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>//</span>
+          <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>{"//"}</span>
           <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}>{d.reasoning}</div>
         </div>
         {d.thoughts && d.thoughts.length > 0 && (
@@ -782,40 +397,6 @@ function ComparisonBanner({ userAction, aiAction }: { userAction: string; aiActi
   );
 }
 
-// ═══════════════════════════════════════════
-// UI: Info Tooltip
-// ═══════════════════════════════════════════
-function InfoTip({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
-      <span
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        onClick={e => { e.stopPropagation(); setOpen(o => !o); }}
-        style={{ fontFamily: T.mono, fontSize: 13, color: open ? T.accent : T.inkSoft, cursor: "pointer", userSelect: "none", lineHeight: 1 }}
-      >ⓘ</span>
-      {open && (
-        <span style={{
-          position: "absolute",
-          top: "calc(100% + 6px)",
-          right: 0,
-          width: 220,
-          padding: "9px 11px",
-          background: T.panelAlt,
-          border: `1px solid ${T.hair}`,
-          fontFamily: T.mono,
-          fontSize: 11,
-          color: T.inkSoft,
-          lineHeight: 1.55,
-          zIndex: 200,
-          pointerEvents: "none" as const,
-          whiteSpace: "normal" as const,
-        }}>{text}</span>
-      )}
-    </span>
-  );
-}
 
 // ═══════════════════════════════════════════
 // UI: Villain Recap (shown at showdown in hero mode)
@@ -827,7 +408,7 @@ function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: 
   if (!hasAny) return null;
   return (
     <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
-      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>// villain decisions</div>
+      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>{"// villain decisions"}</div>
       {villainIdxs.map(vi => {
         const vstages = stages.filter(s => s.type === "action" && s.playerIdx === vi && s.decision?.action !== "already_folded");
         if (vstages.length === 0) return null;
@@ -835,6 +416,7 @@ function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: 
         return (
           <div key={vi} style={{ marginBottom: 6, border: `1px solid ${T.hairSoft}` }}>
             <button
+              aria-expanded={isOpen}
               onClick={() => setExpanded(e => ({ ...e, [vi]: !e[vi] }))}
               style={{ width: "100%", padding: "7px 10px", background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, textAlign: "left" as const }}
             >
@@ -861,7 +443,7 @@ function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: 
 // ═══════════════════════════════════════════
 // UI: Hand Review (shown at showdown in train mode)
 // ═══════════════════════════════════════════
-function HandReview({ stages, heroIdx, userChoices, players }: { stages: Stage[]; heroIdx: number; userChoices: Record<number, string>; players: PlayerInfo[] }) {
+function HandReview({ stages, heroIdx, userChoices }: { stages: Stage[]; heroIdx: number; userChoices: Record<number, string> }) {
   const aggressive = ["bet", "raise"];
   const rows = stages.map((s, idx) => {
     if (s.type !== "action" || s.playerIdx !== heroIdx || s.decision?.action === "already_folded") return null;
@@ -881,7 +463,7 @@ function HandReview({ stages, heroIdx, userChoices, players }: { stages: Stage[]
   return (
     <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-        <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim }}>// hand review</span>
+        <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim }}>{"// hand review"}</span>
         <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: matches === rows.length ? T.accent : matches / rows.length >= 0.6 ? T.ink : T.inkSoft }}>
           {matches}/{rows.length} matched
         </span>
@@ -1002,7 +584,6 @@ export default function PokerSim() {
   const [step, setStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
   const [mode, setMode] = useState<"focused" | "dense">("focused");
-  const [isDesktop, setIsDesktop] = useState(false);
   const [dealerIdx, setDealerIdx] = useState(3); // Dan starts as BTN, rotates each hand
   const [startingStacks, setStartingStacks] = useState([200, 200, 200, 200]);
   const [trainingMode, setTrainingMode] = useState(false);
@@ -1015,18 +596,17 @@ export default function PokerSim() {
   const [sessionHistory, setSessionHistory] = useState<SessionEntry[]>([]);
   const [handNumber, setHandNumber] = useState(0);
   const handNumberRef = useRef(0);
-  handNumberRef.current = handNumber;
   const feedRef = useRef<HTMLDivElement>(null);
   const focusedRef = useRef<HTMLDivElement>(null);
   const stagesRef = useRef<Stage[]>([]);
 
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 740px)");
-    setIsDesktop(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  // Responsive breakpoint via useSyncExternalStore — SSR-safe (server snapshot = false,
+  // matching initial client render) and avoids a setState-in-effect.
+  const isDesktop = useSyncExternalStore(
+    (cb) => { const mq = window.matchMedia("(min-width: 740px)"); mq.addEventListener("change", cb); return () => mq.removeEventListener("change", cb); },
+    () => window.matchMedia("(min-width: 740px)").matches,
+    () => false,
+  );
 
   const denseScrollToRef = useRef<number | null>(null);
 
@@ -1036,11 +616,6 @@ export default function PokerSim() {
   const heroChoicesRef = useRef<Decision[]>([]);
   const stepRef = useRef(0);
   const heroIdxRef = useRef<number | null>(null);
-  trainingRef.current = trainingMode;
-  userChoicesRef.current = userChoices;
-  heroChoicesRef.current = heroChoices;
-  stepRef.current = step;
-  heroIdxRef.current = heroIdx;
 
   // Keyboard navigation — stable listener via refs
   useEffect(() => {
@@ -1160,7 +735,7 @@ export default function PokerSim() {
     }]);
     // Release lock after state queued — React batches these so next render clears it
     setTimeout(() => { choiceLockRef.current = false; }, 0);
-  }, [step]);
+  }, [step, players]);
 
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -1255,8 +830,18 @@ export default function PokerSim() {
     return all;
   }, [gs, dealerIdx, startingStacks, players, gameStyle, heroIdx, heroChoices]);
 
-  // Keep ref in sync for keyboard handler
-  stagesRef.current = stages;
+  // Sync latest-value refs after each render (read only by the keyboard listener,
+  // auto-advance timeout, and click handlers — all post-commit — so an effect is correct
+  // and avoids writing refs during render).
+  useEffect(() => {
+    handNumberRef.current = handNumber;
+    trainingRef.current = trainingMode;
+    userChoicesRef.current = userChoices;
+    heroChoicesRef.current = heroChoices;
+    stepRef.current = step;
+    heroIdxRef.current = heroIdx;
+    stagesRef.current = stages;
+  });
 
   // Auto-advance villain steps in hero mode
   useEffect(() => {
@@ -1265,6 +850,8 @@ export default function PokerSim() {
     const curStage = stages[step];
     if (!curStage || curStage.type !== "action" || curStage.decision?.action === "already_folded") return;
     if (curStage.playerIdx === heroIdx) return;
+    // Respect prefers-reduced-motion: don't auto-advance; let the user step manually.
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     autoAdvanceRef.current = setTimeout(() => {
       setStep(s => Math.min(s + 1, stages.length - 1));
     }, 900);
@@ -1275,6 +862,19 @@ export default function PokerSim() {
   const visible = stages.slice(0, step + 1);
   const showBoard = cur?.board || [];
   const isEnd = step >= stages.length - 1;
+
+  // Screen-reader announcement of the current step (visually hidden, polite live region).
+  const liveText = (() => {
+    if (!cur) return "";
+    if (cur.type === "action" && cur.decision) {
+      const who = cur.playerIdx != null ? players[cur.playerIdx]?.name : "Player";
+      const amt = cur.decision.amount ? ` ${cur.decision.amount}` : "";
+      return `${who} on the ${cur.street}: ${cur.decision.action}${amt}.`;
+    }
+    if (cur.type === "showdown") return cur.foldWin ? "Showdown: everyone else folded." : cur.chop ? "Showdown: split pot." : "Showdown.";
+    return cur.title || cur.street || "";
+  })();
+  const srOnly = { position: "absolute" as const, width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" as const, border: 0 };
 
   // ── Shared sub-sections ──────────────────────────────────────────
 
@@ -1296,9 +896,12 @@ export default function PokerSim() {
       <h1 style={{ fontFamily: T.mono, fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", textTransform: "uppercase", lineHeight: 1, margin: "0 0 6px", color: T.ink }}>
         HOLD&apos;EM TRAINER
       </h1>
-      <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 6px" }}>
         &gt; practice your poker face
       </p>
+      <a href="/solver" style={{ fontFamily: T.mono, fontSize: 9.5, color: T.accent, letterSpacing: "0.06em", textDecoration: "none", display: "inline-block", marginBottom: 10 }}>
+        {"→ heads-up push/fold Nash solver"}
+      </a>
       <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
           <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table style</span>
@@ -1342,7 +945,7 @@ export default function PokerSim() {
       </button>
       {showRules && (
         <div style={{ marginTop: 6, padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, maxHeight: 260, overflowY: "auto" }}>
-          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>// modes</div>
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>{"// modes"}</div>
           {[
             { t: "Observe", d: "Watch the hand play out. Every decision shows full reasoning, inner thoughts, and the math." },
             { t: "Train", d: "Pick your action before seeing the AI's. Then compare — does your read match?" },
@@ -1355,7 +958,7 @@ export default function PokerSim() {
             </div>
           ))}
           <div style={{ borderTop: `1px solid ${T.hairSoft}`, margin: "10px 0" }} />
-          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>// glossary</div>
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>{"// glossary"}</div>
           {RULES.map((r, i) => (
             <div key={i} style={{ paddingBottom: i < RULES.length - 1 ? 6 : 0, marginBottom: i < RULES.length - 1 ? 6 : 0, borderBottom: i < RULES.length - 1 ? `1px solid ${T.hairSoft}` : "none", display: "grid", gridTemplateColumns: "90px 1fr", gap: 8, alignItems: "baseline" }}>
               <span style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 600, color: T.ink }}>{r.t}</span>
@@ -1450,21 +1053,6 @@ export default function PokerSim() {
     </div>
   );
 
-  // Compact single-row board for mobile
-  const mobileBoard = (
-    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8, padding: "7px 10px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius }}>
-      <div style={{ display: "flex", gap: 4, flex: 1, justifyContent: "center" }}>
-        {[0, 1, 2, 3, 4].map(i => {
-          const c = showBoard[i];
-          return c ? <PlayingCard key={i} card={c} size="sm" /> : <PlayingCard key={i} placeholder size="sm" />;
-        })}
-      </div>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 4, paddingLeft: 10, borderLeft: `1px solid ${T.hairSoft}`, flexShrink: 0 }}>
-        <span style={{ fontFamily: T.mono, fontSize: 8, color: T.dim, letterSpacing: "0.14em", textTransform: "uppercase" }}>POT</span>
-        <span style={{ fontFamily: T.mono, fontSize: 15, fontWeight: 600, color: T.accent }}>{cur?.pot || 0}</span>
-      </div>
-    </div>
-  );
 
   const feed = (desktopFill = false) => {
     const isActionStep = cur?.type === "action" && cur?.decision?.action !== "already_folded";
@@ -1525,7 +1113,10 @@ export default function PokerSim() {
 
           {/* History trail — all prior steps as compact summaries */}
           {(trainingMode || mode === "focused") && visible.slice(0, step).map((s, i) => (
-            <div key={i} onClick={() => { if (trainingMode) { setStep(i); } else { denseScrollToRef.current = i; setMode("dense"); } }} style={{ cursor: "pointer" }} title="Click to view this step">
+            <div key={i} role="button" tabIndex={0} aria-label={`View step ${i + 1}`}
+              onClick={() => { if (trainingMode) { setStep(i); } else { denseScrollToRef.current = i; setMode("dense"); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (trainingMode) { setStep(i); } else { denseScrollToRef.current = i; setMode("dense"); } } }}
+              style={{ cursor: "pointer" }} title="Click to view this step">
               <FeedEntry s={s} isFocused={false} compact players={players} heroIdx={trainingMode && heroIdx !== null ? heroIdx : undefined} />
             </div>
           ))}
@@ -1571,7 +1162,7 @@ export default function PokerSim() {
                           </button>
                         )}
                         {playingAI && (
-                          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: "0.1em" }}>✓ Playing AI's move</span>
+                          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: "0.1em" }}>✓ Playing AI&apos;s move</span>
                         )}
                       </div>
                     </div>
@@ -1581,7 +1172,7 @@ export default function PokerSim() {
                           {cur.aiDecision.dialogue}
                         </div>
                         <div style={{ display: "flex", gap: 7, marginBottom: (cur.aiDecision.thoughts?.length ?? 0) > 0 ? 8 : 0 }}>
-                          <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>//</span>
+                          <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>{"//"}</span>
                           <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}>{cur.aiDecision.reasoning}</div>
                         </div>
                         {cur.aiDecision.thoughts && cur.aiDecision.thoughts.length > 0 && (
@@ -1621,7 +1212,7 @@ export default function PokerSim() {
           )}
           {trainingMode && heroIdx !== null && cur?.type === "showdown" && (
             <>
-              <HandReview stages={stages} heroIdx={heroIdx} userChoices={userChoices} players={players} />
+              <HandReview stages={stages} heroIdx={heroIdx} userChoices={userChoices} />
               <VillainRecap stages={stages} heroIdx={heroIdx} players={players} />
             </>
           )}
@@ -1665,6 +1256,7 @@ export default function PokerSim() {
   if (isDesktop) {
     return (
       <div style={{ fontFamily: T.mono, background: T.bg, color: T.ink, display: "flex", flexDirection: "row", height: "100vh", overflow: "hidden" }}>
+        <div aria-live="polite" style={srOnly}>{liveText}</div>
         <div style={{ width: 360, flexShrink: 0, display: "flex", flexDirection: "column", height: "100vh", borderRight: `1px solid ${T.hair}` }}>
           <div style={{ flex: 1, overflowY: "auto", padding: "16px 14px 0" }}>
             {masthead}

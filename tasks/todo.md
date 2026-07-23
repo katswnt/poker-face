@@ -50,6 +50,22 @@ that makes the README's claims true, or (b) honestly-documented, deliberate scop
 - [ ] #2 Keep scoped: document WHY (ranges are 4-handed-calibrated; heads-up needs re-tuning).
 - [ ] Re-verify each: npm test, tsc, build.
 
+## Phase 7 — DONE (go deep; audience ML/data/quant + all enrichments)
+- [x] #3 Sim rigor: exactEquity() + MC-converges-to-exact tests (unbiasedness proof),
+      standard-error reporting in UI, multiway-aware value sizing, METHODOLOGY.md.
+- [x] Push/fold Nash solver (lib/solver): 169x169 equity matrix, fictitious play,
+      /solver demo, 11 tests (10bb: SB 58% / BB 37.5%, matches published charts).
+      Bonus: score7 evaluator proven byte-identical to handScore over 100k hands.
+- [x] #4 Decision engine extracted → lib/poker/decide.ts + test/decide.test.ts (8).
+- [x] Backend: property/fuzz tests (test/invariants.test.ts, fast-check — chip
+      conservation etc., no bugs found) + bench/equity-bench.ts (~4,000× memo speedup).
+- [x] Frontend a11y: keyboard-operable rows, card aria-labels, focus-visible,
+      prefers-reduced-motion (CSS + auto-advance guard), polite live region.
+- [x] CI: .github/workflows/ci.yml (lint + types + tests + build).
+- [x] Lint cleanup: 0 problems (was 40 at HEAD) — dead code removed, refs-in-render →
+      effect, useSyncExternalStore for the media query, JSX literals fixed.
+- [x] Verified: 57 tests pass, tsc clean, lint clean, build clean (/solver prerendered).
+
 ## Review — done
 
 All phases complete. Verified: `npm test` 20/20 green, `npx tsc --noEmit` clean,
