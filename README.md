@@ -83,13 +83,14 @@ see the note above.)*
 2. Completes the board from the remaining deck.
 3. Scores all hands head-to-head, crediting split pots at half.
 
-Equity is compared to pot odds for call/fold. Value-bet sizing scales with equity; the
-semi-bluff fires at a fixed frequency only when the hand still has equity to improve
-(a draw / overcards), never on pure air. All ~12,000 simulations for a full hand run at
-deal time inside a single `useMemo`.
+Equity is compared to pot odds for call/fold. Value-bet sizing scales with equity and
+shrinks as the pot goes multiway; the semi-bluff fires at a fixed frequency only when the
+hand still has equity to improve (a draw / overcards), never on pure air. All ~12,000
+simulations for a full hand run at deal time inside a single `useMemo`.
 
-**The math shown** — for each postflop decision the feed derives Monte Carlo equity, pot
-odds (`toCall ÷ (pot + toCall)`), EV, bet sizing, and the semi-bluff breakeven
+**The math shown** — for each postflop decision the feed derives Monte Carlo equity
+(reported as `~X% ± SE`, the honest ±1σ of a 1,000-sample estimate), pot odds
+(`toCall ÷ (pot + toCall)`), EV, bet sizing, and the semi-bluff breakeven
 (`bet ÷ (pot + bet)`, with the proof that it mirrors the pot odds the villain faces).
 
 ---
@@ -225,7 +226,7 @@ because stacks carry across hands.
 ```bash
 npm install
 npm run dev      # http://localhost:3000  (and /solver for the Nash solver)
-npm test         # domain + property test suite (58 assertions)
+npm test         # domain + property test suite (57 tests)
 npm run bench    # equity throughput + memoization benchmark
 npm run build    # production build
 ```

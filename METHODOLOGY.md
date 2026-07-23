@@ -88,5 +88,5 @@ Try it at `/solver` — a 13×13 grid re-solving live across stack depths.
 - **Ground-truth checks.** The Monte Carlo is pinned to exact enumeration; `score7` is
   pinned to `handScore`; ranges are pinned to their exact shipped thresholds.
 
-Run it all: `npm test` (58 assertions) · `npm run bench` · CI runs lint + types + tests +
+Run it all: `npm test` (57 tests) · `npm run bench` · CI runs lint + types + tests +
 build on every push.
