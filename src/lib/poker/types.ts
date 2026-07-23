@@ -28,3 +28,15 @@ export interface Decision {
 export interface PlayerInfo { name: string; pos: string; posShort: string; }
 
 export type TableStyle = "gto" | "loose" | "wild";
+
+// One entry in the step-through feed. Plain data (no React) so the betting engine and its
+// tests can produce and inspect Stages directly.
+export interface Stage {
+  type: string; street?: string; title?: string; board: CardObj[]; pot: number; folded: boolean[];
+  description?: string; note?: string; playerIdx?: number; bets?: number[]; decision?: Decision;
+  aiDecision?: Decision; // AI's recommendation — stored on hero stages for comparison
+  currentBet?: number; results?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>; winner?: number; foldWin?: boolean;
+  stacks?: number[]; payouts?: number[]; chop?: boolean;
+  rankedResults?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>;
+  holeCards?: CardObj[];
+}

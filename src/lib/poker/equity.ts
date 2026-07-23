@@ -4,23 +4,36 @@ import { RANKS, ck, cv } from "./cards";
 import { handScore } from "./eval";
 import { preflopHandTier } from "./ranges";
 
-// Deterministic PRNG. The whole hand is recomputed inside a single React useMemo on
-// every hero action; if the Monte Carlo used Math.random, each recompute would return
-// different equities, the number of simulated stages would shift, and the hero's
-// recorded choices would misalign with the streets they were made on. Seeding the RNG
-// per deal makes every recompute bit-for-bit identical. This is the app's core
-// correctness seam — see setSimRng below.
+// Deterministic PRNG (see the determinism note below).
 export function mulberry32(seed: number): () => number {
   let s = seed >>> 0;
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = Math.imul(t ^ (t >>> 7), 61 | t) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
 
-// The RNG the simulation draws from. Defaults to Math.random for standalone/test use;
-// the component calls setSimRng(mulberry32(seed)) at the top of each deal's useMemo so
-// re-runs are reproducible. A module seam (rather than a threaded parameter) keeps the
-// large decision-generation call chain from having to pass rng through every frame.
-let simRng: () => number = Math.random;
-export function setSimRng(fn: () => number) { simRng = fn; }
+// Determinism seam. The whole hand is recomputed inside one React useMemo on every hero
+// action. Equity here is seeded PURELY from the spot itself (hole, board, opponents,
+// style) plus the deal's base seed — NOT from a shared, order-dependent RNG stream. That
+// makes each equity a referentially-transparent function of its inputs: identical across
+// re-runs no matter what the hero did earlier, and therefore safe to memoize. (The old
+// design used one sequential RNG for the whole hand, so a spot's equity depended on how
+// many draws happened before it — reproducible only if the exact same sequence of spots
+// recurred. This is strictly more robust.)
+function spotSeed(dealSeed: number, hole: CardObj[], board: CardObj[], numOpponents: number, style: TableStyle): number {
+  let h = (dealSeed ^ 0x9e3779b9) >>> 0;
+  const mix = (x: number) => { h = Math.imul(h ^ (x >>> 0), 2654435761) >>> 0; };
+  mix(numOpponents);
+  mix(style === "gto" ? 1 : style === "loose" ? 2 : 3);
+  for (const c of [...hole, ...board]) mix(cv(c) * 4 + "♠♥♦♣".indexOf(c.suit) + 1);
+  return h >>> 0;
+}
+
+// Memo of computed equities within a session. Keys embed the spot seed (which embeds the
+// deal seed), so entries never collide across deals; cleared wholesale past a cap to bound
+// memory. Because equity is pure per-spot, re-simulated earlier streets are free on
+// subsequent hero choices.
+const equityCache = new Map<string, number>();
+const EQUITY_CACHE_CAP = 4000;
+export function clearEquityCache() { equityCache.clear(); }
 
 // Fraction of sims where hero beats all opponents. Opponents are dealt from a
 // range-filtered pool (hands actually in a plausible playing range), not random junk —
@@ -31,7 +44,20 @@ export function monteCarloEquity(
   numOpponents: number,
   numSims = 1000,
   style: TableStyle = "gto",
+  dealSeed = 0,
 ): number {
+  const seed = spotSeed(dealSeed, heroHole, board, numOpponents, style);
+  const key = seed + ":" + numSims;
+  const hit = equityCache.get(key);
+  if (hit !== undefined) return hit;
+
+  const result = simulate(heroHole, board, numOpponents, numSims, style, mulberry32(seed));
+  if (equityCache.size >= EQUITY_CACHE_CAP) equityCache.clear();
+  equityCache.set(key, result);
+  return result;
+}
+
+function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims: number, style: TableStyle, rng: () => number): number {
   const allCards: CardObj[] = [];
   for (const s of ["♠", "♥", "♦", "♣"]) for (const r of RANKS) allCards.push({ rank: r, suit: s });
   const knownKeys = new Set([...heroHole, ...board].map(ck));
@@ -60,7 +86,7 @@ export function monteCarloEquity(
     for (let op = 0; op < numOpponents; op++) {
       let hand: CardObj[] | null = null;
       for (let attempt = 0; attempt < 40 && !hand; attempt++) {
-        const [i, j] = playablePairs[Math.floor(simRng() * playablePairs.length)];
+        const [i, j] = playablePairs[Math.floor(rng() * playablePairs.length)];
         if (!usedIdx.has(i) && !usedIdx.has(j)) {
           hand = [remaining[i], remaining[j]];
           usedIdx.add(i); usedIdx.add(j);
@@ -84,7 +110,7 @@ export function monteCarloEquity(
 
     // Complete the board from the unused remaining cards.
     const boardPool = remaining.filter((_, i) => !usedIdx.has(i));
-    for (let i = boardPool.length - 1; i > 0; i--) { const j = Math.floor(simRng() * (i + 1)); [boardPool[i], boardPool[j]] = [boardPool[j], boardPool[i]]; }
+    for (let i = boardPool.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [boardPool[i], boardPool[j]] = [boardPool[j], boardPool[i]]; }
     const simBoard = [...board];
     let bi = 0;
     while (simBoard.length < 5) simBoard.push(boardPool[bi++]);

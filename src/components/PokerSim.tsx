@@ -6,10 +6,11 @@ import {
   makeDeck, shuffle, ck, cv, cardStr, valName, valNameL, valShort,
 } from "@/lib/poker/cards";
 import { bestHand, cmpK } from "@/lib/poker/eval";
-import { monteCarloEquity, mulberry32, setSimRng } from "@/lib/poker/equity";
+import { monteCarloEquity } from "@/lib/poker/equity";
 import { preflopHandTier, preflopThresholds } from "@/lib/poker/ranges";
 import { distributePots } from "@/lib/poker/pots";
-import type { CardObj, HandResult, Draw, HoldingResult, BoardAnalysis, Decision, PlayerInfo } from "@/lib/poker/types";
+import { runBettingRound } from "@/lib/poker/engine";
+import type { CardObj, HoldingResult, BoardAnalysis, Decision, PlayerInfo, Stage } from "@/lib/poker/types";
 
 // ═══════════════════════════════════════════
 // CONSTANTS
@@ -52,15 +53,6 @@ const T = {
 // TYPES
 // ═══════════════════════════════════════════
 interface SessionEntry { hand: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; aiReasoning: string; }
-interface Stage {
-  type: string; street?: string; title?: string; board: CardObj[]; pot: number; folded: boolean[];
-  description?: string; note?: string; playerIdx?: number; bets?: number[]; decision?: Decision;
-  aiDecision?: Decision; // AI's recommendation — stored on hero stages for comparison
-  currentBet?: number; results?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>; winner?: number; foldWin?: boolean;
-  stacks?: number[]; payouts?: number[]; chop?: boolean;
-  rankedResults?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>;
-  holeCards?: CardObj[];
-}
 
 // ═══════════════════════════════════════════
 // BOARD ANALYSIS
@@ -252,6 +244,7 @@ function generateFullDecision(
   numActive = 3,
   style: "gto" | "loose" | "wild" = "gto",
   numRaisesAhead = 0,
+  dealSeed = 0,
 ): Decision {
   if (folded) return { action: "already_folded", dialogue: "", reasoning: "", thoughts: [], math: [] };
   const toCall = Math.max(0, currentBet - playerBet);
@@ -270,8 +263,15 @@ function generateFullDecision(
     const handLabel = pocket
       ? `pocket ${valNameL(highHole)}s`
       : `${valShort(highHole)}${valShort(lowHole)}${suited ? "s" : "o"}`;
+    // Call gate: a hand in the calling range calls if the PRICE is right, rather than
+    // being capped at a flat 3bb (which folded strong hands to any larger 3-bet regardless
+    // of odds). The pot odds we're asked to lay (toCall / (pot + toCall)) must be within a
+    // ceiling that scales with hand strength — premiums deeper in the range tolerate worse
+    // prices. Still a heuristic (no true preflop equity), but odds-aware, not a magic cap.
+    const priceNeeded = toCall > 0 ? toCall / (pot + toCall) : 0;
+    const priceCeiling = 0.30 + Math.max(0, callThr - tier) * 0.06;
     const pfAction = tier <= raiseThr ? "raise"
-      : (tier <= callThr && toCall <= BB * 3) ? (toCall === 0 ? "check" : "call")
+      : (tier <= callThr && (toCall === 0 || priceNeeded <= priceCeiling)) ? (toCall === 0 ? "check" : "call")
       : (toCall === 0 && posShort === "BB") ? "check"
       : "fold";
     const gap = highHole - lowHole;
@@ -358,7 +358,7 @@ function generateFullDecision(
   }
 
   // ── POSTFLOP ─────────────────────────────────────────────────────────────
-  const equity = monteCarloEquity(hole, board, numOpponents, 1000, style);
+  const equity = monteCarloEquity(hole, board, numOpponents, 1000, style, dealSeed);
   const equityPct = Math.round(equity * 100);
   const isRiver = street === "river";
   const potOddsPctPost = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
@@ -434,69 +434,6 @@ function generateFullDecision(
 // ═══════════════════════════════════════════
 // BETTING ROUND
 // ═══════════════════════════════════════════
-function runBettingRound(
-  order: number[],
-  hands: CardObj[][],
-  board: CardObj[],
-  pot: number,
-  folded: boolean[],
-  street: string,
-  stacks: number[],
-  players: PlayerInfo[],
-  style: "gto" | "loose" | "wild" = "gto",
-  heroIdx: number | null = null,
-  heroChoicesArr: Decision[] = [],
-  heroActionStartIdx = 0,
-): { stages: Stage[]; pot: number; folded: boolean[]; stacks: number[]; heroActionsConsumed: number } {
-  const stages: Stage[] = [];
-  const bets = [0, 0, 0, 0];
-  let currentBet = 0;
-  const f = [...folded];
-  let p = pot;
-  const s = [...stacks];
-  const needsAction = [false, false, false, false];
-  order.forEach(i => { if (!f[i]) needsAction[i] = true; });
-  let safety = 0, orderIdx = 0;
-  let heroActionCount = heroActionStartIdx;
-  while (needsAction.some(Boolean) && safety < 40) {
-    if (safety === 39) console.error("[runBettingRound] safety cap hit — betting loop truncated", { street, order, bets, currentBet });
-    safety++;
-    const pi = order[orderIdx % order.length];
-    orderIdx++;
-    if (!needsAction[pi] || f[pi]) { needsAction[pi] = false; continue; }
-    if (s[pi] <= 0) { needsAction[pi] = false; continue; }
-    if (f.filter(x => !x).length <= 1) break;
-    const isHero = heroIdx !== null && pi === heroIdx;
-    const aiDec = generateFullDecision(pi, hands[pi], board, p, currentBet, bets[pi], street, false, players[pi].name, players[pi].pos, s[pi], f.filter(x => !x).length, style);
-    const decision = isHero && heroChoicesArr[heroActionCount] ? heroChoicesArr[heroActionCount] : aiDec;
-    if (isHero) heroActionCount++;
-    needsAction[pi] = false;
-    const preBets = [...bets];
-    const preCurrentBet = currentBet;
-    const prePot = p;
-    const preStacks = [...s];
-    if (decision.action === "fold") {
-      f[pi] = true;
-    } else if (decision.action === "call") {
-      const cost = Math.min(currentBet - bets[pi], s[pi]);
-      p += cost; s[pi] -= cost; bets[pi] += cost;
-    } else if (decision.action === "bet" || decision.action === "raise") {
-      const desired = Math.round(decision.amount != null ? decision.amount : currentBet * 2);
-      const maxCommit = s[pi] + bets[pi];
-      const newBet = Math.min(desired, maxCommit);
-      const additional = newBet - bets[pi];
-      if (additional > 0 && newBet > currentBet) {
-        p += additional; s[pi] -= additional; bets[pi] = newBet; currentBet = newBet;
-        order.forEach(j => { if (j !== pi && !f[j]) needsAction[j] = true; });
-      } else {
-        const cost = Math.min(currentBet - bets[pi], s[pi]);
-        if (cost > 0) { p += cost; s[pi] -= cost; bets[pi] += cost; }
-      }
-    }
-    stages.push({ type: "action", street, playerIdx: pi, board: [...board], pot: prePot, bets: preBets, folded: [...f], decision, aiDecision: isHero ? aiDec : undefined, currentBet: preCurrentBet, stacks: preStacks, holeCards: hands[pi] });
-  }
-  return { stages, pot: p, folded: f, stacks: s, heroActionsConsumed: heroActionCount - heroActionStartIdx };
-}
 
 // ═══════════════════════════════════════════
 // RULES
@@ -1224,7 +1161,7 @@ export default function PokerSim() {
 
   const stages = useMemo((): Stage[] => {
     if (!gs) return [];
-    setSimRng(mulberry32(gs.seed));
+    const dealSeed = gs.seed; // per-spot equity is seeded from this (see equity.ts)
     const { hands, board } = gs;
     const all: Stage[] = [];
     let folded = [false, false, false, false];
@@ -1245,61 +1182,26 @@ export default function PokerSim() {
     const bbName = players[bbIdx].name;
     all.push({ type: "info", street: "preflop", title: "Blinds posted", board: [], pot, folded: [...folded], stacks: [...stacks], description: `${sbName} posts ${SB} (SB). ${bbName} posts ${BB} (BB). Forced bets seed the pot.` });
 
-    // Preflop: UTG first, then BTN, SB, BB
+    // Preflop: UTG first, then BTN, SB, BB. Blinds are already posted (in `stacks`/`pot`),
+    // so they carry into the round as the starting bets with currentBet = BB.
     const preflopOrder = [utgIdx, btnIdx, sbIdx, bbIdx];
     const preflopBets = [0, 0, 0, 0];
     preflopBets[sbIdx] = SB;
     preflopBets[bbIdx] = BB;
-    let preflopCurrentBet = BB;
-    const pfStages: Stage[] = [];
-    let pfPot = pot;
-    let pfFolded = [...folded];
-    const pfNeeds = [false, false, false, false];
-    preflopOrder.forEach(i => { if (!pfFolded[i]) pfNeeds[i] = true; });
-    let pfSafety = 0, pfIdx = 0;
-    let preflopRaiseCount = 0;
-    let pfHeroActionCount = 0;
-    while (pfNeeds.some(Boolean) && pfSafety < 40) {
-      pfSafety++;
-      const pi = preflopOrder[pfIdx % preflopOrder.length]; pfIdx++;
-      if (!pfNeeds[pi] || pfFolded[pi]) { pfNeeds[pi] = false; continue; }
-      const isHero = heroIdx !== null && pi === heroIdx;
-      const aiDec = generateFullDecision(pi, hands[pi], [], pfPot, preflopCurrentBet, preflopBets[pi], "preflop", false, players[pi].name, players[pi].pos, stacks[pi], pfFolded.filter(x => !x).length, gameStyle, preflopRaiseCount);
-      const dec = isHero && heroChoices[pfHeroActionCount] ? heroChoices[pfHeroActionCount] : aiDec;
-      if (isHero) pfHeroActionCount++;
-      pfNeeds[pi] = false;
-      const prePfBets = [...preflopBets];
-      const prePfCurrentBet = preflopCurrentBet;
-      const prePfPot = pfPot;
-      const prePfStacks = [...stacks];
-      if (dec.action === "fold") {
-        pfFolded[pi] = true;
-      } else if (dec.action === "call" || dec.action === "check") {
-        const cost = Math.min(preflopCurrentBet - preflopBets[pi], stacks[pi]);
-        pfPot += cost; stacks[pi] -= cost; preflopBets[pi] += cost;
-      } else if (dec.action === "raise") {
-        const desired = Math.round(dec.amount != null ? dec.amount : preflopCurrentBet * 2);
-        const maxCommit = stacks[pi] + preflopBets[pi];
-        const newBet = Math.min(desired, maxCommit);
-        const additional = newBet - preflopBets[pi];
-        if (additional > 0 && newBet > preflopCurrentBet) {
-          pfPot += additional; stacks[pi] -= additional; preflopBets[pi] = newBet; preflopCurrentBet = newBet;
-          preflopOrder.forEach(j => { if (j !== pi && !pfFolded[j]) pfNeeds[j] = true; });
-          preflopRaiseCount++;
-        } else {
-          const cost = Math.min(preflopCurrentBet - preflopBets[pi], stacks[pi]);
-          if (cost > 0) { pfPot += cost; stacks[pi] -= cost; preflopBets[pi] += cost; }
-        }
-      }
-      pfStages.push({ type: "action", street: "preflop", playerIdx: pi, board: [], pot: prePfPot, bets: prePfBets, folded: [...pfFolded], decision: dec, aiDecision: isHero ? aiDec : undefined, currentBet: prePfCurrentBet, stacks: prePfStacks, holeCards: hands[pi] });
-    }
-    all.push(...pfStages);
-    pot = pfPot; folded = pfFolded;
+    const pf = runBettingRound({
+      order: preflopOrder, hands, board: [], street: "preflop", players,
+      pot, folded, stacks, bets: preflopBets, currentBet: BB, raiseCount: 0, countRaises: true,
+      heroIdx, heroChoices, heroActionStart: 0,
+      decide: ({ pi, pot, currentBet, playerBet, stack, numActive, raiseCount }) =>
+        generateFullDecision(pi, hands[pi], [], pot, currentBet, playerBet, "preflop", false, players[pi].name, players[pi].pos, stack, numActive, gameStyle, raiseCount, dealSeed),
+    });
+    all.push(...pf.stages);
+    pot = pf.pot; folded = pf.folded; stacks = pf.stacks;
 
-    // Postflop: SB first, then BB, UTG, BTN
+    // Postflop: SB first, then BB, UTG, BTN. Fresh betting each street (currentBet 0).
     const postflopOrder = [sbIdx, bbIdx, utgIdx, btnIdx];
     const streets = [{ name: "flop", n: 3 }, { name: "turn", n: 4 }, { name: "river", n: 5 }];
-    let postflopHeroActionCount = pfHeroActionCount;
+    let heroActions = pf.heroActionsConsumed;
     for (const { name, n } of streets) {
       if (folded.filter(f => !f).length <= 1) break;
       const curBoard = board.slice(0, n);
@@ -1314,8 +1216,14 @@ export default function PokerSim() {
         ? `${baseNotes[name]} You are all-in — no more decisions to make.`
         : baseNotes[name];
       all.push({ type: "street", street: name, title: streetLabel, note, board: curBoard, pot, folded: [...folded], stacks: [...stacks] });
-      const result = runBettingRound(postflopOrder, hands, curBoard, pot, folded, name, stacks, players, gameStyle, heroIdx, heroChoices, postflopHeroActionCount);
-      postflopHeroActionCount += result.heroActionsConsumed;
+      const result = runBettingRound({
+        order: postflopOrder, hands, board: curBoard, street: name, players,
+        pot, folded, stacks, bets: [0, 0, 0, 0], currentBet: 0, raiseCount: 0, countRaises: false,
+        heroIdx, heroChoices, heroActionStart: heroActions,
+        decide: ({ pi, pot, currentBet, playerBet, stack, numActive }) =>
+          generateFullDecision(pi, hands[pi], curBoard, pot, currentBet, playerBet, name, false, players[pi].name, players[pi].pos, stack, numActive, gameStyle, 0, dealSeed),
+      });
+      heroActions += result.heroActionsConsumed;
       all.push(...result.stages);
       pot = result.pot; folded = result.folded; stacks = result.stacks;
     }

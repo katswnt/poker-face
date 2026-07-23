@@ -93,13 +93,14 @@ odds (`toCall ÷ (pot + toCall)`), EV, bet sizing, and the semi-bluff breakeven
 ```
 src/
   app/                     Next.js App Router shell + SEO/OG metadata
-  components/PokerSim.tsx   UI, game loop, and decision prose (one component, by design*)
+  components/PokerSim.tsx   UI, rendering, and decision prose (one component, by design*)
   lib/poker/                pure, UI-free, unit-tested domain core
     cards.ts                deck, rank/suit constants, formatting helpers
     eval.ts                 hand evaluation — evalHand + handScore on one shared core
     ranges.ts               preflop tiers & position thresholds
     equity.ts               Monte Carlo + the determinism seam (see below)
     pots.ts                 side-pot & split-pot distribution
+    engine.ts               one betting round, shared by preflop & postflop
     types.ts                shared domain types
 test/                       node:test suites that import the REAL lib/ (not copies)
 ```
@@ -108,20 +109,29 @@ test/                       node:test suites that import the REAL lib/ (not copi
 recomputed inside one `useMemo` on every hero action. If the Monte Carlo used
 `Math.random`, each recompute would return different equities → the number of simulated
 stages would shift → the hero's recorded choices would misalign with the streets they were
-made on. Seeding a `mulberry32` PRNG per deal (`setSimRng`) makes every recompute
-bit-for-bit identical. A test asserts same-seed → identical equity.
+made on. So each equity is seeded **purely from the spot itself** (hole, board, opponents,
+style, plus the deal's base seed): it's a referentially-transparent function of its inputs,
+identical across re-runs regardless of what the hero did earlier — and therefore safe to
+**memoize**, so re-simulated earlier streets are free on later decisions. A test asserts
+same-inputs → identical equity. (The earlier version used one sequential RNG for the whole
+hand, so a spot's equity depended on how many draws preceded it — reproducible only if the
+exact same sequence of spots recurred. The per-spot seed is strictly more robust.)
 
 **Pure core extracted to `lib/poker/`** so the valuable logic (evaluator, equity, ranges,
-pots) is testable in isolation and can't drift from the UI. `evalHand` and `handScore` were
-previously two separate encodings of the same ranking that had silently disagreed; they now
-share one `rankCards` core, guarded by a property test that asserts they induce the
-identical ordering on random hands.
+pots, betting) is testable in isolation and can't drift from the UI. Two examples of drift
+this killed: `evalHand`/`handScore` were separate encodings of the same ranking that had
+silently disagreed (now one `rankCards` core, guarded by a property test); and the betting
+loop existed **twice** — inline for preflop and a near-duplicate for postflop — now a single
+`engine.runBettingRound` with the decision function injected, so the tests drive it with
+scripted actions (blinds, raises re-opening action, all-in caps, hero-index accounting).
 
-\* **Why one big component?** `PokerSim.tsx` is intentionally left as a single file: the
-game loop, decision prose, and rendering are tightly coupled and change together, and
-splitting them would add indirection without adding testability (the *pure* logic, which is
-what benefits from isolation, already lives in `lib/`). It's a conscious trade-off, not an
-oversight — see the roadmap for where I'd split it next.
+\* **Why is the component still one file?** `PokerSim.tsx` holds the UI, the per-deal
+`useMemo` game loop, and the ~300 lines of decision *prose* (dialogue, "inner thoughts,"
+board/threat analysis). Those are tightly coupled to rendering and change together;
+splitting them adds indirection without adding testability, because the parts that benefit
+from isolation — evaluation, equity, ranges, pots, and now the betting engine — already live
+in `lib/`. Extracting the prose generator is the next split (see roadmap); it's a conscious
+sequencing choice, not an oversight.
 
 ---
 
@@ -135,10 +145,13 @@ fixed). Coverage:
   `evalHand` and `handScore` never disagree.
 - **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
   against the real function.
-- **equity** — determinism (same seed → identical result), AA ≈ 85% heads-up, monotonicity,
-  and equity falling as opponents are added.
+- **equity** — purity (same inputs → identical result), memoization consistency, AA ≈ 85%
+  heads-up, monotonicity, and equity falling as opponents are added.
 - **pots** — single winner, even chop, odd-chip splitting, a short all-in main-pot/side-pot
   split, and uncalled-excess return.
+- **engine** — a betting round driven by scripted decisions: checks move no chips, a bet
+  re-opens action, folds drop seats, over-bets cap at all-in, and the preflop raise counter
+  and hero-action index advance correctly.
 
 **Money handling is now correct.** Showdown distribution used to award the entire pot to the
 single best hand — no side pots, and ties weren't actually split despite the UI announcing
@@ -158,8 +171,8 @@ because stacks carry across hands.
 | No poker libraries — evaluator, equity, ranges from scratch | The point of the project is to demonstrate the math, not import it |
 | Monte Carlo (not exact enumeration) for equity | 1,000 sims is fast enough (`useMemo` at deal time) and the teaching value is in the method, not the 3rd decimal |
 | Range-filtered opponents in the sim | Equity-vs-random is a real modeling trap; filtering to plausible ranges is more honest |
-| Seeded PRNG for the sim | Required for the `useMemo`-recompute model to stay consistent (the determinism seam) |
-| Pure logic in `lib/`, UI in one component | Isolate and test what benefits from it; don't over-split coupled UI |
+| Per-spot-seeded, memoized equity | Keeps the `useMemo`-recompute model consistent (the determinism seam) and makes re-simulated streets free |
+| Pure logic in `lib/`, UI + prose in one component | Isolate and test what benefits from it; don't over-split coupled UI/prose |
 | Inline styles, no CSS framework | A single self-contained terminal aesthetic; Tailwind would be dead weight here |
 | Heuristic engine, labeled honestly | A real solver is out of scope; the value is a measurable baseline + transparent math |
 
@@ -169,9 +182,10 @@ because stacks carry across hands.
 - **Fixed 4-handed, 5/10 blinds, ~200bb.** No table-size or stake variation yet.
 - **Multiway equity is approximate.** Hero equity-to-win-the-whole-pot is compared to
   heads-up pot odds; the model doesn't fully account for multiway dynamics.
-- **The decision engine (prose + betting) still lives in the component.** The next split
-  I'd make is `lib/poker/decide.ts` so the full decision — not just its primitives — is
-  unit-tested.
+- **The decision *prose* still lives in the component.** Evaluation, equity, ranges, pots,
+  and the betting engine are all extracted and tested; the ~300-line narrative generator
+  (`generateFullDecision` + board/threat analysis) is the next split into `lib/poker/decide.ts`
+  so the full decision — not just its primitives — is unit-tested.
 - **Accessibility gaps.** History rows are click-only `<div>`s and tooltips are
   hover-first; keyboard/SR support needs work.
 

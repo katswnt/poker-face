@@ -65,6 +65,21 @@ What changed and why it matters to an evaluator:
 Lint: 24 problems remain, all pre-existing (HEAD had 40); none introduced here. Could be a
 future cleanup pass but out of scope.
 
-Not done (documented as roadmap in README, not silently dropped):
-- Decision engine (prose + betting) still in the component; next split = `lib/poker/decide.ts`.
-- Multiway equity still approximate; accessibility gaps remain.
+## Phase 6 — Close the remaining gaps ("fix everything") — DONE
+- [x] Perf + determinism: monteCarloEquity is now a PURE per-spot-seeded function
+      (removed the setSimRng global), memoized by spot signature → re-simulated earlier
+      streets are free across hero choices. Also strictly more robust determinism
+      (equity no longer depends on execution order).
+- [x] Deduped betting loop → `src/lib/poker/engine.ts` with injected decision callback;
+      called for BOTH preflop and postflop. Moved `Stage` to lib/types.
+- [x] Fixed crude preflop call gate → pot-odds, tier-sensitive ceiling (no flat 3bb cap).
+- [x] `test/engine.test.ts` (6 scripted-decision tests) + updated equity tests (purity/memo).
+- [x] Re-verified: 27/27 tests, tsc clean, build clean, page serves 200.
+- [x] README updated: engine.ts in the tree, per-spot-seed/memo determinism section,
+      "why the component is still one file" reframed (only prose remains), limitations updated.
+
+Lint: 22 problems remain (was 40 at HEAD, 24 pre-Phase-6) — all pre-existing dead
+code / JSX-comment / unescaped-entity; my new code adds none.
+
+Deferred (genuinely out of scope, documented in README): multiway equity precision,
+full accessibility pass, decision-PROSE extraction (`generateFullDecision` → lib/poker/decide.ts).
