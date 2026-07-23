@@ -1,8 +1,55 @@
 // Monte Carlo equity estimation.
 import type { CardObj, TableStyle } from "./types";
 import { RANKS, ck, cv } from "./cards";
-import { handScore } from "./eval";
+import { getCombos, handScore } from "./eval";
 import { preflopHandTier } from "./ranges";
+
+function fullDeck(): CardObj[] {
+  const d: CardObj[] = [];
+  for (const s of ["♠", "♥", "♦", "♣"]) for (const r of RANKS) d.push({ rank: r, suit: s });
+  return d;
+}
+const maxTierFor = (style: TableStyle) => (style === "wild" ? 6 : style === "loose" ? 5 : 4);
+
+// Standard error of a Monte Carlo win-rate estimate: SE = √(p(1−p)/n). At n=1000 and
+// p≈0.5 this is ≈1.6% — the honest ± on every equity number the app reports.
+export function equityStandardError(p: number, n: number): number {
+  if (n <= 0) return 0;
+  return Math.sqrt(Math.max(0, p * (1 - p)) / n);
+}
+
+// Exact equity by full enumeration against ONE opponent drawn from the same range-filtered
+// pool the Monte Carlo samples. This is the ground truth the estimator is validated
+// against (see test/equity.test.ts): MC must converge here as sims → ∞, which proves the
+// sampler is unbiased. Only defined for a single opponent — multiway enumeration is
+// combinatorially infeasible, which is exactly why the app samples instead.
+export function exactEquity(heroHole: CardObj[], board: CardObj[], style: TableStyle = "gto"): number {
+  const known = new Set([...heroHole, ...board].map(ck));
+  const remaining = fullDeck().filter(c => !known.has(ck(c)));
+  const maxTier = maxTierFor(style);
+  const need = 5 - board.length;
+
+  let total = 0, wins = 0;
+  for (let i = 0; i < remaining.length; i++) {
+    for (let j = i + 1; j < remaining.length; j++) {
+      const c1 = remaining[i], c2 = remaining[j];
+      const hi = Math.max(cv(c1), cv(c2)), lo = Math.min(cv(c1), cv(c2));
+      if (preflopHandTier(hi, lo, c1.suit === c2.suit) > maxTier) continue;
+      const oppHole = [c1, c2];
+      const rest = remaining.filter((_, k) => k !== i && k !== j);
+      const runouts = need === 0 ? [[]] : getCombos(rest, need);
+      for (const runout of runouts) {
+        const full = [...board, ...runout];
+        const h = handScore(heroHole, full);
+        const o = handScore(oppHole, full);
+        total += 1;
+        if (h > o) wins += 1;
+        else if (h === o) wins += 0.5;
+      }
+    }
+  }
+  return total === 0 ? 0.5 : wins / total;
+}
 
 // Deterministic PRNG (see the determinism note below).
 export function mulberry32(seed: number): () => number {

@@ -6,7 +6,7 @@ import {
   makeDeck, shuffle, ck, cv, cardStr, valName, valNameL, valShort,
 } from "@/lib/poker/cards";
 import { bestHand, cmpK } from "@/lib/poker/eval";
-import { monteCarloEquity } from "@/lib/poker/equity";
+import { monteCarloEquity, equityStandardError } from "@/lib/poker/equity";
 import { preflopHandTier, preflopThresholds } from "@/lib/poker/ranges";
 import { distributePots } from "@/lib/poker/pots";
 import { runBettingRound } from "@/lib/poker/engine";
@@ -358,15 +358,19 @@ function generateFullDecision(
   }
 
   // ── POSTFLOP ─────────────────────────────────────────────────────────────
-  const equity = monteCarloEquity(hole, board, numOpponents, 1000, style, dealSeed);
+  const SIMS = 1000;
+  const equity = monteCarloEquity(hole, board, numOpponents, SIMS, style, dealSeed);
   const equityPct = Math.round(equity * 100);
+  const sePct = (equityStandardError(equity, SIMS) * 100).toFixed(1);
+  // Value bets get sized thinner as the pot goes multiway — more players to get through.
+  const mwFactor = Math.max(0.4, 1 - 0.18 * (numOpponents - 1));
   const isRiver = street === "river";
   const potOddsPctPost = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
   const styleDiscount = style === "loose" ? 8 : style === "wild" ? 18 : 0;
   const callThreshold = potOddsPctPost - styleDiscount;
   const thoughts: string[] = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
   const rangeLabel = style === "wild" ? "any two" : style === "loose" ? "semi-loose range" : "tight range";
-  const math: string[] = [`Monte Carlo: ~${equityPct}% equity vs ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} (1,000 sims, opponents on ${rangeLabel}).`];
+  const math: string[] = [`Monte Carlo: ~${equityPct}% ± ${sePct}% equity vs ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} (${SIMS.toLocaleString()} sims, SE = √(p(1−p)/n); opponents on ${rangeLabel}).`];
 
   // Position note
   if (playerPos === "Dealer") thoughts.push("In position (BTN) — acting last this round. Major structural advantage.");
@@ -390,16 +394,17 @@ function generateFullDecision(
     }
   }
   if (equity >= 0.65) {
-    const betSize = snapToBB(pot * Math.min(equity - 0.20, 0.85), maxBetGlobal);
+    const betSize = snapToBB(pot * Math.min(equity - 0.20, 0.85) * mwFactor, maxBetGlobal);
     const frac = potFractionLabel(betSize, pot);
     const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
     math.push(`${equityPct}% equity → value bet.`);
+    if (numOpponents > 1) math.push(`Sized ×${mwFactor.toFixed(2)} for ${numOpponents}-way — thinner value with more players left to beat.`);
     math.push(`${frac} bet (${betSize}): villain needs ${betSize} ÷ (${pot} + ${betSize}) = ${villainCallPct}% equity to call profitably.`);
     thoughts.push(`Strong equity — bet for value.`);
     return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `~${equityPct}% equity — ${frac} value bet.`, thoughts, math };
   }
   if (equity >= 0.52) {
-    const betSize = snapToBB(pot * 0.33, maxBetGlobal);
+    const betSize = snapToBB(pot * 0.33 * mwFactor, maxBetGlobal);
     const frac = potFractionLabel(betSize, pot);
     const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
     math.push(`${equityPct}% equity → thin value bet.`);

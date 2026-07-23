@@ -38,6 +38,18 @@ that makes the README's claims true, or (b) honestly-documented, deliberate scop
 - [ ] Rewrite README: "Conscious decisions (why)" + "Known limitations & roadmap (honest)"
       + "Is this GTO? — what it actually is" + updated stack/architecture map
 
+## Phase 7 — Go deep (audience: ML / data / quant → lead with sim rigor)
+- [ ] #3 Simulation validation: add exact-equity enumeration; test that Monte Carlo
+      converges to exact (proves the sampler is unbiased) — the headline for this audience.
+- [ ] #3 Report standard error of the equity estimate (√(p(1−p)/n)) in the UI math.
+- [ ] #3 Multiway-aware value-bet sizing (scale down as opponents increase).
+- [ ] #3 METHODOLOGY write-up (sim design, variance, validation, per-spot seeding).
+- [ ] #4 Extract generateFullDecision + board/holding/threat analysis → lib/poker/decide.ts + tests.
+- [ ] #5 Cheap accessibility wins only (keyboard-focusable rows, focus-visible, card
+      aria-labels, contrast on dimmest text) — full a11y pass de-prioritized for this audience.
+- [ ] #2 Keep scoped: document WHY (ranges are 4-handed-calibrated; heads-up needs re-tuning).
+- [ ] Re-verify each: npm test, tsc, build.
+
 ## Review — done
 
 All phases complete. Verified: `npm test` 20/20 green, `npx tsc --noEmit` clean,
