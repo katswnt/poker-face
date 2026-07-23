@@ -8,11 +8,32 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 
+const SITE_NAME = "Hold'em Trainer";
+const CANONICAL_URL = "https://pokerface.katswint.com/";
+const SITE_DESCRIPTION =
+  "Step through Texas Hold'em hands and learn the math and GTO reasoning behind every decision, from equity to bet sizing. Built by Kat Swint.";
+const OG_DESCRIPTION =
+  "An interactive Hold'em trainer that walks you through the math and GTO reasoning behind every poker decision.";
+
 export const metadata: Metadata = {
-  title: "Hold'em Trainer",
-  description: "Step through poker hands and learn the math behind every decision",
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
   authors: [{ name: "Kat Swint", url: "https://katswint.com" }],
   creator: "Kat Swint",
+  alternates: {
+    canonical: CANONICAL_URL,
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: OG_DESCRIPTION,
+    url: CANONICAL_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@katswint",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },
@@ -22,12 +43,20 @@ export const metadata: Metadata = {
   },
 };
 
-const personJsonLd = {
+const webApplicationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Kat Swint",
-  alternateName: "Kathryn Swint",
-  url: "https://katswint.com",
+  "@type": "WebApplication",
+  name: SITE_NAME,
+  url: CANONICAL_URL,
+  applicationCategory: "GameApplication",
+  description: SITE_DESCRIPTION,
+  creator: {
+    "@type": "Person",
+    name: "Kat Swint",
+    alternateName: ["Kathryn Swint", "Kat Swint"],
+    url: "https://katswint.com",
+    sameAs: ["https://katswint.com", "https://twitter.com/katswint"],
+  },
 };
 
 export default function RootLayout({
@@ -40,7 +69,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
         />
       </head>
       <body>{children}</body>

@@ -1648,7 +1648,7 @@ export default function PokerSim() {
   const creditLine = (
     <p style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, margin: "10px 0 0" }}>
       Built by{" "}
-      <a href="https://katswint.com" target="_blank" rel="noopener noreferrer" style={{ color: T.dim, textDecoration: "underline", textUnderlineOffset: 2 }}>
+      <a href="https://katswint.com" target="_blank" rel="me author noopener" style={{ color: T.dim, textDecoration: "underline", textUnderlineOffset: 2 }}>
         Kat Swint
       </a>
       {" "}with a little help from Claude Code and Codex
