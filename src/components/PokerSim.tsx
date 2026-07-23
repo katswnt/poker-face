@@ -55,14 +55,17 @@ interface HandResult { rank: number; name: string; kickers: number[]; cards?: Ca
 interface Draw { type: string; suit?: string; outs: number; holeCards?: CardObj[]; highCard?: number; isNut?: boolean; dirty?: boolean; desc: string; drawType?: string; completionRanks?: number[]; }
 interface HoldingResult { hand: HandResult; draws: Draw[]; pairSource: string | null; realStrength: string; details: string; }
 interface BoardAnalysis { vals: number[]; suits: string[]; pairs: number[]; trips: number[]; isMonotone: boolean; twoTone: boolean; flushSuit: string | null; flushCount: number; isRainbow: boolean; connected: boolean; straightDanger: boolean; highCard: number; lowCard: number; maxRun: number; }
-interface Decision { action: string; amount?: number; dialogue: string; reasoning: string; thoughts: string[]; math: string[]; }
+interface Decision { action: string; amount?: number; equity?: number; dialogue: string; reasoning: string; thoughts: string[]; math: string[]; }
 interface PlayerInfo { name: string; pos: string; posShort: string; }
+interface SessionEntry { hand: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; aiReasoning: string; }
 interface Stage {
   type: string; street?: string; title?: string; board: CardObj[]; pot: number; folded: boolean[];
   description?: string; note?: string; playerIdx?: number; bets?: number[]; decision?: Decision;
+  aiDecision?: Decision; // AI's recommendation — stored on hero stages for comparison
   currentBet?: number; results?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>; winner?: number; foldWin?: boolean;
   stacks?: number[];
   rankedResults?: Array<{ idx: number; folded: boolean; hand: HandResult | null }>;
+  holeCards?: CardObj[];
 }
 
 // ═══════════════════════════════════════════
@@ -70,9 +73,15 @@ interface Stage {
 // ═══════════════════════════════════════════
 const makeDeck = (): CardObj[] => { const d: CardObj[] = []; for (const s of SUITS) for (const r of RANKS) d.push({ rank: r, suit: s }); return d; };
 const shuffle = (a: CardObj[]): CardObj[] => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+// Seeded RNG for deterministic simulation — reset per deal so useMemo reruns produce identical villain decisions
+let _simRNG: (() => number) | null = null;
+function mulberry32(seed: number): () => number {
+  let s = seed >>> 0;
+  return () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = Math.imul(t ^ (t >>> 7), 61 | t) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
 const ck = (c: CardObj) => c.rank + c.suit;
 const cv = (c: CardObj) => RV[c.rank];
-const cardStr = (c: CardObj) => c.rank + c.suit;
+const cardStr = (c: CardObj) => c.rank + " " + c.suit;
 const valName = (v: number) => RN[v] || String(v);
 const valNameL = (v: number) => RNL[v] || String(v);
 const valShort = (v: number) => RS[v] || String(v);
@@ -127,6 +136,175 @@ function bestHand(hole: CardObj[], board: CardObj[]): HandResult {
 function cmpK(a: number[], b: number[]): number {
   for (let i = 0; i < Math.min(a.length, b.length); i++) { if (a[i] !== b[i]) return a[i] - b[i]; }
   return 0;
+}
+
+// ═══════════════════════════════════════════
+// MONTE CARLO EQUITY
+// ═══════════════════════════════════════════
+
+// Numeric hand score for head-to-head comparison (higher = better)
+function handScore(hole: CardObj[], board: CardObj[]): number {
+  const all = [...hole, ...board];
+  if (all.length < 5) return 0;
+  const combos = getCombos(all, 5);
+  let best = -1;
+  for (const c of combos) {
+    const vals = c.map(cv).sort((a, b) => b - a);
+    const suits = c.map(x => x.suit);
+    const isFlush = suits.every(s => s === suits[0]);
+    const freq: Record<number, number> = {};
+    vals.forEach(v => { freq[v] = (freq[v] ?? 0) + 1; });
+    const groups = Object.entries(freq).map(([v, ct]) => ({ v: +v, ct: +ct })).sort((a, b) => b.ct - a.ct || b.v - a.v);
+    const isStraight = checkStr(vals);
+    let cat = 0; let tb: number[] = vals;
+    if (isFlush && isStraight)                              { cat = 8; tb = isStraight; }
+    else if (groups[0].ct === 4)                            { cat = 7; tb = groups.map(g => g.v); }
+    else if (groups[0].ct === 3 && groups[1]?.ct === 2)    { cat = 6; tb = groups.map(g => g.v); }
+    else if (isFlush)                                       { cat = 5; tb = vals; }
+    else if (isStraight)                                    { cat = 4; tb = isStraight; }
+    else if (groups[0].ct === 3)                            { cat = 3; tb = groups.map(g => g.v); }
+    else if (groups[0].ct === 2 && groups[1]?.ct === 2)    { cat = 2; tb = groups.map(g => g.v); }
+    else if (groups[0].ct === 2)                            { cat = 1; tb = groups.map(g => g.v); }
+    let score = cat * 100_000_000;
+    tb.forEach((t, i) => { score += t * (15 ** (5 - i)); });
+    if (score > best) best = score;
+  }
+  return best;
+}
+
+// Fraction of sims where hero beats all opponents (higher = hero wins more)
+// Opponents are dealt from a range-filtered hand pool, not random junk —
+// prevents equity inflation when villains bet with strong ranges.
+function monteCarloEquity(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims = 1000, style: "gto" | "loose" | "wild" = "gto"): number {
+  const allCards: CardObj[] = [];
+  for (const s of ["♠", "♥", "♦", "♣"]) for (const r of ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]) allCards.push({ rank: r, suit: s });
+  const knownKeys = new Set([...heroHole, ...board].map(ck));
+  const remaining = allCards.filter(c => !knownKeys.has(ck(c)));
+  const boardNeeded = 5 - board.length;
+  if (remaining.length < numOpponents * 2 + boardNeeded) return 0.5;
+
+  // GTO = tight (tier ≤ 4), Loose = semi-loose (tier ≤ 5), Wild = anything
+  const maxTier = style === "wild" ? 6 : style === "loose" ? 5 : 4;
+
+  // Pre-compute all playable (index-pair) combos — C(47,2) = 1081 iters, done once
+  const playablePairs: [number, number][] = [];
+  for (let i = 0; i < remaining.length; i++) {
+    for (let j = i + 1; j < remaining.length; j++) {
+      const c1 = remaining[i], c2 = remaining[j];
+      const hv = [cv(c1), cv(c2)];
+      const hi = Math.max(...hv), lo = Math.min(...hv);
+      if (preflopHandTier(hi, lo, c1.suit === c2.suit) <= maxTier) playablePairs.push([i, j]);
+    }
+  }
+
+  let wins = 0;
+  for (let sim = 0; sim < numSims; sim++) {
+    // Pick non-overlapping opponent hands from playable combos
+    const usedIdx = new Set<number>();
+    const oppHoles: CardObj[][] = [];
+
+    for (let op = 0; op < numOpponents; op++) {
+      let hand: CardObj[] | null = null;
+      for (let attempt = 0; attempt < 40 && !hand; attempt++) {
+        const [i, j] = playablePairs[Math.floor((_simRNG ?? Math.random)() * playablePairs.length)];
+        if (!usedIdx.has(i) && !usedIdx.has(j)) {
+          hand = [remaining[i], remaining[j]];
+          usedIdx.add(i); usedIdx.add(j);
+        }
+      }
+      if (!hand) {
+        // Fallback: first two unused cards (rare — keeps sim going)
+        for (let i = 0; i < remaining.length && !hand; i++) {
+          if (usedIdx.has(i)) continue;
+          for (let j = i + 1; j < remaining.length && !hand; j++) {
+            if (usedIdx.has(j)) continue;
+            hand = [remaining[i], remaining[j]]; usedIdx.add(i); usedIdx.add(j);
+          }
+        }
+      }
+      if (hand) oppHoles.push(hand);
+    }
+
+    if (oppHoles.length < numOpponents) { wins += 0.5; continue; }
+
+    // Board completion: shuffle unused remaining cards
+    const boardPool = remaining.filter((_, i) => !usedIdx.has(i));
+    for (let i = boardPool.length - 1; i > 0; i--) { const j = Math.floor((_simRNG ?? Math.random)() * (i + 1)); [boardPool[i], boardPool[j]] = [boardPool[j], boardPool[i]]; }
+    const simBoard = [...board];
+    let bi = 0;
+    while (simBoard.length < 5) simBoard.push(boardPool[bi++]);
+
+    const heroScore = handScore(heroHole, simBoard);
+    const oppScores = oppHoles.map(opp => handScore(opp, simBoard));
+    const bestOpp = Math.max(...oppScores);
+    if (heroScore > bestOpp) wins += 1;
+    else if (heroScore === bestOpp) wins += 0.5; // split pot
+  }
+  return wins / numSims;
+}
+
+// ═══════════════════════════════════════════
+// GTO PREFLOP RANGES (4-handed NLHE)
+// ═══════════════════════════════════════════
+
+// Hand tier 1 (premium) → 6 (garbage)
+function preflopHandTier(hi: number, lo: number, suited: boolean): number {
+  if (hi === lo) { if (hi >= 11) return 1; if (hi >= 7) return 2; if (hi >= 5) return 3; return 4; }
+  if (hi === 14) {
+    if (lo >= 13)         return 1;
+    if (lo >= 10)         return suited ? 1 : 2;
+    if (lo >= 7)          return suited ? 2 : 4;
+                          return suited ? 3 : 5;
+  }
+  if (hi === 13) {
+    if (lo >= 12)         return suited ? 1 : 2;
+    if (lo >= 10)         return suited ? 2 : 3;
+    if (lo >= 9)          return suited ? 3 : 4;
+                          return suited ? 4 : 6;
+  }
+  if (hi === 12) {
+    if (lo >= 11)         return suited ? 2 : 3;
+    if (lo >= 9)          return suited ? 3 : 4;
+                          return suited ? 4 : 6;
+  }
+  if (hi === 11) {
+    if (lo >= 10)         return suited ? 2 : 3;
+    if (lo >= 8)          return suited ? 3 : 5;
+                          return suited ? 4 : 6;
+  }
+  if (hi === 10) {
+    if (lo === 9)         return suited ? 2 : 3;
+    if (lo === 8)         return suited ? 3 : 5;
+                          return suited ? 4 : 6;
+  }
+  const gap = hi - lo;
+  if (suited && gap <= 1) return 3;
+  if (suited && gap <= 2) return 4;
+  if (suited)             return 5;
+  return 6;
+}
+
+// [raiseTier, callTier] — play hand if its tier <= threshold
+// numRaisesAhead: 0 = no raise yet (opening), 1 = facing one raise (3-bet or call), 2+ = facing 4-bet+
+function preflopThresholds(posShort: string, numRaisesAhead: number, style: "gto" | "loose" | "wild" = "gto"): [number, number] {
+  const cap = (n: number) => Math.min(n, 6) as number;
+  if (numRaisesAhead >= 2) {
+    // 4-bet war: only the nuts survive regardless of style
+    const b = style === "wild" ? 1 : 0;
+    return [cap(1 + b), cap(1 + b)];
+  }
+  if (numRaisesAhead === 1) {
+    // Facing a 3-bet: tighten significantly vs opening range
+    const b = style === "loose" ? 1 : style === "wild" ? 2 : 0;
+    return [cap(2 + b), cap(3 + b)];
+  }
+  // Opening ranges — full style bonus applies
+  const b = style === "loose" ? 2 : style === "wild" ? 4 : 0;
+  if (posShort === "UTG") return [cap(3+b), cap(3+b)];   // 4-handed UTG ≈ CO; raise ~top 27%, raise-or-fold
+  if (posShort === "BTN") return [cap(4+b), cap(5+b)];
+  if (posShort === "SB")  return [cap(4+b), cap(5+b)];   // 4-handed SB opens ~top 45%
+  if (posShort === "BB")  return [cap(2+b), cap(5+b)];   // BB re-raises premiums, defends ~55% vs raise
+  return [cap(3+b), cap(4+b)];
 }
 
 // ═══════════════════════════════════════════
@@ -316,159 +494,181 @@ function generateFullDecision(
   playerName: string,
   playerPos: string,
   playerStack: number,
+  numActive = 3,
+  style: "gto" | "loose" | "wild" = "gto",
+  numRaisesAhead = 0,
 ): Decision {
   if (folded) return { action: "already_folded", dialogue: "", reasoning: "", thoughts: [], math: [] };
-  const toCall = currentBet - playerBet;
+  const toCall = Math.max(0, currentBet - playerBet);
+  const maxBetGlobal = playerStack;
   const hv = hole.map(cv);
   const highHole = Math.max(...hv), lowHole = Math.min(...hv);
   const suited = hole[0].suit === hole[1].suit;
   const pocket = hole[0].rank === hole[1].rank;
+  const posShort = POS_SHORT[playerPos] ?? "UTG";
+  const numOpponents = Math.max(1, numActive - 1);
 
   if (street === "preflop") {
-    const thoughts = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
-    const math = ["Preflop decisions are pattern-based — you learn which starting hands are strong enough to play."];
+    const tier = preflopHandTier(highHole, lowHole, suited);
+    const [raiseThr, callThr] = preflopThresholds(posShort, numRaisesAhead, style);
     const raiseAmt = snapToBB(Math.max(currentBet * 2.5, BB * 2.5), playerStack + playerBet);
-    if (pocket && highHole >= 10) { thoughts.push(`Pocket ${valNameL(highHole)}s — premium pair. This is a top-10 starting hand.`); return { action: "raise", amount: raiseAmt, dialogue: `"Raise to ${raiseAmt}." ${playerName} looks confident.`, reasoning: `Pocket ${hole[0].rank}s — premium pair. Raising to build the pot and thin the field.`, thoughts, math }; }
-    if (pocket) { thoughts.push(`Pocket ${valNameL(highHole)}s — small pair. Hoping to flop a set (about 12% chance, or roughly 1 in 8 times).`); return { action: "call", dialogue: `"I'll call." ${playerName} peeks at the pocket pair.`, reasoning: `Small pocket pair — set-mining.`, thoughts, math }; }
-    if (highHole === 14 && lowHole >= 10) { thoughts.push(`Ace with a ${valNameL(lowHole)} — strong hand. Both cards are high, good kicker.`); return { action: "raise", amount: raiseAmt, dialogue: `"Raise." ${playerName} puts in ${raiseAmt}.`, reasoning: `Strong ace — raising for value.`, thoughts, math }; }
-    if (highHole === 14) { thoughts.push(`Ace with a ${valNameL(lowHole)} — the ace is tempting but the ${valNameL(lowHole)} kicker is trouble.`); return { action: "call", dialogue: `"I'll see a flop." Can't fold an ace at a home game.`, reasoning: `Weak ace — risky kicker but hard to fold preflop.`, thoughts, math }; }
-    if (highHole >= 10 && lowHole >= 9) { thoughts.push(`Two broadway cards — connected and playable.`); return { action: "call", dialogue: `"I'm in."`, reasoning: `Two high cards, worth seeing a flop.`, thoughts, math }; }
-    if (suited && Math.abs(highHole - lowHole) <= 2) { thoughts.push(`Suited connectors (${cardStr(hole[0])} ${cardStr(hole[1])}) — small chance of a straight or flush. Fun hand to play.`); return { action: "call", dialogue: `"I'll play these." Suited connectors are tempting.`, reasoning: `Suited connectors — speculative but have potential.`, thoughts, math }; }
-    if (suited) { thoughts.push(`Suited but not connected. Flush is a long shot.`); return { action: "call", dialogue: `"They're suited, I'm in." ${playerName} grins.`, reasoning: `Suited cards — loose call, common at home games.`, thoughts, math }; }
-    if (toCall <= BB) { thoughts.push(`${valName(highHole)}-${valNameL(lowHole)} offsuit is weak but it's only ${toCall} to see a flop.`); return { action: "call", dialogue: `"Eh, it's only ${toCall}." ${playerName} tosses in chips.`, reasoning: `Weak hand, but the price is cheap.`, thoughts, math }; }
-    thoughts.push(`${valName(highHole)}-${valNameL(lowHole)} offsuit — junk. Not connected, not suited, not high. Fold.`);
-    return { action: "fold", dialogue: `"I'm out." ${playerName} mucks.`, reasoning: `Junk hand. Not worth it.`, thoughts, math };
-  }
-
-  const ba = analyzeBoard(board)!;
-  const holding = analyzeHolding(hole, board, ba);
-  const threats = assessThreats(ba);
-  const hand = holding.hand;
-  const thoughts: string[] = [];
-
-  // Board description
-  let boardDesc = `Board: ${board.map(cardStr).join(" ")}.`;
-  if (ba.isMonotone) boardDesc += ` All ${SUIT_NAMES[ba.flushSuit!]} — monotone board.`;
-  else if (ba.flushCount >= 3) boardDesc += ` Three ${SUIT_NAMES[ba.flushSuit!]} — flush is possible.`;
-  else if (ba.twoTone) boardDesc += ` Two ${SUIT_NAMES[ba.flushSuit!]} — flush draws possible.`;
-  else if (ba.isRainbow) boardDesc += ` Rainbow — no flush draws.`;
-  if (ba.pairs.length > 0) boardDesc += ` Board is paired (${ba.pairs.map(v => valNameL(v) + "s").join(", ")}) — everyone has that pair.`;
-  if (ba.straightDanger) boardDesc += ` Cards are connected — straight draws likely.`;
-  thoughts.push(boardDesc);
-
-  // Position awareness
-  if (playerPos === "Dealer") {
-    thoughts.push("In position (button) — acting last this round. You see every opponent commit before you decide. Major structural advantage.");
-  } else if (playerPos === "Small Blind") {
-    thoughts.push("Out of position (SB) — first to act postflop. Harder to play without reads on the rest of the table.");
-  } else if (playerPos === "Big Blind") {
-    thoughts.push("Out of position (BB) — acting early postflop with less information than the later positions.");
-  } else {
-    thoughts.push("UTG postflop — first or second to act. No reads yet from the later positions.");
-  }
-
-  thoughts.push(`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}. ${holding.details}`);
-  if (holding.draws.length > 0) for (const d of holding.draws) { if (d.type !== "backdoor_flush") thoughts.push(d.desc); else if (board.length === 3) thoughts.push(d.desc); }
-  else if (hand.rank < 4) thoughts.push("No meaningful draws.");
-  if (threats.length > 0) thoughts.push("Threats: " + threats.slice(0, 2).join(" "));
-
-  let drawOuts = 0; const drawOutsDesc: string[] = [];
-  for (const d of holding.draws) { if (d.type === "flush" && d.outs > 0) { drawOuts += d.outs; drawOutsDesc.push(`${d.outs} outs for the flush`); } if (d.type === "straight" && d.outs > 0) { drawOuts += d.outs; drawOutsDesc.push(`${d.outs} outs for the straight`); } }
-  let improvementOuts = 0; const improvementDesc: string[] = [];
-  if (hand.rank === 1 && holding.pairSource !== "board") { improvementOuts = 2; improvementDesc.push(`2 outs to make trips`); }
-  const totalOuts = drawOuts + improvementOuts;
-  const cardsLeft = board.length === 3 ? 2 : 1;
-  const multiplier = cardsLeft === 2 ? 4 : 2;
-  const hitPct = Math.min(totalOuts * multiplier, 100);
-  const hasBackdoorFlush = holding.draws.some(d => d.type === "backdoor_flush");
-  const math: string[] = [];
-  const strength = holding.realStrength;
-  const maxBet = playerStack;
-
-  const appendOutsMath = () => {
-    const allDesc = [...improvementDesc, ...drawOutsDesc];
-    if (totalOuts > 0) {
-      math.push(`Outs: ${allDesc.join(" + ")} = ${totalOuts} total.`);
-      math.push(`Rule of ${multiplier}: ${totalOuts} × ${multiplier} = ~${hitPct}% chance to improve.`);
+    const handLabel = pocket
+      ? `pocket ${valNameL(highHole)}s`
+      : `${valShort(highHole)}${valShort(lowHole)}${suited ? "s" : "o"}`;
+    const pfAction = tier <= raiseThr ? "raise"
+      : (tier <= callThr && toCall <= BB * 3) ? (toCall === 0 ? "check" : "call")
+      : (toCall === 0 && posShort === "BB") ? "check"
+      : "fold";
+    const gap = highHole - lowHole;
+    const connStr = gap <= 1 ? "connected" : gap <= 2 ? "one-gap" : gap <= 3 ? "two-gap" : "disconnected";
+    const handQuality = pocket
+      ? `${cardStr(hole[0])} ${cardStr(hole[1])} — pocket ${valNameL(highHole)}s. A made pair preflop.`
+      : `${cardStr(hole[0])} ${cardStr(hole[1])} — ${valNameL(highHole)}-${valNameL(lowHole)} ${suited ? "suited" : "offsuit"}, ${connStr}.${tier <= 2 ? " Premium." : tier <= 4 ? " Playable." : tier === 5 ? " Marginal." : " Weak — few strong hands it can make."}`;
+    const rangeDesc = (() => {
+      if (numRaisesAhead >= 2) {
+        const range = style === "wild" ? "TT+, AK, AQs" : style === "loose" ? "JJ+, AK, AQs" : "QQ+, AK — premiums only";
+        return `Two re-raises in — 4-bet territory. Only ${range} can continue. Anything else is a fold.`;
+      }
+      if (numRaisesAhead === 1) {
+        const threeRange = style === "wild" ? "JJ+, AK, AQs, suited broadways" : style === "loose" ? "QQ+, AK, AJs+" : "QQ+, AK only";
+        if (pfAction === "raise") return `Facing a raise — you 3-bet with premiums: ${threeRange}. Everything else folds or calls.`;
+        if (pfAction === "call") return `Facing a raise — premiums 3-bet (${threeRange}), medium-strength hands call, the rest fold. ${handLabel} sits in the calling range from ${posShort}.`;
+        return `Facing a raise — 3-bet premiums (${threeRange}) or fold. ${handLabel} falls below the calling threshold here.`;
+      }
+      if (posShort === "UTG") return style === "wild"
+        ? "UTG opens ~top 45%: any pair, any ace, broadway, suited connectors."
+        : style === "loose"
+        ? "UTG opens ~top 35%: pairs 66+, any ace suited, AJ+/KQ+, suited connectors 87s+."
+        : "UTG opens ~top 27%: pairs TT+, aces A8s+/AJo+, broadway KTs+/KQo, suited connectors 87s+. In 4-handed, UTG is CO-equivalent — wider than full-ring.";
+      if (posShort === "BTN") return style === "wild"
+        ? "BTN opens ~top 75%: almost any two cards with upside — only pure junk folds."
+        : style === "loose"
+        ? "BTN opens ~top 60%: any pair, any ace, broadway, suited connectors and gappers."
+        : "BTN opens ~top 45%: any pair, aces, broadway, suited connectors, suited one-gappers.";
+      if (posShort === "SB") return style === "wild"
+        ? "SB plays ~top 65%: pairs, any ace, any broadway, suited anything."
+        : style === "loose"
+        ? "SB plays ~top 55%: pairs, any ace, broadway, suited connectors/gappers, offsuit broadways."
+        : "SB plays ~top 45%: pairs, aces A2s+/A7o+, broadway KTo+/KTs+, suited connectors. In 4-handed, SB is nearly heads-up vs BB.";
+      return toCall > 0
+        ? style === "wild" ? "BB defends very wide vs a raise — only folds pure garbage."
+          : style === "loose" ? "BB defends ~65% vs raise: pairs, aces, broadways, suited connectors/gappers, most suited hands."
+          : "BB defends ~55% vs raise: pairs, aces A2s+/A7o+, broadway KTo+, suited connectors, suited gappers. Pot odds are good — defend wide."
+        : "BB checks for free — always correct to see a flop.";
+    })();
+    const decisionLine = pfAction === "fold"
+      ? numRaisesAhead >= 2
+        ? `${handLabel} can't continue vs two re-raises. 4-bet range is KK+. Fold.`
+        : numRaisesAhead === 1
+        ? `${handLabel} doesn't qualify for ${posShort}'s 3-bet/call range. Fold.`
+        : `${handLabel} outside ${posShort}'s opening range. Fold.`
+      : pfAction === "raise"
+        ? numRaisesAhead >= 2 ? `${handLabel} strong enough to 4-bet. Raise.`
+          : numRaisesAhead === 1 ? `${handLabel} in ${posShort}'s 3-bet range. Raise.`
+          : `${handLabel} in ${posShort}'s opening range. Raise.`
+      : pfAction === "call" ? `${handLabel} worth calling at this price. Call.`
+      : `BB takes a free flop. Always correct.`;
+    const math = [handQuality, rangeDesc, decisionLine];
+    const thoughts = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
+    if (pocket) {
+      if (pfAction === "raise") { thoughts.push(`Pocket ${valNameL(highHole)}s — ${tier === 1 ? "premium pair" : "strong pair"}${numRaisesAhead >= 2 ? ", 4-betting" : numRaisesAhead === 1 ? ", 3-betting" : ", raising"}.`); return { action: "raise", amount: raiseAmt, dialogue: `${playerName} sees the pocket pair and sits up straighter. "Raise to ${raiseAmt}."`, reasoning: `Pocket ${valShort(highHole)}s — raise.`, thoughts, math }; }
+      if (pfAction === "call") { thoughts.push(`Pocket ${valNameL(highHole)}s — set-mining. ~12% (1-in-8.5) to flop a set.`); math.push(`Set odds: ~12%. Need ~7.5:1 implied odds to break even vs small raises.`); return { action: "call", dialogue: `${playerName} peeks at the pocket pair and quietly calls. "Call."`, reasoning: `Pocket ${valShort(highHole)}s — set-mining.`, thoughts, math }; }
+      thoughts.push(`Pocket ${valNameL(highHole)}s — too small to play at this price from ${posShort}.`);
+      return { action: "fold", dialogue: `${playerName} glances at the cards and folds. "Fold."`, reasoning: `Pocket ${valShort(highHole)}s too weak here.`, thoughts, math };
     }
-    if (hasBackdoorFlush) math.push(`Backdoor flush draw (needs runner-runner) — not counted.`);
-  };
+    if (pfAction === "raise") { thoughts.push(`${handLabel} — ${numRaisesAhead >= 2 ? "strong enough to 4-bet" : numRaisesAhead === 1 ? `in ${posShort}'s 3-bet range` : `within ${posShort}'s opening range`}.`); return { action: "raise", amount: raiseAmt, dialogue: `${playerName} slides chips forward. "Raise to ${raiseAmt}."`, reasoning: `${handLabel} — raise from ${posShort}.`, thoughts, math }; }
+    if (pfAction === "call") {
+      thoughts.push(`${handLabel} — playable from ${posShort} at this price.`);
+      if (toCall > 0) {
+        const pfPotOddsPct = Math.round(toCall / (pot + toCall) * 100);
+        math.push(`Pot odds: ${toCall} to call into ${pot + toCall} total pot → need ~${pfPotOddsPct}% equity to break even.`);
+        if (highHole === 14) {
+          math.push(`Ace-high value: any ace on the flop gives top pair. You also "dominate" villains holding weaker aces (A2–A${valShort(lowHole - 1) ?? "x"}) — they need to hit the same pair but lose at showdown.`);
+          math.push(`A-x hands run ~52–58% equity vs a typical opening range. At ${pfPotOddsPct}% pot odds, this is a clear +EV call.`);
+        } else if (suited) {
+          math.push(`Suited adds ~3–4% equity vs the offsuit equivalent — flush draw potential on wet boards and the occasional backdoor flush.`);
+          math.push(`Running ~50–55% equity vs a typical opening range at ${pfPotOddsPct}% pot odds — profitable to call.`);
+        } else if (highHole >= 12) {
+          math.push(`Broadway high card: strong showdown value, top pair on many boards, good blocker equity. Running ~50–54% equity at ${pfPotOddsPct}% pot odds.`);
+        } else {
+          math.push(`At ${pfPotOddsPct}% pot odds needed, this hand has enough equity vs the opening range to call — particularly with implied odds if you hit the board hard.`);
+        }
+        if (posShort === "SB") math.push(`Note: calling from SB means you'll be out of position postflop — a real cost. Play straightforwardly on the flop; avoid fancy plays OOP.`);
+      }
+      return { action: "call", dialogue: `${playerName} considers, then calls. "Call."`, reasoning: `${handLabel} — call from ${posShort}.`, thoughts, math };
+    }
+    if (pfAction === "check") { thoughts.push(`BB gets a free look — always take it.`); return { action: "check", dialogue: `${playerName} taps the table. "Check."`, reasoning: `BB takes a free flop.`, thoughts, math }; }
+    thoughts.push(`${handLabel} — outside range${numRaisesAhead >= 2 ? " vs two re-raises" : numRaisesAhead === 1 ? " facing a raise" : ""} from ${posShort}. Fold.`);
+    return { action: "fold", dialogue: `${playerName} glances at the cards and slides them away. "Fold."`, reasoning: `${handLabel} — outside range. Fold.`, thoughts, math };
+  }
 
-  if (strength === "monster") {
-    const betSize = snapToBB(pot * 0.65, maxBet);
-    const frac = potFractionLabel(betSize, pot);
-    math.push(`Made hand: ${hand.name} — premium.`);
-    math.push(`${frac} bet (${betSize} chips) to build the pot and charge draws.`);
-    if (toCall > 0) math.push(potOddsNote(pot, toCall));
-    thoughts.push(`This is strong. Bet to build the pot.`);
-    if (toCall === 0) return { action: "bet", amount: betSize, dialogue: `"${betSize}." ${playerName} bets with quiet confidence.`, reasoning: `${hand.name} — ${frac} bet for value.`, thoughts, math };
-    const raiseAmt = snapToBB(toCall * 2.5, maxBet + playerBet);
-    return { action: "raise", amount: raiseAmt, dialogue: `"Raise to ${raiseAmt}." ${playerName} slides chips forward.`, reasoning: `${hand.name} — raising for value.`, thoughts, math };
-  }
-  if (strength === "strong") {
-    const betSize = snapToBB(pot * 0.5, maxBet);
-    const frac = potFractionLabel(betSize, pot);
-    math.push(`Made hand: ${hand.name} — strong.`);
-    math.push(`${frac} bet (${betSize} chips) to protect against draws and extract value.`);
-    appendOutsMath();
-    if (toCall > 0) math.push(potOddsNote(pot, toCall));
-    thoughts.push(`Good hand — need to bet to protect it.`);
-    if (toCall === 0) return { action: "bet", amount: betSize, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `${holding.details} ${frac} bet to protect.`, thoughts, math };
-    if (toCall <= pot * 0.6) return { action: "call", dialogue: `"Call." ${playerName} matches the bet.`, reasoning: `${holding.details} Strong enough to call.`, thoughts, math };
-    return { action: "call", dialogue: `"...call." ${playerName} thinks, then calls.`, reasoning: `${holding.details} Hard to fold this.`, thoughts, math };
-  }
-  if (strength === "good") {
-    const betSize = snapToBB(pot * 0.5, maxBet);
-    const frac = potFractionLabel(betSize, pot);
-    math.push(`Made hand: ${hand.name}. Solid but vulnerable.`);
-    math.push(`${frac} bet (${betSize} chips) — standard value sizing.`);
-    appendOutsMath();
-    if (toCall > 0) math.push(potOddsNote(pot, toCall));
-    if (toCall === 0) { thoughts.push(`Decent hand. Bet for value but stay aware of the board texture.`); return { action: "bet", amount: betSize, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `${holding.details} ${frac} bet for value.`, thoughts, math }; }
-    if (toCall <= pot * 0.5) { thoughts.push(`Facing a bet but the hand is strong enough to continue.`); return { action: "call", dialogue: `"Call." ${playerName} matches.`, reasoning: `${holding.details} Worth calling at this price.`, thoughts, math }; }
-    thoughts.push(`Big bet to face. The hand is decent but there are better hands possible.`);
-    return { action: "call", dialogue: `"...call." Reluctant but can't fold.`, reasoning: `${holding.details} Tough call but the hand is too good to fold.`, thoughts, math };
-  }
-  if (strength === "decent") {
-    if (toCall === 0) {
-      thoughts.push(`Marginal hand — check and see what happens.`);
-      math.push(`Not strong enough to bet for value.`);
-      appendOutsMath();
-      return { action: "check", dialogue: `"Check." ${playerName} taps the table.`, reasoning: `${holding.details} Checking — not confident enough to bet.`, thoughts, math };
+  // ── POSTFLOP ─────────────────────────────────────────────────────────────
+  const equity = monteCarloEquity(hole, board, numOpponents, 1000, style);
+  const equityPct = Math.round(equity * 100);
+  const isRiver = street === "river";
+  const potOddsPctPost = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
+  const styleDiscount = style === "loose" ? 8 : style === "wild" ? 18 : 0;
+  const callThreshold = potOddsPctPost - styleDiscount;
+  const thoughts: string[] = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
+  const rangeLabel = style === "wild" ? "any two" : style === "loose" ? "semi-loose range" : "tight range";
+  const math: string[] = [`Monte Carlo: ~${equityPct}% equity vs ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} (1,000 sims, opponents on ${rangeLabel}).`];
+
+  // Position note
+  if (playerPos === "Dealer") thoughts.push("In position (BTN) — acting last this round. Major structural advantage.");
+  else if (playerPos === "Small Blind") thoughts.push("Out of position (SB) — first to act postflop. Harder to play without reads.");
+  else if (playerPos === "Big Blind") thoughts.push("Out of position (BB) — acting early postflop.");
+  else thoughts.push("UTG postflop — acting after the blinds, before the button. Some positional disadvantage.");
+
+  if (toCall > 0) {
+    const ev = Math.round(equity * pot - (1 - equity) * toCall);
+    math.push(`Pot odds: ${toCall} to call ÷ (${pot} + ${toCall}) = ${potOddsPctPost}% needed equity.`);
+    if (equityPct >= callThreshold) {
+      math.push(`${equityPct}% ≥ ${callThreshold}% → call is +EV.`);
+      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
+      thoughts.push(`Equity beats pot odds — call.`);
+      return { action: "call", equity, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: `~${equityPct}% equity vs ${potOddsPctPost}% needed — call.`, thoughts, math };
+    } else {
+      math.push(`${equityPct}% < ${callThreshold}% → fold.${isRiver ? " (River: no implied odds — breakeven is exactly pot odds.)" : ""}`);
+      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
+      thoughts.push(`Not enough equity at this price — fold.`);
+      return { action: "fold", equity, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: `Only ~${equityPct}% equity vs ${potOddsPctPost}% needed — fold.`, thoughts, math };
     }
-    if (toCall <= pot * 0.25) {
-      thoughts.push(`Small bet to call with a marginal hand. Worth seeing another card.`);
-      math.push(`Pot is ${pot}, costs ${toCall}. Getting ${Math.round(pot / toCall)}:1 pot odds.`);
-      math.push(potOddsNote(pot, toCall));
-      appendOutsMath();
-      return { action: "call", dialogue: `"I'll call." Small price to pay.`, reasoning: `${holding.details} Cheap call.`, thoughts, math };
-    }
-    thoughts.push(`Facing aggression with a marginal hand. Probably behind.`);
-    math.push(potOddsNote(pot, toCall));
-    math.push(`${holding.details} Not enough equity to justify ${toCall} into a ${pot} pot.`);
-    appendOutsMath();
-    return { action: "fold", dialogue: `"Fold." ${playerName} lets it go.`, reasoning: `${holding.details} Not worth the price.`, thoughts, math };
   }
-  if (totalOuts >= 4) {
-    math.push(`① Outs: ${totalOuts} (${[...improvementDesc, ...drawOutsDesc].join(", ")})`);
-    math.push(`② Rule of ${multiplier}: ${totalOuts} × ${multiplier} = ${hitPct}% chance to hit`);
-    if (hasBackdoorFlush) math.push(`Backdoor flush (runner-runner needed) — not counted in outs.`);
-    if (toCall > 0) {
-      const potAfterCall = pot + toCall;
-      const potOddsPct = Math.round((toCall / potAfterCall) * 100);
-      math.push(`③ Pot odds: ${toCall} to call ÷ (${pot} pot + ${toCall} call) = ${potOddsPct}% needed`);
-      if (hitPct >= potOddsPct) { math.push(`④ ${hitPct}% ≥ ${potOddsPct}% → CALL is profitable long-term`); thoughts.push(`The math says call. Even though I'm behind now, the price is right.`); return { action: "call", dialogue: `"Call." ${playerName} counts the pot, does the math, calls.`, reasoning: `Drawing hand — pot odds justify it.`, thoughts, math }; }
-      else { math.push(`④ ${hitPct}% < ${potOddsPct}% → FOLD saves money long-term`); thoughts.push(`The draw isn't worth it at this price.`); return { action: "fold", dialogue: `"Too rich for me." ${playerName} folds.`, reasoning: `Draw odds don't justify the call.`, thoughts, math }; }
-    } else { math.push(`③ No bet to face — checking is free. Always take a free card with a draw.`); thoughts.push(`Free card — stay in and hope to hit.`); return { action: "check", dialogue: `"Check." ${playerName} taps the table.`, reasoning: `Drawing hand, free card.`, thoughts, math }; }
+  if (equity >= 0.65) {
+    const betSize = snapToBB(pot * Math.min(equity - 0.20, 0.85), maxBetGlobal);
+    const frac = potFractionLabel(betSize, pot);
+    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
+    math.push(`${equityPct}% equity → value bet.`);
+    math.push(`${frac} bet (${betSize}): villain needs ${betSize} ÷ (${pot} + ${betSize}) = ${villainCallPct}% equity to call profitably.`);
+    thoughts.push(`Strong equity — bet for value.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `~${equityPct}% equity — ${frac} value bet.`, thoughts, math };
+  }
+  if (equity >= 0.52) {
+    const betSize = snapToBB(pot * 0.33, maxBetGlobal);
+    const frac = potFractionLabel(betSize, pot);
+    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
+    math.push(`${equityPct}% equity → thin value bet.`);
+    math.push(`${frac} bet (${betSize}): villain needs ${villainCallPct}% equity to call — small enough to get calls from worse hands.`);
+    thoughts.push(`Slight edge — thin value bet to extract from marginal hands.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `~${equityPct}% equity — ${frac} thin value.`, thoughts, math };
   }
   const bluffSeed = (playerIdx * 31 + board.length * 17 + pot) % 7;
-  if (bluffSeed === 0 && toCall === 0 && currentBet === 0 && maxBet >= BB) { const betSize = snapToBB(pot * 0.6, maxBet); const frac = potFractionLabel(betSize, pot); thoughts.push(`Nothing in hand — but nobody else has bet either. Time to bluff.`); math.push(`Bluff: ${frac} bet (${betSize} chips) to win ${pot}. Only needs to work ${Math.round(betSize / (pot + betSize) * 100)}% of the time.`); return { action: "bet", amount: betSize, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Bluff — ${frac} bet hoping the board scares everyone off.`, thoughts, math }; }
-  if (toCall === 0) { thoughts.push(`Nothing worth betting, but it's free to stay in.`); math.push(`No meaningful outs. Checking because it costs nothing.`); return { action: "check", dialogue: `"Check." ${playerName} taps the table.`, reasoning: `${holding.details} Free to check.`, thoughts, math }; }
-  math.push(potOddsNote(pot, toCall));
-  math.push(`No made hand. ${totalOuts > 0 ? `Only ${totalOuts} outs — not enough.` : "No outs."} Folding.`);
-  thoughts.push(`Nothing here. Fold and save the chips.`);
-  return { action: "fold", dialogue: `"Fold." ${playerName} tosses the cards.`, reasoning: `${holding.details} Not worth it.`, thoughts, math };
+  if (!isRiver && bluffSeed === 0 && maxBetGlobal >= BB) {
+    const betSize = snapToBB(pot * 0.55, maxBetGlobal);
+    const frac = potFractionLabel(betSize, pot);
+    const foldPct = Math.round(betSize / (pot + betSize) * 100);
+    math.push(`Only ~${equityPct}% equity, but bluffing for fold equity.`);
+    math.push(`${frac} bluff (${betSize}): breakeven fold% = ${betSize} ÷ (${pot} + ${betSize}) = ${foldPct}%.`);
+    math.push(`Proof: EV = fold% × ${pot} − (1−fold%) × ${betSize} = 0 → fold% = ${foldPct}%.`);
+    math.push(`Breakeven fold% = pot odds villain faces — mirrors by design. Villain folding > ${foldPct}% → bluff is +EV.`);
+    thoughts.push(`Weak equity, but nobody else has bet — time to bluff.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Bluff — only ${equityPct}% equity, but ${frac} bet needs ${foldPct}% folds to break even.`, thoughts, math };
+  }
+  math.push(`${equityPct}% equity — not enough to bet for value. Check.`);
+  thoughts.push(`Not strong enough to bet. Check.`);
+  return { action: "check", equity, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `~${equityPct}% equity — check.`, thoughts, math };
 }
+
 
 // ═══════════════════════════════════════════
 // BETTING ROUND
@@ -482,7 +682,11 @@ function runBettingRound(
   street: string,
   stacks: number[],
   players: PlayerInfo[],
-): { stages: Stage[]; pot: number; folded: boolean[]; stacks: number[] } {
+  style: "gto" | "loose" | "wild" = "gto",
+  heroIdx: number | null = null,
+  heroChoicesArr: Decision[] = [],
+  heroActionStartIdx = 0,
+): { stages: Stage[]; pot: number; folded: boolean[]; stacks: number[]; heroActionsConsumed: number } {
   const stages: Stage[] = [];
   const bets = [0, 0, 0, 0];
   let currentBet = 0;
@@ -492,15 +696,24 @@ function runBettingRound(
   const needsAction = [false, false, false, false];
   order.forEach(i => { if (!f[i]) needsAction[i] = true; });
   let safety = 0, orderIdx = 0;
+  let heroActionCount = heroActionStartIdx;
   while (needsAction.some(Boolean) && safety < 40) {
+    if (safety === 39) console.error("[runBettingRound] safety cap hit — betting loop truncated", { street, order, bets, currentBet });
     safety++;
     const pi = order[orderIdx % order.length];
     orderIdx++;
     if (!needsAction[pi] || f[pi]) { needsAction[pi] = false; continue; }
-    if (s[pi] <= 0) { needsAction[pi] = false; continue; } // all-in, can't act
+    if (s[pi] <= 0) { needsAction[pi] = false; continue; }
     if (f.filter(x => !x).length <= 1) break;
-    const decision = generateFullDecision(pi, hands[pi], board, p, currentBet, bets[pi], street, false, players[pi].name, players[pi].pos, s[pi]);
+    const isHero = heroIdx !== null && pi === heroIdx;
+    const aiDec = generateFullDecision(pi, hands[pi], board, p, currentBet, bets[pi], street, false, players[pi].name, players[pi].pos, s[pi], f.filter(x => !x).length, style);
+    const decision = isHero && heroChoicesArr[heroActionCount] ? heroChoicesArr[heroActionCount] : aiDec;
+    if (isHero) heroActionCount++;
     needsAction[pi] = false;
+    const preBets = [...bets];
+    const preCurrentBet = currentBet;
+    const prePot = p;
+    const preStacks = [...s];
     if (decision.action === "fold") {
       f[pi] = true;
     } else if (decision.action === "call") {
@@ -515,14 +728,13 @@ function runBettingRound(
         p += additional; s[pi] -= additional; bets[pi] = newBet; currentBet = newBet;
         order.forEach(j => { if (j !== pi && !f[j]) needsAction[j] = true; });
       } else {
-        // Degenerate bet (0 or below current bet) — treat as call
         const cost = Math.min(currentBet - bets[pi], s[pi]);
         if (cost > 0) { p += cost; s[pi] -= cost; bets[pi] += cost; }
       }
     }
-    stages.push({ type: "action", street, playerIdx: pi, board: [...board], pot: p, bets: [...bets], folded: [...f], decision, currentBet, stacks: [...s] });
+    stages.push({ type: "action", street, playerIdx: pi, board: [...board], pot: prePot, bets: preBets, folded: [...f], decision, aiDecision: isHero ? aiDec : undefined, currentBet: preCurrentBet, stacks: preStacks, holeCards: hands[pi] });
   }
-  return { stages, pot: p, folded: f, stacks: s };
+  return { stages, pot: p, folded: f, stacks: s, heroActionsConsumed: heroActionCount - heroActionStartIdx };
 }
 
 // ═══════════════════════════════════════════
@@ -538,6 +750,9 @@ const RULES = [
   { t: "Fold", d: "Give up your hand. Lose what you've put in, risk nothing more." },
   { t: "Position", d: "Where you sit relative to the dealer. Acting later (closer to BTN) is a structural advantage — you see more information before committing chips." },
   { t: "BTN / Button", d: "Best seat. Acts last postflop, seeing every opponent's action first. Rotates clockwise each hand." },
+  { t: "UTG", d: "Under the Gun — first to act preflop, worst position. No information before committing chips." },
+  { t: "SB", d: "Small Blind — posts half the BB, acts second-to-last preflop, first postflop. Worst postflop position." },
+  { t: "BB", d: "Big Blind — posts the full BB, acts last preflop (gets to raise or defend). Still out of position postflop." },
   { t: "In Position", d: "Acting after your opponent. You commit chips after seeing what they do — a major information edge." },
   { t: "Out of Position", d: "Acting before your opponent (SB/BB/UTG). You fly blind — they get to react to your action." },
   { t: "Flop", d: "First 3 community cards, dealt together." },
@@ -564,16 +779,28 @@ const RULES = [
 // ═══════════════════════════════════════════
 // UI: Playing Card
 // ═══════════════════════════════════════════
-function PlayingCard({ card, dimmed, size = "sm", placeholder }: { card?: CardObj; dimmed?: boolean; size?: "sm" | "md" | "lg"; placeholder?: boolean; }) {
+function PlayingCard({ card, dimmed, size = "sm", placeholder, faceDown }: { card?: CardObj; dimmed?: boolean; size?: "sm" | "md" | "lg"; placeholder?: boolean; faceDown?: boolean; }) {
   const D = size === "sm" ? { w: 30, h: 42, rank: 12, suit: 12 } : size === "md" ? { w: 38, h: 54, rank: 15, suit: 16 } : { w: 48, h: 68, rank: 18, suit: 22 };
   if (placeholder) {
     return <div style={{ width: D.w, height: D.h, borderRadius: T.radius, background: "transparent", border: `1px dashed ${T.hair}`, flexShrink: 0, opacity: 0.55 }} />;
   }
-  const color = T.suitColors[card!.suit];
+  if (faceDown) {
+    return (
+      <div style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, borderRadius: 0 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+          {(["♠","♣","♥","♦"] as const).map(s => (
+            <span key={s} style={{ fontFamily: T.mono, fontSize: Math.round(D.suit * 0.62), color: "#2a2e34", lineHeight: 1, textAlign: "center" as const }}>{s}</span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (!card) return <div style={{ width: D.w, height: D.h, flexShrink: 0 }} />;
+  const color = T.suitColors[card.suit];
   return (
     <div style={{ width: D.w, height: D.h, background: T.cardBg, border: `1px solid ${T.cardBorder}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0, opacity: dimmed ? 0.32 : 1, fontFamily: T.mono, color, borderRadius: 0 }}>
-      <span style={{ fontSize: D.rank, fontWeight: 600, lineHeight: 1 }}>{card!.rank}</span>
-      <span style={{ fontSize: D.suit, lineHeight: 1 }}>{card!.suit}</span>
+      <span style={{ fontSize: D.rank, fontWeight: 600, lineHeight: 1 }}>{card.rank}</span>
+      <span style={{ fontSize: D.suit, lineHeight: 1 }}>{card.suit}</span>
     </div>
   );
 }
@@ -593,7 +820,7 @@ function Badge({ action }: { action: string }) {
 // ═══════════════════════════════════════════
 // UI: Feed Entry
 // ═══════════════════════════════════════════
-function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: boolean; compact?: boolean; players: PlayerInfo[] }) {
+function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFocused: boolean; compact?: boolean; players: PlayerInfo[]; heroIdx?: number }) {
   if (s.type === "info" || s.type === "street") {
     return (
       <div style={{ padding: "10px 14px", background: T.panelAlt, borderTop: `1px solid ${T.hair}`, borderBottom: `1px solid ${T.hair}` }}>
@@ -611,6 +838,8 @@ function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: bo
     if (d.action === "already_folded") return null;
     const player = players[s.playerIdx!];
 
+    const isVillain = heroIdx !== undefined && s.playerIdx !== heroIdx;
+
     if (compact && !isFocused) {
       return (
         <div style={{ padding: "7px 14px", background: "transparent", borderBottom: `1px solid ${T.hairSoft}`, display: "flex", alignItems: "center", gap: 8, opacity: 0.65 }}>
@@ -621,6 +850,17 @@ function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: bo
       );
     }
 
+    if (isVillain) {
+      return (
+        <div style={{ padding: "10px 14px", background: isFocused ? T.panelAlt : "transparent", borderLeft: "2px solid transparent", borderBottom: `1px solid ${T.hairSoft}`, display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, width: 28, flexShrink: 0 }}>{player.posShort}</span>
+          <span style={{ fontFamily: T.mono, fontSize: 13, color: T.inkSoft, flex: 1, fontWeight: 500 }}>{player.name}</span>
+          <Badge action={d.action} />
+        </div>
+      );
+    }
+
+    const toCallCtx = Math.max(0, (s.currentBet ?? 0) - (s.bets?.[s.playerIdx ?? 0] ?? 0));
     return (
       <article style={{ padding: "12px 14px 14px", background: isFocused ? T.focus : "transparent", borderLeft: isFocused ? `2px solid ${T.accent}` : "2px solid transparent", borderBottom: `1px solid ${T.hairSoft}` }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
@@ -630,6 +870,24 @@ function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: bo
           </div>
           <Badge action={d.action} />
         </div>
+        {s.holeCards && (
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, padding: "6px 9px", background: T.panelAlt, border: `1px solid ${T.hairSoft}` }}>
+            <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+              {s.holeCards.map((c, ci) => <PlayingCard key={ci} card={c} size="sm" />)}
+            </div>
+            {s.board.length > 0 && (
+              <>
+                <span style={{ color: T.hair, fontFamily: T.mono }}>│</span>
+                <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+                  {s.board.map((c, ci) => <PlayingCard key={ci} card={c} size="sm" />)}
+                </div>
+              </>
+            )}
+            <span style={{ color: T.hair, fontFamily: T.mono }}>│</span>
+            <span style={{ fontFamily: T.mono, fontSize: 10, color: T.dim }}>Pot <span style={{ color: T.accent, fontWeight: 600 }}>{s.pot}</span></span>
+            {toCallCtx > 0 && <span style={{ fontFamily: T.mono, fontSize: 10, color: T.inkSoft }}>{toCallCtx} to call</span>}
+          </div>
+        )}
         <div style={{ fontFamily: T.mono, fontSize: 13, color: T.inkSoft, lineHeight: 1.45, marginBottom: 8, paddingLeft: 9, borderLeft: `2px solid ${T.hairSoft}` }}>
           {d.dialogue}
         </div>
@@ -678,6 +936,27 @@ function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: bo
                 <span>{r.hand?.name}</span>
               </div>
             ))}
+            {(() => {
+              const top = s.rankedResults[0];
+              const second = s.rankedResults[1];
+              if (!top?.hand || !second?.hand || top.hand.rank !== second.hand.rank) return null;
+              const kw = top.hand.kickers, kl = second.hand.kickers;
+              for (let i = 0; i < kw.length; i++) {
+                if ((kl[i] ?? -1) === kw[i]) continue;
+                const w = valNameL(kw[i]), l = valNameL(kl[i] ?? 0);
+                const r = top.hand.rank;
+                const desc = r === 2 && i === 0 ? `Both two pair — ${w}s beats ${l}s on top pair.`
+                  : r === 2 && i === 1 ? `Both two pair (${valNameL(kw[0])}s) — ${w}s beats ${l}s on second pair.`
+                  : r === 2 ? `Identical two pair — ${w} kicker beats ${l}.`
+                  : r === 1 && i === 0 ? `Both a pair — ${w}s beats ${l}s.`
+                  : r === 1 ? `Same pair (${valNameL(kw[0])}s) — ${w} kicker beats ${l}.`
+                  : r === 0 ? `Both high card — ${w} beats ${l}.`
+                  : r === 5 || r === 8 ? `Both ${top.hand.name.toLowerCase()} — ${w}-high beats ${l}-high.`
+                  : `${w} kicker beats ${l}.`;
+                return <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginTop: 6, paddingTop: 6, borderTop: `1px solid ${T.hairSoft}` }}>Tiebreaker: {desc}</div>;
+              }
+              return <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginTop: 6 }}>Split pot — identical hands.</div>;
+            })()}
           </div>
         )}
       </div>
@@ -689,12 +968,70 @@ function FeedEntry({ s, isFocused, compact, players }: { s: Stage; isFocused: bo
 // ═══════════════════════════════════════════
 // UI: Training Prompt
 // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// UI: Pre-Decision Context Strip
+// ═══════════════════════════════════════════
+function PreDecisionStrip({ stage, players }: { stage: Stage; players: PlayerInfo[] }) {
+  const player = players[stage.playerIdx!];
+  const toCall = Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx!] ?? 0));
+  const isPreflop = stage.street === "preflop";
+  const ba = stage.board.length > 0 ? analyzeBoard(stage.board) : null;
+
+  const posNote = (() => {
+    const pos = player.pos;
+    if (isPreflop) {
+      if (pos === "Dealer") return "Button — acting last preflop. Widest opening range.";
+      if (pos === "Small Blind") return "Small Blind — you'll be out of position every postflop street.";
+      if (pos === "Big Blind") return "Big Blind — last preflop. Best price, worst postflop position.";
+      return "UTG — first to act preflop. No reads. Range must be tight.";
+    }
+    if (pos === "Dealer") return "Button — acting last every street. Maximum information advantage.";
+    if (pos === "Small Blind") return "Small Blind — you act first postflop. No reads before committing.";
+    if (pos === "Big Blind") return "Big Blind — early postflop position. Limited info before deciding.";
+    return "UTG — before the button postflop. Some positional disadvantage.";
+  })();
+
+  const potOddsNote = toCall > 0 ? (() => {
+    const pct = Math.round(toCall / (stage.pot + toCall) * 100);
+    return `${toCall} to call into ${stage.pot + toCall} pot — need ~${pct}% equity to break even.`;
+  })() : null;
+
+  const boardNote = ba ? (() => {
+    if (ba.trips.length > 0) return "Paired board (trips possible) — full houses in range. Polarizing spot.";
+    if (ba.pairs.length > 0 && ba.isMonotone) return "Paired and monotone — flush possible, trips in range. Complex texture.";
+    if (ba.pairs.length > 0) return "Paired board — trips and boats in range. Value bets reveal strength.";
+    if (ba.isMonotone) return `Monotone (${ba.flushCount} ${ba.flushSuit}) — flush already possible. Draws must pay immediately.`;
+    if (ba.straightDanger && ba.twoTone) return "Wet board — straight draws and flush draws both live. Charge them now.";
+    if (ba.straightDanger) return "Connected board — straight draws possible. Protect made hands; don't slow-play.";
+    if (ba.twoTone) return "Two-tone — flush draw in play. Made hands should charge the draw.";
+    return "Dry board — few draws. Made hands run to showdown. Equity is stable.";
+  })() : null;
+
+  const rows: { label: string; note: string }[] = [
+    { label: "Position", note: posNote },
+    ...(potOddsNote ? [{ label: "Pot odds", note: potOddsNote }] : []),
+    ...(boardNote ? [{ label: "Board", note: boardNote }] : []),
+  ];
+
+  return (
+    <div style={{ marginBottom: 12, padding: "8px 10px", background: T.bg, border: `1px solid ${T.hairSoft}` }}>
+      {rows.map(({ label, note }, idx) => (
+        <div key={label} style={{ display: "flex", gap: 10, ...(idx < rows.length - 1 ? { marginBottom: 4 } : {}) }}>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.dim, minWidth: 54, paddingTop: 2, flexShrink: 0 }}>{label}</span>
+          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.45 }}>{note}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: PlayerInfo[]; onChoice: (action: string) => void }) {
   const player = players[stage.playerIdx!];
   const toCall = (stage.currentBet || 0) - (stage.bets?.[stage.playerIdx!] || 0);
-  const actions = toCall > 0 ? ["fold", "call", "raise"] : ["check", "bet"];
+  const actions = toCall > 0 ? ["fold", "call", "raise"] : ["fold", "check", "raise"];
   return (
     <div style={{ padding: "16px 14px 18px", background: T.focus, borderBottom: `1px solid ${T.hair}` }}>
+      <PreDecisionStrip stage={stage} players={players} />
       <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>Your decision</div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 7, marginBottom: 6 }}>
         <span style={{ fontFamily: T.mono, fontSize: 15, fontWeight: 600, color: T.ink }}>{player.name}</span>
@@ -702,8 +1039,8 @@ function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: P
       </div>
       <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, marginBottom: 14, lineHeight: 1.4 }}>
         {toCall > 0
-          ? <>{toCall} to call into a <span style={{ color: T.accent }}>{stage.pot}</span> pot.</>
-          : <>No bet to face — first to act. Pot is <span style={{ color: T.accent }}>{stage.pot}</span>.</>
+          ? <>Pot <span style={{ color: T.accent }}>{stage.pot}</span> · facing a bet of <span style={{ color: T.accent }}>{stage.currentBet}</span> · <span style={{ color: T.accent, fontWeight: 600 }}>{toCall}</span> to call.</>
+          : <>First to act. Pot is <span style={{ color: T.accent }}>{stage.pot}</span>.</>
         }
       </div>
       <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginBottom: 10, letterSpacing: "0.12em", textTransform: "uppercase" }}>What do you do?</div>
@@ -778,10 +1115,187 @@ function InfoTip({ text }: { text: string }) {
 }
 
 // ═══════════════════════════════════════════
+// UI: Villain Recap (shown at showdown in hero mode)
+// ═══════════════════════════════════════════
+function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: number; players: PlayerInfo[] }) {
+  const [expanded, setExpanded] = useState<Record<number, boolean>>({});
+  const villainIdxs = [0, 1, 2, 3].filter(i => i !== heroIdx);
+  const hasAny = villainIdxs.some(vi => stages.some(s => s.type === "action" && s.playerIdx === vi && s.decision?.action !== "already_folded"));
+  if (!hasAny) return null;
+  return (
+    <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
+      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>// villain decisions</div>
+      {villainIdxs.map(vi => {
+        const vstages = stages.filter(s => s.type === "action" && s.playerIdx === vi && s.decision?.action !== "already_folded");
+        if (vstages.length === 0) return null;
+        const isOpen = !!expanded[vi];
+        return (
+          <div key={vi} style={{ marginBottom: 6, border: `1px solid ${T.hairSoft}` }}>
+            <button
+              onClick={() => setExpanded(e => ({ ...e, [vi]: !e[vi] }))}
+              style={{ width: "100%", padding: "7px 10px", background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, textAlign: "left" as const }}
+            >
+              <span style={{ fontFamily: T.mono, fontSize: 12, fontWeight: 600, color: T.inkSoft }}>{players[vi].name}</span>
+              <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>{players[vi].posShort}</span>
+              <span style={{ fontFamily: T.mono, fontSize: 9.5, color: T.dim, marginLeft: "auto" }}>{vstages.length} decision{vstages.length !== 1 ? "s" : ""} {isOpen ? "[–]" : "[+]"}</span>
+            </button>
+            {isOpen && (
+              <div style={{ borderTop: `1px solid ${T.hairSoft}` }}>
+                {vstages.map((vs, k) => (
+                  <div key={k} style={{ borderBottom: k < vstages.length - 1 ? `1px solid ${T.hairSoft}` : "none" }}>
+                    <FeedEntry s={vs} isFocused={false} players={players} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// UI: Hand Review (shown at showdown in train mode)
+// ═══════════════════════════════════════════
+function HandReview({ stages, heroIdx, userChoices, players }: { stages: Stage[]; heroIdx: number; userChoices: Record<number, string>; players: PlayerInfo[] }) {
+  const aggressive = ["bet", "raise"];
+  const rows = stages.map((s, idx) => {
+    if (s.type !== "action" || s.playerIdx !== heroIdx || s.decision?.action === "already_folded") return null;
+    const userAct = userChoices[idx];
+    if (!userAct) return null;
+    const rawAi = s.aiDecision?.action ?? s.decision?.action ?? "";
+    const toCallStg = Math.max(0, (s.currentBet ?? 0) - (s.bets?.[heroIdx] ?? 0));
+    const aiNorm = rawAi === "call" && toCallStg === 0 ? "check" : rawAi;
+    const isMatch = userAct === aiNorm || (aggressive.includes(userAct) && aggressive.includes(aiNorm));
+    const aiReasoning = s.aiDecision?.reasoning ?? "";
+    return { street: s.street ?? "?", userAct, aiNorm, isMatch, aiReasoning };
+  }).filter(Boolean) as Array<{ street: string; userAct: string; aiNorm: string; isMatch: boolean; aiReasoning: string }>;
+
+  if (rows.length === 0) return null;
+  const matches = rows.filter(r => r.isMatch).length;
+
+  return (
+    <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+        <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim }}>// hand review</span>
+        <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: matches === rows.length ? T.accent : matches / rows.length >= 0.6 ? T.ink : T.inkSoft }}>
+          {matches}/{rows.length} matched
+        </span>
+      </div>
+      {rows.map((row, i) => {
+        const color = row.isMatch ? T.accent : "#ff7a6e";
+        return (
+          <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "5px 0", borderTop: i > 0 ? `1px solid ${T.hairSoft}` : "none" }}>
+            <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 700, color, paddingTop: 2, flexShrink: 0 }}>{row.isMatch ? "✓" : "✗"}</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" as const }}>
+                <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>{row.street}</span>
+                <span style={{ fontFamily: T.mono, fontSize: 11, color: T.ink }}>You: {row.userAct}</span>
+                {!row.isMatch && <span style={{ fontFamily: T.mono, fontSize: 11, color: T.dim }}>· AI: {row.aiNorm}</span>}
+              </div>
+              {!row.isMatch && row.aiReasoning && (
+                <div style={{ fontFamily: T.mono, fontSize: 10, color: T.inkSoft, lineHeight: 1.4, marginTop: 2 }}>{row.aiReasoning}</div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// WHAT YOU MISSED
+// ═══════════════════════════════════════════
+function getMissedNote(userAction: string, ai: Decision, stage: Stage): string | null {
+  const ua = userAction;
+  const aa = ai.action;
+  if (ua === aa) return null;
+
+  const equity = ai.equity;
+  const equityPct = equity !== undefined ? Math.round(equity * 100) : null;
+  const toCall = Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx ?? 0] ?? 0));
+  const pot = stage.pot;
+  const potOddsPct = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
+  const ev = equity !== undefined && toCall > 0 ? Math.round(equity * pot - (1 - equity) * toCall) : null;
+  const isPreflop = stage.street === "preflop";
+
+  if (isPreflop) {
+    if (ua === "fold" && (aa === "call" || aa === "raise"))
+      return `Your hand was in the AI's ${aa === "raise" ? "raising" : "calling"} range from this position — folding is too tight here.`;
+    if (ua === "call" && aa === "raise")
+      return `Premium hands should raise preflop to charge weaker holdings. Calling lets opponents in cheaply and your hand strength is disguised less.`;
+    if (ua === "call" && aa === "fold")
+      return `The AI folds here — this hand is below the calling threshold for this position. Calling risks chips without the equity to back it up.`;
+    if ((ua === "raise" || ua === "bet") && aa === "fold")
+      return `This hand falls below the AI's opening threshold for this position — raising risks chips without sufficient hand strength.`;
+    if ((ua === "raise" || ua === "bet") && aa === "call")
+      return `The AI calls here rather than raise — this hand isn't quite strong enough to build a big pot from this position.`;
+    return null;
+  }
+
+  // Postflop
+  if (ua === "fold" && aa === "call") {
+    if (equityPct !== null && ev !== null)
+      return `You folded getting ${potOddsPct}% pot odds with ~${equityPct}% equity — the call was ${ev >= 0 ? `+EV (+${ev} chips)` : `-EV (${ev} chips)`}. ${equityPct >= potOddsPct ? "Your equity covered the price." : ""}`.trim();
+    return `The AI calls here — your equity was sufficient to justify the price.`;
+  }
+  if (ua === "fold" && (aa === "bet" || aa === "raise")) {
+    if (equityPct !== null)
+      return `You folded a hand with ~${equityPct}% equity. The AI bets for value here — folding surrenders a profitable spot.`;
+    return `The AI bets for value here. Folding gives up equity you should be playing.`;
+  }
+  if (ua === "fold" && aa === "check")
+    return `Checking was free — you never need to fold when check is an option. You gave up a free look at the next card.`;
+
+  if (ua === "check" && (aa === "bet" || aa === "raise")) {
+    if (equityPct !== null && equityPct >= 55) {
+      return `Checking gives opponents free cards on a board where you're ahead. With ~${equityPct}% equity, a bet forces draws to pay${ai.amount ? ` (AI bets ${ai.amount})` : ""}.`;
+    }
+    if (equityPct !== null) {
+      const foldPct = ai.amount ? Math.round(ai.amount / (pot + ai.amount) * 100) : null;
+      return `A bet works as a bluff here — with ~${equityPct}% equity you can't rely on showdown value, but a bet can take the pot${foldPct ? ` if villain folds more than ${foldPct}% of the time` : ""}.`;
+    }
+    return `The AI bets here — checking leaves value on the table or misses a bluff opportunity.`;
+  }
+
+  if (ua === "call" && aa === "fold") {
+    if (equityPct !== null && ev !== null)
+      return `You called ${toCall} into a ${pot} pot (${potOddsPct}% pot odds) with only ~${equityPct}% equity — this call loses ~${Math.abs(ev)} chips on average over time.`;
+    return `The AI folds here — your equity doesn't cover the cost of calling.`;
+  }
+  if (ua === "call" && (aa === "bet" || aa === "raise")) {
+    if (equityPct !== null)
+      return `Calling here misses value. With ~${equityPct}% equity you're ahead — a raise builds the pot when you're winning and charges draws to continue.`;
+    return `The AI raises to build the pot here. Calling misses value with strong equity.`;
+  }
+
+  if ((ua === "bet" || ua === "raise") && aa === "check") {
+    if (equityPct !== null)
+      return `With only ~${equityPct}% equity, betting risks chips on a weak holding. The AI checks to see the next card for free and avoid building a pot out of position.`;
+    return `The AI checks to control pot size here — a bet risks chips without enough equity to back it up.`;
+  }
+  if ((ua === "bet" || ua === "raise") && aa === "fold") {
+    if (equityPct !== null)
+      return `The AI folds with ~${equityPct}% equity — this hand isn't worth playing at any price. Betting here puts chips in when you're unlikely to win even if called.`;
+    return `The AI folds here — this hand isn't worth playing. Betting risks chips without sufficient equity.`;
+  }
+  if ((ua === "bet" || ua === "raise") && aa === "call") {
+    if (equityPct !== null && equityPct < 55)
+      return `The AI calls here with ~${equityPct}% equity. Raising bloats the pot in a spot where you aren't a big favorite — calling keeps the pot manageable.`;
+    return `The AI calls rather than raises — keep the pot manageable with this hand strength.`;
+  }
+
+  return null;
+}
+
+// ═══════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════
 export default function PokerSim() {
-  const [gs, setGs] = useState<{ hands: CardObj[][]; board: CardObj[] } | null>(null);
+  const [gs, setGs] = useState<{ hands: CardObj[][]; board: CardObj[]; seed: number } | null>(null);
+
   const [step, setStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
   const [mode, setMode] = useState<"focused" | "dense">("focused");
@@ -789,8 +1303,16 @@ export default function PokerSim() {
   const [dealerIdx, setDealerIdx] = useState(3); // Dan starts as BTN, rotates each hand
   const [startingStacks, setStartingStacks] = useState([200, 200, 200, 200]);
   const [trainingMode, setTrainingMode] = useState(false);
+  const [heroIdx, setHeroIdx] = useState<number | null>(null);
+  const [gameStyle, setGameStyle] = useState<"gto" | "loose" | "wild">("loose");
   const [userChoices, setUserChoices] = useState<Record<number, string>>({});
+  const [heroChoices, setHeroChoices] = useState<Decision[]>([]);
   const [handScore, setHandScore] = useState({ matches: 0, total: 0 });
+  const [sessionScore, setSessionScore] = useState({ matches: 0, total: 0 });
+  const [sessionHistory, setSessionHistory] = useState<SessionEntry[]>([]);
+  const [handNumber, setHandNumber] = useState(0);
+  const handNumberRef = useRef(0);
+  handNumberRef.current = handNumber;
   const feedRef = useRef<HTMLDivElement>(null);
   const focusedRef = useRef<HTMLDivElement>(null);
   const stagesRef = useRef<Stage[]>([]);
@@ -803,13 +1325,19 @@ export default function PokerSim() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
+  const denseScrollToRef = useRef<number | null>(null);
+
   // Stable refs for keyboard handler
   const trainingRef = useRef(false);
   const userChoicesRef = useRef<Record<number, string>>({});
+  const heroChoicesRef = useRef<Decision[]>([]);
   const stepRef = useRef(0);
+  const heroIdxRef = useRef<number | null>(null);
   trainingRef.current = trainingMode;
   userChoicesRef.current = userChoices;
+  heroChoicesRef.current = heroChoices;
   stepRef.current = step;
+  heroIdxRef.current = heroIdx;
 
   // Keyboard navigation — stable listener via refs
   useEffect(() => {
@@ -817,7 +1345,8 @@ export default function PokerSim() {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       const len = stagesRef.current.length;
       const curStage = stagesRef.current[stepRef.current];
-      const needsChoice = trainingRef.current && curStage?.type === "action" && curStage?.decision?.action !== "already_folded" && !userChoicesRef.current[stepRef.current];
+      const prevHeroCount = stagesRef.current.slice(0, stepRef.current).filter(s => s.type === "action" && s.playerIdx === heroIdxRef.current).length;
+      const needsChoice = trainingRef.current && curStage?.type === "action" && curStage?.decision?.action !== "already_folded" && (heroIdxRef.current === null || curStage?.playerIdx === heroIdxRef.current) && !userChoicesRef.current[stepRef.current] && heroChoicesRef.current.length <= prevHeroCount;
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
         if (!needsChoice) setStep(s => s < len - 1 ? s + 1 : s);
@@ -838,10 +1367,29 @@ export default function PokerSim() {
     }),
   [dealerIdx]);
 
+  const sessionPattern = useMemo((): string | null => {
+    const divs = sessionHistory.filter(e => !e.wasMatch);
+    if (divs.length < 4) return null;
+    const foldTight = divs.filter(e => e.heroAction === "fold" && (e.aiAction === "call" || e.aiAction === "raise" || e.aiAction === "bet")).length;
+    const missValue = divs.filter(e => (e.heroAction === "check" || e.heroAction === "call") && (e.aiAction === "bet" || e.aiAction === "raise")).length;
+    const callLoose = divs.filter(e => e.heroAction === "call" && (e.aiAction === "fold" || e.aiAction === "check")).length;
+    const overAgg = divs.filter(e => (e.heroAction === "bet" || e.heroAction === "raise") && (e.aiAction === "check" || e.aiAction === "fold" || e.aiAction === "call")).length;
+    const max = Math.max(foldTight, missValue, callLoose, overAgg);
+    if (max < 2) return null;
+    if (foldTight === max) return `Pattern: folding too often when AI calls/raises (${foldTight}/${divs.length} divergences). Trust your equity more.`;
+    if (missValue === max) return `Pattern: missing value — you check/call when AI bets (${missValue}/${divs.length} divergences). If you're ahead, make them pay.`;
+    if (callLoose === max) return `Pattern: calling too loose — AI folds in spots you call (${callLoose}/${divs.length} divergences). Tighten your calling range.`;
+    if (overAgg === max) return `Pattern: over-betting — AI checks in spots you raise (${overAgg}/${divs.length} divergences). Pick your spots more carefully.`;
+    return null;
+  }, [sessionHistory]);
+
   useEffect(() => {
     if (mode === "dense" && feedRef.current) {
-      const el = feedRef.current.querySelector(`[data-step="${step}"]`);
-      if (el) el.scrollIntoView({ block: "center", inline: "nearest" });
+      const target = denseScrollToRef.current ?? step;
+      const scrollBlock = denseScrollToRef.current !== null ? "start" : "center";
+      denseScrollToRef.current = null;
+      const el = feedRef.current.querySelector(`[data-step="${target}"]`);
+      if (el) el.scrollIntoView({ block: scrollBlock, inline: "nearest" });
     }
     if (mode === "focused" && focusedRef.current) {
       focusedRef.current.scrollTop = 0;
@@ -855,25 +1403,67 @@ export default function PokerSim() {
     setStartingStacks(nextStacks);
     setDealerIdx(d => (d + 1) % 4);
     setUserChoices({});
+    setHeroChoices([]);
+    handNumberRef.current = handNumberRef.current + 1;
+    setHandNumber(handNumberRef.current);
     setHandScore({ matches: 0, total: 0 });
+    setHeroIdx(0);
     const deck = shuffle(makeDeck());
     const hands = [[deck[0], deck[1]], [deck[2], deck[3]], [deck[4], deck[5]], [deck[6], deck[7]]];
     const board = [deck[8], deck[9], deck[10], deck[11], deck[12]];
-    setGs({ hands, board });
+    setGs({ hands, board, seed: (Math.random() * 2 ** 32) >>> 0 });
     setStep(0);
   }, []);
 
+  const choiceLockRef = useRef(false);
   const handleChoice = useCallback((action: string) => {
-    const aiAction = stagesRef.current[step]?.decision?.action;
-    if (!aiAction || aiAction === "already_folded") return;
+    if (choiceLockRef.current) return;
+    choiceLockRef.current = true;
+    const curStg = stagesRef.current[step];
+    if (!curStg || curStg.playerIdx !== heroIdxRef.current) { choiceLockRef.current = false; return; }
+    const rawAi = curStg.decision?.action; // before hero choice injected, this IS the AI's decision
+    if (!rawAi || rawAi === "already_folded") { choiceLockRef.current = false; return; }
+    const stgToCall = Math.max(0, (curStg.currentBet ?? 0) - (curStg.bets?.[curStg.playerIdx ?? 0] ?? 0));
+    const aiNorm = rawAi === "call" && stgToCall === 0 ? "check" : rawAi;
+    const normalizedAction = action === "call" && stgToCall === 0 ? "check" : action;
     const aggressive = ["bet", "raise"];
-    const isMatch = action === aiAction || (aggressive.includes(action) && aggressive.includes(aiAction));
-    setUserChoices(c => ({ ...c, [step]: action }));
+    const isMatch = normalizedAction === aiNorm || (aggressive.includes(normalizedAction) && aggressive.includes(aiNorm));
+    // Build a Decision object so the simulation can execute the hero's actual choice
+    let heroDec: Decision;
+    const heroStack = curStg.stacks?.[curStg.playerIdx ?? 0] ?? 200;
+    const heroName = players[0]?.name ?? "Alice";
+    if (normalizedAction === "fold") {
+      heroDec = { action: "fold", dialogue: "You fold.", reasoning: `${heroName} folds.`, thoughts: [], math: [] };
+    } else if (normalizedAction === "check") {
+      heroDec = { action: "check", dialogue: "You check.", reasoning: `${heroName} checks.`, thoughts: [], math: [] };
+    } else if (normalizedAction === "call") {
+      heroDec = { action: "call", dialogue: "You call.", reasoning: `${heroName} calls.`, thoughts: [], math: [] };
+    } else {
+      const raiseAmt = snapToBB(Math.max((curStg.currentBet ?? BB) * 2.5, BB * 2.5), heroStack);
+      heroDec = { action: "raise", amount: raiseAmt, dialogue: `You raise to ${raiseAmt}.`, reasoning: `${heroName} raises to ${raiseAmt}.`, thoughts: [], math: [] };
+    }
+    setHeroChoices(prev => [...prev, heroDec]);
+    setUserChoices(c => ({ ...c, [step]: normalizedAction }));
     setHandScore(s => ({ matches: s.matches + (isMatch ? 1 : 0), total: s.total + 1 }));
+    setSessionScore(s => ({ matches: s.matches + (isMatch ? 1 : 0), total: s.total + 1 }));
+    setSessionHistory(h => [...h, {
+      hand: handNumberRef.current,
+      street: curStg.street ?? "preflop",
+      position: players[curStg.playerIdx ?? 0]?.posShort ?? "",
+      heroAction: normalizedAction,
+      aiAction: aiNorm,
+      wasMatch: isMatch,
+      aiReasoning: curStg.aiDecision?.reasoning ?? "",
+    }]);
+    // Release lock after state queued — React batches these so next render clears it
+    setTimeout(() => { choiceLockRef.current = false; }, 0);
   }, [step]);
+
+  const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const stages = useMemo((): Stage[] => {
     if (!gs) return [];
+    _simRNG = mulberry32(gs.seed);
     const { hands, board } = gs;
     const all: Stage[] = [];
     let folded = [false, false, false, false];
@@ -906,15 +1496,24 @@ export default function PokerSim() {
     const pfNeeds = [false, false, false, false];
     preflopOrder.forEach(i => { if (!pfFolded[i]) pfNeeds[i] = true; });
     let pfSafety = 0, pfIdx = 0;
+    let preflopRaiseCount = 0;
+    let pfHeroActionCount = 0;
     while (pfNeeds.some(Boolean) && pfSafety < 40) {
       pfSafety++;
       const pi = preflopOrder[pfIdx % preflopOrder.length]; pfIdx++;
       if (!pfNeeds[pi] || pfFolded[pi]) { pfNeeds[pi] = false; continue; }
-      const dec = generateFullDecision(pi, hands[pi], [], pfPot, preflopCurrentBet, preflopBets[pi], "preflop", false, players[pi].name, players[pi].pos, stacks[pi]);
+      const isHero = heroIdx !== null && pi === heroIdx;
+      const aiDec = generateFullDecision(pi, hands[pi], [], pfPot, preflopCurrentBet, preflopBets[pi], "preflop", false, players[pi].name, players[pi].pos, stacks[pi], pfFolded.filter(x => !x).length, gameStyle, preflopRaiseCount);
+      const dec = isHero && heroChoices[pfHeroActionCount] ? heroChoices[pfHeroActionCount] : aiDec;
+      if (isHero) pfHeroActionCount++;
       pfNeeds[pi] = false;
+      const prePfBets = [...preflopBets];
+      const prePfCurrentBet = preflopCurrentBet;
+      const prePfPot = pfPot;
+      const prePfStacks = [...stacks];
       if (dec.action === "fold") {
         pfFolded[pi] = true;
-      } else if (dec.action === "call") {
+      } else if (dec.action === "call" || dec.action === "check") {
         const cost = Math.min(preflopCurrentBet - preflopBets[pi], stacks[pi]);
         pfPot += cost; stacks[pi] -= cost; preflopBets[pi] += cost;
       } else if (dec.action === "raise") {
@@ -925,12 +1524,13 @@ export default function PokerSim() {
         if (additional > 0 && newBet > preflopCurrentBet) {
           pfPot += additional; stacks[pi] -= additional; preflopBets[pi] = newBet; preflopCurrentBet = newBet;
           preflopOrder.forEach(j => { if (j !== pi && !pfFolded[j]) pfNeeds[j] = true; });
+          preflopRaiseCount++;
         } else {
           const cost = Math.min(preflopCurrentBet - preflopBets[pi], stacks[pi]);
           if (cost > 0) { pfPot += cost; stacks[pi] -= cost; preflopBets[pi] += cost; }
         }
       }
-      pfStages.push({ type: "action", street: "preflop", playerIdx: pi, board: [], pot: pfPot, bets: [...preflopBets], folded: [...pfFolded], decision: dec, currentBet: preflopCurrentBet, stacks: [...stacks] });
+      pfStages.push({ type: "action", street: "preflop", playerIdx: pi, board: [], pot: prePfPot, bets: prePfBets, folded: [...pfFolded], decision: dec, aiDecision: isHero ? aiDec : undefined, currentBet: prePfCurrentBet, stacks: prePfStacks, holeCards: hands[pi] });
     }
     all.push(...pfStages);
     pot = pfPot; folded = pfFolded;
@@ -938,13 +1538,23 @@ export default function PokerSim() {
     // Postflop: SB first, then BB, UTG, BTN
     const postflopOrder = [sbIdx, bbIdx, utgIdx, btnIdx];
     const streets = [{ name: "flop", n: 3 }, { name: "turn", n: 4 }, { name: "river", n: 5 }];
+    let postflopHeroActionCount = pfHeroActionCount;
     for (const { name, n } of streets) {
       if (folded.filter(f => !f).length <= 1) break;
       const curBoard = board.slice(0, n);
       const streetLabel = name === "flop" ? `Flop — ${curBoard.map(cardStr).join("  ")}` : `${name.charAt(0).toUpperCase() + name.slice(1)} — ${cardStr(board[n - 1])}`;
-      const notes: Record<string, string> = { flop: "Three community cards dealt. New betting round begins.", turn: "Fourth card. Outs now use Rule of 2.", river: "Final card. No more outs." };
-      all.push({ type: "street", street: name, title: streetLabel, note: notes[name], board: curBoard, pot, folded: [...folded], stacks: [...stacks] });
-      const result = runBettingRound(postflopOrder, hands, curBoard, pot, folded, name, stacks, players);
+      const baseNotes: Record<string, string> = { flop: "Three community cards dealt. New betting round begins.", turn: "Fourth card. Outs now use Rule of 2.", river: "Final card. No more outs." };
+      const activePlayers = postflopOrder.filter(i => !folded[i]);
+      const allAllIn = activePlayers.length >= 2 && activePlayers.every(i => stacks[i] === 0);
+      const heroAllIn = heroIdx !== null && !folded[heroIdx] && stacks[heroIdx] === 0;
+      const note = allAllIn
+        ? `${baseNotes[name]} All players all-in — board running out, no betting.`
+        : heroAllIn
+        ? `${baseNotes[name]} You are all-in — no more decisions to make.`
+        : baseNotes[name];
+      all.push({ type: "street", street: name, title: streetLabel, note, board: curBoard, pot, folded: [...folded], stacks: [...stacks] });
+      const result = runBettingRound(postflopOrder, hands, curBoard, pot, folded, name, stacks, players, gameStyle, heroIdx, heroChoices, postflopHeroActionCount);
+      postflopHeroActionCount += result.heroActionsConsumed;
       all.push(...result.stages);
       pot = result.pot; folded = result.folded; stacks = result.stacks;
     }
@@ -964,10 +1574,23 @@ export default function PokerSim() {
       }
     }
     return all;
-  }, [gs, dealerIdx, startingStacks, players]);
+  }, [gs, dealerIdx, startingStacks, players, gameStyle, heroIdx, heroChoices]);
 
   // Keep ref in sync for keyboard handler
   stagesRef.current = stages;
+
+  // Auto-advance villain steps in hero mode
+  useEffect(() => {
+    if (autoAdvanceRef.current) { clearTimeout(autoAdvanceRef.current); autoAdvanceRef.current = null; }
+    if (!trainingMode || heroIdx === null || !stages.length) return;
+    const curStage = stages[step];
+    if (!curStage || curStage.type !== "action" || curStage.decision?.action === "already_folded") return;
+    if (curStage.playerIdx === heroIdx) return;
+    autoAdvanceRef.current = setTimeout(() => {
+      setStep(s => Math.min(s + 1, stages.length - 1));
+    }, 900);
+    return () => { if (autoAdvanceRef.current) { clearTimeout(autoAdvanceRef.current); autoAdvanceRef.current = null; } };
+  }, [step, trainingMode, heroIdx, stages]);
 
   const cur = stages[step];
   const visible = stages.slice(0, step + 1);
@@ -976,27 +1599,86 @@ export default function PokerSim() {
 
   // ── Shared sub-sections ──────────────────────────────────────────
 
+  const trainToggle = (
+    <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+      {(["observe", "train"] as const).map(m => {
+        const active = trainingMode ? "train" : "observe";
+        return (
+          <button key={m} onClick={() => { setTrainingMode(m === "train"); setUserChoices({}); setHandScore({ matches: 0, total: 0 }); setSessionScore({ matches: 0, total: 0 }); if (m === "train" && gs) deal(); }} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: active === m ? T.accent : "transparent", color: active === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+            {m}
+          </button>
+        );
+      })}
+    </div>
+  );
+
   const masthead = (
     <header style={{ paddingBottom: 12, borderBottom: `1px solid ${T.ink}`, marginBottom: 14 }}>
-      <h1 style={{ fontFamily: T.mono, fontSize: 28, fontWeight: 700, letterSpacing: "-0.01em", textTransform: "uppercase", lineHeight: 1, margin: "0 0 5px", color: T.ink }}>
+      <h1 style={{ fontFamily: T.mono, fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", textTransform: "uppercase", lineHeight: 1, margin: "0 0 6px", color: T.ink }}>
         HOLD&apos;EM TRAINER
       </h1>
-      <p style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, margin: 0, lineHeight: 1.4 }}>
-        &gt; step through every decision
+      <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 10px" }}>
+        &gt; practice your poker face
       </p>
+      <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+          <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table style</span>
+          <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+            {([["gto", "GTO"], ["loose", "Loose"], ["wild", "Wild"]] as const).map(([s, label]) => (
+              <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, minHeight: "2.5em", display: "block" }}>
+            {gameStyle === "gto" ? "Mathematically optimal — the hardest benchmark." : gameStyle === "loose" ? "Wider ranges, more calls — common recreational style." : "Unpredictable and aggressive — high variance."}
+          </span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+          <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Mode</span>
+          {trainToggle}
+          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, minHeight: "2.5em", display: "block" }}>
+            {trainingMode ? "Choose first, then compare to AI." : "Watch and study every decision."}
+          </span>
+        </div>
+      </div>
     </header>
+  );
+
+  const creditLine = (
+    <p style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, margin: "10px 0 0" }}>
+      Built by{" "}
+      <a href="https://katswint.com" target="_blank" rel="noopener noreferrer" style={{ color: T.dim, textDecoration: "underline", textUnderlineOffset: 2 }}>
+        Kat Swint
+      </a>
+      {" "}with a little help from Claude Code and Codex
+    </p>
   );
 
   const rulesToggle = (
     <section style={{ marginBottom: 12 }}>
       <button onClick={() => setShowRules(!showRules)} style={{ width: "100%", padding: "8px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span>Rules &amp; Glossary</span>
+        <span>Modes &amp; Glossary</span>
         <span style={{ color: T.dim }}>{showRules ? "[–]" : "[+]"}</span>
       </button>
       {showRules && (
-        <div style={{ marginTop: 6, padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, maxHeight: 220, overflowY: "auto" }}>
+        <div style={{ marginTop: 6, padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, maxHeight: 260, overflowY: "auto" }}>
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>// modes</div>
+          {[
+            { t: "Observe", d: "Watch the hand play out. Every decision shows full reasoning, inner thoughts, and the math." },
+            { t: "Train", d: "Pick your action before seeing the AI's. Then compare — does your read match?" },
+            { t: "Single Steps", d: "Current decision shown in full. Prior moves collapse to one-liners above." },
+            { t: "Full Log", d: "Every decision in the hand expanded in full. Scroll to review." },
+          ].map((r, i, arr) => (
+            <div key={r.t} style={{ paddingBottom: i < arr.length - 1 ? 6 : 0, marginBottom: i < arr.length - 1 ? 6 : 0, borderBottom: i < arr.length - 1 ? `1px solid ${T.hairSoft}` : "none", display: "grid", gridTemplateColumns: "90px 1fr", gap: 8, alignItems: "baseline" }}>
+              <span style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 600, color: T.ink }}>{r.t}</span>
+              <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.45 }}>{r.d}</span>
+            </div>
+          ))}
+          <div style={{ borderTop: `1px solid ${T.hairSoft}`, margin: "10px 0" }} />
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>// glossary</div>
           {RULES.map((r, i) => (
-            <div key={i} style={{ paddingBottom: i < RULES.length - 1 ? 6 : 0, marginBottom: i < RULES.length - 1 ? 6 : 0, borderBottom: i < RULES.length - 1 ? `1px solid ${T.hairSoft}` : "none", display: "grid", gridTemplateColumns: "100px 1fr", gap: 8, alignItems: "baseline" }}>
+            <div key={i} style={{ paddingBottom: i < RULES.length - 1 ? 6 : 0, marginBottom: i < RULES.length - 1 ? 6 : 0, borderBottom: i < RULES.length - 1 ? `1px solid ${T.hairSoft}` : "none", display: "grid", gridTemplateColumns: "90px 1fr", gap: 8, alignItems: "baseline" }}>
               <span style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 600, color: T.ink }}>{r.t}</span>
               <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.45 }}>{r.d}</span>
             </div>
@@ -1017,53 +1699,60 @@ export default function PokerSim() {
     </div>
   );
 
-  const stepCounter = (
-    <span style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim }}>
-      Step {step + 1} / {stages.length}
-    </span>
-  );
 
   const modeToggle = (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
-      <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
-        {(["focused", "dense"] as const).map(m => (
-          <button key={m} onClick={() => setMode(m)} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: mode === m ? T.ink : "transparent", color: mode === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
-            {m}
-          </button>
-        ))}
-      </div>
-      <InfoTip text="Focused: current decision shown in full, with a compact trail of prior moves above. Dense: every decision expanded in full." />
+    <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+      {([["focused", "Single Steps"], ["dense", "Full Log"]] as const).map(([m, label]) => (
+        <button key={m} onClick={() => setMode(m)} style={{ padding: "3px 8px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", background: mode === m ? T.ink : "transparent", color: mode === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+          {label}
+        </button>
+      ))}
     </div>
   );
 
   const playerGrid = gs && (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 8 }}>
-      {players.map((p, i) => {
-        const isFolded = cur?.folded?.[i];
-        const isActing = cur?.type === "action" && cur?.playerIdx === i;
-        const isWinner = cur?.type === "showdown" && cur?.winner === i;
-        const stack = cur?.stacks?.[i] ?? startingStacks[i];
-        return (
-          <div key={i} style={{ padding: "6px 5px 7px", background: isWinner ? T.panelAlt : isActing ? T.focus : T.panel, border: `1px solid ${isWinner ? T.accent : isActing ? T.ink : T.hair}`, borderRadius: T.radius }}>
-            <div style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 600, color: T.ink, lineHeight: 1, marginBottom: 1 }}>{p.name}</div>
-            <div style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1, marginBottom: 5 }}>{p.posShort}</div>
-            <div style={{ display: "flex", gap: 3, justifyContent: "center" }}>
-              <PlayingCard card={gs.hands[i][0]} dimmed={isFolded} size="sm" />
-              <PlayingCard card={gs.hands[i][1]} dimmed={isFolded} size="sm" />
-            </div>
-            <div style={{ fontFamily: T.mono, fontSize: 8.5, color: T.accent, textAlign: "center", marginTop: 3, lineHeight: 1 }}>{stack}</div>
-            {isFolded && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1 }}>folded</div>}
-            {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>winner</div>}
-            {isActing && !isFolded && !isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.ink, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>acting</div>}
-            {!isFolded && !isWinner && !isActing && <div style={{ marginTop: 2, height: 9.5 }} />}
+    <>
+      {trainingMode && heroIdx !== null && (
+        <div style={{ marginBottom: 6, padding: "5px 10px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, display: "flex", alignItems: "baseline", gap: 6 }}>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent }}>you</span>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim }}>·</span>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.inkSoft }}>Alice</span>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim }}>·</span>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.ink, fontWeight: 600 }}>{players[heroIdx].pos === "Dealer" ? "Button (BTN)" : players[heroIdx].pos}</span>
+        </div>
+      )}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 8 }}>
+        {players.map((p, i) => {
+          const isFolded = cur?.folded?.[i] && cur?.playerIdx !== i;
+          const isActing = cur?.type === "action" && cur?.playerIdx === i;
+          const isWinner = cur?.type === "showdown" && cur?.winner === i;
+          const isHero = trainingMode && heroIdx === i;
+          const stack = cur?.stacks?.[i] ?? startingStacks[i];
+          return (
+            <div key={i} style={{ padding: "6px 5px 7px", background: isWinner ? T.panelAlt : isActing ? T.focus : T.panel, border: `1px solid ${isWinner ? T.accent : isActing ? T.ink : isHero ? T.accent : T.hair}`, borderRadius: T.radius }}>
+              <div style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 600, color: T.ink, lineHeight: 1, marginBottom: 1 }}>{p.name}</div>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "baseline", gap: 4, marginBottom: 5 }}>
+                <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1 }}>{p.posShort}</span>
+                {isHero && <span style={{ fontFamily: T.mono, fontSize: 8, color: T.accent, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 }}>you</span>}
+              </div>
+              <div style={{ display: "flex", gap: 3, justifyContent: "center" }}>
+                <PlayingCard card={gs.hands[i][0]} dimmed={isFolded} faceDown={trainingMode && heroIdx !== null && i !== heroIdx && cur?.type !== "showdown"} size="sm" />
+                <PlayingCard card={gs.hands[i][1]} dimmed={isFolded} faceDown={trainingMode && heroIdx !== null && i !== heroIdx && cur?.type !== "showdown"} size="sm" />
+              </div>
+              <div style={{ fontFamily: T.mono, fontSize: 8.5, color: T.accent, textAlign: "center", marginTop: 3, lineHeight: 1 }}>{stack}</div>
+              {isFolded && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1 }}>folded</div>}
+              {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>winner</div>}
+              {!isFolded && !isWinner && isActing && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.ink, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>acting</div>}
+              {!isFolded && !isWinner && !isActing && <div style={{ marginTop: 2, height: 9.5 }} />}
             {cur?.type === "showdown" && !isFolded && !cur.foldWin && (() => {
               const r = cur.results?.find(r => r.idx === i);
               return r?.hand ? <div style={{ fontFamily: T.mono, fontSize: 9.5, color: isWinner ? T.accent : T.inkSoft, marginTop: 2, textAlign: "center", lineHeight: 1.2 }}>{r.hand.name}</div> : null;
             })()}
           </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </>
   );
 
   const board = (
@@ -1079,22 +1768,6 @@ export default function PokerSim() {
         <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>Pot</span>
         <span style={{ fontFamily: T.mono, fontSize: 18, fontWeight: 600, color: T.accent, letterSpacing: "-0.01em" }}>{cur?.pot || 0}</span>
       </div>
-    </div>
-  );
-
-  const trainToggle = (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
-      <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
-        {(["observe", "train"] as const).map(m => {
-          const active = trainingMode ? "train" : "observe";
-          return (
-            <button key={m} onClick={() => { setTrainingMode(m === "train"); setUserChoices({}); setHandScore({ matches: 0, total: 0 }); }} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: active === m ? T.accent : "transparent", color: active === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
-              {m}
-            </button>
-          );
-        })}
-      </div>
-      <InfoTip text="Observe: watch the AI reason through every decision. Train: make your choice first, then see if the AI agreed." />
     </div>
   );
 
@@ -1116,33 +1789,66 @@ export default function PokerSim() {
 
   const feed = (desktopFill = false) => {
     const isActionStep = cur?.type === "action" && cur?.decision?.action !== "already_folded";
-    const needsChoice = trainingMode && isActionStep && !userChoices[step];
+    const isHeroStep = heroIdx === null || cur?.playerIdx === heroIdx;
+    // Count how many hero action stages have occurred before the current step
+    const prevHeroActionCount = stages.slice(0, step).filter(s => s.type === "action" && s.playerIdx === heroIdx).length;
+    const needsChoice = trainingMode && isActionStep && isHeroStep && heroChoices.length <= prevHeroActionCount;
     const userChoice = userChoices[step];
-    const aiAction = cur?.decision?.action;
+    const stepToCall = Math.max(0, (cur?.currentBet ?? 0) - (cur?.bets?.[cur?.playerIdx ?? 0] ?? 0));
+    // aiDecision is stored on hero stages; for non-hero stages, decision IS the AI's
+    const rawAiAction = cur?.aiDecision?.action ?? cur?.decision?.action;
+    const aiAction = rawAiAction === "call" && stepToCall === 0 ? "check" : rawAiAction;
     const containerStyle = desktopFill ? { flex: 1, overflowY: "auto" as const } : { maxHeight: 400, overflowY: "auto" as const };
 
     return (
       <>
         <div style={{ marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            {trainingMode && gs && handScore.total > 0 && (
-              <span style={{ fontFamily: T.mono, fontSize: 10, color: T.accent, fontWeight: 600, letterSpacing: "0.04em" }}>
-                {handScore.matches}/{handScore.total}
-              </span>
-            )}
+            <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>
+              {gs ? (mode === "focused" ? "Action · current" : `Action · ${visible.length} entries`) : "Action"}
+            </span>
           </div>
+          {trainingMode && sessionScore.total > 0 && (
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              {handScore.total > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                  <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 }}>This hand</span>
+                  <span style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: handScore.matches === handScore.total ? T.accent : handScore.matches / handScore.total >= 0.7 ? T.ink : T.inkSoft, lineHeight: 1.2 }}>
+                    {handScore.matches}/{handScore.total}
+                  </span>
+                </div>
+              )}
+              <div style={{ width: 1, height: 28, background: T.hair }} />
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 }}>Session</span>
+                <span style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: T.accent, lineHeight: 1.2 }}>
+                  {sessionScore.matches}/{sessionScore.total}
+                  <span style={{ fontSize: 9, fontWeight: 400, color: T.dim, marginLeft: 4 }}>
+                    ({Math.round(sessionScore.matches / sessionScore.total * 100)}%)
+                  </span>
+                </span>
+              </div>
+            </div>
+          )}
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             {!trainingMode && modeToggle}
-            {trainToggle}
           </div>
         </div>
+        {trainingMode && sessionPattern && (
+          <div style={{ padding: "6px 14px 7px", background: `${T.accent}10`, borderBottom: `1px solid ${T.hairSoft}`, display: "flex", gap: 8, alignItems: "flex-start" }}>
+            <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.accent, paddingTop: 2, flexShrink: 0 }}>Session</span>
+            <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.4 }}>{sessionPattern}</span>
+          </div>
+        )}
 
         <div ref={needsChoice ? undefined : (trainingMode || mode === "focused" ? focusedRef : feedRef)}
           style={{ background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, ...containerStyle }}>
 
-          {/* History trail — always compact in training mode */}
-          {(trainingMode || mode === "focused") && visible.slice(Math.max(0, step - 4), step).map((s, i) => (
-            <FeedEntry key={Math.max(0, step - 4) + i} s={s} isFocused={false} compact players={players} />
+          {/* History trail — all prior steps as compact summaries */}
+          {(trainingMode || mode === "focused") && visible.slice(0, step).map((s, i) => (
+            <div key={i} onClick={() => { if (trainingMode) { setStep(i); } else { denseScrollToRef.current = i; setMode("dense"); } }} style={{ cursor: "pointer" }} title="Click to view this step">
+              <FeedEntry s={s} isFocused={false} compact players={players} heroIdx={trainingMode && heroIdx !== null ? heroIdx : undefined} />
+            </div>
           ))}
 
           {/* Dense mode history (non-training) */}
@@ -1154,14 +1860,90 @@ export default function PokerSim() {
 
           {/* Current step */}
           {cur && needsChoice && (
-            <TrainingPrompt stage={cur} players={players} onChoice={handleChoice} />
+            <div data-step={step}>
+              <TrainingPrompt stage={cur} players={players} onChoice={handleChoice} />
+            </div>
           )}
           {cur && !needsChoice && (
-            <>
-              {trainingMode && userChoice && aiAction && isActionStep && (
+            <div data-step={step}>
+              {trainingMode && userChoice && aiAction && isActionStep && isHeroStep && (
                 <ComparisonBanner userAction={userChoice} aiAction={aiAction} />
               )}
-              <FeedEntry s={cur} isFocused players={players} />
+              <FeedEntry s={cur} isFocused players={players} heroIdx={trainingMode && heroIdx !== null ? heroIdx : undefined} />
+              {trainingMode && userChoice && isActionStep && isHeroStep && cur.aiDecision && (() => {
+                const aggr = ["bet", "raise"];
+                const playingAI = cur.decision?.action === cur.aiDecision?.action ||
+                  (aggr.includes(cur.decision?.action ?? "") && aggr.includes(cur.aiDecision?.action ?? ""));
+                const revealAndFollow = () => {
+                  setHeroChoices(prev => [...prev.slice(0, -1), cur.aiDecision!]);
+                  setUserChoices(c => ({ ...c, [step]: cur.aiDecision!.action }));
+                };
+                return (
+                  <div style={{ padding: "12px 14px 14px", background: T.panelAlt, borderBottom: `1px solid ${T.hair}` }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: playingAI ? 0 : 8 }}>
+                      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>GTO play</div>
+                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                        {!playingAI && (
+                          <button
+                            onClick={revealAndFollow}
+                            style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: T.accent, color: T.bg, border: "none", borderRadius: T.radius, cursor: "pointer" }}
+                          >
+                            ▶ Follow AI
+                          </button>
+                        )}
+                        {playingAI && (
+                          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: "0.1em" }}>✓ Playing AI's move</span>
+                        )}
+                      </div>
+                    </div>
+                    {!playingAI && (
+                      <>
+                        <div style={{ fontFamily: T.mono, fontSize: 13, color: T.inkSoft, lineHeight: 1.45, marginBottom: 6, paddingLeft: 9, borderLeft: `2px solid ${T.hairSoft}` }}>
+                          {cur.aiDecision.dialogue}
+                        </div>
+                        <div style={{ display: "flex", gap: 7, marginBottom: (cur.aiDecision.thoughts?.length ?? 0) > 0 ? 8 : 0 }}>
+                          <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>//</span>
+                          <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}>{cur.aiDecision.reasoning}</div>
+                        </div>
+                        {cur.aiDecision.thoughts && cur.aiDecision.thoughts.length > 0 && (
+                          <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(125,211,160,0.05)", border: `1px solid ${T.hairSoft}`, borderRadius: T.radius }}>
+                            <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 5 }}>Inner thoughts</div>
+                            {cur.aiDecision.thoughts.map((t, ti) => (
+                              <div key={ti} style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55, marginBottom: ti < cur.aiDecision!.thoughts.length - 1 ? 4 : 0 }}>{t}</div>
+                            ))}
+                          </div>
+                        )}
+                        {cur.aiDecision.math && cur.aiDecision.math.length > 0 && (
+                          <div style={{ marginTop: 7, padding: "8px 10px", background: "rgba(125,211,160,0.06)", border: `1px solid ${T.hair}`, borderRadius: T.radius }}>
+                            <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>The math</div>
+                            {cur.aiDecision.math.map((m, mi) => (
+                              <div key={mi} style={{ fontFamily: T.mono, fontSize: 11, color: T.ink, lineHeight: 1.55, marginBottom: mi < cur.aiDecision!.math.length - 1 ? 2 : 0 }}>{m}</div>
+                            ))}
+                          </div>
+                        )}
+                        {(() => {
+                          const userChoice = userChoices[step];
+                          if (!userChoice) return null;
+                          const note = getMissedNote(userChoice, cur.aiDecision!, cur);
+                          if (!note) return null;
+                          return (
+                            <div style={{ marginTop: 7, padding: "8px 10px", background: "rgba(255,185,80,0.05)", border: `1px solid rgba(255,185,80,0.22)`, borderRadius: T.radius }}>
+                              <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,185,80,0.75)", marginBottom: 5 }}>What you missed</div>
+                              <div style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55 }}>{note}</div>
+                            </div>
+                          );
+                        })()}
+                      </>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+          {trainingMode && heroIdx !== null && cur?.type === "showdown" && (
+            <>
+              <HandReview stages={stages} heroIdx={heroIdx} userChoices={userChoices} players={players} />
+              <VillainRecap stages={stages} heroIdx={heroIdx} players={players} />
             </>
           )}
         </div>
@@ -1183,7 +1965,7 @@ export default function PokerSim() {
         </button>
       )}
       {!isEnd ? (() => {
-        const needsChoice = trainingMode && cur?.type === "action" && cur?.decision?.action !== "already_folded" && !userChoices[step];
+        const needsChoice = trainingMode && cur?.type === "action" && cur?.decision?.action !== "already_folded" && (heroIdx === null || cur?.playerIdx === heroIdx) && !userChoices[step];
         return (
           <button
             onClick={() => !needsChoice && setStep(s => Math.min(s + 1, stages.length - 1))}
@@ -1210,15 +1992,15 @@ export default function PokerSim() {
             {rulesToggle}
             {!gs ? emptyState : (
               <>
-                <div style={{ marginBottom: 10 }}>
-                  {stepCounter}
-                </div>
                 {playerGrid}
                 {board}
               </>
             )}
           </div>
           {navBar()}
+          <div style={{ flexShrink: 0, padding: "0 14px 12px" }}>
+            {creditLine}
+          </div>
         </div>
         {gs ? (
           <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden", padding: "16px 14px" }}>
@@ -1245,9 +2027,21 @@ export default function PokerSim() {
           </>
         ) : (
           <>
-            {rulesToggle}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              {stepCounter}
+            <div style={{ display: "flex", gap: 20, alignItems: "flex-start", marginBottom: 8 }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+                <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table</span>
+                <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+                  {(["gto", "loose", "wild"] as const).map(s => (
+                    <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+                <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Mode</span>
+                {trainToggle}
+              </div>
             </div>
             {playerGrid}
             {board}
@@ -1265,6 +2059,9 @@ export default function PokerSim() {
         </div>
       )}
       {navBar()}
+      <div style={{ flexShrink: 0, padding: "0 14px 10px" }}>
+        {creditLine}
+      </div>
     </div>
   );
 }
