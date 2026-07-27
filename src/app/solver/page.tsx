@@ -5,6 +5,7 @@
 // distinct from the app's 4-handed heuristic trainer. Client component: the slider re-solves
 // the Nash ranges live from the committed 169×169 equity matrix.
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { HANDS, GRID_RANK_VALUES } from "@/lib/solver/hands";
 import { solvePushFold } from "@/lib/solver/pushfold";
 
@@ -47,6 +48,10 @@ export default function SolverPage() {
     <main style={{ minHeight: "100vh", background: T.bg, color: T.ink, fontFamily: T.mono, padding: "clamp(16px, 4vw, 40px)" }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <header style={{ borderBottom: `1px solid ${T.hair}`, paddingBottom: 16, marginBottom: 20 }}>
+          <Link href="/" aria-label="Back to the Hold'em Trainer"
+            style={{ display: "inline-block", fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none", marginBottom: 12 }}>
+            <span aria-hidden="true">←</span> back to trainer
+          </Link>
           <div style={{ fontSize: 12, letterSpacing: 2, color: T.dim, textTransform: "uppercase" }}>Heads-Up · Push / Fold</div>
           <h1 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, margin: "6px 0 10px", color: T.ink }}>
             Nash Equilibrium Solver

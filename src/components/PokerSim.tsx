@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, useRef, useEffect, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { SB, BB, SUIT_NAMES, makeDeck, shuffle, cardStr, valNameL } from "@/lib/poker/cards";
 import { bestHand, cmpK } from "@/lib/poker/eval";
 import { distributePots } from "@/lib/poker/pots";
@@ -899,10 +900,10 @@ export default function PokerSim() {
       <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 6px" }}>
         &gt; practice your poker face
       </p>
-      <a href="/solver" aria-label="Open the heads-up push/fold Nash solver"
+      <Link href="/solver" aria-label="Open the heads-up push/fold Nash solver"
         style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.accent, textDecoration: "none", border: `1px solid ${T.accentSoft}`, background: "rgba(125, 211, 160, 0.06)", padding: "7px 12px", borderRadius: T.radius, margin: "2px 0 12px" }}>
         Nash Solver <span aria-hidden="true">→</span>
-      </a>
+      </Link>
       <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
           <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table style</span>
