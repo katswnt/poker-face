@@ -899,8 +899,9 @@ export default function PokerSim() {
       <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 6px" }}>
         &gt; practice your poker face
       </p>
-      <a href="/solver" style={{ fontFamily: T.mono, fontSize: 9.5, color: T.accent, letterSpacing: "0.06em", textDecoration: "none", display: "inline-block", marginBottom: 10 }}>
-        {"→ heads-up push/fold Nash solver"}
+      <a href="/solver" aria-label="Open the heads-up push/fold Nash solver"
+        style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.accent, textDecoration: "none", border: `1px solid ${T.accentSoft}`, background: "rgba(125, 211, 160, 0.06)", padding: "7px 12px", borderRadius: T.radius, margin: "2px 0 12px" }}>
+        Nash Solver <span aria-hidden="true">→</span>
       </a>
       <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
