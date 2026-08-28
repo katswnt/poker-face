@@ -125,6 +125,36 @@ function PlainCopy({ children }: { children: string }) {
   })}</>;
 }
 
+export interface SeatSettlement {
+  won: number;
+  returned: number;
+}
+
+function isUncalledReturn(layer: NonNullable<Stage["pots"]>[number]): boolean {
+  return layer.contributors.length === 1
+    && layer.awards.every(award => award.idx === layer.contributors[0]);
+}
+
+// A payout can contain two very different things: chips won from other players
+// and unmatched chips returned to their owner. Keeping them separate prevents
+// the UI and hand review from treating a refund as a poker win.
+export function showdownSeatSettlements(showdown: Stage, seatCount = showdown.folded.length): SeatSettlement[] {
+  const settlements = Array.from({ length: seatCount }, () => ({ won: 0, returned: 0 }));
+  if (showdown.foldWin && showdown.winner !== undefined) {
+    settlements[showdown.winner].won = showdown.pot;
+    return settlements;
+  }
+  if (showdown.pots?.length) {
+    for (const layer of showdown.pots) {
+      const field: keyof SeatSettlement = isUncalledReturn(layer) ? "returned" : "won";
+      for (const award of layer.awards) settlements[award.idx][field] += award.amount;
+    }
+    return settlements;
+  }
+  for (let idx = 0; idx < seatCount; idx++) settlements[idx].won = showdown.payouts?.[idx] ?? 0;
+  return settlements;
+}
+
 
 
 // ═══════════════════════════════════════════
@@ -311,23 +341,31 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
 
   if (s.type === "showdown") {
     const winnerName = players[s.winner!].name;
-    const recipients = (s.payouts ?? []).map((amount, idx) => ({ idx, amount })).filter(({ amount }) => amount > 0);
-    const soleRecipient = recipients.length === 1 ? recipients[0] : null;
-    const soleHand = soleRecipient ? s.results?.find(r => r.idx === soleRecipient.idx)?.hand?.name : null;
+    const settlements = showdownSeatSettlements(s, players.length);
+    const potWinners = settlements.map((settlement, idx) => ({ idx, ...settlement })).filter(({ won }) => won > 0);
+    const soleWinner = potWinners.length === 1 ? potWinners[0] : null;
+    const soleHand = soleWinner ? s.results?.find(r => r.idx === soleWinner.idx)?.hand?.name : null;
+    const returned = settlements.map((settlement, idx) => ({ idx, amount: settlement.returned })).filter(({ amount }) => amount > 0);
+    const returnedSummary = returned.length > 0
+      ? ` ${returned.map(({ idx, amount }) => `${players[idx].name} gets ${amount} uncalled chip${amount === 1 ? "" : "s"} back.`).join(" ")}`
+      : "";
+    const contestedLayers = s.pots?.filter(layer => !isUncalledReturn(layer)) ?? [];
     return (
       <div style={{ padding: "14px", background: T.panelAlt, borderTop: `2px solid ${T.accent}`, borderBottom: `1px solid ${T.hair}` }}>
         <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>Showdown</div>
         <div style={{ fontFamily: T.mono, fontSize: 17, fontWeight: 600, color: T.ink, lineHeight: 1.25, marginBottom: 4 }}>
-          {s.foldWin ? `${winnerName} wins — everyone else folded.` : soleRecipient ? `${players[soleRecipient.idx].name} wins with ${soleHand}.` : `Pot settled across ${recipients.length} players.`}
+          {s.foldWin ? `${winnerName} wins — everyone else folded.` : soleWinner ? `${players[soleWinner.idx].name} wins with ${soleHand}.` : `Contested pots paid to ${potWinners.map(({ idx }) => players[idx].name).join(" and ")}.`}
         </div>
         <div style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, marginBottom: s.rankedResults && s.rankedResults.length > 1 ? 10 : 0 }}>
-          {s.foldWin ? `Takes the ${s.pot}-chip pot.` : soleRecipient ? `Receives all ${soleRecipient.amount} chips.` : `${s.pot} chips awarded across main and side pots.`}
+          {s.foldWin ? `Takes the ${s.pot}-chip pot.` : soleWinner ? `Wins ${soleWinner.won} contested chips.${returnedSummary}` : `${potWinners.reduce((sum, seat) => sum + seat.won, 0)} contested chips awarded.${returnedSummary}`}
         </div>
         {!s.foldWin && s.pots && s.pots.length > 0 && (
           <div style={{ padding: "8px 0", borderTop: `1px solid ${T.hairSoft}` }}>
             {s.pots.map((layer, index) => {
-              const label = layer.contributors.length === 1 ? "Uncalled return" : index === 0 ? "Main pot" : `Side pot ${index}`;
-              const awards = layer.awards.map(award => `${players[award.idx].name} +${award.amount}`).join(" · ");
+              const isReturn = isUncalledReturn(layer);
+              const contestedIndex = contestedLayers.indexOf(layer);
+              const label = isReturn ? "Uncalled chips" : contestedIndex === 0 ? "Main pot" : `Side pot ${contestedIndex}`;
+              const awards = layer.awards.map(award => `${players[award.idx].name} +${award.amount} ${isReturn ? "returned" : "won"}`).join(" · ");
               return (
                 <div key={`${label}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, fontFamily: T.mono, fontSize: 10.5, lineHeight: 1.8 }}>
                   <span style={{ color: T.dim }}>{label} · {layer.amount}</span>
@@ -567,8 +605,12 @@ export function getHandOutcomeNote(stages: Stage[], heroIdx: number, grades: Cho
   const showdown = stages.findLast(stage => stage.type === "showdown");
   if (!showdown) return null;
 
-  const payout = showdown.payouts?.[heroIdx] ?? 0;
-  const heroWon = showdown.winner === heroIdx || payout > 0;
+  const heroSettlement = showdownSeatSettlements(showdown)[heroIdx] ?? { won: 0, returned: 0 };
+  const heroWon = heroSettlement.won > 0;
+  const heroSharedPot = showdown.pots?.some(layer => !isUncalledReturn(layer) && layer.winners.length > 1 && layer.winners.includes(heroIdx)) ?? false;
+  const returnedSuffix = heroSettlement.returned > 0
+    ? ` Your unmatched ${heroSettlement.returned} chip${heroSettlement.returned === 1 ? " was" : "s were"} returned because no one called that part of your bet.`
+    : "";
   const heroFolded = showdown.folded[heroIdx] ?? false;
   let title: string;
   let reason: string;
@@ -586,10 +628,10 @@ export function getHandOutcomeNote(stages: Stage[], heroIdx: number, grades: Cho
     reason = `Every opponent folded. ${actionDescription}`;
   } else if (heroWon) {
     const heroResult = showdown.results?.find(result => result.idx === heroIdx)?.hand;
-    title = showdown.chop ? "Why you received chips" : "Why you won";
+    title = heroSharedPot ? "Why you received chips" : "Why you won";
     reason = heroResult
-      ? `${showdown.chop ? "You shared a pot" : "Your hand won at showdown"} with ${heroResult.name}.`
-      : payout > 0 ? `You received ${payout} chips from the pot at showdown.` : `You received a share of the pot at showdown.`;
+      ? `${heroSharedPot ? "You shared a contested pot" : "Your hand won contested chips at showdown"} with ${heroResult.name}.${returnedSuffix}`
+      : `You won ${heroSettlement.won} contested chips at showdown.${returnedSuffix}`;
   } else if (heroFolded) {
     title = "Why you did not win";
     reason = "You folded before the hand ended, so you were no longer eligible to win a pot.";
@@ -597,8 +639,8 @@ export function getHandOutcomeNote(stages: Stage[], heroIdx: number, grades: Cho
     const winningResult = showdown.results?.find(result => result.idx === showdown.winner)?.hand;
     title = "Why you did not win";
     reason = winningResult
-      ? `Another player won at showdown with ${winningResult.name}.`
-      : "Another player received the pot at showdown.";
+      ? `Another player won the contested pot at showdown with ${winningResult.name}.${returnedSuffix}`
+      : `Another player won the contested pot at showdown.${returnedSuffix}`;
   }
 
   const hasCostlyDifference = grades.some(grade => grade === "costly" || grade === "illegal");
@@ -1252,6 +1294,8 @@ export default function PokerSim() {
     </div>
   );
 
+  const currentSettlements = cur?.type === "showdown" ? showdownSeatSettlements(cur, players.length) : null;
+
   const playerGrid = gs && (
     <>
       {trainingMode && heroIdx !== null && (
@@ -1267,8 +1311,9 @@ export default function PokerSim() {
         {players.map((p, i) => {
           const isFolded = cur?.folded?.[i] && cur?.playerIdx !== i;
           const isActing = cur?.type === "action" && cur?.playerIdx === i;
-          const payout = cur?.type === "showdown" ? (cur.payouts?.[i] ?? (cur.foldWin && cur.winner === i ? cur.pot : 0)) : 0;
-          const isWinner = payout > 0;
+          const settlement = currentSettlements?.[i] ?? { won: 0, returned: 0 };
+          const isWinner = settlement.won > 0;
+          const hasReturn = settlement.returned > 0;
           const isHero = trainingMode && heroIdx === i;
           const stack = cur?.stacks?.[i] ?? startingStacks[i];
           return (
@@ -1284,9 +1329,10 @@ export default function PokerSim() {
               </div>
               <div style={{ fontFamily: T.mono, fontSize: 8.5, color: T.accent, textAlign: "center", marginTop: 3, lineHeight: 1 }}>{stack}</div>
               {isFolded && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1 }}>folded</div>}
-              {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>{cur?.foldWin ? "winner" : `+${payout}`}</div>}
+              {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.08em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>{cur?.foldWin ? "winner" : `+${settlement.won} won`}</div>}
+              {hasReturn && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8, color: T.inkSoft, letterSpacing: "0.04em", textTransform: "uppercase", textAlign: "center", lineHeight: 1 }}>{`+${settlement.returned} returned`}</div>}
               {!isFolded && !isWinner && isActing && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.ink, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>acting</div>}
-              {!isFolded && !isWinner && !isActing && <div style={{ marginTop: 2, height: 9.5 }} />}
+              {!isFolded && !isWinner && !hasReturn && !isActing && <div style={{ marginTop: 2, height: 9.5 }} />}
             {cur?.type === "showdown" && !isFolded && !cur.foldWin && (() => {
               const r = cur.results?.find(r => r.idx === i);
               return r?.hand ? <div style={{ fontFamily: T.mono, fontSize: 9.5, color: isWinner ? T.accent : T.inkSoft, marginTop: 2, textAlign: "center", lineHeight: 1.2 }}>{r.hand.name}</div> : null;

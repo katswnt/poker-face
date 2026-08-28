@@ -5,6 +5,7 @@ import {
   getHandOutcomeNote,
   getMissedNote,
   positionTeachingNote,
+  showdownSeatSettlements,
 } from "../src/components/PokerSim";
 import type { Decision, Stage } from "../src/lib/poker/types";
 import { cards } from "./helpers";
@@ -82,6 +83,34 @@ test("hand review explains a fold win without treating one result as proof", () 
   assert.equal(note?.title, "Why you won");
   assert.equal(note?.reason, "Every opponent folded. Your river bet ended the hand, so your cards did not have to be best.");
   assert.match(note?.lesson ?? "", /marked it as different, not as a measured loss/);
+});
+
+test("uncalled chips are labeled as returned, not won", () => {
+  const showdown: Stage = {
+    type: "showdown",
+    board: cards("8d", "7h", "Kd", "Qs", "2d"),
+    pot: 175,
+    folded: [false, false],
+    winner: 1,
+    payouts: [25, 150],
+    results: [
+      { idx: 0, folded: false, hand: { rank: 0, name: "High Card", kickers: [14, 13, 12, 11, 8] } },
+      { idx: 1, folded: false, hand: { rank: 5, name: "Flush", kickers: [13, 11, 10, 8, 2] } },
+    ],
+    pots: [
+      { amount: 150, contributors: [0, 1], eligible: [0, 1], winners: [1], awards: [{ idx: 1, amount: 150 }] },
+      { amount: 25, contributors: [0], eligible: [0], winners: [0], awards: [{ idx: 0, amount: 25 }] },
+    ],
+  };
+
+  assert.deepEqual(showdownSeatSettlements(showdown), [
+    { won: 0, returned: 25 },
+    { won: 150, returned: 0 },
+  ]);
+  const note = getHandOutcomeNote([showdown], 0, ["model"]);
+  assert.equal(note?.title, "Why you did not win");
+  assert.match(note?.reason ?? "", /Another player won the contested pot.*Flush/);
+  assert.match(note?.reason ?? "", /unmatched 25 chips were returned/);
 });
 
 test("preflop position lessons match the table's actual action order", () => {
