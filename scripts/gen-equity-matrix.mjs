@@ -5,9 +5,9 @@
 //
 // Equity is zero-sum on a shared board, so only the upper triangle is Monte-Carlo'd and the
 // lower triangle is set to its exact complement: eq(j,i) := 1 − eq(i,j). This halves the
-// work AND makes eq(i,j)+eq(j,i) === 1 exactly (up to the diagonal), which the sanity test
-// relies on. The diagonal (a hand vs. its own class, e.g. AKs vs AKs) is simulated directly
-// and lands near 0.5. Everything is seeded (mulberry32) so the committed JSON is reproducible.
+// work AND makes eq(i,j)+eq(j,i) === 1 exactly. A hand class against itself is exactly 0.5
+// by exchangeability, so the diagonal is asserted rather than needlessly simulated.
+// Everything else is seeded (mulberry32) so the committed JSON is reproducible.
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -23,17 +23,17 @@ const M = Array.from({ length: n }, () => new Array(n).fill(0));
 
 const start = Date.now();
 let done = 0;
-const totalMatchups = (n * (n - 1)) / 2 + n;
+const totalMatchups = (n * (n - 1)) / 2;
 
 for (let i = 0; i < n; i++) {
-  // Diagonal: hand vs. its own canonical class.
-  M[i][i] = round(headsUpEquity(HANDS[i].combo, HANDS[i].combo, SIMS, mulberry32(BASE_SEED ^ (i * 131071 + i))));
-  done++;
+  M[i][i] = 0.5;
   for (let j = i + 1; j < n; j++) {
     const rng = mulberry32((BASE_SEED ^ (i * 131071 + j * 251)) >>> 0);
     const eq = headsUpEquity(HANDS[i].combo, HANDS[j].combo, SIMS, rng);
     M[i][j] = round(eq);
-    M[j][i] = round(1 - eq);
+    // Derive the reverse direction from the value we actually save. Rounding both
+    // directions independently can otherwise make a pair sum to 1.0001.
+    M[j][i] = round(1 - M[i][j]);
     done++;
   }
   if (i % 20 === 0 || i === n - 1) {
@@ -51,6 +51,7 @@ const out = {
     sims: SIMS,
     baseSeed: BASE_SEED,
     generatedBy: "scripts/gen-equity-matrix.mjs",
+    diagonal: "Exact 0.5 by exchangeability; not simulated.",
     handOrder: "grid row-major (matches HANDS in src/lib/solver/hands.ts)",
   },
   hands: HANDS.map(h => h.label),

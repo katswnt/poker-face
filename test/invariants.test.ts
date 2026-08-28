@@ -12,6 +12,7 @@ import { evalHand, bestHand, handScore, cmpK } from "../src/lib/poker/eval";
 import { distributePots } from "../src/lib/poker/pots";
 import { runBettingRound, type DecideArgs } from "../src/lib/poker/engine";
 import { mulberry32 } from "../src/lib/poker/equity";
+import { evaluateCall } from "../src/lib/poker/decide";
 import type { CardObj, Decision, PlayerInfo } from "../src/lib/poker/types";
 import { deckStrings, card } from "./helpers";
 
@@ -136,6 +137,28 @@ test("no seat wins a pot layer it didn't match (short stack can't scoop a side p
   );
 });
 
+test("every pot layer is awarded to the best eligible hand", () => {
+  fc.assert(
+    fc.property(potScenario, ({ hands, board, contributions, folded }) => {
+      const { pots } = distributePots(contributions, folded, hands, board);
+      for (const layer of pots) {
+        if (layer.eligible.length === 0) continue;
+        const evaluated = layer.eligible.map(idx => ({ idx, hand: bestHand(hands[idx], board) }));
+        const strongest = evaluated.reduce((best, candidate) => {
+          if (candidate.hand.rank !== best.hand.rank) return candidate.hand.rank > best.hand.rank ? candidate : best;
+          return cmpK(candidate.hand.kickers, best.hand.kickers) > 0 ? candidate : best;
+        });
+        const expected = evaluated
+          .filter(candidate => candidate.hand.rank === strongest.hand.rank && cmpK(candidate.hand.kickers, strongest.hand.kickers) === 0)
+          .map(candidate => candidate.idx)
+          .sort((a, b) => a - b);
+        assert.deepEqual([...layer.winners].sort((a, b) => a - b), expected);
+      }
+    }),
+    { numRuns: 1_000 },
+  );
+});
+
 // ── 4. runBettingRound conservation ─────────────────────────────────────────────────────
 
 const players: PlayerInfo[] = [
@@ -160,16 +183,21 @@ const bettingScenario = fc
     order: fc.shuffledSubarray([0, 1, 2, 3], { minLength: 4, maxLength: 4 }),
     stacks: fc.array(fc.integer({ min: 0, max: 500 }), { minLength: 4, maxLength: 4 }),
     bets: fc.array(fc.integer({ min: 0, max: 20 }), { minLength: 4, maxLength: 4 }),
-    pot: fc.integer({ min: 0, max: 200 }),
+    priorContributions: fc.array(fc.integer({ min: 0, max: 200 }), { minLength: 4, maxLength: 4 }),
     folded: fc.array(fc.boolean(), { minLength: 4, maxLength: 4 }),
     // One scripted decision per seat (indexed by seat).
     decisions: fc.array(actionArb, { minLength: 4, maxLength: 4 }),
   })
-  .map((s) => ({
-    ...s,
-    // currentBet must be ≥ every posted bet so a call cost is never negative.
-    currentBet: Math.max(0, ...s.bets),
-  }));
+  .map((s) => {
+    const contributions = s.bets.map((bet, i) => bet + s.priorContributions[i]);
+    return {
+      ...s,
+      contributions,
+      pot: sum(contributions),
+      // currentBet must be ≥ every posted bet so a call cost is never negative.
+      currentBet: Math.max(0, ...s.bets),
+    };
+  });
 
 test("runBettingRound conserves chips, never negatives a stack, keeps folds folded", () => {
   fc.assert(
@@ -185,6 +213,7 @@ test("runBettingRound conserves chips, never negatives a stack, keeps folds fold
         street: "flop",
         players,
         pot: s.pot,
+        contributions: [...s.contributions],
         folded: [...s.folded],
         stacks: [...s.stacks],
         bets: [...s.bets],
@@ -207,6 +236,15 @@ test("runBettingRound conserves chips, never negatives a stack, keeps folds fold
       });
       // The pot never shrinks (chips only flow in during a betting round).
       assert.ok(r.pot >= s.pot, `pot decreased from ${s.pot} to ${r.pot}`);
+      assert.equal(sum(r.contributions), r.pot, "the contribution ledger must equal the pot");
+      assert.equal(r.currentBet, Math.max(0, ...r.bets), "current bet must match the largest street commitment");
+      for (const stage of r.stages) {
+        const applied = stage.appliedAction!;
+        const seat = stage.playerIdx!;
+        assert.equal(stage.decision?.action, applied.decision.action, "displayed and applied actions diverged");
+        assert.equal(applied.targetBet, (stage.bets?.[seat] ?? 0) + applied.chipsAdded, "action target does not match its chip delta");
+        assert.ok(applied.chipsAdded >= 0, "an action removed chips from the pot");
+      }
     }),
     { numRuns: 1000 },
   );
@@ -237,4 +275,23 @@ test("mulberry32 draws are ~uniform: mean of many draws ≈ 0.5 (±0.02)", () =>
   for (let i = 0; i < N; i++) total += rng();
   const mean = total / N;
   assert.ok(Math.abs(mean - 0.5) < 0.02, `mean ${mean.toFixed(5)} not within 0.02 of 0.5`);
+});
+
+test("call profitability always agrees with pot odds and expected value", () => {
+  fc.assert(
+    fc.property(
+      fc.integer({ min: 0, max: 10_000 }),
+      fc.integer({ min: 0, max: 10_000 }),
+      fc.integer({ min: 1, max: 10_000 }),
+      (equityBasisPoints, pot, toCall) => {
+        const equity = equityBasisPoints / 10_000;
+        const result = evaluateCall(equity, pot, toCall);
+        const equivalentEv = equity * pot - (1 - equity) * toCall;
+        assert.ok(Math.abs(result.expectedValue - equivalentEv) < 1e-9);
+        assert.equal(result.profitable, result.expectedValue >= 0);
+        assert.equal(result.profitable, equity >= result.requiredEquity);
+      },
+    ),
+    { numRuns: 1_000 },
+  );
 });

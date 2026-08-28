@@ -1,7 +1,7 @@
 # Hold'em Trainer
 
-A Texas Hold'em study tool that walks you through every decision in a hand — showing the
-math, the reasoning, and the equity behind each action.
+A Texas Hold'em study tool that walks through every decision in a hand and explains the
+reasoning, the estimated share of the pot, and the price of continuing.
 
 Live at **[pokerface.katswint.com](https://pokerface.katswint.com)**
 
@@ -22,11 +22,14 @@ a full explanation at each stage.
 - What they said (dialogue)
 - Why they did it (reasoning)
 - Inner thoughts (position, reads, hand strength)
-- The math (equity, pot odds, EV, bet-sizing derivation)
+- The numbers (estimated pot share, call price, average result, and bet sizing)
 
 **Train mode** — you're assigned a **random seat** ("hero"). Before seeing the model's
-decision, you pick your own action, then compare. A running score tracks how often you
-match the model's line, and the app surfaces behavioral patterns across a session
+decision, you pick your own action, then compare. Feedback separates choices that match
+the trainer, different legal choices, and postflop call/fold errors whose cost follows
+directly from the displayed call-price math. Preflop differences are never presented as
+proven losses because that part of the trainer uses hand-group rules rather than measured profit. The app
+also surfaces behavioral patterns across a session
 ("folding too often," "missing thin value"). Villain hole cards are hidden until showdown;
 afterward a recap panel reveals every opponent's full reasoning.
 
@@ -54,14 +57,17 @@ That's genuinely useful for learning fundamentals (pot odds, equity, position, s
 it's honest about its ceiling.
 
 Earlier versions labeled the model's move "GTO play" and the tight table style "GTO." Those
-were overclaims and have been renamed ("Model line" and "Tight"). The internal style key is
+were overclaims and have been renamed ("Trainer's choice" and "Tight"). The internal style key is
 still `"gto"` for historical reasons; it's never shown to the user.
 
-**Where there IS a real equilibrium.** For the one game that's actually tractable — heads-up
-preflop push/fold — there's a standalone **Nash solver** at [`/solver`](https://pokerface.katswint.com/solver):
-a true equilibrium computed by fictitious play over a precomputed 169×169 equity matrix,
-verifiable against published charts (at 10bb it shoves the SB 58% / calls the BB 37.5%). It's
-deliberately separate from the 4-handed heuristic trainer — see [METHODOLOGY.md](METHODOLOGY.md).
+**A smaller game can be measured more directly.** The standalone
+[`/solver`](https://pokerface.katswint.com/solver) explorer searches for stable play in a
+heads-up shove-or-fold model. It reports the remaining strategy gap, uses precomputed charts
+so the slider is instant, and shows its two important limits: an estimated equity matrix and
+no card-removal weighting between ranges. It is deliberately separate from the 4-handed
+trainer. Its 20,000-round solutions make the broad range widths useful, but noisy edge hands
+are labeled as such instead of being presented as exact recommendations. See
+[METHODOLOGY.md](METHODOLOGY.md).
 
 ---
 
@@ -71,27 +77,35 @@ deliberately separate from the 4-handed heuristic trainer — see [METHODOLOGY.m
 position- and pressure-based thresholds. A hand is raised if its tier ≤ the position's
 raise threshold, called if ≤ the call threshold (and the price is right), else folded.
 Thresholds tighten as raises stack up (open → 3-bet → 4-bet) and widen with looser table
-styles. In the tight style the model roughly opens UTG ~top 27%, BTN/SB ~top 45%, and
-defends the BB ~55% vs a raise. *(These are the model's stated ranges, not solver outputs —
-see the note above.)*
+styles. Every percentage shown in the app is counted directly from all 1,326 starting-card
+combinations, so the explanation cannot drift away from the shipped hand groups. These are
+model rules, not solver outputs or promises that a play will make money.
 
 **Postflop** — a **1,000-simulation Monte Carlo** equity estimate per decision
 (`src/lib/poker/equity.ts`). Each sim:
-1. Deals opponents from a **range-filtered pool** — hands actually in a plausible playing
-   range, not random junk. (Naive equity-vs-random overstates hero strength because real
-   villains bet ranges.)
+1. Samples the whole set of opponent hands from the app's **range-filtered pool**, rather
+   than assuming every player holds two random cards. This is a modeling choice, not a
+   claim to know a real opponent's range. Incompatible sets are rejected as a whole, so no opponent seat
+   gets a sampling advantage from being chosen first.
 2. Completes the board from the remaining deck.
-3. Scores all hands head-to-head, crediting split pots at half.
+3. Scores all hands head-to-head, crediting ties by exact pot share (`1 ÷ tied winners`).
 
-Equity is compared to pot odds for call/fold. Value-bet sizing scales with equity and
-shrinks as the pot goes multiway; the semi-bluff fires at a fixed frequency only when the
-hand still has equity to improve (a draw / overcards), never on pure air. All ~12,000
-simulations for a full hand run at deal time inside a single `useMemo`.
+The full-precision estimate is compared directly with the real price of calling. The engine
+caps short all-ins and excludes unmatched chips the caller cannot win. Table personality
+changes the sampled opponent range, never the break-even equation. Value-bet sizing scales with equity and
+shrinks as the pot goes multiway, but the trainer does not model a separate range of hands
+that will call those bets. The semi-bluff fires at a fixed frequency only when the hand can
+still improve (a draw / overcards), never on pure air. Because the trainer does not model
+which hands call, it shows a pure-bluff fold-rate reference rather than claiming an exact
+semi-bluff result. All ~12,000 simulations for a full hand run at deal time inside a single
+`useMemo`.
 
-**The math shown** — for each postflop decision the feed derives Monte Carlo equity
-(reported as `~X% ± SE`, the honest ±1σ of a 1,000-sample estimate), pot odds
-(`toCall ÷ (pot + toCall)`), EV, bet sizing, and the semi-bluff breakeven
-(`bet ÷ (pot + bet)`, with the proof that it mirrors the pot odds the villain faces).
+**The numbers shown** — for each postflop decision the feed shows a random-deal estimate
+and the sampling error measured from the actual win, loss, and split-pot results. It also
+shows the call price, average result, and bet sizing. For a semi-bluff, it labels
+`bet ÷ (pot + bet)` as the fold rate a hand with no chance when called would need. A real
+semi-bluff needs fewer folds because it can still win, but an exact number would require a
+separate model of the opponent's calling hands.
 
 ---
 
@@ -103,17 +117,19 @@ src/
   components/PokerSim.tsx   UI + rendering (one component, by design*)
   lib/poker/                pure, UI-free, unit-tested domain core
     cards.ts                deck, rank/suit constants, formatting helpers
-    eval.ts                 hand evaluation — evalHand + handScore on one shared core
+    eval.ts                 readable reference hand evaluator
+    score7.ts               fast seven-card evaluator used in simulations
     ranges.ts               preflop tiers & position thresholds
     equity.ts               Monte Carlo, exact-equity validation, the determinism seam
     pots.ts                 side-pot & split-pot distribution
     engine.ts               one betting round, shared by preflop & postflop
     decide.ts               the full decision engine (board/holding analysis + choice)
     types.ts                shared domain types
-  lib/solver/               heads-up push/fold Nash solver + precomputed equity matrix
+  lib/solver/               heads-up push/fold model + precomputed equity and strategy data
 test/                       node:test suites that import the REAL lib/ (not copies)
+e2e/                        Playwright keyboard and training-flow smoke tests
 bench/                      equity throughput + memoization benchmark (npm run bench)
-.github/workflows/ci.yml    lint + type-check + tests + build on every push
+.github/workflows/ci.yml    lint + types + domain tests + build + browser tests
 ```
 
 **The determinism seam** (`equity.ts`) is the core correctness insight. The whole hand is
@@ -134,7 +150,10 @@ this killed: `evalHand`/`handScore` were separate encodings of the same ranking 
 silently disagreed (now one `rankCards` core, guarded by a property test); and the betting
 loop existed **twice** — inline for preflop and a near-duplicate for postflop — now a single
 `engine.runBettingRound` with the decision function injected, so the tests drive it with
-scripted actions (blinds, raises re-opening action, all-in caps, hero-index accounting).
+scripted actions (short blinds, minimum raises, cumulative short-all-in reopening, dry side
+pots, all-in caps, and hero-index accounting). The engine exposes structured legal actions
+to the UI and records requested decisions separately from applied actions, so the interface
+cannot offer or announce a move the engine did not execute.
 
 \* **Why is the component still one file?** After extracting `decide.ts`, `PokerSim.tsx` is
 now essentially UI: the per-deal `useMemo` game loop and rendering. The entire decision
@@ -155,33 +174,37 @@ fixed). Coverage:
   `evalHand` and `handScore` never disagree.
 - **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
   against the real function.
-- **equity** — purity, memoization consistency, monotonicity, and — the load-bearing one —
-  **Monte Carlo converges to exact enumerated equity** (river & turn) within its own
-  confidence interval, proving the sampler is unbiased.
-- **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
-  against the real function.
-- **pots** — single winner, even chop, odd-chip splitting, a short all-in main-pot/side-pot
-  split, and uncalled-excess return.
-- **engine** — a betting round driven by scripted decisions: checks move no chips, a bet
-  re-opens action, folds drop seats, over-bets cap at all-in, raise counter + hero index.
-- **decide** — the full decision engine: premiums raise / trash folds preflop, value bets
-  and folds-to-price postflop, and board/holding/threat analysis.
+- **equity** — purity, memoization consistency, multiway split shares, equal-weight whole-table
+  sampling, measured sampling error, monotonicity, and — the load-bearing one —
+  **the random-deal estimate agrees with full enumeration** on pinned river and turn cases
+  within the measured sampling error. This catches important sampling bias without claiming
+  that two examples prove every possible case.
+- **pots** — single winner, even chop, button-relative odd-chip splitting, exact per-layer
+  awards, a short all-in main-pot/side-pot split, uncalled-excess return, and a property that
+  every layer goes to the strongest eligible hand.
+- **engine** — a betting round driven by scripted decisions: checks move no chips, full and
+  cumulative short raises reopen action correctly, dry side pots cannot be bet, illegal
+  undersized raises normalize to calls, short blinds never negative a stack, and over-bets cap all-in.
+- **decide** — the full decision engine: stronger starting groups raise and weaker groups fold preflop, value bets
+  and folds-to-price postflop, exact call-EV classification, and street-aware board analysis.
 - **invariants** (`fast-check` fuzzing) — **chip conservation** (Σ payouts = Σ contributions,
   no chips created/destroyed) across 1,000 random pots, side-pot eligibility, betting-round
-  conservation, evaluator-ordering consistency. Found no bugs — after thousands of inputs,
-  that's the point.
-- **solver** — Nash push/fold: equity symmetry, AA always in, monotone shove range vs depth,
-  and `score7` proven byte-identical to `handScore` over 100k hands.
+  conservation, evaluator-ordering consistency, and call-profitability equivalence.
+- **solver** — push/fold model sanity checks, an explicit strategy-gap target at every shown
+  depth, and `score7` proven byte-identical to `handScore` over 100,000 hands.
+- **browser smoke tests** — native Space activation for Deal and training-choice buttons,
+  run against a production build in Chromium.
 
-CI (`.github/workflows/ci.yml`) runs lint + type-check + tests + build on every push.
+CI (`.github/workflows/ci.yml`) runs lint + type-check + domain tests + build + browser smoke tests on every push.
 See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, validation, and error bounds.
 
-**Money handling is now correct.** Showdown distribution used to award the entire pot to the
+**Money handling now has direct safeguards.** Showdown distribution used to award the entire pot to the
 single best hand — no side pots, and ties weren't actually split despite the UI announcing
 "Split pot." Because every committed chip is deducted from a player's stack, each player's
-contribution this hand is simply `startingStack − currentStack`; `distributePots` uses that
-to build proper side pots and split ties evenly (odd chip to the lower seat). This matters
-because stacks carry across hands.
+contribution is now tracked explicitly by the betting engine; `distributePots` uses that
+ledger to build proper side pots and split ties evenly (odd chip to the first winner clockwise
+from the button). Every pot layer exposes exact per-seat awards for the showdown UI. This
+matters because stacks carry across hands.
 
 ---
 
@@ -197,19 +220,19 @@ because stacks carry across hands.
 | Per-spot-seeded, memoized equity | Keeps the `useMemo`-recompute model consistent (the determinism seam) and makes re-simulated streets free |
 | Pure logic in `lib/`, UI + prose in one component | Isolate and test what benefits from it; don't over-split coupled UI/prose |
 | Inline styles, no CSS framework | A single self-contained terminal aesthetic; Tailwind would be dead weight here |
-| Heuristic 4-handed trainer + a real HU push/fold solver | The trainer teaches fundamentals with transparent math; the solver shows a genuine equilibrium where one is tractable |
+| Heuristic 4-handed trainer + a measured HU push/fold model | The trainer teaches fundamentals; the smaller model can report how close its saved strategy is to stable play |
 
 **Known limitations (honest scope):**
 
 - **The 4-handed trainer is heuristic, not a solver.** No range-vs-range, mixed strategies,
-  blockers, or bet/fold. (Real GTO for 4-max is a research problem — see "Is this GTO?".
-  Where it *is* tractable, heads-up push/fold, there's a real Nash solver at `/solver`.)
-- **Fixed 4-handed, 5/10 blinds, ~200bb.** No table-size/stake variation — the tier ranges
+  blockers, or bet/fold. (Real GTO for 4-max is a research problem — see "Is this GTO?".)
+- **Fixed 4-handed, 5/10 blinds, 20bb starting stacks.** No table-size/stake variation — the tier ranges
   are calibrated for 4-handed and would need re-tuning per table size, which is its own
   correctness project; kept scoped deliberately rather than shipped wrong.
-- **Multiway equity is a defensible approximation.** The equity itself (P(win vs N)) is
-  multiway-correct and value-bet **sizing is now scaled by opponent count**; the residual
-  approximation is comparing to heads-up-style pot odds and ignoring equity realization.
+- **Multiway equity is still a model.** Complete opponent-hand sets are sampled without seat
+  order bias, ties use the exact share, and value-bet sizing changes with player count. The
+  remaining limits are static opponent ranges, no separate calling range for bets and raises,
+  and no model of how often equity is realized.
 
 ---
 
@@ -225,20 +248,24 @@ because stacks carry across hands.
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000  (and /solver for the Nash solver)
-npm test         # domain + property test suite (57 tests)
+npm run dev      # http://localhost:3000  (and /solver for the push/fold explorer)
+npm test         # domain + property test suite
+npm run test:e2e # production-build browser smoke tests
 npm run bench    # equity throughput + memoization benchmark
 npm run build    # production build
 ```
 
 ## Accessibility
 
-Interactive controls are real buttons; history rows are keyboard-operable (`role="button"`,
-Enter/Space); cards carry text alternatives (`aria-label`); a polite live region announces
-each step; focus is visible; and step auto-advance respects `prefers-reduced-motion`.
+Interactive controls preserve native keyboard behavior; history rows are keyboard-operable
+(`role="button"`, Enter/Space); cards carry text alternatives (`aria-label`); a polite live
+region announces each step; focus is visible; and step auto-advance respects
+`prefers-reduced-motion`. Plain language is the saved default; Poker terms mode adds
+keyboard-, touch-, and hover-accessible term explanations.
 
 ## Navigation
 
-- `→` / `Space` — next step
+- `→` — next step when focus is outside an interactive control
 - `←` — previous step
+- `Enter` / `Space` — activate the focused native control
 - Click any history entry — jump to the full log at that step

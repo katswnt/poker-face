@@ -1,6 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { monteCarloEquity, exactEquity, equityStandardError, clearEquityCache } from "../src/lib/poker/equity";
+import {
+  monteCarloEquity,
+  monteCarloEquityEstimate,
+  exactEquity,
+  equityStandardError,
+  clearEquityCache,
+  mulberry32,
+  sampleRangeTupleIndices,
+  standardErrorFromMoments,
+} from "../src/lib/poker/equity";
 import { cards } from "./helpers";
 
 test("equity is pure: same inputs → identical result", () => {
@@ -41,26 +50,56 @@ test("equity drops as opponents are added", () => {
   assert.ok(vs1 > vs3, `AA equity should fall with more opponents: ${vs1} vs ${vs3}`);
 });
 
-// ── Estimator validation: MC must converge to the exact enumerated equity ──────────────
-// This is the load-bearing test for the whole equity engine: it proves the sampler is
-// unbiased by pinning it to ground truth computed by full enumeration.
-test("Monte Carlo converges to EXACT equity on the river (unbiased sampler)", () => {
-  const hole = cards("As", "Kd"), board = cards("Ah", "7c", "2d", "Jc", "5s");
-  const exact = exactEquity(hole, board, "gto");
-  const mc = monteCarloEquity(hole, board, 1, 4000, "gto", 20240101);
-  const se = equityStandardError(mc, 4000);
-  assert.ok(Math.abs(mc - exact) < 4 * se + 0.01, `river: MC ${mc.toFixed(4)} vs exact ${exact.toFixed(4)} (4·SE=${(4 * se).toFixed(4)})`);
+test("forced ties return the exact share for every table size from 2 through 6 players", () => {
+  const hole = cards("2c", "3d");
+  const board = cards("As", "Ks", "Qs", "Js", "Ts"); // everyone plays the royal-flush board
+
+  for (let playerCount = 2; playerCount <= 6; playerCount++) {
+    const estimate = monteCarloEquityEstimate(hole, board, playerCount - 1, 100, "wild", 100 + playerCount);
+    assert.equal(estimate.equity, 1 / playerCount, `${playerCount}-way tie should return exactly 1/${playerCount}`);
+    assert.equal(estimate.standardError, 0, `${playerCount}-way forced tie should have no sampling uncertainty`);
+  }
 });
 
-test("Monte Carlo converges to EXACT equity on the turn (one card to come)", () => {
+test("whole opponent tuples are sampled without seat-order bias", () => {
+  const pairs: Array<[number, number]> = [[0, 1], [2, 3], [4, 5]];
+  const rng = mulberry32(20260827);
+  const counts = new Map<string, number>();
+  for (let sample = 0; sample < 60_000; sample++) {
+    const tuple = sampleRangeTupleIndices(pairs, 2, rng);
+    const key = tuple.map(pair => pair[0]).join(",");
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  assert.equal(counts.size, 6, "all six compatible ordered tuples must appear");
+  const frequencies = [...counts.values()];
+  assert.ok(Math.max(...frequencies) / Math.min(...frequencies) < 1.06, `tuple counts are uneven: ${frequencies.join(", ")}`);
+});
+
+// ── Estimator validation: MC must track the exact enumerated equity ─────────────────────
+// These independent comparisons can catch sampling bias in important pinned cases; they
+// do not claim to prove correctness for every possible input.
+test("Monte Carlo tracks exact equity on the river within measured error", () => {
+  const hole = cards("As", "Kd"), board = cards("Ah", "7c", "2d", "Jc", "5s");
+  const exact = exactEquity(hole, board, "gto");
+  const estimate = monteCarloEquityEstimate(hole, board, 1, 4000, "gto", 20240101);
+  assert.ok(Math.abs(estimate.equity - exact) < 4 * estimate.standardError + 0.01, `river: MC ${estimate.equity.toFixed(4)} vs exact ${exact.toFixed(4)} (4·SE=${(4 * estimate.standardError).toFixed(4)})`);
+});
+
+test("Monte Carlo tracks exact equity on the turn within measured error", () => {
   const hole = cards("As", "Kd"), board = cards("Ah", "7c", "2d", "Jc");
   const exact = exactEquity(hole, board, "gto");
-  const mc = monteCarloEquity(hole, board, 1, 5000, "gto", 20240202);
-  const se = equityStandardError(mc, 5000);
-  assert.ok(Math.abs(mc - exact) < 4 * se + 0.015, `turn: MC ${mc.toFixed(4)} vs exact ${exact.toFixed(4)} (4·SE=${(4 * se).toFixed(4)})`);
+  const estimate = monteCarloEquityEstimate(hole, board, 1, 5000, "gto", 20240202);
+  assert.ok(Math.abs(estimate.equity - exact) < 4 * estimate.standardError + 0.015, `turn: MC ${estimate.equity.toFixed(4)} vs exact ${exact.toFixed(4)} (4·SE=${(4 * estimate.standardError).toFixed(4)})`);
 });
 
 test("standard error shrinks like 1/√n", () => {
   assert.ok(equityStandardError(0.5, 4000) < equityStandardError(0.5, 1000));
   assert.ok(Math.abs(equityStandardError(0.5, 10000) - 0.005) < 0.0005, "SE(0.5, 10000) ≈ 0.5%");
+});
+
+test("sample error uses split-pot values instead of pretending every sample is win/loss", () => {
+  const sum = 0 + 0.5 + 1;
+  const sumSquares = 0 + 0.25 + 1;
+  assert.ok(Math.abs(standardErrorFromMoments(sum, sumSquares, 3) - Math.sqrt(0.25 / 3)) < 1e-12);
+  assert.equal(standardErrorFromMoments(50, 25, 100), 0, "one hundred identical half-pot shares have no sampling error");
 });

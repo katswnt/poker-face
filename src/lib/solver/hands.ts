@@ -39,9 +39,9 @@ export interface CanonicalHand {
   col: number;          // grid col (0 = A)
 }
 
-// Concrete representative combos. The specific suits are only a starting point —
-// equityMatrix re-randomizes suits per Monte Carlo trial, so representation is unbiased —
-// but they give each hand a valid, collision-free 2-card combo for display and sanity use.
+// Concrete representative combos. The specific suits are only a starting point:
+// equityMatrix re-randomizes suits per trial to average across valid suit interactions.
+// These cards also give each hand a valid combo for display and sanity use.
 function makeCombo(type: HandType, hi: number, lo: number): CardObj[] {
   const hiR = valShort(hi), loR = valShort(lo);
   if (type === "pair") return [{ rank: hiR, suit: "♠" }, { rank: loR, suit: "♥" }];

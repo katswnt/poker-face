@@ -2,12 +2,12 @@
 //
 // IMPORTANT framing: this is a hand-tier heuristic, NOT a game-theory-optimal solver.
 // It buckets 169 starting hands into 6 tiers and opens/defends by position. It is a
-// reasonable, teachable approximation of a solver's *ranges* — it has no mixed
-// strategies, no card removal, and no range-vs-range indifference. See README
-// ("Is this GTO?") for the honest scope.
+// teachable starting-hand chart — it has no mixed strategies, no card removal,
+// and no range-vs-range indifference. See README ("Is this GTO?") for the
+// honest scope.
 import type { TableStyle } from "./types";
 
-// Hand tier 1 (premium) → 6 (garbage). Args are the high/low rank values (2–14).
+// Hand group 1 (strongest) → 6 (weakest). Args are the high/low rank values (2–14).
 export function preflopHandTier(hi: number, lo: number, suited: boolean): number {
   if (hi === lo) { if (hi >= 11) return 1; if (hi >= 7) return 2; if (hi >= 5) return 3; return 4; }
   if (hi === 14) {
@@ -44,6 +44,31 @@ export function preflopHandTier(hi: number, lo: number, suited: boolean): number
   return 6;
 }
 
+// Exact combo coverage for each cumulative hand group. Computing this from the classifier
+// keeps every percentage shown in the product tied to the code that actually makes the
+// decision. There are 1,326 equally likely two-card starting combinations: 6 per pair,
+// 4 per suited non-pair hand, and 12 per offsuit non-pair hand.
+const TOTAL_STARTING_COMBOS = 1326;
+const COMBOS_BY_TIER = (() => {
+  const counts = new Array(7).fill(0);
+  for (let hi = 2; hi <= 14; hi++) {
+    for (let lo = 2; lo <= hi; lo++) {
+      if (hi === lo) counts[preflopHandTier(hi, lo, false)] += 6;
+      else {
+        counts[preflopHandTier(hi, lo, true)] += 4;
+        counts[preflopHandTier(hi, lo, false)] += 12;
+      }
+    }
+  }
+  return counts;
+})();
+
+export function preflopRangePercent(maxTier: number): number {
+  const cap = Math.max(0, Math.min(6, Math.floor(maxTier)));
+  return COMBOS_BY_TIER.slice(1, cap + 1).reduce((sum, count) => sum + count, 0)
+    / TOTAL_STARTING_COMBOS * 100;
+}
+
 // [raiseTier, callTier] — play a hand if its tier <= threshold.
 // numRaisesAhead: 0 = opening, 1 = facing one raise (3-bet/call), 2+ = facing 4-bet+.
 export function preflopThresholds(posShort: string, numRaisesAhead: number, style: TableStyle = "gto"): [number, number] {
@@ -63,6 +88,6 @@ export function preflopThresholds(posShort: string, numRaisesAhead: number, styl
   if (posShort === "UTG") return [cap(3 + b), cap(3 + b)];   // 4-handed UTG ≈ CO; raise-or-fold
   if (posShort === "BTN") return [cap(4 + b), cap(5 + b)];
   if (posShort === "SB")  return [cap(4 + b), cap(5 + b)];   // 4-handed SB opens wide
-  if (posShort === "BB")  return [cap(2 + b), cap(5 + b)];   // BB re-raises premiums, defends wide
+  if (posShort === "BB")  return [cap(2 + b), cap(5 + b)];   // BB re-raises its strongest groups, defends wide
   return [cap(3 + b), cap(4 + b)];
 }

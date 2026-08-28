@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useCallback, useMemo, useRef, useEffect, useSyncExternalStore } from "react";
+import { createContext, useState, useCallback, useContext, useId, useMemo, useRef, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { SB, BB, SUIT_NAMES, makeDeck, shuffle, cardStr, valNameL } from "@/lib/poker/cards";
-import { bestHand, cmpK } from "@/lib/poker/eval";
+import { bestHand } from "@/lib/poker/eval";
 import { distributePots } from "@/lib/poker/pots";
-import { runBettingRound } from "@/lib/poker/engine";
+import { postBlinds, runBettingRound } from "@/lib/poker/engine";
 import { generateFullDecision, snapToBB, analyzeBoard, POS_SHORT } from "@/lib/poker/decide";
-import type { CardObj, Decision, PlayerInfo, Stage } from "@/lib/poker/types";
+import type { CardObj, Decision, LegalActions, PlayerInfo, Stage } from "@/lib/poker/types";
 
 // ═══════════════════════════════════════════
 // CONSTANTS
@@ -48,7 +48,82 @@ const T = {
 // ═══════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════
-interface SessionEntry { hand: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; aiReasoning: string; }
+export type ChoiceGrade = "model" | "different" | "costly" | "illegal";
+interface SessionEntry { hand: number; heroActionId: number; street: string; position: string; heroAction: string; aiAction: string; wasMatch: boolean; grade: ChoiceGrade; aiReasoning: string; }
+
+type LanguageMode = "plain" | "poker";
+const LanguageContext = createContext<LanguageMode>("plain");
+const LANGUAGE_STORAGE_KEY = "poker-face-language";
+const LANGUAGE_CHANGE_EVENT = "poker-face-language-change";
+
+function readLanguage(): LanguageMode {
+  return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === "poker" ? "poker" : "plain";
+}
+
+function subscribeToLanguage(onChange: () => void): () => void {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === LANGUAGE_STORAGE_KEY) onChange();
+  };
+  window.addEventListener("storage", onStorage);
+  window.addEventListener(LANGUAGE_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", onStorage);
+    window.removeEventListener(LANGUAGE_CHANGE_EVENT, onChange);
+  };
+}
+
+const TERM_DEFINITIONS: Record<string, string> = {
+  "monte carlo": "random-deal estimate",
+  "standard error": "likely sampling error",
+  "implied odds": "possible future winnings",
+  "fold equity": "chance everyone else folds",
+  "pot odds": "share needed to call",
+  "expected value": "average chips gained or lost",
+  "semi-bluff": "bet with a hand that can still improve",
+  "out of position": "acting earlier",
+  "in position": "acting later",
+  "variance": "short-term swings",
+  "equity": "expected share of the pot",
+  "outs": "cards that can improve the hand",
+  "range": "group of possible hands",
+  "value bet": "bet with a strong estimate",
+  "thin value": "small bet with a slight estimated edge",
+  "3-bet": "raise after one earlier raise",
+  "4-bet": "raise after two earlier raises",
+};
+
+const TERM_PATTERN = new RegExp(`\\b(${Object.keys(TERM_DEFINITIONS).sort((a, b) => b.length - a.length).join("|")})\\b`, "gi");
+
+function ExplainedTerm({ poker, plain }: { poker: string; plain: string }) {
+  const language = useContext(LanguageContext);
+  const [showPlain, setShowPlain] = useState(false);
+  const tooltipId = useId();
+  if (language === "plain") return <>{plain}</>;
+  const visible = showPlain ? plain : poker;
+  const help = showPlain ? `Poker term: ${poker}. Click to switch back.` : `Plain meaning: ${plain}. Click to replace this term.`;
+  return (
+    <span className="explained-term">
+      <button
+        type="button"
+        className="explained-term-button"
+        aria-describedby={tooltipId}
+        aria-pressed={showPlain}
+        onClick={() => setShowPlain(value => !value)}
+      >
+        {visible}
+      </button>
+      <span id={tooltipId} role="tooltip" className="explained-term-tooltip">{help}</span>
+    </span>
+  );
+}
+
+function PlainCopy({ children }: { children: string }) {
+  const parts = children.split(TERM_PATTERN);
+  return <>{parts.map((part, index) => {
+    const plain = TERM_DEFINITIONS[part.toLowerCase()];
+    return plain ? <ExplainedTerm key={`${part}-${index}`} poker={part} plain={plain} /> : <span key={index}>{part}</span>;
+  })}</>;
+}
 
 
 
@@ -65,34 +140,34 @@ const RULES = [
   { t: "Check", d: "Pass without betting. Only when nobody has bet this round." },
   { t: "Bet", d: "Put chips in when nobody else has bet this round." },
   { t: "Call", d: "Match someone else's bet to stay in." },
-  { t: "Raise", d: "Increase someone else's bet. Action goes back around to all players." },
+  { t: "Raise", d: "Increase someone else's bet. A full raise reopens raising; a short all-in may only change the price." },
   { t: "Fold", d: "Give up your hand. Lose what you've put in, risk nothing more." },
   { t: "Position", d: "Where you sit relative to the dealer. Acting later (closer to BTN) is a structural advantage — you see more information before committing chips." },
-  { t: "BTN / Button", d: "Best seat. Acts last postflop, seeing every opponent's action first. Rotates clockwise each hand." },
-  { t: "UTG", d: "Under the Gun — first to act preflop, worst position. No information before committing chips." },
+  { t: "BTN / Button", d: "Acts last after the flop, seeing the other players' choices before deciding. Rotates clockwise each hand." },
+  { t: "UTG", d: "Under the Gun — first to act before the flop, with no earlier choice to observe." },
   { t: "SB", d: "Small Blind — posts half the BB, acts second-to-last preflop, first postflop. Worst postflop position." },
-  { t: "BB", d: "Big Blind — posts the full BB, acts last preflop (gets to raise or defend). Still out of position postflop." },
+  { t: "BB", d: "Big Blind — posts the full BB and often closes the first betting round. Acts early after the flop." },
   { t: "In Position", d: "Acting after your opponent. You commit chips after seeing what they do — a major information edge." },
-  { t: "Out of Position", d: "Acting before your opponent (SB/BB/UTG). You fly blind — they get to react to your action." },
+  { t: "Out of Position", d: "Acting before another player. They see your choice before making theirs." },
   { t: "Flop", d: "First 3 community cards, dealt together." },
   { t: "Turn", d: "4th community card. Outs now multiply by 2, not 4." },
   { t: "River", d: "5th and final card. You have it or you don't." },
-  { t: "Pot", d: "All chips bet this hand. Winner takes it." },
+  { t: "Pot", d: "All chips bet this hand. Main and side pots are awarded separately, and tied pots are split." },
   { t: "Outs", d: "Cards left in the deck that improve your hand." },
-  { t: "Rule of 2 & 4", d: "Outs × 4 on flop, × 2 on turn. Gives your hit %." },
-  { t: "Pot Odds", d: "Cost to call ÷ (pot + cost) = % equity you need to break even." },
+  { t: "Rule of 2 & 4", d: "Outs × 4 on the flop or × 2 on the turn gives a quick estimate of the chance to improve." },
+  { t: "Pot Odds", d: "The share of the final pot you pay to call. Pay 20 toward a final pot of 100, and you need an average share of at least 20 of those chips over many deals." },
   { t: "Kicker", d: "Side card that breaks ties between equal pairs." },
   { t: "Top/Mid/Bot Pair", d: "Which board card your hole card matches." },
   { t: "Set", d: "Trips using a pocket pair + board card. Hidden and powerful." },
   { t: "Trips", d: "Three of a kind using a board pair + your card." },
-  { t: "Board Pair", d: "When the board pairs, EVERYONE has it." },
+  { t: "Board Pair", d: "Everyone may use a pair on the board, but hole cards can still make a stronger hand." },
   { t: "Flush Draw", d: "4 cards of one suit, need the 5th." },
   { t: "OESD", d: "Open-ended straight draw — 4 in a row, 8 outs." },
   { t: "Gutshot", d: "Need one rank in the middle for a straight. 4 outs." },
   { t: "Dirty Outs", d: "Cards that help you but might help someone else more." },
   { t: "C-bet", d: "Continuation bet — preflop raiser bets the flop." },
   { t: "Bluff", d: "Betting weak to make opponents fold." },
-  { t: "Showdown", d: "Everyone remaining shows. Best 5-card hand wins." },
+  { t: "Showdown", d: "Everyone remaining shows. Each pot goes to the best eligible 5-card hand; ties split it." },
 ];
 
 // ═══════════════════════════════════════════
@@ -147,7 +222,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
           {s.type === "info" ? "Setup" : s.street}
         </div>
         <div style={{ fontFamily: T.mono, fontSize: 15, fontWeight: 600, color: T.ink, lineHeight: 1.25, marginBottom: 3 }}>{s.title}</div>
-        <div style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.5 }}>{s.description || s.note}</div>
+        <div style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.5 }}><PlainCopy>{s.description || s.note || ""}</PlainCopy></div>
       </div>
     );
   }
@@ -179,7 +254,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
       );
     }
 
-    const toCallCtx = Math.max(0, (s.currentBet ?? 0) - (s.bets?.[s.playerIdx ?? 0] ?? 0));
+    const toCallCtx = s.callQuote?.callCost ?? Math.max(0, (s.currentBet ?? 0) - (s.bets?.[s.playerIdx ?? 0] ?? 0));
     return (
       <article style={{ padding: "12px 14px 14px", background: isFocused ? T.focus : "transparent", borderLeft: isFocused ? `2px solid ${T.accent}` : "2px solid transparent", borderBottom: `1px solid ${T.hairSoft}` }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
@@ -212,13 +287,13 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
         </div>
         <div style={{ display: "flex", gap: 7, marginBottom: 8 }}>
           <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>{"//"}</span>
-          <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}>{d.reasoning}</div>
+          <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}><PlainCopy>{d.reasoning}</PlainCopy></div>
         </div>
         {d.thoughts && d.thoughts.length > 0 && (
           <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(125,211,160,0.05)", border: `1px solid ${T.hairSoft}`, borderRadius: T.radius }}>
             <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 5 }}>Inner thoughts</div>
             {d.thoughts.map((t, ti) => (
-              <div key={ti} style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55, marginBottom: ti < d.thoughts.length - 1 ? 4 : 0 }}>{t}</div>
+              <div key={ti} style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55, marginBottom: ti < d.thoughts.length - 1 ? 4 : 0 }}><PlainCopy>{t}</PlainCopy></div>
             ))}
           </div>
         )}
@@ -226,7 +301,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
           <div style={{ marginTop: 7, padding: "8px 10px", background: "rgba(125,211,160,0.06)", border: `1px solid ${T.hair}`, borderRadius: T.radius }}>
             <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>The math</div>
             {d.math.map((m, mi) => (
-              <div key={mi} style={{ fontFamily: T.mono, fontSize: 11, color: T.ink, lineHeight: 1.55, marginBottom: mi < d.math.length - 1 ? 2 : 0 }}>{m}</div>
+              <div key={mi} style={{ fontFamily: T.mono, fontSize: 11, color: T.ink, lineHeight: 1.55, marginBottom: mi < d.math.length - 1 ? 2 : 0 }}><PlainCopy>{m}</PlainCopy></div>
             ))}
           </div>
         )}
@@ -236,16 +311,32 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
 
   if (s.type === "showdown") {
     const winnerName = players[s.winner!].name;
-    const winningHand = !s.foldWin ? s.results?.find(r => r.idx === s.winner)?.hand?.name : null;
+    const recipients = (s.payouts ?? []).map((amount, idx) => ({ idx, amount })).filter(({ amount }) => amount > 0);
+    const soleRecipient = recipients.length === 1 ? recipients[0] : null;
+    const soleHand = soleRecipient ? s.results?.find(r => r.idx === soleRecipient.idx)?.hand?.name : null;
     return (
       <div style={{ padding: "14px", background: T.panelAlt, borderTop: `2px solid ${T.accent}`, borderBottom: `1px solid ${T.hair}` }}>
         <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>Showdown</div>
         <div style={{ fontFamily: T.mono, fontSize: 17, fontWeight: 600, color: T.ink, lineHeight: 1.25, marginBottom: 4 }}>
-          {s.foldWin ? `${winnerName} wins — everyone else folded.` : s.chop ? `Split pot — tied with ${winningHand}.` : `${winnerName} wins with ${winningHand}.`}
+          {s.foldWin ? `${winnerName} wins — everyone else folded.` : soleRecipient ? `${players[soleRecipient.idx].name} wins with ${soleHand}.` : `Pot settled across ${recipients.length} players.`}
         </div>
         <div style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, marginBottom: s.rankedResults && s.rankedResults.length > 1 ? 10 : 0 }}>
-          {s.chop ? `${s.pot} chips split.` : `Takes the ${s.pot}-chip pot.`}
+          {s.foldWin ? `Takes the ${s.pot}-chip pot.` : soleRecipient ? `Receives all ${soleRecipient.amount} chips.` : `${s.pot} chips awarded across main and side pots.`}
         </div>
+        {!s.foldWin && s.pots && s.pots.length > 0 && (
+          <div style={{ padding: "8px 0", borderTop: `1px solid ${T.hairSoft}` }}>
+            {s.pots.map((layer, index) => {
+              const label = layer.contributors.length === 1 ? "Uncalled return" : index === 0 ? "Main pot" : `Side pot ${index}`;
+              const awards = layer.awards.map(award => `${players[award.idx].name} +${award.amount}`).join(" · ");
+              return (
+                <div key={`${label}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, fontFamily: T.mono, fontSize: 10.5, lineHeight: 1.8 }}>
+                  <span style={{ color: T.dim }}>{label} · {layer.amount}</span>
+                  <span style={{ color: T.inkSoft, textAlign: "right" }}>{awards}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
         {!s.foldWin && s.rankedResults && s.rankedResults.length > 1 && (
           <div style={{ paddingTop: 10, borderTop: `1px solid ${T.hairSoft}` }}>
             <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 6 }}>All hands at showdown</div>
@@ -274,7 +365,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
                   : `${w} kicker beats ${l}.`;
                 return <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginTop: 6, paddingTop: 6, borderTop: `1px solid ${T.hairSoft}` }}>Tiebreaker: {desc}</div>;
               }
-              return <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginTop: 6 }}>Split pot — identical hands.</div>;
+              return <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginTop: 6 }}>Top hands are identical.</div>;
             })()}
           </div>
         )}
@@ -290,41 +381,50 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
 // ═══════════════════════════════════════════
 // UI: Pre-Decision Context Strip
 // ═══════════════════════════════════════════
+export function positionTeachingNote(position: string, isPreflop: boolean): string {
+  if (isPreflop) {
+    if (position === "Dealer") return "Button — acts after UTG and before the blinds. After the flop, the Button acts last, so this trainer plays one of its wider starting groups here.";
+    if (position === "Small Blind") return "Small Blind — acts after the Button before the flop, then acts first after the flop.";
+    if (position === "Big Blind") return "Big Blind — has already paid the largest blind and often closes the first betting round. After the flop, the Big Blind acts early.";
+    return "UTG — first to act before the flop. With no one else's choice to observe, this trainer uses a tighter starting group.";
+  }
+  if (position === "Dealer") return "Button — acts last after the flop, so it sees the other players' choices before deciding.";
+  if (position === "Small Blind") return "Small Blind — acts first after the flop and must decide before seeing what the others do.";
+  if (position === "Big Blind") return "Big Blind — acts early after the flop, after the Small Blind and before UTG and the Button.";
+  return "UTG — acts after the blinds and before the Button after the flop.";
+}
+
+export function boardTeachingNote(board: CardObj[]): string | null {
+  const ba = board.length > 0 ? analyzeBoard(board) : null;
+  if (!ba) return null;
+  const repeatedRank = ba.trips[0];
+  const repeatedCount = repeatedRank === undefined ? 0 : ba.vals.filter(v => v === repeatedRank).length;
+  if (repeatedCount === 4) return `Four ${valNameL(repeatedRank)}s are on the board — everyone has four of a kind, so the highest remaining card decides.`;
+  if (repeatedCount === 3) return `Three ${valNameL(repeatedRank)}s are on the board — full houses and four of a kind are possible.`;
+  if (ba.pairs.length > 0 && ba.madeFlushPossible) return "The board is paired and has three cards of one suit — flushes, three of a kind, and full houses are possible.";
+  if (ba.pairs.length > 0) return "The board is paired — three of a kind and full houses are possible.";
+  if (ba.madeFlushPossible) return `${ba.flushCount} cards share a suit — a flush is already possible.`;
+  if (ba.cardsToCome === 0 && ba.straightDanger) return "The river is connected — a straight is possible, and no cards remain to be dealt.";
+  if (ba.cardsToCome === 0) return "The river is complete — no cards remain to be dealt.";
+  if (ba.straightDanger && ba.flushDrawPossible) return "The board has possible straight and flush draws.";
+  if (ba.straightDanger) return "The connected cards make straight draws possible.";
+  if (ba.flushDrawPossible) return "Two cards share a suit, so a flush can still be completed.";
+  return "There are few obvious straight or flush draws, but later cards can still change who is ahead.";
+}
+
 function PreDecisionStrip({ stage, players }: { stage: Stage; players: PlayerInfo[] }) {
   const player = players[stage.playerIdx!];
-  const toCall = Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx!] ?? 0));
+  const toCall = stage.callQuote?.callCost ?? Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx!] ?? 0));
   const isPreflop = stage.street === "preflop";
-  const ba = stage.board.length > 0 ? analyzeBoard(stage.board) : null;
-
-  const posNote = (() => {
-    const pos = player.pos;
-    if (isPreflop) {
-      if (pos === "Dealer") return "Button — acting last preflop. Widest opening range.";
-      if (pos === "Small Blind") return "Small Blind — you'll be out of position every postflop street.";
-      if (pos === "Big Blind") return "Big Blind — last preflop. Best price, worst postflop position.";
-      return "UTG — first to act preflop. No reads. Range must be tight.";
-    }
-    if (pos === "Dealer") return "Button — acting last every street. Maximum information advantage.";
-    if (pos === "Small Blind") return "Small Blind — you act first postflop. No reads before committing.";
-    if (pos === "Big Blind") return "Big Blind — early postflop position. Limited info before deciding.";
-    return "UTG — before the button postflop. Some positional disadvantage.";
-  })();
+  const posNote = positionTeachingNote(player.pos, isPreflop);
 
   const potOddsNote = toCall > 0 ? (() => {
-    const pct = Math.round(toCall / (stage.pot + toCall) * 100);
-    return `${toCall} to call into ${stage.pot + toCall} pot — need ~${pct}% equity to break even.`;
+    const total = stage.callQuote?.contestablePot ?? stage.pot + toCall;
+    const pct = Math.round((stage.callQuote?.requiredEquity ?? toCall / total) * 100);
+    return `${toCall} to call for a final pot of ${total} — this needs about ${pct}% of that pot over many deals.`;
   })() : null;
 
-  const boardNote = ba ? (() => {
-    if (ba.trips.length > 0) return "Paired board (trips possible) — full houses in range. Polarizing spot.";
-    if (ba.pairs.length > 0 && ba.isMonotone) return "Paired and monotone — flush possible, trips in range. Complex texture.";
-    if (ba.pairs.length > 0) return "Paired board — trips and boats in range. Value bets reveal strength.";
-    if (ba.isMonotone) return `Monotone (${ba.flushCount} ${ba.flushSuit}) — flush already possible. Draws must pay immediately.`;
-    if (ba.straightDanger && ba.twoTone) return "Wet board — straight draws and flush draws both live. Charge them now.";
-    if (ba.straightDanger) return "Connected board — straight draws possible. Protect made hands; don't slow-play.";
-    if (ba.twoTone) return "Two-tone — flush draw in play. Made hands should charge the draw.";
-    return "Dry board — few draws. Made hands run to showdown. Equity is stable.";
-  })() : null;
+  const boardNote = boardTeachingNote(stage.board);
 
   const rows: { label: string; note: string }[] = [
     { label: "Position", note: posNote },
@@ -337,7 +437,7 @@ function PreDecisionStrip({ stage, players }: { stage: Stage; players: PlayerInf
       {rows.map(({ label, note }, idx) => (
         <div key={label} style={{ display: "flex", gap: 10, ...(idx < rows.length - 1 ? { marginBottom: 4 } : {}) }}>
           <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.dim, minWidth: 54, paddingTop: 2, flexShrink: 0 }}>{label}</span>
-          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.45 }}>{note}</span>
+          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.45 }}><PlainCopy>{note}</PlainCopy></span>
         </div>
       ))}
     </div>
@@ -346,8 +446,9 @@ function PreDecisionStrip({ stage, players }: { stage: Stage; players: PlayerInf
 
 function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: PlayerInfo[]; onChoice: (action: string) => void }) {
   const player = players[stage.playerIdx!];
-  const toCall = (stage.currentBet || 0) - (stage.bets?.[stage.playerIdx!] || 0);
-  const actions = toCall > 0 ? ["fold", "call", "raise"] : ["fold", "check", "raise"];
+  const toCall = stage.callQuote?.callCost ?? Math.max(0, (stage.currentBet || 0) - (stage.bets?.[stage.playerIdx!] || 0));
+  const actionOrder = ["fold", "check", "call", "bet", "raise"] as const;
+  const actions = actionOrder.filter(action => stage.legalActions?.[action]);
   return (
     <div style={{ padding: "16px 14px 18px", background: T.focus, borderBottom: `1px solid ${T.hair}` }}>
       <PreDecisionStrip stage={stage} players={players} />
@@ -358,14 +459,14 @@ function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: P
       </div>
       <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, marginBottom: 14, lineHeight: 1.4 }}>
         {toCall > 0
-          ? <>Pot <span style={{ color: T.accent }}>{stage.pot}</span> · facing a bet of <span style={{ color: T.accent }}>{stage.currentBet}</span> · <span style={{ color: T.accent, fontWeight: 600 }}>{toCall}</span> to call.</>
-          : <>First to act. Pot is <span style={{ color: T.accent }}>{stage.pot}</span>.</>
+          ? <>Pot <span style={{ color: T.accent }}>{stage.pot}</span> · <span style={{ color: T.accent, fontWeight: 600 }}>{toCall}</span> to call · you can win <span style={{ color: T.accent }}>{stage.callQuote?.contestablePot ?? stage.pot + toCall}</span>.</>
+          : <>No bet to call. Pot is <span style={{ color: T.accent }}>{stage.pot}</span>.</>
         }
       </div>
       <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, marginBottom: 10, letterSpacing: "0.12em", textTransform: "uppercase" }}>What do you do?</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const }}>
         {actions.map(action => (
-          <button key={action} onClick={() => onChoice(action)} style={{ padding: "9px 18px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer" }}>
+          <button type="button" key={action} onClick={() => onChoice(action)} style={{ padding: "9px 18px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer" }}>
             {action}
           </button>
         ))}
@@ -377,22 +478,34 @@ function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: P
 // ═══════════════════════════════════════════
 // UI: Comparison Banner
 // ═══════════════════════════════════════════
-function ComparisonBanner({ userAction, aiAction }: { userAction: string; aiAction: string }) {
-  const aggressive = ["bet", "raise"];
-  const isMatch = userAction === aiAction || (aggressive.includes(userAction) && aggressive.includes(aiAction));
-  const isClose = !isMatch && (
-    (userAction === "check" && aiAction === "call") ||
-    (userAction === "call" && aiAction === "check")
+function gradeChoice(userAction: string, aiAction: string, stage: Stage): ChoiceGrade {
+  if (!stage.legalActions?.[userAction as keyof LegalActions]) return "illegal";
+  if (userAction === aiAction) return "model";
+  const facingBet = (stage.callQuote?.callCost ?? 0) > 0;
+  const hasMeasuredPostflopPrice = stage.street !== "preflop" && facingBet && stage.aiDecision?.equity !== undefined;
+  const directCost = hasMeasuredPostflopPrice && (
+    (userAction === "call" && aiAction === "fold")
+    || (userAction === "fold" && (aiAction === "call" || aiAction === "raise"))
   );
-  const label = isMatch ? "✓ Match" : isClose ? "~ Close" : "✗ Different";
-  const color = isMatch ? T.accent : isClose ? "#f0c060" : "#ff7a6e";
+  return directCost ? "costly" : "different";
+}
+
+function ComparisonBanner({ userAction, aiAction, stage }: { userAction: string; aiAction: string; stage: Stage }) {
+  const grade = gradeChoice(userAction, aiAction, stage);
+  const labels: Record<ChoiceGrade, string> = {
+    model: "✓ Matches this trainer",
+    different: "~ Different legal choice",
+    costly: "! Costly in this model",
+    illegal: "× Poker rules do not allow this",
+  };
+  const color = grade === "model" ? T.accent : grade === "different" ? "#f0c060" : "#ff7a6e";
   return (
     <div style={{ padding: "8px 14px", background: `${color}18`, borderLeft: `3px solid ${color}`, borderBottom: `1px solid ${T.hairSoft}`, display: "flex", gap: 12, alignItems: "center" }}>
-      <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color, letterSpacing: "0.06em" }}>{label}</span>
+      <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color }}>{labels[grade]}</span>
       <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft }}>
         You: <span style={{ color: T.ink }}>{userAction}</span>
         <span style={{ color: T.dim }}>{" · "}</span>
-        AI: <span style={{ color: T.ink }}>{aiAction}</span>
+        Trainer: <span style={{ color: T.ink }}>{aiAction}</span>
       </span>
     </div>
   );
@@ -409,14 +522,14 @@ function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: 
   if (!hasAny) return null;
   return (
     <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
-      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>{"// villain decisions"}</div>
+      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 8 }}>{"// other players' decisions"}</div>
       {villainIdxs.map(vi => {
         const vstages = stages.filter(s => s.type === "action" && s.playerIdx === vi && s.decision?.action !== "already_folded");
         if (vstages.length === 0) return null;
         const isOpen = !!expanded[vi];
         return (
           <div key={vi} style={{ marginBottom: 6, border: `1px solid ${T.hairSoft}` }}>
-            <button
+            <button type="button"
               aria-expanded={isOpen}
               onClick={() => setExpanded(e => ({ ...e, [vi]: !e[vi] }))}
               style={{ width: "100%", padding: "7px 10px", background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, textAlign: "left" as const }}
@@ -444,22 +557,79 @@ function VillainRecap({ stages, heroIdx, players }: { stages: Stage[]; heroIdx: 
 // ═══════════════════════════════════════════
 // UI: Hand Review (shown at showdown in train mode)
 // ═══════════════════════════════════════════
+export interface HandOutcomeNote {
+  title: string;
+  reason: string;
+  lesson: string;
+}
+
+export function getHandOutcomeNote(stages: Stage[], heroIdx: number, grades: ChoiceGrade[]): HandOutcomeNote | null {
+  const showdown = stages.findLast(stage => stage.type === "showdown");
+  if (!showdown) return null;
+
+  const payout = showdown.payouts?.[heroIdx] ?? 0;
+  const heroWon = showdown.winner === heroIdx || payout > 0;
+  const heroFolded = showdown.folded[heroIdx] ?? false;
+  let title: string;
+  let reason: string;
+
+  if (heroWon && showdown.foldWin) {
+    const finalHeroAction = stages.findLast(stage =>
+      stage.type === "action"
+      && stage.playerIdx === heroIdx
+      && (stage.decision?.action === "bet" || stage.decision?.action === "raise"),
+    );
+    const actionDescription = finalHeroAction
+      ? `Your ${finalHeroAction.street ?? "final"} ${finalHeroAction.decision?.action} ended the hand, so your cards did not have to be best.`
+      : `Your cards did not have to be best.`;
+    title = "Why you won";
+    reason = `Every opponent folded. ${actionDescription}`;
+  } else if (heroWon) {
+    const heroResult = showdown.results?.find(result => result.idx === heroIdx)?.hand;
+    title = showdown.chop ? "Why you received chips" : "Why you won";
+    reason = heroResult
+      ? `${showdown.chop ? "You shared a pot" : "Your hand won at showdown"} with ${heroResult.name}.`
+      : payout > 0 ? `You received ${payout} chips from the pot at showdown.` : `You received a share of the pot at showdown.`;
+  } else if (heroFolded) {
+    title = "Why you did not win";
+    reason = "You folded before the hand ended, so you were no longer eligible to win a pot.";
+  } else {
+    const winningResult = showdown.results?.find(result => result.idx === showdown.winner)?.hand;
+    title = "Why you did not win";
+    reason = winningResult
+      ? `Another player won at showdown with ${winningResult.name}.`
+      : "Another player received the pot at showdown.";
+  }
+
+  const hasCostlyDifference = grades.some(grade => grade === "costly" || grade === "illegal");
+  const hasOtherDifference = grades.some(grade => grade === "different");
+  const lesson = hasCostlyDifference
+    ? `${heroWon ? "Winning once does not erase a costly choice." : "Losing once does not prove which choice caused it."} The grade describes what similar decisions are expected to do over time.`
+    : hasOtherDifference
+      ? `${heroWon ? "Winning this hand does not prove the different choice was better." : "Losing this hand does not prove the different choice was worse."} The trainer marked it as different, not as a measured loss.`
+      : `${heroWon ? "A good decision can win or lose once." : "Matching the trainer does not guarantee one hand will win."} The review grades the decisions using the information available at the time.`;
+
+  return { title, reason, lesson };
+}
+
 function HandReview({ stages, heroIdx, userChoices }: { stages: Stage[]; heroIdx: number; userChoices: Record<number, string> }) {
-  const aggressive = ["bet", "raise"];
-  const rows = stages.map((s, idx) => {
+  const rows = stages.map((s) => {
     if (s.type !== "action" || s.playerIdx !== heroIdx || s.decision?.action === "already_folded") return null;
-    const userAct = userChoices[idx];
+    if (s.heroActionId === undefined) return null;
+    const userAct = userChoices[s.heroActionId];
     if (!userAct) return null;
     const rawAi = s.aiDecision?.action ?? s.decision?.action ?? "";
-    const toCallStg = Math.max(0, (s.currentBet ?? 0) - (s.bets?.[heroIdx] ?? 0));
+    const toCallStg = s.callQuote?.callCost ?? Math.max(0, (s.currentBet ?? 0) - (s.bets?.[heroIdx] ?? 0));
     const aiNorm = rawAi === "call" && toCallStg === 0 ? "check" : rawAi;
-    const isMatch = userAct === aiNorm || (aggressive.includes(userAct) && aggressive.includes(aiNorm));
+    const grade = gradeChoice(userAct, aiNorm, s);
+    const isMatch = grade === "model";
     const aiReasoning = s.aiDecision?.reasoning ?? "";
-    return { street: s.street ?? "?", userAct, aiNorm, isMatch, aiReasoning };
-  }).filter(Boolean) as Array<{ street: string; userAct: string; aiNorm: string; isMatch: boolean; aiReasoning: string }>;
+    return { street: s.street ?? "?", userAct, aiNorm, isMatch, grade, aiReasoning };
+  }).filter(Boolean) as Array<{ street: string; userAct: string; aiNorm: string; isMatch: boolean; grade: ChoiceGrade; aiReasoning: string }>;
 
   if (rows.length === 0) return null;
   const matches = rows.filter(r => r.isMatch).length;
+  const outcome = getHandOutcomeNote(stages, heroIdx, rows.map(row => row.grade));
 
   return (
     <div style={{ margin: "10px 14px 0", padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}` }}>
@@ -469,19 +639,27 @@ function HandReview({ stages, heroIdx, userChoices }: { stages: Stage[]; heroIdx
           {matches}/{rows.length} matched
         </span>
       </div>
+      {outcome && (
+        <div style={{ marginBottom: 7, padding: "7px 9px", background: T.bg, borderLeft: `2px solid ${T.accent}` }}>
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, color: T.accent, textTransform: "uppercase", marginBottom: 3 }}>{outcome.title}</div>
+          <div style={{ fontFamily: T.mono, fontSize: 10.5, color: T.inkSoft, lineHeight: 1.45 }}><PlainCopy>{outcome.reason}</PlainCopy></div>
+          <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, lineHeight: 1.45, marginTop: 2 }}><PlainCopy>{outcome.lesson}</PlainCopy></div>
+        </div>
+      )}
       {rows.map((row, i) => {
-        const color = row.isMatch ? T.accent : "#ff7a6e";
+        const color = row.grade === "model" ? T.accent : row.grade === "different" ? "#f0c060" : "#ff7a6e";
+        const symbol = row.grade === "model" ? "✓" : row.grade === "different" ? "~" : row.grade === "costly" ? "!" : "×";
         return (
           <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "5px 0", borderTop: i > 0 ? `1px solid ${T.hairSoft}` : "none" }}>
-            <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 700, color, paddingTop: 2, flexShrink: 0 }}>{row.isMatch ? "✓" : "✗"}</span>
+            <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 700, color, paddingTop: 2, flexShrink: 0 }}>{symbol}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" as const }}>
                 <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>{row.street}</span>
                 <span style={{ fontFamily: T.mono, fontSize: 11, color: T.ink }}>You: {row.userAct}</span>
-                {!row.isMatch && <span style={{ fontFamily: T.mono, fontSize: 11, color: T.dim }}>· AI: {row.aiNorm}</span>}
+                {!row.isMatch && <span style={{ fontFamily: T.mono, fontSize: 11, color: T.dim }}>· Trainer: {row.aiNorm}</span>}
               </div>
               {!row.isMatch && row.aiReasoning && (
-                <div style={{ fontFamily: T.mono, fontSize: 10, color: T.inkSoft, lineHeight: 1.4, marginTop: 2 }}>{row.aiReasoning}</div>
+                <div style={{ fontFamily: T.mono, fontSize: 10, color: T.inkSoft, lineHeight: 1.4, marginTop: 2 }}><PlainCopy>{row.aiReasoning}</PlainCopy></div>
               )}
             </div>
           </div>
@@ -494,83 +672,98 @@ function HandReview({ stages, heroIdx, userChoices }: { stages: Stage[]; heroIdx
 // ═══════════════════════════════════════════
 // WHAT YOU MISSED
 // ═══════════════════════════════════════════
-function getMissedNote(userAction: string, ai: Decision, stage: Stage): string | null {
+export interface DifferenceNote {
+  reason: string;
+  caveat?: string;
+}
+
+const differenceNote = (reason: string, caveat?: string): DifferenceNote => ({ reason, caveat });
+
+export function getMissedNote(userAction: string, ai: Decision, stage: Stage): DifferenceNote | null {
   const ua = userAction;
   const aa = ai.action;
   if (ua === aa) return null;
 
   const equity = ai.equity;
   const equityPct = equity !== undefined ? Math.round(equity * 100) : null;
-  const toCall = Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx ?? 0] ?? 0));
+  const toCall = stage.callQuote?.callCost ?? Math.max(0, (stage.currentBet ?? 0) - (stage.bets?.[stage.playerIdx ?? 0] ?? 0));
   const pot = stage.pot;
-  const potOddsPct = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
-  const ev = equity !== undefined && toCall > 0 ? Math.round(equity * pot - (1 - equity) * toCall) : null;
+  const contestablePot = stage.callQuote?.contestablePot ?? pot + toCall;
+  const potOddsPct = toCall > 0 ? Math.round((stage.callQuote?.requiredEquity ?? toCall / contestablePot) * 100) : 0;
+  const ev = equity !== undefined && toCall > 0 ? Math.round(equity * contestablePot - toCall) : null;
   const isPreflop = stage.street === "preflop";
+  const isRiver = stage.street === "river";
+  const isSemiBluff = ai.reasoning.toLowerCase().includes("semi-bluff");
 
   if (isPreflop) {
     if (ua === "fold" && (aa === "call" || aa === "raise"))
-      return `Your hand was in the AI's ${aa === "raise" ? "raising" : "calling"} range from this position — folding is too tight here.`;
+      return differenceNote(`Your hand was in the trainer's ${aa === "raise" ? "raising" : "calling"} range from this position — folding is too tight for this model.`);
     if (ua === "call" && aa === "raise")
-      return `Premium hands should raise preflop to charge weaker holdings. Calling lets opponents in cheaply and your hand strength is disguised less.`;
+      return differenceNote(`The trainer raises because its starting-hand chart puts this hand in its strongest group for this spot. Raising builds the pot and makes weaker hands pay more to continue. Calling keeps the pot smaller and can invite more players in.`);
     if (ua === "call" && aa === "fold")
-      return `The AI folds here — this hand is below the calling threshold for this position. Calling risks chips without the equity to back it up.`;
+      return differenceNote(
+        `The trainer's starting-hand chart puts this hand below its calling group, so the trainer folds.`,
+        `The app has not calculated whether calling here would win or lose chips.`,
+      );
     if ((ua === "raise" || ua === "bet") && aa === "fold")
-      return `This hand falls below the AI's opening threshold for this position — raising risks chips without sufficient hand strength.`;
+      return differenceNote(
+        `The trainer's starting-hand chart puts this hand below its raising group for this spot, so the trainer folds.`,
+        `The app has not calculated whether raising here would win or lose chips.`,
+      );
     if ((ua === "raise" || ua === "bet") && aa === "call")
-      return `The AI calls here rather than raise — this hand isn't quite strong enough to build a big pot from this position.`;
+      return differenceNote(`The trainer calls rather than raises because it does not rate this hand highly enough to build a larger pot.`);
     return null;
   }
 
   // Postflop
   if (ua === "fold" && aa === "call") {
     if (equityPct !== null && ev !== null)
-      return `You folded getting ${potOddsPct}% pot odds with ~${equityPct}% equity — the call was ${ev >= 0 ? `+EV (+${ev} chips)` : `-EV (${ev} chips)`}. ${equityPct >= potOddsPct ? "Your equity covered the price." : ""}`.trim();
-    return `The AI calls here — your equity was sufficient to justify the price.`;
+      return differenceNote(`The call needed about ${potOddsPct}% of the final pot over many deals, and the estimate was about ${equityPct}%. Calling was estimated to ${ev >= 0 ? `gain ${ev} chips` : `lose ${Math.abs(ev)} chips`} on average.`);
+    return differenceNote(`The trainer calls because its estimated share of the pot covers the price.`);
   }
   if (ua === "fold" && (aa === "bet" || aa === "raise")) {
+    if (isSemiBluff)
+      return differenceNote(`The trainer sometimes bets this kind of unfinished hand because it can improve or win when everyone folds.`, `The app does not model exactly which hands would call this bet.`);
     if (equityPct !== null)
-      return `You folded a hand with ~${equityPct}% equity. The AI bets for value here — folding surrenders a profitable spot.`;
-    return `The AI bets for value here. Folding gives up equity you should be playing.`;
+      return differenceNote(`The trainer's estimate gives this hand about ${equityPct}% of the pot over many deals, which passes its rule for a ${aa}.`, `The app does not predict which weaker hands would call.`);
+    return differenceNote(`The hand passes the trainer's rule for a ${aa}.`, `The app does not predict which weaker hands would call.`);
   }
   if (ua === "fold" && aa === "check")
-    return `Checking was free — you never need to fold when check is an option. You gave up a free look at the next card.`;
+    return differenceNote(`Checking costs nothing, so folding is unnecessary when check is an option.`);
 
   if (ua === "check" && (aa === "bet" || aa === "raise")) {
-    if (equityPct !== null && equityPct >= 55) {
-      return `Checking gives opponents free cards on a board where you're ahead. With ~${equityPct}% equity, a bet forces draws to pay${ai.amount ? ` (AI bets ${ai.amount})` : ""}.`;
-    }
-    if (equityPct !== null) {
-      const foldPct = ai.amount ? Math.round(ai.amount / (pot + ai.amount) * 100) : null;
-      return `A bet works as a bluff here — with ~${equityPct}% equity you can't rely on showdown value, but a bet can take the pot${foldPct ? ` if villain folds more than ${foldPct}% of the time` : ""}.`;
-    }
-    return `The AI bets here — checking leaves value on the table or misses a bluff opportunity.`;
+    if (isSemiBluff)
+      return differenceNote(`The trainer sometimes bets this unfinished hand because it can improve or win when everyone folds${ai.amount ? `; here it bets ${ai.amount}` : ""}.`, `The app does not model exactly which hands would call, so it does not claim an exact profit for this bet.`);
+    if (equityPct !== null)
+      return differenceNote(`The trainer's estimate gives this hand about ${equityPct}% of the pot over many deals, which passes its rule for a ${aa}${ai.amount ? ` of ${ai.amount}` : ""}.`, `The app does not predict which weaker hands would call.`);
+    return differenceNote(`The hand passes the trainer's rule for a ${aa}.`, `The app does not predict which weaker hands would call.`);
   }
 
   if (ua === "call" && aa === "fold") {
     if (equityPct !== null && ev !== null)
-      return `You called ${toCall} into a ${pot} pot (${potOddsPct}% pot odds) with only ~${equityPct}% equity — this call loses ~${Math.abs(ev)} chips on average over time.`;
-    return `The AI folds here — your equity doesn't cover the cost of calling.`;
+      return differenceNote(`You paid ${toCall} toward a final pot of ${contestablePot}. This needs about ${potOddsPct}% of that pot over many deals, but the estimate was about ${equityPct}%. The call loses about ${Math.abs(ev)} chips on average in this model.`);
+    return differenceNote(`The trainer folds because the estimated share of the pot does not cover the call price.`);
   }
   if (ua === "call" && (aa === "bet" || aa === "raise")) {
     if (equityPct !== null)
-      return `Calling here misses value. With ~${equityPct}% equity you're ahead — a raise builds the pot when you're winning and charges draws to continue.`;
-    return `The AI raises to build the pot here. Calling misses value with strong equity.`;
+      return differenceNote(`The trainer's estimate gives this hand about ${equityPct}% of the pot over many deals, which passes its rule for a raise. Calling keeps the pot smaller; raising builds it.`, `The app does not predict which weaker hands would call the raise.`);
+    return differenceNote(`The hand passes the trainer's rule for a raise. Calling keeps the pot smaller; raising builds it.`, `The app does not predict which weaker hands would call the raise.`);
   }
 
   if ((ua === "bet" || ua === "raise") && aa === "check") {
     if (equityPct !== null)
-      return `With only ~${equityPct}% equity, betting risks chips on a weak holding. The AI checks to see the next card for free and avoid building a pot out of position.`;
-    return `The AI checks to control pot size here — a bet risks chips without enough equity to back it up.`;
+      return differenceNote(`The trainer's estimate gives this hand about ${equityPct}% of the pot over many deals, below its betting rule. It checks rather than add chips${isRiver ? "; no cards remain to improve the hand" : ". Another player may still bet"}.`);
+    return differenceNote(`The hand is below the trainer's betting rule, so it checks rather than add chips${isRiver ? "; no cards remain to be dealt" : ""}.`);
   }
   if ((ua === "bet" || ua === "raise") && aa === "fold") {
-    if (equityPct !== null)
-      return `The AI folds with ~${equityPct}% equity — this hand isn't worth playing at any price. Betting here puts chips in when you're unlikely to win even if called.`;
-    return `The AI folds here — this hand isn't worth playing. Betting risks chips without sufficient equity.`;
+    if (equityPct !== null && ev !== null)
+      return differenceNote(`The estimate does not cover the price of calling: the call would lose about ${Math.abs(ev)} chips on average in this model. Raising would put still more chips at risk.`);
+    return differenceNote(`The trainer folds because its estimate does not cover the call price. Raising would put still more chips at risk.`);
   }
   if ((ua === "bet" || ua === "raise") && aa === "call") {
-    if (equityPct !== null && equityPct < 55)
-      return `The AI calls here with ~${equityPct}% equity. Raising bloats the pot in a spot where you aren't a big favorite — calling keeps the pot manageable.`;
-    return `The AI calls rather than raises — keep the pot manageable with this hand strength.`;
+    if (equityPct !== null)
+      return differenceNote(`The estimate supports a call but does not pass the trainer's rule for a value raise. Raising would build a larger pot.`);
+    return differenceNote(`The hand passes the trainer's calling rule but not its rule for a value raise.`);
   }
 
   return null;
@@ -580,26 +773,30 @@ function getMissedNote(userAction: string, ai: Decision, stage: Stage): string |
 // MAIN COMPONENT
 // ═══════════════════════════════════════════
 export default function PokerSim() {
-  const [gs, setGs] = useState<{ hands: CardObj[][]; board: CardObj[]; seed: number } | null>(null);
+  const [gs, setGs] = useState<{ hands: CardObj[][]; board: CardObj[]; seed: number; style: "gto" | "loose" | "wild" } | null>(null);
 
   const [step, setStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
   const [mode, setMode] = useState<"focused" | "dense">("focused");
   const [dealerIdx, setDealerIdx] = useState(3); // Dan starts as BTN, rotates each hand
   const [startingStacks, setStartingStacks] = useState([200, 200, 200, 200]);
-  const [trainingMode, setTrainingMode] = useState(false);
+  const [trainingMode, setTrainingMode] = useState(true);
   const [heroIdx, setHeroIdx] = useState<number | null>(null);
   const [gameStyle, setGameStyle] = useState<"gto" | "loose" | "wild">("loose");
   const [userChoices, setUserChoices] = useState<Record<number, string>>({});
   const [heroChoices, setHeroChoices] = useState<Decision[]>([]);
-  const [handScore, setHandScore] = useState({ matches: 0, total: 0 });
-  const [sessionScore, setSessionScore] = useState({ matches: 0, total: 0 });
   const [sessionHistory, setSessionHistory] = useState<SessionEntry[]>([]);
   const [handNumber, setHandNumber] = useState(0);
   const handNumberRef = useRef(0);
   const feedRef = useRef<HTMLDivElement>(null);
   const focusedRef = useRef<HTMLDivElement>(null);
   const stagesRef = useRef<Stage[]>([]);
+  const languageMode = useSyncExternalStore(subscribeToLanguage, readLanguage, (): LanguageMode => "plain");
+
+  const chooseLanguage = useCallback((language: LanguageMode) => {
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
+  }, []);
 
   // Responsive breakpoint via useSyncExternalStore — SSR-safe (server snapshot = false,
   // matching initial client render) and avoids a setState-in-effect.
@@ -613,7 +810,6 @@ export default function PokerSim() {
 
   // Stable refs for keyboard handler
   const trainingRef = useRef(false);
-  const userChoicesRef = useRef<Record<number, string>>({});
   const heroChoicesRef = useRef<Decision[]>([]);
   const stepRef = useRef(0);
   const heroIdxRef = useRef<number | null>(null);
@@ -621,12 +817,14 @@ export default function PokerSim() {
   // Keyboard navigation — stable listener via refs
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const target = e.target instanceof Element ? e.target : null;
+      if (target?.closest('button, a, input, textarea, select, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="link"], [role="tab"], [role="slider"]')) return;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
       const len = stagesRef.current.length;
       const curStage = stagesRef.current[stepRef.current];
-      const prevHeroCount = stagesRef.current.slice(0, stepRef.current).filter(s => s.type === "action" && s.playerIdx === heroIdxRef.current).length;
-      const needsChoice = trainingRef.current && curStage?.type === "action" && curStage?.decision?.action !== "already_folded" && (heroIdxRef.current === null || curStage?.playerIdx === heroIdxRef.current) && !userChoicesRef.current[stepRef.current] && heroChoicesRef.current.length <= prevHeroCount;
-      if (e.key === "ArrowRight" || e.key === " ") {
+      const heroActionId = curStage?.heroActionId;
+      const needsChoice = trainingRef.current && curStage?.type === "action" && curStage?.decision?.action !== "already_folded" && curStage?.playerIdx === heroIdxRef.current && heroActionId !== undefined && !heroChoicesRef.current[heroActionId];
+      if (e.key === "ArrowRight") {
         e.preventDefault();
         if (!needsChoice) setStep(s => s < len - 1 ? s + 1 : s);
       }
@@ -646,8 +844,20 @@ export default function PokerSim() {
     }),
   [dealerIdx]);
 
+  const sessionScore = useMemo(() => ({
+    matches: sessionHistory.filter(entry => entry.wasMatch).length,
+    different: sessionHistory.filter(entry => entry.grade === "different").length,
+    costly: sessionHistory.filter(entry => entry.grade === "costly" || entry.grade === "illegal").length,
+    total: sessionHistory.length,
+  }), [sessionHistory]);
+
+  const handScore = useMemo(() => {
+    const entries = sessionHistory.filter(entry => entry.hand === handNumber);
+    return { matches: entries.filter(entry => entry.wasMatch).length, total: entries.length };
+  }, [sessionHistory, handNumber]);
+
   const sessionPattern = useMemo((): string | null => {
-    const divs = sessionHistory.filter(e => !e.wasMatch);
+    const divs = sessionHistory.filter(e => e.grade === "costly" || e.grade === "illegal");
     if (divs.length < 4) return null;
     const foldTight = divs.filter(e => e.heroAction === "fold" && (e.aiAction === "call" || e.aiAction === "raise" || e.aiAction === "bet")).length;
     const missValue = divs.filter(e => (e.heroAction === "check" || e.heroAction === "call") && (e.aiAction === "bet" || e.aiAction === "raise")).length;
@@ -655,10 +865,10 @@ export default function PokerSim() {
     const overAgg = divs.filter(e => (e.heroAction === "bet" || e.heroAction === "raise") && (e.aiAction === "check" || e.aiAction === "fold" || e.aiAction === "call")).length;
     const max = Math.max(foldTight, missValue, callLoose, overAgg);
     if (max < 2) return null;
-    if (foldTight === max) return `Pattern: folding too often when AI calls/raises (${foldTight}/${divs.length} divergences). Trust your equity more.`;
-    if (missValue === max) return `Pattern: missing value — you check/call when AI bets (${missValue}/${divs.length} divergences). If you're ahead, make them pay.`;
-    if (callLoose === max) return `Pattern: calling too loose — AI folds in spots you call (${callLoose}/${divs.length} divergences). Tighten your calling range.`;
-    if (overAgg === max) return `Pattern: over-betting — AI checks in spots you raise (${overAgg}/${divs.length} divergences). Pick your spots more carefully.`;
+    if (foldTight === max) return `Pattern: you often fold where the trainer continues (${foldTight}/${divs.length} costly differences). Check whether the price supports staying in.`;
+    if (missValue === max) return `Pattern: you often check or call where the trainer bets (${missValue}/${divs.length} costly differences). Strong hands can ask worse hands to pay.`;
+    if (callLoose === max) return `Pattern: you often call where the trainer folds (${callLoose}/${divs.length} costly differences). Compare the call price with the estimated share of the pot.`;
+    if (overAgg === max) return `Pattern: you often raise where the trainer takes a quieter line (${overAgg}/${divs.length} costly differences). Build large pots with a clear reason.`;
     return null;
   }, [sessionHistory]);
 
@@ -685,14 +895,13 @@ export default function PokerSim() {
     setHeroChoices([]);
     handNumberRef.current = handNumberRef.current + 1;
     setHandNumber(handNumberRef.current);
-    setHandScore({ matches: 0, total: 0 });
     setHeroIdx(Math.floor(Math.random() * 4));
     const deck = shuffle(makeDeck());
     const hands = [[deck[0], deck[1]], [deck[2], deck[3]], [deck[4], deck[5]], [deck[6], deck[7]]];
     const board = [deck[8], deck[9], deck[10], deck[11], deck[12]];
-    setGs({ hands, board, seed: (Math.random() * 2 ** 32) >>> 0 });
+    setGs({ hands, board, seed: (Math.random() * 2 ** 32) >>> 0, style: gameStyle });
     setStep(0);
-  }, []);
+  }, [gameStyle]);
 
   const choiceLockRef = useRef(false);
   const handleChoice = useCallback((action: string) => {
@@ -700,16 +909,21 @@ export default function PokerSim() {
     choiceLockRef.current = true;
     const curStg = stagesRef.current[step];
     if (!curStg || curStg.playerIdx !== heroIdxRef.current) { choiceLockRef.current = false; return; }
+    const heroActionId = curStg.heroActionId;
+    if (heroActionId === undefined) { choiceLockRef.current = false; return; }
     const rawAi = curStg.decision?.action; // before hero choice injected, this IS the AI's decision
     if (!rawAi || rawAi === "already_folded") { choiceLockRef.current = false; return; }
-    const stgToCall = Math.max(0, (curStg.currentBet ?? 0) - (curStg.bets?.[curStg.playerIdx ?? 0] ?? 0));
+    const stgToCall = curStg.callQuote?.callCost ?? Math.max(0, (curStg.currentBet ?? 0) - (curStg.bets?.[curStg.playerIdx ?? 0] ?? 0));
     const aiNorm = rawAi === "call" && stgToCall === 0 ? "check" : rawAi;
     const normalizedAction = action === "call" && stgToCall === 0 ? "check" : action;
-    const aggressive = ["bet", "raise"];
-    const isMatch = normalizedAction === aiNorm || (aggressive.includes(normalizedAction) && aggressive.includes(aiNorm));
+    const isMatch = normalizedAction === aiNorm;
+    const grade = gradeChoice(normalizedAction, aiNorm, curStg);
     // Build a Decision object so the simulation can execute the hero's actual choice
     let heroDec: Decision;
-    const heroStack = curStg.stacks?.[curStg.playerIdx ?? 0] ?? 200;
+    const seat = curStg.playerIdx ?? 0;
+    const heroStack = curStg.stacks?.[seat] ?? 200;
+    const alreadyBet = curStg.bets?.[seat] ?? 0;
+    const maxCommit = heroStack + alreadyBet;
     const heroName = players[curStg.playerIdx ?? heroIdxRef.current ?? 0]?.name ?? "you";
     if (normalizedAction === "fold") {
       heroDec = { action: "fold", dialogue: "You fold.", reasoning: `${heroName} folds.`, thoughts: [], math: [] };
@@ -718,20 +932,24 @@ export default function PokerSim() {
     } else if (normalizedAction === "call") {
       heroDec = { action: "call", dialogue: "You call.", reasoning: `${heroName} calls.`, thoughts: [], math: [] };
     } else {
-      const raiseAmt = snapToBB(Math.max((curStg.currentBet ?? BB) * 2.5, BB * 2.5), heroStack);
-      heroDec = { action: "raise", amount: raiseAmt, dialogue: `You raise to ${raiseAmt}.`, reasoning: `${heroName} raises to ${raiseAmt}.`, thoughts: [], math: [] };
+      const aggressiveAction = (curStg.currentBet ?? 0) === 0 ? "bet" : "raise";
+      const target = snapToBB(
+        Math.max((curStg.currentBet ?? 0) * 2.5, curStg.minRaiseTo ?? BB, BB),
+        maxCommit,
+      );
+      heroDec = { action: aggressiveAction, amount: target, dialogue: `You ${aggressiveAction} to ${target}.`, reasoning: `${heroName} ${aggressiveAction}s to ${target}.`, thoughts: [], math: [] };
     }
-    setHeroChoices(prev => [...prev, heroDec]);
-    setUserChoices(c => ({ ...c, [step]: normalizedAction }));
-    setHandScore(s => ({ matches: s.matches + (isMatch ? 1 : 0), total: s.total + 1 }));
-    setSessionScore(s => ({ matches: s.matches + (isMatch ? 1 : 0), total: s.total + 1 }));
+    setHeroChoices(prev => [...prev.slice(0, heroActionId), heroDec]);
+    setUserChoices(c => ({ ...c, [heroActionId]: normalizedAction }));
     setSessionHistory(h => [...h, {
       hand: handNumberRef.current,
+      heroActionId,
       street: curStg.street ?? "preflop",
       position: players[curStg.playerIdx ?? 0]?.posShort ?? "",
       heroAction: normalizedAction,
       aiAction: aiNorm,
       wasMatch: isMatch,
+      grade,
       aiReasoning: curStg.aiDecision?.reasoning ?? "",
     }]);
     // Release lock after state queued — React batches these so next render clears it
@@ -744,6 +962,7 @@ export default function PokerSim() {
     if (!gs) return [];
     const dealSeed = gs.seed; // per-spot equity is seeded from this (see equity.ts)
     const { hands, board } = gs;
+    const handStyle = gs.style;
     const all: Stage[] = [];
     let folded = [false, false, false, false];
 
@@ -753,31 +972,32 @@ export default function PokerSim() {
     const bbIdx = (dealerIdx + 2) % 4;
     const utgIdx = (dealerIdx + 3) % 4;
 
-    // Stacks
-    let stacks = [...startingStacks];
-    let pot = SB + BB;
-    stacks[sbIdx] -= SB;
-    stacks[bbIdx] -= BB;
+    // Stacks and blinds. Short stacks post only what they have; the nominal bring-in
+    // remains one full BB for everyone else.
+    const blindPosting = postBlinds(startingStacks, sbIdx, bbIdx, SB, BB);
+    let stacks = blindPosting.stacks;
+    let pot = blindPosting.pot;
+    let contributions = blindPosting.contributions;
 
     const sbName = players[sbIdx].name;
     const bbName = players[bbIdx].name;
-    all.push({ type: "info", street: "preflop", title: "Blinds posted", board: [], pot, folded: [...folded], stacks: [...stacks], description: `${sbName} posts ${SB} (SB). ${bbName} posts ${BB} (BB). Forced bets seed the pot.` });
+    const sbAllIn = blindPosting.smallBlindPosted < SB ? " and is all-in" : "";
+    const bbAllIn = blindPosting.bigBlindPosted < BB ? " and is all-in" : "";
+    all.push({ type: "info", street: "preflop", title: "Blinds posted", board: [], pot, folded: [...folded], stacks: [...stacks], description: `${sbName} posts ${blindPosting.smallBlindPosted} (SB)${sbAllIn}. ${bbName} posts ${blindPosting.bigBlindPosted} (BB)${bbAllIn}. Forced bets seed the pot.` });
 
     // Preflop: UTG first, then BTN, SB, BB. Blinds are already posted (in `stacks`/`pot`),
     // so they carry into the round as the starting bets with currentBet = BB.
     const preflopOrder = [utgIdx, btnIdx, sbIdx, bbIdx];
-    const preflopBets = [0, 0, 0, 0];
-    preflopBets[sbIdx] = SB;
-    preflopBets[bbIdx] = BB;
+    const preflopBets = blindPosting.bets;
     const pf = runBettingRound({
       order: preflopOrder, hands, board: [], street: "preflop", players,
-      pot, folded, stacks, bets: preflopBets, currentBet: BB, raiseCount: 0, countRaises: true,
+      pot, contributions, folded, stacks, bets: preflopBets, currentBet: blindPosting.currentBet, raiseCount: 0, countRaises: true,
       heroIdx, heroChoices, heroActionStart: 0,
-      decide: ({ pi, pot, currentBet, playerBet, stack, numActive, raiseCount }) =>
-        generateFullDecision(pi, hands[pi], [], pot, currentBet, playerBet, "preflop", false, players[pi].name, players[pi].pos, stack, numActive, gameStyle, raiseCount, dealSeed),
+      decide: ({ pi, pot, currentBet, playerBet, stack, numActive, raiseCount, minRaiseTo, canRaise, callQuote }) =>
+        generateFullDecision(pi, hands[pi], [], pot, currentBet, playerBet, "preflop", false, players[pi].name, players[pi].pos, stack, numActive, handStyle, raiseCount, dealSeed, minRaiseTo, canRaise, callQuote),
     });
     all.push(...pf.stages);
-    pot = pf.pot; folded = pf.folded; stacks = pf.stacks;
+    pot = pf.pot; folded = pf.folded; stacks = pf.stacks; contributions = pf.contributions;
 
     // Postflop: SB first, then BB, UTG, BTN. Fresh betting each street (currentBet 0).
     const postflopOrder = [sbIdx, bbIdx, utgIdx, btnIdx];
@@ -789,38 +1009,38 @@ export default function PokerSim() {
       const streetLabel = name === "flop" ? `Flop — ${curBoard.map(cardStr).join("  ")}` : `${name.charAt(0).toUpperCase() + name.slice(1)} — ${cardStr(board[n - 1])}`;
       const baseNotes: Record<string, string> = { flop: "Three community cards dealt. New betting round begins.", turn: "Fourth card. Outs now use Rule of 2.", river: "Final card. No more outs." };
       const activePlayers = postflopOrder.filter(i => !folded[i]);
-      const allAllIn = activePlayers.length >= 2 && activePlayers.every(i => stacks[i] === 0);
+      const playersWithChips = activePlayers.filter(i => stacks[i] > 0);
+      const bettingClosed = activePlayers.length >= 2 && playersWithChips.length < 2;
       const heroAllIn = heroIdx !== null && !folded[heroIdx] && stacks[heroIdx] === 0;
-      const note = allAllIn
-        ? `${baseNotes[name]} All players all-in — board running out, no betting.`
+      const note = bettingClosed
+        ? `${baseNotes[name]} No side pot can be contested — board running out, no betting.`
         : heroAllIn
         ? `${baseNotes[name]} You are all-in — no more decisions to make.`
         : baseNotes[name];
       all.push({ type: "street", street: name, title: streetLabel, note, board: curBoard, pot, folded: [...folded], stacks: [...stacks] });
       const result = runBettingRound({
         order: postflopOrder, hands, board: curBoard, street: name, players,
-        pot, folded, stacks, bets: [0, 0, 0, 0], currentBet: 0, raiseCount: 0, countRaises: false,
+        pot, contributions, folded, stacks, bets: [0, 0, 0, 0], currentBet: 0, raiseCount: 0, countRaises: false,
         heroIdx, heroChoices, heroActionStart: heroActions,
-        decide: ({ pi, pot, currentBet, playerBet, stack, numActive }) =>
-          generateFullDecision(pi, hands[pi], curBoard, pot, currentBet, playerBet, name, false, players[pi].name, players[pi].pos, stack, numActive, gameStyle, 0, dealSeed),
+        decide: ({ pi, pot, currentBet, playerBet, stack, numActive, minRaiseTo, canRaise, callQuote }) =>
+          generateFullDecision(pi, hands[pi], curBoard, pot, currentBet, playerBet, name, false, players[pi].name, players[pi].pos, stack, numActive, handStyle, 0, dealSeed, minRaiseTo, canRaise, callQuote),
       });
       heroActions += result.heroActionsConsumed;
       all.push(...result.stages);
-      pot = result.pot; folded = result.folded; stacks = result.stacks;
+      pot = result.pot; folded = result.folded; stacks = result.stacks; contributions = result.contributions;
     }
 
     if (folded.filter(f => !f).length > 1) {
       const finalBoard = board.slice(0, 5);
       const results = hands.map((h, i) => folded[i] ? { idx: i, folded: true, hand: null } : { idx: i, folded: false, hand: bestHand(h, finalBoard) });
-      // Distribute by contribution (startingStack − currentStack) so side pots and
-      // split pots pay out correctly — not the whole pot to a single seat.
-      const contributions = startingStacks.map((s, i) => s - stacks[i]);
-      const { payouts, rankedResults } = distributePots(contributions, folded, hands, finalBoard);
+      // The betting engine tracks each seat's total contribution so this payout path uses
+      // the same money record as call pricing and the action feed.
+      const awardOrder = [sbIdx, bbIdx, utgIdx, btnIdx]; // first active seat clockwise from BTN
+      const { payouts, rankedResults, pots } = distributePots(contributions, folded, hands, finalBoard, awardOrder);
       payouts.forEach((amt, i) => { stacks[i] += amt; });
-      const top = rankedResults[0], second = rankedResults[1];
-      const chop = !!(top?.hand && second?.hand && top.hand.rank === second.hand.rank && cmpK(top.hand.kickers, second.hand.kickers) === 0);
-      const winner = top?.idx ?? results.find(r => !r.folded)!.idx;
-      all.push({ type: "showdown", board: finalBoard, pot, folded: [...folded], results, rankedResults, winner, payouts, chop, stacks: [...stacks] });
+      const chop = pots.some(layer => layer.winners.length > 1);
+      const winner = pots[0]?.winners[0] ?? rankedResults[0]?.idx ?? results.find(r => !r.folded)!.idx;
+      all.push({ type: "showdown", board: finalBoard, pot, folded: [...folded], results, rankedResults, pots, winner, payouts, chop, stacks: [...stacks] });
     } else {
       const w = folded.findIndex(f => !f);
       if (w >= 0) {
@@ -829,7 +1049,7 @@ export default function PokerSim() {
       }
     }
     return all;
-  }, [gs, dealerIdx, startingStacks, players, gameStyle, heroIdx, heroChoices]);
+  }, [gs, dealerIdx, startingStacks, players, heroIdx, heroChoices]);
 
   // Sync latest-value refs after each render (read only by the keyboard listener,
   // auto-advance timeout, and click handlers — all post-commit — so an effect is correct
@@ -837,7 +1057,6 @@ export default function PokerSim() {
   useEffect(() => {
     handNumberRef.current = handNumber;
     trainingRef.current = trainingMode;
-    userChoicesRef.current = userChoices;
     heroChoicesRef.current = heroChoices;
     stepRef.current = step;
     heroIdxRef.current = heroIdx;
@@ -872,7 +1091,7 @@ export default function PokerSim() {
       const amt = cur.decision.amount ? ` ${cur.decision.amount}` : "";
       return `${who} on the ${cur.street}: ${cur.decision.action}${amt}.`;
     }
-    if (cur.type === "showdown") return cur.foldWin ? "Showdown: everyone else folded." : cur.chop ? "Showdown: split pot." : "Showdown.";
+    if (cur.type === "showdown") return cur.foldWin ? "Showdown: everyone else folded." : cur.chop ? "Showdown: one or more pots were split." : "Showdown.";
     return cur.title || cur.street || "";
   })();
   const srOnly = { position: "absolute" as const, width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" as const, border: 0 };
@@ -880,17 +1099,36 @@ export default function PokerSim() {
   // ── Shared sub-sections ──────────────────────────────────────────
 
   const trainToggle = (
-    <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+    <div role="group" aria-label="Training mode" style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
       {(["observe", "train"] as const).map(m => {
         const active = trainingMode ? "train" : "observe";
         return (
-          <button key={m} onClick={() => { setTrainingMode(m === "train"); setUserChoices({}); setHandScore({ matches: 0, total: 0 }); setSessionScore({ matches: 0, total: 0 }); if (m === "train" && gs) deal(); }} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: active === m ? T.accent : "transparent", color: active === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+          <button type="button" key={m} aria-pressed={active === m} onClick={() => {
+            const nextTraining = m === "train";
+            if (nextTraining === trainingMode) return;
+            setTrainingMode(nextTraining);
+            setUserChoices({});
+            setHeroChoices([]);
+            setSessionHistory([]);
+            if (nextTraining && gs) deal();
+            else setStep(0);
+          }} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9.5, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: active === m ? T.accent : "transparent", color: active === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
             {m}
           </button>
         );
       })}
     </div>
   );
+
+  const tableStyleLabel = gameStyle === "gto" ? "Tight" : gameStyle === "loose" ? "Loose" : "Wild";
+  const currentHandStyleLabel = gs?.style === "gto" ? "Tight" : gs?.style === "loose" ? "Loose" : "Wild";
+  const tableStyleDescription = gs && gs.style !== gameStyle
+    ? `Next hand: ${tableStyleLabel}. Current: ${currentHandStyleLabel}.`
+    : gameStyle === "gto"
+      ? "Fewer hands and calls — a cautious benchmark."
+      : gameStyle === "loose"
+        ? "More hands and calls — a common casual style."
+        : "Many hands and raises — aggressive and swingy.";
 
   const masthead = (
     <header style={{ paddingBottom: 12, borderBottom: `1px solid ${T.ink}`, marginBottom: 14 }}>
@@ -900,29 +1138,29 @@ export default function PokerSim() {
       <p style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, margin: "0 0 6px" }}>
         &gt; practice your poker face
       </p>
-      <Link href="/solver" aria-label="Open the heads-up push/fold Nash solver"
+      <Link href="/solver" aria-label="Open the heads-up push/fold strategy explorer"
         style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.accent, textDecoration: "none", border: `1px solid ${T.accentSoft}`, background: "rgba(125, 211, 160, 0.06)", padding: "7px 12px", borderRadius: T.radius, margin: "2px 0 12px" }}>
-        Nash Solver <span aria-hidden="true">→</span>
+        Push/Fold Explorer <span aria-hidden="true">→</span>
       </Link>
-      <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 5fr) minmax(0, 4fr)", gap: 20, alignItems: "start" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3, minWidth: 0 }}>
           <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table style</span>
-          <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+          <div role="group" aria-label="Table style" style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
             {([["gto", "Tight"], ["loose", "Loose"], ["wild", "Wild"]] as const).map(([s, label]) => (
-              <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+              <button type="button" key={s} aria-pressed={gameStyle === s} onClick={() => setGameStyle(s)} style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
                 {label}
               </button>
             ))}
           </div>
-          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, minHeight: "2.5em", display: "block" }}>
-            {gameStyle === "gto" ? "Tight, disciplined ranges — the toughest benchmark." : gameStyle === "loose" ? "Wider ranges, more calls — common recreational style." : "Unpredictable and aggressive — high variance."}
+          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, height: "2.8em", display: "block" }}>
+            {tableStyleDescription}
           </span>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3, minWidth: 0 }}>
           <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Mode</span>
           {trainToggle}
-          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, minHeight: "2.5em", display: "block" }}>
-            {trainingMode ? "Choose first, then compare to AI." : "Watch and study every decision."}
+          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, lineHeight: 1.4, height: "2.8em", display: "block" }}>
+            {trainingMode ? "Choose first, then compare with the trainer." : "Watch and study every decision."}
           </span>
         </div>
       </div>
@@ -941,16 +1179,36 @@ export default function PokerSim() {
 
   const rulesToggle = (
     <section style={{ marginBottom: 12 }}>
-      <button onClick={() => setShowRules(!showRules)} style={{ width: "100%", padding: "8px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span>Modes &amp; Glossary</span>
+      <button type="button" aria-expanded={showRules} aria-controls="help-language-panel" onClick={() => setShowRules(!showRules)} style={{ width: "100%", padding: "8px 10px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span>Help &amp; Language</span>
         <span style={{ color: T.dim }}>{showRules ? "[–]" : "[+]"}</span>
       </button>
       {showRules && (
-        <div style={{ marginTop: 6, padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, maxHeight: 260, overflowY: "auto" }}>
+        <div id="help-language-panel" style={{ marginTop: 6, padding: "10px 12px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, maxHeight: 300, overflowY: "auto" }}>
+          <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>Language</div>
+          <div role="group" aria-label="Language style" style={{ display: "inline-flex", border: `1px solid ${T.hair}`, marginBottom: 7 }}>
+            {([['plain', 'Plain language'], ['poker', 'Poker terms']] as const).map(([value, label]) => (
+              <button
+                type="button"
+                key={value}
+                aria-pressed={languageMode === value}
+                onClick={() => chooseLanguage(value)}
+                style={{ padding: "6px 9px", fontFamily: T.mono, fontSize: 9.5, background: languageMode === value ? T.ink : "transparent", color: languageMode === value ? T.bg : T.inkSoft, border: "none", cursor: "pointer" }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <p style={{ fontFamily: T.mono, fontSize: 10.5, color: T.inkSoft, lineHeight: 1.45, margin: "0 0 10px" }}>
+            {languageMode === "plain"
+              ? "Uses everyday wording throughout the trainer."
+              : "Uses standard poker terms. Dotted terms explain themselves when hovered, focused, or clicked."}
+          </p>
+          <div style={{ borderTop: `1px solid ${T.hairSoft}`, margin: "10px 0" }} />
           <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 8 }}>{"// modes"}</div>
           {[
             { t: "Observe", d: "Watch the hand play out. Every decision shows full reasoning, inner thoughts, and the math." },
-            { t: "Train", d: "Pick your action before seeing the AI's. Then compare — does your read match?" },
+            { t: "Train", d: "Pick your action before seeing the trainer's choice. Then compare the two." },
             { t: "Single Steps", d: "Current decision shown in full. Prior moves collapse to one-liners above." },
             { t: "Full Log", d: "Every decision in the hand expanded in full. Scroll to review." },
           ].map((r, i, arr) => (
@@ -977,7 +1235,7 @@ export default function PokerSim() {
       <div style={{ fontFamily: T.mono, fontSize: 14, color: T.inkSoft, lineHeight: 1.55, marginBottom: 18 }}>
         Deal four hands. Step through every decision to see each player&apos;s thinking and the math.
       </div>
-      <button onClick={deal} style={{ padding: "10px 22px", fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", background: T.ink, color: T.bg, border: "none", borderRadius: T.radius, cursor: "pointer" }}>
+      <button type="button" onClick={deal} style={{ padding: "10px 22px", fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", background: T.ink, color: T.bg, border: "none", borderRadius: T.radius, cursor: "pointer" }}>
         $ deal →
       </button>
     </div>
@@ -985,9 +1243,9 @@ export default function PokerSim() {
 
 
   const modeToggle = (
-    <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+    <div role="group" aria-label="Feed display" style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
       {([["focused", "Single Steps"], ["dense", "Full Log"]] as const).map(([m, label]) => (
-        <button key={m} onClick={() => setMode(m)} style={{ padding: "3px 8px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", background: mode === m ? T.ink : "transparent", color: mode === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+        <button type="button" key={m} aria-pressed={mode === m} onClick={() => setMode(m)} style={{ padding: "3px 8px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", background: mode === m ? T.ink : "transparent", color: mode === m ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
           {label}
         </button>
       ))}
@@ -1000,7 +1258,7 @@ export default function PokerSim() {
         <div style={{ marginBottom: 6, padding: "5px 10px", background: T.panel, border: `1px solid ${T.hair}`, borderRadius: T.radius, display: "flex", alignItems: "baseline", gap: 6 }}>
           <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent }}>you</span>
           <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim }}>·</span>
-          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.inkSoft }}>Alice</span>
+          <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.inkSoft }}>{players[heroIdx].name}</span>
           <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim }}>·</span>
           <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.ink, fontWeight: 600 }}>{players[heroIdx].pos === "Dealer" ? "Button (BTN)" : players[heroIdx].pos}</span>
         </div>
@@ -1009,7 +1267,8 @@ export default function PokerSim() {
         {players.map((p, i) => {
           const isFolded = cur?.folded?.[i] && cur?.playerIdx !== i;
           const isActing = cur?.type === "action" && cur?.playerIdx === i;
-          const isWinner = cur?.type === "showdown" && cur?.winner === i;
+          const payout = cur?.type === "showdown" ? (cur.payouts?.[i] ?? (cur.foldWin && cur.winner === i ? cur.pot : 0)) : 0;
+          const isWinner = payout > 0;
           const isHero = trainingMode && heroIdx === i;
           const stack = cur?.stacks?.[i] ?? startingStacks[i];
           return (
@@ -1025,7 +1284,7 @@ export default function PokerSim() {
               </div>
               <div style={{ fontFamily: T.mono, fontSize: 8.5, color: T.accent, textAlign: "center", marginTop: 3, lineHeight: 1 }}>{stack}</div>
               {isFolded && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1 }}>folded</div>}
-              {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>winner</div>}
+              {isWinner && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.accent, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>{cur?.foldWin ? "winner" : `+${payout}`}</div>}
               {!isFolded && !isWinner && isActing && <div style={{ marginTop: 2, fontFamily: T.mono, fontSize: 8.5, color: T.ink, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", lineHeight: 1, fontWeight: 700 }}>acting</div>}
               {!isFolded && !isWinner && !isActing && <div style={{ marginTop: 2, height: 9.5 }} />}
             {cur?.type === "showdown" && !isFolded && !cur.foldWin && (() => {
@@ -1058,12 +1317,11 @@ export default function PokerSim() {
 
   const feed = (desktopFill = false) => {
     const isActionStep = cur?.type === "action" && cur?.decision?.action !== "already_folded";
-    const isHeroStep = heroIdx === null || cur?.playerIdx === heroIdx;
-    // Count how many hero action stages have occurred before the current step
-    const prevHeroActionCount = stages.slice(0, step).filter(s => s.type === "action" && s.playerIdx === heroIdx).length;
-    const needsChoice = trainingMode && isActionStep && isHeroStep && heroChoices.length <= prevHeroActionCount;
-    const userChoice = userChoices[step];
-    const stepToCall = Math.max(0, (cur?.currentBet ?? 0) - (cur?.bets?.[cur?.playerIdx ?? 0] ?? 0));
+    const isHeroStep = cur?.playerIdx === heroIdx;
+    const heroActionId = cur?.heroActionId;
+    const needsChoice = trainingMode && isActionStep && isHeroStep && heroActionId !== undefined && !heroChoices[heroActionId];
+    const userChoice = heroActionId === undefined ? undefined : userChoices[heroActionId];
+    const stepToCall = cur?.callQuote?.callCost ?? Math.max(0, (cur?.currentBet ?? 0) - (cur?.bets?.[cur?.playerIdx ?? 0] ?? 0));
     // aiDecision is stored on hero stages; for non-hero stages, decision IS the AI's
     const rawAiAction = cur?.aiDecision?.action ?? cur?.decision?.action;
     const aiAction = rawAiAction === "call" && stepToCall === 0 ? "check" : rawAiAction;
@@ -1083,7 +1341,7 @@ export default function PokerSim() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                   <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 }}>This hand</span>
                   <span style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: handScore.matches === handScore.total ? T.accent : handScore.matches / handScore.total >= 0.7 ? T.ink : T.inkSoft, lineHeight: 1.2 }}>
-                    {handScore.matches}/{handScore.total}
+                    {handScore.matches}/{handScore.total} match
                   </span>
                 </div>
               )}
@@ -1091,10 +1349,7 @@ export default function PokerSim() {
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                 <span style={{ fontFamily: T.mono, fontSize: 8.5, color: T.dim, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 }}>Session</span>
                 <span style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: T.accent, lineHeight: 1.2 }}>
-                  {sessionScore.matches}/{sessionScore.total}
-                  <span style={{ fontSize: 9, fontWeight: 400, color: T.dim, marginLeft: 4 }}>
-                    ({Math.round(sessionScore.matches / sessionScore.total * 100)}%)
-                  </span>
+                  {sessionScore.matches} match · {sessionScore.different} other · {sessionScore.costly} costly
                 </span>
               </div>
             </div>
@@ -1106,7 +1361,7 @@ export default function PokerSim() {
         {trainingMode && sessionPattern && (
           <div style={{ padding: "6px 14px 7px", background: `${T.accent}10`, borderBottom: `1px solid ${T.hairSoft}`, display: "flex", gap: 8, alignItems: "flex-start" }}>
             <span style={{ fontFamily: T.mono, fontSize: 8.5, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: T.accent, paddingTop: 2, flexShrink: 0 }}>Session</span>
-            <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.4 }}>{sessionPattern}</span>
+            <span style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, lineHeight: 1.4 }}><PlainCopy>{sessionPattern}</PlainCopy></span>
           </div>
         )}
 
@@ -1139,32 +1394,35 @@ export default function PokerSim() {
           {cur && !needsChoice && (
             <div data-step={step}>
               {trainingMode && userChoice && aiAction && isActionStep && isHeroStep && (
-                <ComparisonBanner userAction={userChoice} aiAction={aiAction} />
+                <ComparisonBanner userAction={userChoice} aiAction={aiAction} stage={cur} />
               )}
               <FeedEntry s={cur} isFocused players={players} heroIdx={trainingMode && heroIdx !== null ? heroIdx : undefined} />
               {trainingMode && userChoice && isActionStep && isHeroStep && cur.aiDecision && (() => {
-                const aggr = ["bet", "raise"];
-                const playingAI = cur.decision?.action === cur.aiDecision?.action ||
-                  (aggr.includes(cur.decision?.action ?? "") && aggr.includes(cur.aiDecision?.action ?? ""));
+                const playingAI = cur.decision?.action === cur.aiDecision?.action;
+                const canFollowAI = heroActionId !== undefined && heroActionId === heroChoices.length - 1;
                 const revealAndFollow = () => {
-                  setHeroChoices(prev => [...prev.slice(0, -1), cur.aiDecision!]);
-                  setUserChoices(c => ({ ...c, [step]: cur.aiDecision!.action }));
+                  if (heroActionId === undefined || !canFollowAI) return;
+                  setHeroChoices(prev => [...prev.slice(0, heroActionId), cur.aiDecision!]);
+                  setUserChoices(c => ({ ...c, [heroActionId]: aiAction ?? cur.aiDecision!.action }));
+                  setSessionHistory(history => history.map(entry => entry.hand === handNumber && entry.heroActionId === heroActionId
+                    ? { ...entry, heroAction: aiAction ?? cur.aiDecision!.action, wasMatch: true, grade: "model" }
+                    : entry));
                 };
                 return (
                   <div style={{ padding: "12px 14px 14px", background: T.panelAlt, borderBottom: `1px solid ${T.hair}` }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: playingAI ? 0 : 8 }}>
-                      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>Model line</div>
+                      <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: T.dim }}>Trainer&apos;s choice</div>
                       <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                        {!playingAI && (
-                          <button
+                        {!playingAI && canFollowAI && (
+                          <button type="button"
                             onClick={revealAndFollow}
                             style={{ padding: "4px 10px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", background: T.accent, color: T.bg, border: "none", borderRadius: T.radius, cursor: "pointer" }}
                           >
-                            ▶ Follow AI
+                            Use trainer&apos;s choice
                           </button>
                         )}
                         {playingAI && (
-                          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: "0.1em" }}>✓ Playing AI&apos;s move</span>
+                          <span style={{ fontFamily: T.mono, fontSize: 9, color: T.accent, letterSpacing: "0.1em" }}>✓ Using trainer&apos;s choice</span>
                         )}
                       </div>
                     </div>
@@ -1175,13 +1433,13 @@ export default function PokerSim() {
                         </div>
                         <div style={{ display: "flex", gap: 7, marginBottom: (cur.aiDecision.thoughts?.length ?? 0) > 0 ? 8 : 0 }}>
                           <span style={{ color: T.accent, fontSize: 12, lineHeight: 1.4, fontFamily: T.mono }}>{"//"}</span>
-                          <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}>{cur.aiDecision.reasoning}</div>
+                          <div style={{ fontFamily: T.mono, fontSize: 12, color: T.inkSoft, lineHeight: 1.5, flex: 1 }}><PlainCopy>{cur.aiDecision.reasoning}</PlainCopy></div>
                         </div>
                         {cur.aiDecision.thoughts && cur.aiDecision.thoughts.length > 0 && (
                           <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(125,211,160,0.05)", border: `1px solid ${T.hairSoft}`, borderRadius: T.radius }}>
                             <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.dim, marginBottom: 5 }}>Inner thoughts</div>
                             {cur.aiDecision.thoughts.map((t, ti) => (
-                              <div key={ti} style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55, marginBottom: ti < cur.aiDecision!.thoughts.length - 1 ? 4 : 0 }}>{t}</div>
+                              <div key={ti} style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55, marginBottom: ti < cur.aiDecision!.thoughts.length - 1 ? 4 : 0 }}><PlainCopy>{t}</PlainCopy></div>
                             ))}
                           </div>
                         )}
@@ -1189,19 +1447,23 @@ export default function PokerSim() {
                           <div style={{ marginTop: 7, padding: "8px 10px", background: "rgba(125,211,160,0.06)", border: `1px solid ${T.hair}`, borderRadius: T.radius }}>
                             <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: T.accent, marginBottom: 5 }}>The math</div>
                             {cur.aiDecision.math.map((m, mi) => (
-                              <div key={mi} style={{ fontFamily: T.mono, fontSize: 11, color: T.ink, lineHeight: 1.55, marginBottom: mi < cur.aiDecision!.math.length - 1 ? 2 : 0 }}>{m}</div>
+                              <div key={mi} style={{ fontFamily: T.mono, fontSize: 11, color: T.ink, lineHeight: 1.55, marginBottom: mi < cur.aiDecision!.math.length - 1 ? 2 : 0 }}><PlainCopy>{m}</PlainCopy></div>
                             ))}
                           </div>
                         )}
                         {(() => {
-                          const userChoice = userChoices[step];
                           if (!userChoice) return null;
                           const note = getMissedNote(userChoice, cur.aiDecision!, cur);
                           if (!note) return null;
                           return (
                             <div style={{ marginTop: 7, padding: "8px 10px", background: "rgba(255,185,80,0.05)", border: `1px solid rgba(255,185,80,0.22)`, borderRadius: T.radius }}>
-                              <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,185,80,0.75)", marginBottom: 5 }}>What you missed</div>
-                              <div style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55 }}>{note}</div>
+                              <div style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,185,80,0.75)", marginBottom: 5 }}>How the trainer differs</div>
+                              <div style={{ fontFamily: T.mono, fontSize: 11.5, color: T.inkSoft, lineHeight: 1.55 }}>
+                                <PlainCopy>{note.reason}</PlainCopy>
+                                {note.caveat && (
+                                  <span style={{ color: T.dim }}> <PlainCopy>{note.caveat}</PlainCopy></span>
+                                )}
+                              </div>
                             </div>
                           );
                         })()}
@@ -1226,28 +1488,30 @@ export default function PokerSim() {
   const navBar = (borderTop = true) => gs && (
     <div style={{ background: T.bg, ...(borderTop ? { borderTop: `1px solid ${T.ink}` } : {}), padding: "10px 14px", display: "flex", gap: 8, alignItems: "center" }}>
       {step > 0 && !isEnd && (
-        <button onClick={() => setStep(s => Math.max(s - 1, 0))} style={{ padding: "9px 14px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.ink}`, borderRadius: T.radius, cursor: "pointer" }}>
+        <button type="button" onClick={() => setStep(s => Math.max(s - 1, 0))} style={{ padding: "9px 14px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.ink}`, borderRadius: T.radius, cursor: "pointer" }}>
           ← Back
         </button>
       )}
       <div style={{ flex: 1 }} />
       {!isEnd && step < stages.length - 2 && !trainingMode && (
-        <button onClick={() => setStep(stages.length - 1)} style={{ padding: "9px 14px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.dim, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer" }}>
+        <button type="button" onClick={() => setStep(stages.length - 1)} style={{ padding: "9px 14px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.dim, border: `1px solid ${T.hair}`, borderRadius: T.radius, cursor: "pointer" }}>
           End →|
         </button>
       )}
       {!isEnd ? (() => {
-        const needsChoice = trainingMode && cur?.type === "action" && cur?.decision?.action !== "already_folded" && (heroIdx === null || cur?.playerIdx === heroIdx) && !userChoices[step];
+        const heroActionId = cur?.heroActionId;
+        const needsChoice = trainingMode && cur?.type === "action" && cur?.decision?.action !== "already_folded" && cur?.playerIdx === heroIdx && heroActionId !== undefined && !heroChoices[heroActionId];
         return (
-          <button
-            onClick={() => !needsChoice && setStep(s => Math.min(s + 1, stages.length - 1))}
+          <button type="button"
+            disabled={needsChoice}
+            onClick={() => setStep(s => Math.min(s + 1, stages.length - 1))}
             style={{ padding: "9px 20px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", background: needsChoice ? "transparent" : T.ink, color: needsChoice ? T.dim : T.bg, border: needsChoice ? `1px solid ${T.hair}` : "none", borderRadius: T.radius, cursor: needsChoice ? "default" : "pointer", opacity: needsChoice ? 0.5 : 1 }}
           >
             {needsChoice ? "decide first" : "Next →"}
           </button>
         );
       })() : (
-        <button onClick={deal} style={{ padding: "9px 20px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", background: T.accent, color: "#0d1014", border: "none", borderRadius: T.radius, cursor: "pointer" }}>
+        <button type="button" onClick={deal} style={{ padding: "9px 20px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", background: T.accent, color: "#0d1014", border: "none", borderRadius: T.radius, cursor: "pointer" }}>
           $ deal again
         </button>
       )}
@@ -1257,9 +1521,10 @@ export default function PokerSim() {
   // ── Desktop layout ───────────────────────────────────────────────
   if (isDesktop) {
     return (
-      <div style={{ fontFamily: T.mono, background: T.bg, color: T.ink, display: "flex", flexDirection: "row", height: "100vh", overflow: "hidden" }}>
+      <LanguageContext.Provider value={languageMode}>
+      <div style={{ fontFamily: T.mono, fontVariantNumeric: "tabular-nums", background: T.bg, color: T.ink, display: "flex", flexDirection: "row", height: "100dvh", overflow: "hidden" }}>
         <div aria-live="polite" style={srOnly}>{liveText}</div>
-        <div style={{ width: 360, flexShrink: 0, display: "flex", flexDirection: "column", height: "100vh", borderRight: `1px solid ${T.hair}` }}>
+        <div style={{ width: 360, flexShrink: 0, display: "flex", flexDirection: "column", height: "100dvh", borderRight: `1px solid ${T.hair}` }}>
           <div style={{ flex: 1, overflowY: "auto", padding: "16px 14px 0" }}>
             {masthead}
             {rulesToggle}
@@ -1276,7 +1541,7 @@ export default function PokerSim() {
           </div>
         </div>
         {gs ? (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden", padding: "16px 14px" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100dvh", overflow: "hidden", padding: "16px 14px" }}>
             {feed(true)}
           </div>
         ) : (
@@ -1285,12 +1550,14 @@ export default function PokerSim() {
           </div>
         )}
       </div>
+      </LanguageContext.Provider>
     );
   }
 
   // ── Mobile layout ────────────────────────────────────────────────
   return (
-    <div style={{ fontFamily: T.mono, background: T.bg, color: T.ink, display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
+    <LanguageContext.Provider value={languageMode}>
+    <div style={{ fontFamily: T.mono, fontVariantNumeric: "tabular-nums", background: T.bg, color: T.ink, display: "flex", flexDirection: "column", height: "100dvh", overflow: "hidden" }}>
       {/* Fixed top section — never scrolls */}
       <div style={{ flexShrink: 0, padding: "10px 14px 0" }}>
         {!gs ? (
@@ -1303,13 +1570,14 @@ export default function PokerSim() {
             <div style={{ display: "flex", gap: 20, alignItems: "flex-start", marginBottom: 8 }}>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
                 <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Table</span>
-                <div style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
+                <div role="group" aria-label="Table style" style={{ display: "inline-flex", border: `1px solid ${T.hair}`, borderRadius: T.radius, overflow: "hidden" }}>
                   {(["gto", "loose", "wild"] as const).map(s => (
-                    <button key={s} onClick={() => setGameStyle(s)} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
+                    <button type="button" key={s} aria-pressed={gameStyle === s} onClick={() => setGameStyle(s)} style={{ padding: "4px 9px", fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", background: gameStyle === s ? T.ink : "transparent", color: gameStyle === s ? T.bg : T.dim, border: "none", cursor: "pointer" }}>
                       {s === "gto" ? "tight" : s}
                     </button>
                   ))}
                 </div>
+                {gs.style !== gameStyle && <span style={{ fontFamily: T.mono, fontSize: 8, color: T.dim }}>next deal</span>}
               </div>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
                 <span style={{ fontFamily: T.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: T.dim }}>Mode</span>
@@ -1336,5 +1604,6 @@ export default function PokerSim() {
         {creditLine}
       </div>
     </div>
+    </LanguageContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { preflopHandTier, preflopThresholds } from "../src/lib/poker/ranges";
+import { preflopHandTier, preflopRangePercent, preflopThresholds } from "../src/lib/poker/ranges";
 
 // Guards the exact SHIPPED tier boundaries. The old debug/full-audit.mjs asserted
 // "TT is tier 1" against a stale COPY of this function while the app treated TT as
@@ -42,4 +42,11 @@ test("thresholds tighten as raises stack up", () => {
 test("looser table styles widen opening ranges", () => {
   assert.ok(preflopThresholds("UTG", 0, "loose")[0] > preflopThresholds("UTG", 0, "gto")[0]);
   assert.ok(preflopThresholds("UTG", 0, "wild")[0] >= preflopThresholds("UTG", 0, "loose")[0]);
+});
+
+test("displayed preflop range percentages come from all 1,326 starting combinations", () => {
+  assert.equal(Math.round(preflopRangePercent(1)), 4);
+  assert.equal(Math.round(preflopRangePercent(3)), 23);
+  assert.equal(Math.round(preflopRangePercent(5)), 51);
+  assert.equal(preflopRangePercent(6), 100);
 });

@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -14,6 +12,45 @@ body {
 }
 /* Don't show the focus ring for mouse users. */
 :focus:not(:focus-visible) { outline: none; }
+
+.explained-term {
+  position: relative;
+  display: inline;
+}
+
+.explained-term-button {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px dotted currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: help;
+}
+
+.explained-term-tooltip {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  bottom: calc(100% + 6px);
+  display: none;
+  width: max-content;
+  max-width: min(280px, 80vw);
+  padding: 6px 8px;
+  border: 1px solid #3a4048;
+  background: #161a1f;
+  color: #d4d4cf;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.explained-term:hover .explained-term-tooltip,
+.explained-term:focus-within .explained-term-tooltip {
+  display: block;
+}
 
 /* Respect users who prefer reduced motion: no smooth-scroll, near-instant transitions.
    The step auto-advance is also disabled in JS when this is set (see PokerSim). */

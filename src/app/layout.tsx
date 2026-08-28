@@ -11,11 +11,12 @@ const jetbrainsMono = JetBrains_Mono({
 const SITE_NAME = "Hold'em Trainer";
 const CANONICAL_URL = "https://pokerface.katswint.com/";
 const SITE_DESCRIPTION =
-  "Step through Texas Hold'em hands and learn the math and GTO reasoning behind every decision, from equity to bet sizing. Built by Kat Swint.";
+  "Practice Texas Hold'em decisions with clear explanations of hand strength, call price, and bet sizing. Built by Kat Swint.";
 const OG_DESCRIPTION =
-  "An interactive Hold'em trainer that walks you through the math and GTO reasoning behind every poker decision.";
+  "An interactive Hold'em trainer that explains each decision in plain language and shows where its estimates come from.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(CANONICAL_URL),
   title: SITE_NAME,
   description: SITE_DESCRIPTION,
   authors: [{ name: "Kat Swint", url: "https://katswint.com" }],
@@ -29,10 +30,14 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     description: OG_DESCRIPTION,
     url: CANONICAL_URL,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Hold'em Trainer by Kat Swint" }],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@katswint",
+    title: SITE_NAME,
+    description: OG_DESCRIPTION,
+    images: ["/opengraph-image"],
   },
   icons: {
     icon: [
@@ -40,6 +45,7 @@ export const metadata: Metadata = {
       { url: "/icon.png", type: "image/png", sizes: "64x64" },
     ],
     shortcut: "/favicon.ico",
+    apple: "/icon.png",
   },
 };
 

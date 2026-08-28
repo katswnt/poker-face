@@ -1,4 +1,4 @@
-// Heads-up preflop push/fold Nash equilibrium solver.
+// Heads-up preflop push/fold strategy solver for a simplified game.
 //
 // The game: the Small Blind (button, on the button heads-up) is first to act with an
 // effective stack of S big blinds. It may open-shove all-in for S, or fold. Facing a shove,
@@ -6,8 +6,7 @@
 //
 // This is the classic "jam-or-fold" abstraction: with a short stack there is no room to play
 // post-flop, so the entire game tree is two binary decisions and the equilibrium is a pair
-// of ranges. It has an exact, computable Nash solution that matches published charts
-// (Nash / HoldemResources / SnapShove) — the point of this module.
+// of ranges. This module approximates a stable strategy for that simplified game.
 //
 // EV model (chip-EV, in big blinds), for SB hand h and BB hand k:
 //   SB folds:                 SB stack → S − 0.5                    (loses the small blind)
@@ -18,9 +17,9 @@
 //   SB shoves h  ⟺  EV_shove(h) > S − 0.5
 //   BB calls  k  ⟺  2S·avgEq(k) > S − 1.0     (avgEq over SB's actual shoving distribution)
 //
-// Card removal between the two specific hands is not modeled (standard textbook simplification;
-// ranges are weighted by unconditional combo counts). This keeps the model transparent and
-// still reproduces published Nash ranges to within a hand or two at every depth.
+// Card removal between the two specific hands is not modeled; ranges are weighted by
+// unconditional combo counts. The equity matrix is also estimated by random simulation.
+// Those are model limits, so the result is not presented as an exact real-poker answer.
 //
 // Solved by fictitious play: each player best-responds to the running time-average of the
 // opponent's strategy. In a finite zero-sum game this is guaranteed to converge to the Nash
@@ -43,6 +42,12 @@ export interface PushFoldSolution {
   bbCall: number[];              // per-hand BB call frequency  [0,1], indexed like HANDS
   sbShovePct: number;            // combo-weighted % of hands SB shoves
   bbCallPct: number;             // combo-weighted % of hands BB calls
+  nashGap: number;               // total gain available from both players changing strategy, in BB
+  sbImprovement: number;         // gain available to SB by changing alone, in BB
+  bbImprovement: number;         // gain available to BB by changing alone, in BB
+  tolerance: number;             // algorithmic convergence target for the fixed input matrix
+  converged: boolean;
+  matrixSamples: number;         // simulations behind each matrix cell
 }
 
 // Combo-weighted fraction (0..1) of the range that a per-hand frequency vector covers.
@@ -52,9 +57,62 @@ function rangeWidth(freq: number[]): number {
   return num / TOTAL_COMBOS;
 }
 
+function sbPayoff(
+  sbStrategy: number[],
+  bbStrategy: number[],
+  stack: number,
+  smallBlind: number,
+  bigBlind: number,
+): number {
+  const foldValue = stack - smallBlind;
+  const calledPot = 2 * stack;
+  let total = 0;
+  for (let h = 0; h < N; h++) {
+    let shoveValue = 0;
+    for (let k = 0; k < N; k++) {
+      shoveValue += W[k] * (
+        bbStrategy[k] * calledPot * EQ[h][k]
+        + (1 - bbStrategy[k]) * (stack + bigBlind)
+      );
+    }
+    shoveValue /= TOTAL_COMBOS;
+    total += W[h] * ((1 - sbStrategy[h]) * foldValue + sbStrategy[h] * shoveValue);
+  }
+  return total / TOTAL_COMBOS;
+}
+
+function sbBestResponse(bbStrategy: number[], stack: number, smallBlind: number, bigBlind: number): number[] {
+  const foldValue = stack - smallBlind;
+  const calledPot = 2 * stack;
+  return HANDS.map((_, h) => {
+    let shoveValue = 0;
+    for (let k = 0; k < N; k++) {
+      shoveValue += W[k] * (
+        bbStrategy[k] * calledPot * EQ[h][k]
+        + (1 - bbStrategy[k]) * (stack + bigBlind)
+      );
+    }
+    return shoveValue / TOTAL_COMBOS > foldValue ? 1 : 0;
+  });
+}
+
+function bbBestResponse(sbStrategy: number[], stack: number, bigBlind: number): number[] {
+  const calledPot = 2 * stack;
+  let shoveMass = 0;
+  for (let h = 0; h < N; h++) shoveMass += W[h] * sbStrategy[h];
+  return HANDS.map((_, k) => {
+    if (shoveMass === 0) return 0;
+    let equityWhenCalled = 0;
+    for (let h = 0; h < N; h++) {
+      equityWhenCalled += W[h] * sbStrategy[h] * (1 - EQ[h][k]);
+    }
+    return calledPot * (equityWhenCalled / shoveMass) > stack - bigBlind ? 1 : 0;
+  });
+}
+
 export function solvePushFold(
   stack: number,
-  { sb = 0.5, bb = 1.0, rounds = 1200 }: { sb?: number; bb?: number; rounds?: number } = {},
+  { sb = 0.5, bb = 1.0, rounds = 20_000, tolerance = 0.0005 }: { sb?: number; bb?: number; rounds?: number; tolerance?: number } = {},
 ): PushFoldSolution {
   const S = stack;
   const evFold_SB = S - sb;   // SB's stack if it folds
@@ -111,11 +169,23 @@ export function solvePushFold(
   const clean = (x: number) => (x < 1e-3 ? 0 : x > 1 - 1e-3 ? 1 : x);
   const sbShove = sbAvg.map(clean);
   const bbCall = bbAvg.map(clean);
+  const profileValue = sbPayoff(sbShove, bbCall, S, sb, bb);
+  const bestSbValue = sbPayoff(sbBestResponse(bbCall, S, sb, bb), bbCall, S, sb, bb);
+  const worstBbValue = sbPayoff(sbShove, bbBestResponse(sbShove, S, bb), S, sb, bb);
+  const sbImprovement = Math.max(0, bestSbValue - profileValue);
+  const bbImprovement = Math.max(0, profileValue - worstBbValue);
+  const nashGap = sbImprovement + bbImprovement;
 
   return {
     stack: S, sb, bb, rounds,
     sbShove, bbCall,
     sbShovePct: rangeWidth(sbShove) * 100,
     bbCallPct: rangeWidth(bbCall) * 100,
+    nashGap,
+    sbImprovement,
+    bbImprovement,
+    tolerance,
+    converged: nashGap <= tolerance,
+    matrixSamples: equityData.meta.sims,
   };
 }

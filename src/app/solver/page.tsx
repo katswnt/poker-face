@@ -1,13 +1,10 @@
 "use client";
 
-// Heads-up preflop push/fold Nash equilibrium — interactive demo.
-// A real, computed equilibrium (iterative best response over a Monte-Carlo equity matrix),
-// distinct from the app's 4-handed heuristic trainer. Client component: the slider re-solves
-// the Nash ranges live from the committed 169×169 equity matrix.
-import { useMemo, useState } from "react";
+// Heads-up preflop push/fold model — interactive demo backed by precomputed solutions.
+import { useState } from "react";
 import Link from "next/link";
 import { HANDS, GRID_RANK_VALUES } from "@/lib/solver/hands";
-import { solvePushFold } from "@/lib/solver/pushfold";
+import { getPushFoldSolution, SOLUTION_META } from "@/lib/solver/solutions";
 
 // Theme lifted from the main app (terminal / JetBrains Mono).
 const T = {
@@ -40,27 +37,26 @@ export default function SolverPage() {
   const [stack, setStack] = useState(10);
   const [view, setView] = useState<View>("sb");
 
-  const sol = useMemo(() => solvePushFold(stack), [stack]);
+  const sol = getPushFoldSolution(stack);
   const freqs = view === "sb" ? sol.sbShove : sol.bbCall;
   const base = view === "sb" ? T.shove : T.call;
 
   return (
-    <main style={{ minHeight: "100vh", background: T.bg, color: T.ink, fontFamily: T.mono, padding: "clamp(16px, 4vw, 40px)" }}>
+    <main style={{ minHeight: "100dvh", background: T.bg, color: T.ink, fontFamily: T.mono, padding: "clamp(16px, 4vw, 40px)" }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <header style={{ borderBottom: `1px solid ${T.hair}`, paddingBottom: 16, marginBottom: 20 }}>
           <Link href="/" aria-label="Back to the Hold'em Trainer"
             style={{ display: "inline-block", fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none", marginBottom: 12 }}>
             <span aria-hidden="true">←</span> back to trainer
           </Link>
-          <div style={{ fontSize: 12, letterSpacing: 2, color: T.dim, textTransform: "uppercase" }}>Heads-Up · Push / Fold</div>
+          <div style={{ fontSize: 12, color: T.dim, textTransform: "uppercase" }}>Heads-Up · Push / Fold</div>
           <h1 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, margin: "6px 0 10px", color: T.ink }}>
-            Nash Equilibrium Solver
+            Push/Fold Strategy Explorer
           </h1>
           <p style={{ fontSize: 13, lineHeight: 1.6, color: T.inkSoft, margin: 0 }}>
-            A <strong style={{ color: T.ink }}>real, computed Nash equilibrium</strong> — solved by iterative
-            best response (fictitious play) over a Monte-Carlo equity matrix, and verifiable against published
-            push/fold charts. This is the exact-solution, heads-up jam-or-fold game — distinct from the app&apos;s
-            4-handed <em>heuristic</em> trainer.
+            This tool searches for stable play in a small poker game: the small blind may shove or fold,
+            and the big blind may call or fold. It uses estimated hand strength and leaves out some card-removal
+            effects, so treat it as a clear model—not an exact answer for every real game.
           </p>
         </header>
 
@@ -79,10 +75,10 @@ export default function SolverPage() {
             />
           </label>
 
-          <div role="tablist" aria-label="Range view" style={{ display: "flex", border: `1px solid ${T.hair}` }}>
+          <div role="group" aria-label="Range to show" style={{ display: "flex", border: `1px solid ${T.hair}` }}>
             {([["sb", "SB shove"], ["bb", "BB call"]] as [View, string][]).map(([v, label]) => (
-              <button
-                key={v} role="tab" aria-selected={view === v} onClick={() => setView(v)}
+              <button type="button"
+                key={v} aria-pressed={view === v} onClick={() => setView(v)}
                 style={{
                   fontFamily: T.mono, fontSize: 12, padding: "8px 14px", cursor: "pointer", border: "none",
                   background: view === v ? (v === "sb" ? T.shove : T.call) : "transparent",
@@ -96,7 +92,7 @@ export default function SolverPage() {
         </div>
 
         {/* Stats */}
-        <div style={{ display: "flex", gap: 24, marginBottom: 16, fontSize: 13 }}>
+        <output aria-live="polite" style={{ display: "flex", gap: 24, marginBottom: 10, fontSize: 13, flexWrap: "wrap" }}>
           <div>
             <span style={{ color: T.shove }}>■</span> SB shoves{" "}
             <strong style={{ color: T.ink }}>{sol.sbShovePct.toFixed(1)}%</strong>
@@ -105,21 +101,35 @@ export default function SolverPage() {
             <span style={{ color: T.call }}>■</span> BB calls{" "}
             <strong style={{ color: T.ink }}>{sol.bbCallPct.toFixed(1)}%</strong>
           </div>
+        </output>
+        <div style={{ marginBottom: 16, padding: "8px 10px", border: `1px solid ${T.hair}`, color: T.inkSoft, fontSize: 11, lineHeight: 1.6 }}>
+          <strong style={{ color: sol.converged ? T.shove : T.warn }}>
+            {sol.converged ? "Stable for this model." : "Still settling."}
+          </strong>{" "}
+          Together, the two players could improve by at most {sol.nashGap.toFixed(4)} big blinds by changing
+          their choices against each other. This check covers the solving method; it does not remove the
+          sampling error or the limits of the model.
         </div>
 
         {/* 13×13 grid */}
         <div style={{ overflowX: "auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(13, minmax(30px, 1fr))", gap: 2, minWidth: 420 }}>
+          <div role="group" aria-label={`${view === "sb" ? "Small blind shove" : "Big blind call"} chart at ${stack.toFixed(1)} big blinds`} style={{ display: "grid", gridTemplateColumns: "repeat(13, minmax(30px, 1fr))", gap: 2, minWidth: 420 }}>
             {GRID_RANK_VALUES.map((_, row) =>
               GRID_RANK_VALUES.map((__, col) => {
                 const idx = row * 13 + col;
                 const h = HANDS[idx];
                 const f = freqs[idx];
                 const mixed = f > 0.001 && f < 0.999;
+                const action = view === "sb" ? "shove" : "call";
+                const handSummary = mixed
+                  ? `${h.label}: borderline in this model; exact frequency is not reliable`
+                  : `${h.label}: ${Math.round(f * 100)} percent ${action}`;
                 return (
                   <div
                     key={idx}
-                    title={`${h.label}: ${(f * 100).toFixed(0)}% ${view === "sb" ? "shove" : "call"}`}
+                    title={handSummary}
+                    role="img"
+                    aria-label={handSummary}
                     style={{
                       aspectRatio: "1 / 1", display: "flex", flexDirection: "column",
                       alignItems: "center", justifyContent: "center",
@@ -131,7 +141,7 @@ export default function SolverPage() {
                     }}
                   >
                     <span>{h.label}</span>
-                    {mixed && <span style={{ fontSize: "0.8em", opacity: 0.85 }}>{Math.round(f * 100)}%</span>}
+                    {mixed && <span style={{ fontSize: "0.8em", opacity: 0.85 }}>edge</span>}
                   </div>
                 );
               }),
@@ -143,12 +153,17 @@ export default function SolverPage() {
         <div style={{ marginTop: 14, fontSize: 11, color: T.dim, lineHeight: 1.7 }}>
           <div>
             Diagonal = pocket pairs · upper-right = suited · lower-left = offsuit.{" "}
-            <span style={{ borderBottom: `1px dashed ${base}`, color: T.inkSoft }}>Dashed</span> cells are mixed
-            (fractional) frequencies.
+            <span style={{ borderBottom: `1px dashed ${base}`, color: T.inkSoft }}>Dashed</span> cells sit near
+            the edge of the range. Their exact percentages are not reliable: a different set of random boards
+            can move a borderline hand.
           </div>
           <div style={{ marginTop: 4 }}>
-            SB=0.5bb, BB=1.0bb. Solved by fictitious play (~1200 iterations) to equilibrium; combo-weighted
-            (pairs ×6, suited ×4, offsuit ×12). Card removal between the two hands is not modeled.
+            Blinds are 0.5 and 1 big blind. Each saved chart used {SOLUTION_META.rounds.toLocaleString()} rounds.
+            Every displayed depth passed the stability check for the fixed input table. Each non-self hand
+            matchup in that table came from {SOLUTION_META.matrixSamples.toLocaleString()} random boards; near
+            a 50/50 result, that alone can add about ±{(50 / Math.sqrt(SOLUTION_META.matrixSamples)).toFixed(1)}
+            percentage points of sampling error. Self-matchups are exactly 50%. Card removal between the two
+            ranges is not modeled.
           </div>
         </div>
       </div>

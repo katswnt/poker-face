@@ -2,7 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import equityData from "../src/lib/solver/equity-matrix.json" with { type: "json" };
 import { HANDS, handIndex, TOTAL_COMBOS } from "../src/lib/solver/hands";
-import { score7, headsUpEquity } from "../src/lib/solver/equityMatrix";
+import { headsUpEquity } from "../src/lib/solver/equityMatrix";
+import { score7 } from "../src/lib/poker/score7";
 import { solvePushFold } from "../src/lib/solver/pushfold";
 import { handScore } from "../src/lib/poker/eval";
 import { mulberry32 } from "../src/lib/poker/equity";
@@ -28,7 +29,7 @@ test("169 canonical hands with correct combo weights (Σ = 1326)", () => {
 test("score7 === handScore on random 7-card hands (evaluators cannot drift)", () => {
   const rng = mulberry32(1234);
   const deck = deckStrings().map(card);
-  for (let n = 0; n < 5000; n++) {
+  for (let n = 0; n < 100_000; n++) {
     const d = [...deck];
     for (let i = d.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [d[i], d[j]] = [d[j], d[i]]; }
     const seven = d.slice(0, 7);
@@ -46,18 +47,17 @@ test("equity matrix: AA crushes 72o (≥ 0.85)", () => {
   assert.ok(eq >= 0.85, `AA vs 72o should be ~0.87, got ${eq}`);
 });
 
-test("equity matrix: zero-sum, eq(i,j) + eq(j,i) ≈ 1 (±0.03)", () => {
-  const pairs: [string, string][] = [["AA", "72o"], ["AKs", "22"], ["QJs", "T9o"], ["KK", "AKo"], ["55", "A5s"]];
-  for (const [x, y] of pairs) {
-    const i = handIndex(x), j = handIndex(y);
-    assert.ok(Math.abs(EQ[i][j] + EQ[j][i] - 1) <= 0.03, `${x}/${y}: ${EQ[i][j]} + ${EQ[j][i]}`);
+test("equity matrix: every off-diagonal pair is an exact zero-sum complement", () => {
+  for (let i = 0; i < EQ.length; i++) {
+    for (let j = i + 1; j < EQ.length; j++) {
+      assert.ok(Math.abs(EQ[i][j] + EQ[j][i] - 1) < 1e-12, `${HANDS[i].label}/${HANDS[j].label}`);
+    }
   }
 });
 
-test("equity matrix: a hand vs. its own class is a coin flip (~0.5)", () => {
-  for (const lbl of ["AA", "KK", "AKs", "72o", "T9s"]) {
-    const i = handIndex(lbl);
-    assert.ok(Math.abs(EQ[i][i] - 0.5) <= 0.03, `${lbl} vs ${lbl} should be ~0.5, got ${EQ[i][i]}`);
+test("equity matrix: every hand class against itself is exactly 0.5", () => {
+  for (let i = 0; i < EQ.length; i++) {
+    assert.equal(EQ[i][i], 0.5, `${HANDS[i].label} vs itself`);
   }
 });
 
@@ -69,7 +69,7 @@ test("headsUpEquity live agrees with the committed matrix (± Monte-Carlo noise)
 });
 
 // ─────────────────────────────────────────────────────────────────────────────────────────
-// Nash push/fold properties
+// Simplified push/fold model properties
 // ─────────────────────────────────────────────────────────────────────────────────────────
 const DEPTHS = [2, 5, 10, 15, 20];
 const SOL = Object.fromEntries(DEPTHS.map(d => [d, solvePushFold(d)]));
@@ -96,14 +96,21 @@ test("SB shove range widens monotonically as the stack shrinks", () => {
 });
 
 test("at ~2bb SB shoves almost everything (very wide jam)", () => {
-  // The true HU Nash jam at 2bb is ~90% — the bottom offsuit hands (72o, 82o, 32o, …) are
-  // marginal folds even here because the BB is calling ~100%. So "≈100%" means "nearly the
-  // whole grid", not literally every hand.
+  // At 2bb this saved model should shove very widely, while some bottom offsuit hands may
+  // remain folds. This broad guard catches an inverted chart without claiming agreement
+  // with a published boundary hand by hand.
   assert.ok(SOL[2].sbShovePct > 85, `2bb SB jam should be very wide, got ${SOL[2].sbShovePct}%`);
 });
 
-test("at 10bb the ranges match published Nash (SB ~60–70%, BB ~35–45%)", () => {
+test("every displayed depth meets the fixed-matrix convergence target", () => {
+  for (const depth of DEPTHS) {
+    assert.equal(SOL[depth].converged, true, `${depth}bb gap ${SOL[depth].nashGap} exceeds ${SOL[depth].tolerance}`);
+    assert.ok(SOL[depth].nashGap <= SOL[depth].tolerance);
+  }
+});
+
+test("at 10bb the simplified model stays inside a broad sanity band", () => {
   const { sbShovePct, bbCallPct } = SOL[10];
-  assert.ok(sbShovePct > 52 && sbShovePct < 72, `SB shove% at 10bb = ${sbShovePct.toFixed(1)} (expected ~60–70)`);
-  assert.ok(bbCallPct > 33 && bbCallPct < 47, `BB call% at 10bb = ${bbCallPct.toFixed(1)} (expected ~35–45)`);
+  assert.ok(sbShovePct > 50 && sbShovePct < 75, `SB shove% at 10bb = ${sbShovePct.toFixed(1)}`);
+  assert.ok(bbCallPct > 30 && bbCallPct < 50, `BB call% at 10bb = ${bbCallPct.toFixed(1)}`);
 });

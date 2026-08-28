@@ -5,11 +5,12 @@
 // with dialogue, reasoning, thoughts, and the math trail. It reasons with a hand-tier
 // preflop model and Monte Carlo equity postflop — a disciplined heuristic baseline, not a
 // GTO solver (see README "Is this GTO?").
-import type { CardObj, BoardAnalysis, HoldingResult, Decision } from "./types";
-import { SUITS, SUIT_NAMES, RS, BB, cv, ck, cardStr, valName, valNameL, valShort } from "./cards";
+import type { CardObj, BoardAnalysis, CallQuote, HoldingResult, Decision } from "./types";
+import { SUITS, SUIT_NAMES, RS, BB, cv, ck, cardStr, makeDeck, valName, valNameL, valShort } from "./cards";
 import { bestHand } from "./eval";
-import { preflopHandTier, preflopThresholds } from "./ranges";
-import { monteCarloEquity, equityStandardError } from "./equity";
+import { score7 } from "./score7";
+import { preflopHandTier, preflopRangePercent, preflopThresholds } from "./ranges";
+import { monteCarloEquityEstimate } from "./equity";
 
 // Position name → short label. Lives here because the decision engine maps it; the UI
 // imports it too.
@@ -34,14 +35,22 @@ export function analyzeBoard(board: CardObj[]): BoardAnalysis | null {
   const flushSuit = maxSuit[1] >= 2 ? maxSuit[0] : null;
   const flushCount = maxSuit[1];
   const isRainbow = board.length >= 3 && maxSuit[1] === 1;
-  const sorted = [...new Set(vals)].sort((a, b) => a - b);
-  let maxRun = 1, run = 1;
-  for (let i = 1; i < sorted.length; i++) { if (sorted[i] - sorted[i - 1] === 1) { run++; maxRun = Math.max(maxRun, run); } else { run = 1; } }
+  const cardsToCome = Math.max(0, 5 - board.length);
+  const madeFlushPossible = maxSuit[1] >= 3;
+  const flushDrawPossible = cardsToCome > 0 && maxSuit[1] === 2;
+  const uniqueValues = new Set(vals);
+  if (uniqueValues.has(14)) uniqueValues.add(1); // an ace can be low in A-2-3-4-5
+  let maxRun = 1;
+  for (let low = 1; low <= 10; low++) {
+    const cardsInWindow = [low, low + 1, low + 2, low + 3, low + 4]
+      .filter(value => uniqueValues.has(value)).length;
+    maxRun = Math.max(maxRun, cardsInWindow);
+  }
   const connected = maxRun >= 2;
   const highCard = Math.max(...vals);
   const lowCard = Math.min(...vals);
   const straightDanger = maxRun >= 3;
-  return { vals, suits, pairs, trips, isMonotone, twoTone, flushSuit, flushCount, isRainbow, connected, straightDanger, highCard, lowCard, maxRun };
+  return { vals, suits, pairs, trips, isMonotone, twoTone, flushSuit, flushCount, isRainbow, connected, straightDanger, highCard, lowCard, maxRun, cardsToCome, madeFlushPossible, flushDrawPossible };
 }
 
 // ═══════════════════════════════════════════
@@ -69,7 +78,7 @@ export function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnaly
       else { result.pairSource = "middle"; result.realStrength = "decent"; result.details = `Middle pair, ${valNameL(pairVal)}s.`; }
     } else if (holeCount === 2) {
       result.pairSource = "pocket"; result.realStrength = pairVal > ba.highCard ? "good" : "decent";
-      result.details = `Pocket ${valNameL(pairVal)}s — ${pairVal > ba.highCard ? "overpair to the board" : "underpair, any board card pairing an opponent beats this"}.`;
+      result.details = `Pocket ${valNameL(pairVal)}s — ${pairVal > ba.highCard ? "overpair to the board" : "underpair to the board's highest card. A higher pair beats it; pairing a lower board card may not"}.`;
     }
   }
   if (hand.rank === 2) {
@@ -93,12 +102,18 @@ export function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnaly
     } else { result.realStrength = "decent"; result.details = `Trips are on the board. Everyone has them. Playing kicker.`; }
   }
   if (hand.rank === 4) { result.realStrength = "monster"; result.details = `Straight: ${hand.kickers.map(valShort).join("-")}.`; }
-  if (hand.rank === 5) { result.realStrength = "monster"; result.details = `Flush in ${SUIT_NAMES[hole.find(c => board.some(b => b.suit === c.suit))?.suit || hole[0].suit]}s.`; }
+  if (hand.rank === 5) {
+    const madeSuit = hand.cards?.[0]?.suit;
+    result.realStrength = "monster";
+    result.details = madeSuit ? `Flush in ${SUIT_NAMES[madeSuit]}.` : "Flush.";
+  }
   if (hand.rank === 6) { result.realStrength = "monster"; result.details = `Full house: ${valNameL(hand.kickers[0])}s full of ${valNameL(hand.kickers[1])}s.`; }
   if (hand.rank >= 7) { result.realStrength = "monster"; result.details = `${hand.name}!`; }
   if (hand.rank === 0) {
     const hi = Math.max(...hv); result.realStrength = "weak";
-    result.details = hi === 14 ? `Ace-high. No pair yet but the ace is a potential out.` : `${valName(hi)}-high. No pair, no draw. Nothing connects.`;
+    result.details = hi === 14
+      ? ba.cardsToCome > 0 ? `Ace-high. No pair yet; another ace could make a pair.` : `Ace-high. No pair, and no cards remain.`
+      : `${valName(hi)}-high. No pair${ba.cardsToCome > 0 ? " yet." : ", and no cards remain."}`;
   }
 
   const allSuits = [...hs, ...board.map(c => c.suit)];
@@ -107,7 +122,7 @@ export function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnaly
   for (const [suit, count] of Object.entries(suitBuckets)) {
     const holeInSuit = hole.filter(c => c.suit === suit);
     const boardInSuit = board.filter(c => c.suit === suit);
-    if (count === 4 && holeInSuit.length >= 1) {
+    if (ba.cardsToCome > 0 && count === 4 && holeInSuit.length >= 1) {
       const highFlushCard = Math.max(...holeInSuit.map(cv));
       const isNut = highFlushCard === 14;
       result.draws.push({ type: "flush", suit, outs: 13 - count, holeCards: holeInSuit, highCard: highFlushCard, isNut, dirty: highFlushCard <= 8, desc: `Flush draw in ${SUIT_NAMES[suit]} (${holeInSuit.map(cardStr).join("+")} from hand, ${boardInSuit.map(cardStr).join("+")} on board). ${isNut ? "Nut flush draw — best possible." : highFlushCard <= 8 ? "Low flush draw — could lose to a higher flush." : "Decent flush card."}` });
@@ -133,7 +148,7 @@ export function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnaly
       }
     }
   }
-  if (completionRanks.size > 0 && hand.rank < 4) {
+  if (ba.cardsToCome > 0 && completionRanks.size > 0 && hand.rank < 4) {
     const ranks = [...completionRanks.keys()];
     const knownKeys = new Set([...hole, ...board].map(ck));
     let actualOuts = 0;
@@ -157,11 +172,23 @@ export function analyzeHolding(hole: CardObj[], board: CardObj[], ba: BoardAnaly
 export function assessThreats(ba: BoardAnalysis | null): string[] {
   if (!ba) return [];
   const threats: string[] = [];
-  if (ba.pairs.length > 0) for (const p of ba.pairs) threats.push(`Board is paired (${valNameL(p)}s) — anyone holding a ${valShort(p)} has trips.`);
-  if (ba.isMonotone) threats.push(`All ${ba.suits.length} cards are ${SUIT_NAMES[ba.flushSuit!]} — anyone with one ${SUIT_NAMES[ba.flushSuit!]} has a flush draw, and two already has a flush.`);
-  else if (ba.flushCount >= 3) threats.push(`Three ${SUIT_NAMES[ba.flushSuit!]} on board — anyone with two ${SUIT_NAMES[ba.flushSuit!]} has a flush.`);
-  else if (ba.twoTone && ba.flushCount === 2) threats.push(`Two ${SUIT_NAMES[ba.flushSuit!]} on board — flush draw possible for anyone with two ${SUIT_NAMES[ba.flushSuit!]}.`);
-  if (ba.straightDanger) { const sorted = [...new Set(ba.vals)].sort((a, b) => a - b); threats.push(`Connected board (${sorted.map(valShort).join("-")}) — straight draws are likely out there.`); }
+  for (const p of ba.trips) {
+    const count = ba.vals.filter(v => v === p).length;
+    threats.push(count === 4
+      ? `Four ${valNameL(p)}s are on board — everyone has quads, so the highest kicker plays.`
+      : `Three ${valNameL(p)}s are on board — a pocket pair makes a full house, and the remaining ${valShort(p)} makes quads.`);
+  }
+  for (const p of ba.pairs.filter(p => !ba.trips.includes(p))) {
+    threats.push(`Board is paired (${valNameL(p)}s) — anyone holding a ${valShort(p)} has trips.`);
+  }
+  if (ba.madeFlushPossible) threats.push(`${ba.flushCount} ${SUIT_NAMES[ba.flushSuit!]} on board — a flush is already possible.`);
+  else if (ba.flushDrawPossible) threats.push(`Two ${SUIT_NAMES[ba.flushSuit!]} on board — flush draws are possible for players holding two ${SUIT_NAMES[ba.flushSuit!]}.`);
+  if (ba.straightDanger) {
+    const sorted = [...new Set(ba.vals)].sort((a, b) => a - b);
+    threats.push(ba.cardsToCome > 0
+      ? `Connected board (${sorted.map(valShort).join("-")}) — straight draws are possible.`
+      : `Connected river (${sorted.map(valShort).join("-")}) — a straight is possible.`);
+  }
   if (ba.highCard === 14) threats.push(`Ace on board — anyone holding an ace has at least a pair of aces.`);
   return threats;
 }
@@ -172,7 +199,7 @@ export function assessThreats(ba: BoardAnalysis | null): string[] {
 export function potOddsNote(pot: number, toCall: number): string {
   const potAfter = pot + toCall;
   const pct = Math.round((toCall / potAfter) * 100);
-  return `Pot odds: ${toCall} to call into ${potAfter} total pot → need ${pct}% equity to break even.`;
+  return `Calling ${toCall} creates a final pot of ${potAfter}, so the call needs an average share of at least ${pct}% over many deals.`;
 }
 
 export function snapToBB(amount: number, max: number): number {
@@ -188,6 +215,63 @@ export function potFractionLabel(bet: number, pot: number): string {
   if (r < 0.92) return "¾-pot";
   if (r < 1.2) return "pot-sized";
   return `${Math.round(r * 100)}%-pot`;
+}
+
+export interface CallEvaluation {
+  requiredEquity: number;
+  expectedValue: number;
+  profitable: boolean;
+}
+
+// A caller pays `bet` to contest the pot that exists after matching it. If the
+// pot was P before the bet, a call creates a final pot of P + 2B.
+export function requiredEquityFacingBet(potBeforeBet: number, bet: number): number {
+  const p = Math.max(0, potBeforeBet);
+  const b = Math.max(0, bet);
+  return b === 0 ? 0 : b / (p + 2 * b);
+}
+
+// This is the exact fold rate a hand with no chance of winning when called
+// needs for a bluff to break even. A semi-bluff needs less because it can also
+// win at showdown, but that requires a model of the opponent's calling hands.
+export function pureBluffFoldThreshold(potBeforeBet: number, bet: number): number {
+  const p = Math.max(0, potBeforeBet);
+  const b = Math.max(0, bet);
+  return b === 0 ? 0 : b / (p + b);
+}
+
+// Pure call/fold rule. Strategy presentation may round these numbers, but decisions and
+// profitability claims always use the unrounded values from this result.
+export function evaluateCall(equity: number, pot: number, toCall: number): CallEvaluation {
+  const cost = Math.max(0, toCall);
+  const contestablePot = Math.max(0, pot);
+  const requiredEquity = cost === 0 ? 0 : cost / (contestablePot + cost);
+  const expectedValue = equity * (contestablePot + cost) - cost;
+  return { requiredEquity, expectedValue, profitable: expectedValue >= 0 };
+}
+
+export function evaluateCallQuote(equity: number, quote: CallQuote): CallEvaluation {
+  const expectedValue = equity * quote.contestablePot - quote.callCost;
+  return {
+    requiredEquity: quote.requiredEquity,
+    expectedValue,
+    profitable: expectedValue >= 0,
+  };
+}
+
+// Exact on the river: try every legal opposing two-card hand. A hand is the unique nuts
+// only when every one of those hands loses; a board-only tie does not count.
+export function isUniqueRiverNuts(hole: CardObj[], board: CardObj[]): boolean {
+  if (board.length !== 5) return false;
+  const known = new Set([...hole, ...board].map(ck));
+  const remaining = makeDeck().filter(card => !known.has(ck(card)));
+  const heroScore = score7([...hole, ...board]);
+  for (let i = 0; i < remaining.length; i++) {
+    for (let j = i + 1; j < remaining.length; j++) {
+      if (score7([remaining[i], remaining[j], ...board]) >= heroScore) return false;
+    }
+  }
+  return true;
 }
 
 export function generateFullDecision(
@@ -206,9 +290,20 @@ export function generateFullDecision(
   style: "gto" | "loose" | "wild" = "gto",
   numRaisesAhead = 0,
   dealSeed = 0,
+  minRaiseTo?: number,
+  canRaise = true,
+  callQuote?: CallQuote,
 ): Decision {
   if (folded) return { action: "already_folded", dialogue: "", reasoning: "", thoughts: [], math: [] };
-  const toCall = Math.max(0, currentBet - playerBet);
+  const fallbackCallCost = Math.min(Math.max(0, currentBet - playerBet), Math.max(0, playerStack));
+  const quote = callQuote ?? {
+    callCost: fallbackCallCost,
+    allIn: fallbackCallCost > 0 && fallbackCallCost === playerStack,
+    contestablePot: Math.max(0, pot) + fallbackCallCost,
+    requiredEquity: fallbackCallCost === 0 ? 0 : fallbackCallCost / (Math.max(0, pot) + fallbackCallCost),
+    layers: [],
+  };
+  const toCall = quote.callCost;
   const maxBetGlobal = playerStack;
   const hv = hole.map(cv);
   const highHole = Math.max(...hv), lowHole = Math.min(...hv);
@@ -220,75 +315,59 @@ export function generateFullDecision(
   if (street === "preflop") {
     const tier = preflopHandTier(highHole, lowHole, suited);
     const [raiseThr, callThr] = preflopThresholds(posShort, numRaisesAhead, style);
-    const raiseAmt = snapToBB(Math.max(currentBet * 2.5, BB * 2.5), playerStack + playerBet);
+    const maxCommit = playerStack + playerBet;
+    const minimumTarget = minRaiseTo ?? (currentBet > 0 ? currentBet + BB : BB);
+    const raiseAmt = snapToBB(Math.max(currentBet * 2.5, BB * 2.5, minimumTarget), maxCommit);
     const handLabel = pocket
       ? `pocket ${valNameL(highHole)}s`
       : `${valShort(highHole)}${valShort(lowHole)}${suited ? "s" : "o"}`;
     // Call gate: a hand in the calling range calls if the PRICE is right, rather than
     // being capped at a flat 3bb (which folded strong hands to any larger 3-bet regardless
     // of odds). The pot odds we're asked to lay (toCall / (pot + toCall)) must be within a
-    // ceiling that scales with hand strength — premiums deeper in the range tolerate worse
+    // ceiling that scales with hand strength — stronger groups tolerate worse
     // prices. Still a heuristic (no true preflop equity), but odds-aware, not a magic cap.
-    const priceNeeded = toCall > 0 ? toCall / (pot + toCall) : 0;
+    const priceNeeded = quote.requiredEquity;
     const priceCeiling = 0.30 + Math.max(0, callThr - tier) * 0.06;
-    const pfAction = tier <= raiseThr ? "raise"
+    const raisePct = Math.round(preflopRangePercent(raiseThr));
+    const continuePct = Math.round(preflopRangePercent(callThr));
+    let pfAction = tier <= raiseThr ? "raise"
       : (tier <= callThr && (toCall === 0 || priceNeeded <= priceCeiling)) ? (toCall === 0 ? "check" : "call")
       : (toCall === 0 && posShort === "BB") ? "check"
       : "fold";
+    if (pfAction === "raise" && (!canRaise || maxCommit <= currentBet)) pfAction = toCall > 0 ? "call" : "check";
     const gap = highHole - lowHole;
     const connStr = gap <= 1 ? "connected" : gap <= 2 ? "one-gap" : gap <= 3 ? "two-gap" : "disconnected";
     const handQuality = pocket
       ? `${cardStr(hole[0])} ${cardStr(hole[1])} — pocket ${valNameL(highHole)}s. A made pair preflop.`
-      : `${cardStr(hole[0])} ${cardStr(hole[1])} — ${valNameL(highHole)}-${valNameL(lowHole)} ${suited ? "suited" : "offsuit"}, ${connStr}.${tier <= 2 ? " Premium." : tier <= 4 ? " Playable." : tier === 5 ? " Marginal." : " Weak — few strong hands it can make."}`;
+      : `${cardStr(hole[0])} ${cardStr(hole[1])} — ${valNameL(highHole)}-${valNameL(lowHole)} ${suited ? "suited" : "offsuit"}, ${connStr}.${tier === 1 ? " Top group in this trainer's chart." : tier === 2 ? " Strong group in this trainer's chart." : tier <= 4 ? " Playable in some spots in this trainer's chart." : tier === 5 ? " Near the edge of this trainer's chart." : " Weakest group in this trainer's chart."}`;
     const rangeDesc = (() => {
       if (numRaisesAhead >= 2) {
-        const range = style === "wild" ? "TT+, AK, AQs" : style === "loose" ? "JJ+, AK, AQs" : "QQ+, AK — premiums only";
-        return `Two re-raises in — 4-bet territory. Only ${range} can continue. Anything else is a fold.`;
+        return `After two raises, this model continues with only its strongest ${continuePct}% of starting-card combinations.`;
       }
       if (numRaisesAhead === 1) {
-        const threeRange = style === "wild" ? "JJ+, AK, AQs, suited broadways" : style === "loose" ? "QQ+, AK, AJs+" : "QQ+, AK only";
-        if (pfAction === "raise") return `Facing a raise — you 3-bet with premiums: ${threeRange}. Everything else folds or calls.`;
-        if (pfAction === "call") return `Facing a raise — premiums 3-bet (${threeRange}), medium-strength hands call, the rest fold. ${handLabel} sits in the calling range from ${posShort}.`;
-        return `Facing a raise — 3-bet premiums (${threeRange}) or fold. ${handLabel} falls below the calling threshold here.`;
+        return `Facing one raise, this model re-raises its strongest ${raisePct}% of starting-card combinations. It may call with hands through its strongest ${continuePct}% when the current price passes its simple price check.`;
       }
-      if (posShort === "UTG") return style === "wild"
-        ? "UTG opens ~top 45%: any pair, any ace, broadway, suited connectors."
-        : style === "loose"
-        ? "UTG opens ~top 35%: pairs 66+, any ace suited, AJ+/KQ+, suited connectors 87s+."
-        : "UTG opens ~top 27%: pairs TT+, aces A8s+/AJo+, broadway KTs+/KQo, suited connectors 87s+. In 4-handed, UTG is CO-equivalent — wider than full-ring.";
-      if (posShort === "BTN") return style === "wild"
-        ? "BTN opens ~top 75%: almost any two cards with upside — only pure junk folds."
-        : style === "loose"
-        ? "BTN opens ~top 60%: any pair, any ace, broadway, suited connectors and gappers."
-        : "BTN opens ~top 45%: any pair, aces, broadway, suited connectors, suited one-gappers.";
-      if (posShort === "SB") return style === "wild"
-        ? "SB plays ~top 65%: pairs, any ace, any broadway, suited anything."
-        : style === "loose"
-        ? "SB plays ~top 55%: pairs, any ace, broadway, suited connectors/gappers, offsuit broadways."
-        : "SB plays ~top 45%: pairs, aces A2s+/A7o+, broadway KTo+/KTs+, suited connectors. In 4-handed, SB is nearly heads-up vs BB.";
-      return toCall > 0
-        ? style === "wild" ? "BB defends very wide vs a raise — only folds pure garbage."
-          : style === "loose" ? "BB defends ~65% vs raise: pairs, aces, broadways, suited connectors/gappers, most suited hands."
-          : "BB defends ~55% vs raise: pairs, aces A2s+/A7o+, broadway KTo+, suited connectors, suited gappers. Pot odds are good — defend wide."
-        : "BB checks for free — always correct to see a flop.";
+      if (posShort === "BB" && toCall === 0) return "No one raised the big blind, so checking costs nothing.";
+      if (raiseThr === callThr) {
+        return `In an unopened pot, this model raises its strongest ${raisePct}% of starting-card combinations and folds the rest from ${posShort}.`;
+      }
+      return `In an unopened pot, this model raises its strongest ${raisePct}% of starting-card combinations and may call with hands through its strongest ${continuePct}% from ${posShort}.`;
     })();
     const decisionLine = pfAction === "fold"
       ? numRaisesAhead >= 2
-        ? `${handLabel} can't continue vs two re-raises. 4-bet range is KK+. Fold.`
+        ? `${handLabel} is outside this model's strongest ${continuePct}% after two raises. Fold.`
         : numRaisesAhead === 1
-        ? `${handLabel} doesn't qualify for ${posShort}'s 3-bet/call range. Fold.`
-        : `${handLabel} outside ${posShort}'s opening range. Fold.`
+        ? `${handLabel} is outside this model's re-raise and call groups from ${posShort}. Fold.`
+        : `${handLabel} is outside this model's playing group from ${posShort}. Fold.`
       : pfAction === "raise"
-        ? numRaisesAhead >= 2 ? `${handLabel} strong enough to 4-bet. Raise.`
-          : numRaisesAhead === 1 ? `${handLabel} in ${posShort}'s 3-bet range. Raise.`
-          : `${handLabel} in ${posShort}'s opening range. Raise.`
-      : pfAction === "call" ? `${handLabel} worth calling at this price. Call.`
-      : `BB takes a free flop. Always correct.`;
+        ? `${handLabel} is inside this model's strongest ${raisePct}% raise group. Raise.`
+      : pfAction === "call" ? `${handLabel} passes this model's hand-group and price checks. Call.`
+      : `Checking costs nothing, so take the free flop.`;
     const math = [handQuality, rangeDesc, decisionLine];
     const thoughts = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
     if (pocket) {
       if (pfAction === "raise") { thoughts.push(`Pocket ${valNameL(highHole)}s — ${tier === 1 ? "premium pair" : "strong pair"}${numRaisesAhead >= 2 ? ", 4-betting" : numRaisesAhead === 1 ? ", 3-betting" : ", raising"}.`); return { action: "raise", amount: raiseAmt, dialogue: `${playerName} sees the pocket pair and sits up straighter. "Raise to ${raiseAmt}."`, reasoning: `Pocket ${valShort(highHole)}s — raise.`, thoughts, math }; }
-      if (pfAction === "call") { thoughts.push(`Pocket ${valNameL(highHole)}s — set-mining. ~12% (1-in-8.5) to flop a set.`); math.push(`Set odds: ~12%. Need ~7.5:1 implied odds to break even vs small raises.`); return { action: "call", dialogue: `${playerName} peeks at the pocket pair and quietly calls. "Call."`, reasoning: `Pocket ${valShort(highHole)}s — set-mining.`, thoughts, math }; }
+      if (pfAction === "call") { thoughts.push(`Pocket ${valNameL(highHole)}s — hoping to flop a set. That happens about 12% of the time (roughly 1 in 8.5).`); math.push(`The raw odds against flopping a set are about 7.5 to 1. Real break-even odds must be better because a set will not always win or earn more chips.`); return { action: "call", dialogue: `${playerName} peeks at the pocket pair and quietly calls. "Call."`, reasoning: `Pocket ${valShort(highHole)}s — call and look for a set.`, thoughts, math }; }
       thoughts.push(`Pocket ${valNameL(highHole)}s — too small to play at this price from ${posShort}.`);
       return { action: "fold", dialogue: `${playerName} glances at the cards and folds. "Fold."`, reasoning: `Pocket ${valShort(highHole)}s too weak here.`, thoughts, math };
     }
@@ -296,20 +375,18 @@ export function generateFullDecision(
     if (pfAction === "call") {
       thoughts.push(`${handLabel} — playable from ${posShort} at this price.`);
       if (toCall > 0) {
-        const pfPotOddsPct = Math.round(toCall / (pot + toCall) * 100);
-        math.push(`Pot odds: ${toCall} to call into ${pot + toCall} total pot → need ~${pfPotOddsPct}% equity to break even.`);
+        const pfPotOddsPct = Math.round(quote.requiredEquity * 100);
+        math.push(`Calling costs ${toCall}. If there were no later betting, winning about ${pfPotOddsPct} out of 100 times would cover that price. Later choices can change the result.`);
         if (highHole === 14) {
-          math.push(`Ace-high value: any ace on the flop gives top pair. You also "dominate" villains holding weaker aces (A2–A${valShort(lowHole - 1) ?? "x"}) — they need to hit the same pair but lose at showdown.`);
-          math.push(`A-x hands run ~52–58% equity vs a typical opening range. At ${pfPotOddsPct}% pot odds, this is a clear +EV call.`);
+          math.push(`An ace can make top pair, but a stronger ace can also have this hand in bad shape. The model treats this hand as playable at the current price; it does not measure a guaranteed profit.`);
         } else if (suited) {
-          math.push(`Suited adds ~3–4% equity vs the offsuit equivalent — flush draw potential on wet boards and the occasional backdoor flush.`);
-          math.push(`Running ~50–55% equity vs a typical opening range at ${pfPotOddsPct}% pot odds — profitable to call.`);
+          math.push(`Matching suits creates more ways to make a flush. How much that helps depends on the other player's actual hands and on later betting.`);
         } else if (highHole >= 12) {
-          math.push(`Broadway high card: strong showdown value, top pair on many boards, good blocker equity. Running ~50–54% equity at ${pfPotOddsPct}% pot odds.`);
+          math.push(`High cards can make strong top pairs, but this is still a hand-group rule rather than a measured win-rate result.`);
         } else {
-          math.push(`At ${pfPotOddsPct}% pot odds needed, this hand has enough equity vs the opening range to call — particularly with implied odds if you hit the board hard.`);
+          math.push(`This model keeps the hand because it passes both its starting-hand group and current-price checks. Real opponents and later betting can change whether the call wins money.`);
         }
-        if (posShort === "SB") math.push(`Note: calling from SB means you'll be out of position postflop — a real cost. Play straightforwardly on the flop; avoid fancy plays OOP.`);
+        if (posShort === "SB") math.push(`Calling from the Small Blind means acting first after the flop. That makes later choices harder because the other players see your choice before making theirs.`);
       }
       return { action: "call", dialogue: `${playerName} considers, then calls. "Call."`, reasoning: `${handLabel} — call from ${posShort}.`, thoughts, math };
     }
@@ -320,18 +397,21 @@ export function generateFullDecision(
 
   // ── POSTFLOP ─────────────────────────────────────────────────────────────
   const SIMS = 1000;
-  const equity = monteCarloEquity(hole, board, numOpponents, SIMS, style, dealSeed);
+  const estimate = monteCarloEquityEstimate(hole, board, numOpponents, SIMS, style, dealSeed);
+  const equity = estimate.equity;
   const equityPct = Math.round(equity * 100);
-  const sePct = (equityStandardError(equity, SIMS) * 100).toFixed(1);
+  const sePct = (estimate.standardError * 100).toFixed(1);
   // Value bets get sized thinner as the pot goes multiway — more players to get through.
   const mwFactor = Math.max(0.4, 1 - 0.18 * (numOpponents - 1));
   const isRiver = street === "river";
-  const potOddsPctPost = toCall > 0 ? Math.round(toCall / (pot + toCall) * 100) : 0;
-  const styleDiscount = style === "loose" ? 8 : style === "wild" ? 18 : 0;
-  const callThreshold = potOddsPctPost - styleDiscount;
+  const callEvaluation = evaluateCallQuote(equity, quote);
+  const potOddsPctPost = (callEvaluation.requiredEquity * 100).toFixed(1);
   const thoughts: string[] = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
   const rangeLabel = style === "wild" ? "any two" : style === "loose" ? "semi-loose range" : "tight range";
-  const math: string[] = [`Monte Carlo: ~${equityPct}% ± ${sePct}% equity vs ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} (${SIMS.toLocaleString()} sims, SE = √(p(1−p)/n); opponents on ${rangeLabel}).`];
+  const math: string[] = [
+    `Random-deal estimate: about ${equityPct}% of the pot against ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} after ${estimate.samples.toLocaleString()} deals. Random sampling adds about ±${sePct} percentage points of error.`,
+    `This estimate assumes each opponent uses the app's ${rangeLabel}. Different real players can produce a different answer.`,
+  ];
 
   // Position note
   if (playerPos === "Dealer") thoughts.push("In position (BTN) — acting last this round. Major structural advantage.");
@@ -340,58 +420,80 @@ export function generateFullDecision(
   else thoughts.push("UTG postflop — acting after the blinds, before the button. Some positional disadvantage.");
 
   if (toCall > 0) {
-    const ev = Math.round(equity * pot - (1 - equity) * toCall);
-    math.push(`Pot odds: ${toCall} to call ÷ (${pot} + ${toCall}) = ${potOddsPctPost}% needed equity.`);
-    if (equityPct >= callThreshold) {
-      math.push(`${equityPct}% ≥ ${callThreshold}% → call is +EV.`);
-      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
-      thoughts.push(`Equity beats pot odds — call.`);
-      return { action: "call", equity, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: `~${equityPct}% equity vs ${potOddsPctPost}% needed — call.`, thoughts, math };
+    const ev = callEvaluation.expectedValue;
+    const evText = `${ev >= 0 ? "+" : ""}${ev.toFixed(2)}`;
+    math.push(`Calling costs ${toCall} toward a final pot of ${quote.contestablePot}, so the call needs about ${potOddsPctPost}% of that pot over many deals.`);
+    if (callEvaluation.profitable) {
+      const uniqueRiverNuts = isRiver && isUniqueRiverNuts(hole, board);
+      const valueRaise = canRaise && playerStack + playerBet > currentBet && (uniqueRiverNuts || equity >= 0.72);
+      if (valueRaise) {
+        const minimumTarget = minRaiseTo ?? currentBet + BB;
+        const raiseTarget = snapToBB(
+          Math.max(minimumTarget, currentBet + pot * (uniqueRiverNuts ? 0.75 : 0.5) * mwFactor),
+          playerStack + playerBet,
+        );
+        if (raiseTarget > currentBet) {
+          math.push(`The call is estimated to gain ${evText} chips. This hand also passes the trainer's rule for a value raise${uniqueRiverNuts ? "; no possible river hand can beat it" : ""}.`);
+          math.push(`The trainer does not model a separate set of hands that will call the raise.`);
+          thoughts.push(uniqueRiverNuts ? `No possible river hand can beat this one — raise.` : `Strong edge while facing a bet — raise for value.`);
+          return { action: "raise", amount: raiseTarget, equity, dialogue: `${playerName} raises to ${raiseTarget}.`, reasoning: `Raise to ${raiseTarget} for value.`, thoughts, math };
+        }
+      }
+      math.push(`Estimated result of calling: ${equity.toFixed(4)} × ${quote.contestablePot} − ${toCall} = ${evText} chips. The estimate supports a call.`);
+      thoughts.push(`The estimated share of the pot covers the price — call.`);
+      return { action: "call", equity, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: `The call is estimated to gain ${evText} chips.`, thoughts, math };
     } else {
-      math.push(`${equityPct}% < ${callThreshold}% → fold.${isRiver ? " (River: no implied odds — breakeven is exactly pot odds.)" : ""}`);
-      math.push(`EV = ${equityPct}% × ${pot} − ${100 - equityPct}% × ${toCall} = ${ev >= 0 ? "+" : ""}${ev} chips.`);
-      thoughts.push(`Not enough equity at this price — fold.`);
-      return { action: "fold", equity, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: `Only ~${equityPct}% equity vs ${potOddsPctPost}% needed — fold.`, thoughts, math };
+      math.push(`Estimated result of calling: ${equity.toFixed(4)} × ${quote.contestablePot} − ${toCall} = ${evText} chips. The estimate supports a fold.${isRiver ? " No cards remain to improve the hand." : ""}`);
+      thoughts.push(`The estimated share of the pot does not cover the price — fold.`);
+      return { action: "fold", equity, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: `The call is estimated to lose ${Math.abs(ev).toFixed(2)} chips.`, thoughts, math };
     }
   }
   if (equity >= 0.65) {
     const betSize = snapToBB(pot * Math.min(equity - 0.20, 0.85) * mwFactor, maxBetGlobal);
     const frac = potFractionLabel(betSize, pot);
-    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`${equityPct}% equity → value bet.`);
+    const callerEquityPct = Math.round(requiredEquityFacingBet(pot, betSize) * 100);
+    const finalPotIfCalled = pot + 2 * betSize;
+    math.push(`About ${equityPct}% estimated pot share passes this trainer's value-bet rule.`);
     if (numOpponents > 1) math.push(`Sized ×${mwFactor.toFixed(2)} for ${numOpponents}-way — thinner value with more players left to beat.`);
-    math.push(`${frac} bet (${betSize}): villain needs ${betSize} ÷ (${pot} + ${betSize}) = ${villainCallPct}% equity to call profitably.`);
-    thoughts.push(`Strong equity — bet for value.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `~${equityPct}% equity — ${frac} value bet.`, thoughts, math };
+    math.push(`${frac} bet (${betSize}). If one opponent calls ${betSize}, the final pot is ${finalPotIfCalled}; that caller needs about ${callerEquityPct}% of the pot to cover the call.`);
+    math.push(`The trainer uses the estimate to choose a bet size. It does not model a separate set of hands that will call.`);
+    thoughts.push(`Strong estimate — the trainer bets for value.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a ${frac} value bet.`, thoughts, math };
   }
   if (equity >= 0.52) {
     const betSize = snapToBB(pot * 0.33 * mwFactor, maxBetGlobal);
     const frac = potFractionLabel(betSize, pot);
-    const villainCallPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`${equityPct}% equity → thin value bet.`);
-    math.push(`${frac} bet (${betSize}): villain needs ${villainCallPct}% equity to call — small enough to get calls from worse hands.`);
-    thoughts.push(`Slight edge — thin value bet to extract from marginal hands.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `~${equityPct}% equity — ${frac} thin value.`, thoughts, math };
+    const callerEquityPct = Math.round(requiredEquityFacingBet(pot, betSize) * 100);
+    const finalPotIfCalled = pot + 2 * betSize;
+    math.push(`About ${equityPct}% estimated pot share passes this trainer's thin-value rule.`);
+    math.push(`${frac} bet (${betSize}). If one opponent calls ${betSize}, the final pot is ${finalPotIfCalled}; that caller needs about ${callerEquityPct}% of the pot to cover the call.`);
+    math.push(`The trainer assumes a small bet may be called by weaker hands. It does not model a separate set of hands that will call.`);
+    thoughts.push(`Small estimated edge — the trainer makes a small value bet.`);
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a small ${frac} value bet.`, thoughts, math };
   }
   // Semi-bluff: no bets in front, and a hand that still has real equity to improve
-  // (~30–52% — a draw or overcards, not pure air). Fire at a fixed frequency. This is a
+  // (~30–52% plus a real draw or overcards, never pure air). Fire at a fixed frequency. This is a
   // simple heuristic, NOT a solver-derived mixed strategy: real GTO would balance bluffs
   // against a value range so the two are indifferent. The hash keeps the choice
   // deterministic across the useMemo re-runs (see equity.ts) without a stateful RNG.
   const BLUFF_FREQUENCY = 0.3;
-  const bluffRoll = ((playerIdx * 2654435761 + Math.round(pot) * 40503 + board.length * 92821) >>> 0) / 4294967296;
-  if (!isRiver && equity >= 0.3 && bluffRoll < BLUFF_FREQUENCY && maxBetGlobal >= BB) {
+  const boardAnalysis = analyzeBoard(board);
+  const holdingAnalysis = boardAnalysis ? analyzeHolding(hole, board, boardAnalysis) : null;
+  const hasLiveDraw = !!holdingAnalysis?.draws.some(draw => draw.type === "flush" || draw.type === "straight");
+  const hasOvercards = !!boardAnalysis && holdingAnalysis?.hand.rank === 0 && hv.some(v => v > boardAnalysis.highCard);
+  let bluffHash = (dealSeed ^ Math.imul(playerIdx + 1, 2654435761) ^ Math.imul(Math.round(pot), 40503)) >>> 0;
+  for (const card of [...hole, ...board]) bluffHash = Math.imul(bluffHash ^ ck(card).split("").reduce((sum, ch) => sum + ch.charCodeAt(0), 0), 2246822519) >>> 0;
+  const bluffRoll = bluffHash / 4294967296;
+  if (!isRiver && equity >= 0.3 && (hasLiveDraw || hasOvercards) && bluffRoll < BLUFF_FREQUENCY && maxBetGlobal >= BB) {
     const betSize = snapToBB(pot * 0.55, maxBetGlobal);
-    const frac = potFractionLabel(betSize, pot);
-    const foldPct = Math.round(betSize / (pot + betSize) * 100);
-    math.push(`~${equityPct}% equity with room to improve — semi-bluffing for fold equity (fixed ${Math.round(BLUFF_FREQUENCY * 100)}% frequency, a heuristic, not a balanced range).`);
-    math.push(`${frac} bluff (${betSize}): breakeven fold% = ${betSize} ÷ (${pot} + ${betSize}) = ${foldPct}%.`);
-    math.push(`Proof: EV = fold% × ${pot} − (1−fold%) × ${betSize} = 0 → fold% = ${foldPct}%.`);
-    math.push(`Breakeven fold% = pot odds villain faces — mirrors by design. Villain folding > ${foldPct}% → bluff is +EV even before our equity when called.`);
+    const pureBluffFoldPct = Math.round(pureBluffFoldThreshold(pot, betSize) * 100);
+    math.push(`About ${equityPct}% estimated pot share with room to improve. The trainer sometimes bets this kind of hand (${Math.round(BLUFF_FREQUENCY * 100)}% of matching spots); that is a simple rule, not a solved strategy.`);
+    math.push(`Pure-bluff reference: risking ${betSize} to win ${pot} would need everyone to fold about ${pureBluffFoldPct}% of the time to cover the risk.`);
+    math.push(`This hand can also win when called, so its true break-even fold rate would be lower than ${pureBluffFoldPct}%. The app does not model which hands call, so it does not claim an exact result for this bet.`);
     thoughts.push(`Weak-ish but live hand, nobody has bet — mix in a semi-bluff.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — ~${equityPct}% equity, ${frac} bet needs ${foldPct}% folds to break even.`, thoughts, math };
+    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — about ${equityPct}% estimated pot share with room to improve.`, thoughts, math };
   }
-  math.push(`${equityPct}% equity — not enough to bet for value. Check.`);
-  thoughts.push(`Not strong enough to bet. Check.`);
-  return { action: "check", equity, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `~${equityPct}% equity — check.`, thoughts, math };
+  math.push(`About ${equityPct}% estimated pot share is below this trainer's betting rules, so it checks.`);
+  thoughts.push(`Estimate is below the trainer's betting rules — check.`);
+  return { action: "check", equity, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `About ${equityPct}% estimated pot share — the trainer checks.`, thoughts, math };
 }

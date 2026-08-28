@@ -36,6 +36,21 @@ test("odd chip on a chopped pot goes to the lower seat index (deterministic)", (
   assert.equal(payouts[1], 25);
 });
 
+test("odd chip follows the table award order rather than numeric seat order", () => {
+  const board = cards("Ah", "Kd", "Qc", "Jc", "Ts");
+  const hands = [cards("2s", "3d"), cards("4c", "5h"), cards("7c", "8c")];
+  const { payouts, pots } = distributePots(
+    [17, 17, 17],
+    [false, false, true],
+    hands,
+    board,
+    [1, 2, 0],
+  );
+
+  assert.deepEqual(payouts, [25, 26, 0], "seat 1 is first in the configured award order");
+  assert.deepEqual(pots[0].awards, [{ idx: 1, amount: 26 }, { idx: 0, amount: 25 }]);
+});
+
 test("short all-in only wins the main pot; side pot goes to the bigger stack", () => {
   // Seat 0 all-in for 40 with the best hand. Seats 1 & 2 keep betting to 120.
   const board = cards("2h", "7d", "9c", "Jd", "4s");
@@ -66,4 +81,45 @@ test("uncalled excess returns to the sole highest contributor", () => {
   // Seat 0 (aces) wins the matched pot; the uncalled 100 comes back to seat 0.
   assert.equal(payouts.reduce((a, b) => a + b, 0), 330);
   assert.equal(payouts[0], 330, "aces win everything they matched plus their uncalled excess");
+});
+
+test("best five-card flush wins the pot when all seven cards are not suited", () => {
+  const board = cards("2s", "7s", "9s", "Kh", "3d");
+  const hands = [cards("As", "Qs"), cards("Kd", "Kc")];
+  const { payouts, rankedResults } = distributePots(
+    [100, 100],
+    [false, false],
+    hands,
+    board,
+  );
+
+  assert.deepEqual(payouts, [200, 0], "ace-high flush beats three kings");
+  assert.equal(rankedResults[0].idx, 0);
+  assert.equal(rankedResults[0].hand?.name, "Flush");
+});
+
+test("best five-card straight flush wins the pot over quads", () => {
+  const board = cards("5s", "6s", "7s", "Kh", "Kd");
+  const hands = [cards("8s", "9s"), cards("Kc", "Ks")];
+  const { payouts, rankedResults } = distributePots(
+    [100, 100],
+    [false, false],
+    hands,
+    board,
+  );
+
+  assert.deepEqual(payouts, [200, 0], "nine-high straight flush beats four kings");
+  assert.equal(rankedResults[0].idx, 0);
+  assert.equal(rankedResults[0].hand?.name, "Straight Flush");
+});
+
+test("pot layers expose exact awards for a tied main pot and outright side pot", () => {
+  const board = cards("Ah", "Ad", "Kc", "Qs", "2h");
+  const hands = [cards("As", "Jc"), cards("Ac", "Tc"), cards("9h", "8d")];
+  const { payouts, pots } = distributePots([40, 120, 120], [false, false, false], hands, board);
+
+  assert.deepEqual(payouts, [60, 220, 0]);
+  assert.deepEqual(pots[0].awards, [{ idx: 0, amount: 60 }, { idx: 1, amount: 60 }]);
+  assert.deepEqual(pots[1].awards, [{ idx: 1, amount: 160 }]);
+  assert.deepEqual(pots[1].contributors, [1, 2]);
 });

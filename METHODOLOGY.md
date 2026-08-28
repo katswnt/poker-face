@@ -7,19 +7,23 @@ engines. This documents how each one works, how it's validated, and where its li
 
 ## 1. Equity by Monte Carlo (`src/lib/poker/equity.ts`)
 
-For a postflop spot, hero equity = P(hero wins the pot at showdown) against the current
-field. There's no closed form once opponents hold ranges, so it's estimated by simulation.
+For a postflop spot, hero equity means the average share of the pot hero receives at
+showdown against the modeled field. There's no simple closed form once opponents hold
+ranges, so it's estimated by simulation.
 
 **Each of N = 1,000 trials:**
-1. Deal each opponent a hole-card combo sampled **from a range-filtered pool** — only hands
+1. Sample the complete set of opponent hole cards **from a range-filtered pool** — only hands
    with preflop tier ≤ the table style's cutoff (tight ≤ 4, loose ≤ 5, wild = any). This is
-   the one modeling choice that matters most: equity-vs-*random* systematically overstates
-   hero strength because real opponents don't stack off with junk. Filtering to plausible
-   holdings removes that bias.
+   the one modeling choice that matters most. It avoids treating every opponent as fully
+   random, but it cannot know a real player's range and does not remove all modeling error.
+   Each compatible whole-table combination has equal weight;
+   a collision rejects the full set and starts again, so later seats are not biased by
+   whichever hand happened to be selected first.
 2. Complete the board uniformly from the remaining deck.
-3. Score all hands (7-card evaluator) and credit hero 1 for a win, ½ for a chop.
+3. Score all hands (7-card evaluator) and credit hero 1 for a win or `1 ÷ tied winners`
+   for a chop. A regression table checks forced ties from two through six players.
 
-Equity = wins / N.
+Equity = the average pot share across the N trials.
 
 ### Determinism seam
 The whole hand is recomputed inside one React `useMemo` on every hero action. Equity is
@@ -30,49 +34,70 @@ therefore seeded **purely from the spot** — `hash(dealSeed, hole, board, oppon
   hand, so a spot's value depended on how many draws preceded it — reproducible only if the
   exact same sequence of spots recurred. Per-spot seeding is strictly more robust.)
 - **Memoizable:** because equity is now referentially transparent, re-simulated earlier
-  streets are served from a cache. Measured: **~91 ms cold, ~0.02 ms warm — a ~4,000×
-  speedup** on repeated spots (`npm run bench`).
+  streets are served from a cache. On the 2026-08-27 local benchmark, a 1,000-deal,
+  two-opponent estimate took about **3.55 ms uncached** and **0.022 ms cached**—about
+  **150× faster** for a repeated spot. Results vary by machine; `npm run bench` prints the
+  current measurement.
 
 ### Uncertainty
-Every readout reports **~X% ± SE**, where SE = √(p(1−p)/N). At N = 1,000, SE ≈ 1.6% near
-p = 0.5. This is the honest precision of a 1,000-sample estimate; it is not hidden.
+Every readout reports the average result and the standard error measured from the actual
+sample values: losses are `0`, wins are `1`, and split pots are their real shares. This uses
+the usual sample variance divided by `N`. The simulation updates that variance with Welford's
+running method, which avoids losing precision when the values are almost identical. A forced
+four-way split therefore reports 25% equity with exactly zero sampling error, which is what a
+constant result should report. A regression table checks the same forced-board result for every
+table size from two through six players. The old Bernoulli shortcut overstated error by `tie
+probability ÷ 4` in the variance; near a 50/50 result, a 1% tie rate made the reported error about
+0.5% too large and a 20% tie rate made it about 11.8% too large.
 
-### Validation — is the estimator unbiased?
+### Validation — does the estimate agree with a full count?
 `exactEquity()` computes ground truth by **full enumeration** against one range-filtered
 opponent (feasible only heads-up — multiway enumeration is combinatorially infeasible,
 which is exactly why the app samples). The test suite asserts the Monte Carlo estimate
-converges to the exact value **within its own confidence interval** on both the river and
-the turn (`test/equity.test.ts`). This is the load-bearing check: it proves the sampler is
-unbiased rather than merely plausible-looking.
+agrees with the exact value within its measured sampling error on pinned river and turn
+cases (`test/equity.test.ts`). This is a strong independent check for sampling bias, but two
+examples do not prove every possible input is unbiased.
 
-**Throughput:** ~11,000 sims/sec, ~11 equities/sec/core (Node 20). A full 4-player hand is
-~12,000 sims, run once at deal time.
+The production loop uses the fast shared `score7` evaluator. The slower `handScore` remains
+an independent reference rather than becoming a second production ranking path.
 
 ---
 
-## 2. Heads-up push/fold Nash solver (`src/lib/solver/`)
+## 2. Heads-up push/fold model (`src/lib/solver/`)
 
-Separate from the heuristic trainer: a **real, computed Nash equilibrium** for the
-heads-up preflop shove-or-fold game, verifiable against published charts.
+Separate from the heuristic trainer: a deliberately small heads-up game in which the small
+blind may shove or fold and the big blind may call or fold. Fictitious play searches for a
+stable strategy for the committed input matrix; this is not presented as an exact chart for
+real poker.
 
 - **Equity matrix** (`equityMatrix.ts`, `equity-matrix.json`): the 169×169 all-in equity of
   every canonical starting hand vs every other, precomputed (2,000 seeded sims each) and
   committed. Shared-card collisions are handled by re-randomizing both hands' suits per
-  trial. A dedicated fast 7-card evaluator (`score7`) is used here and is **proven
-  byte-identical to the main `handScore` over 100k random hands** (locked in as a test so
-  the two evaluators can't drift).
+  trial. The shared fast 7-card evaluator (`score7`) is used here and in the trainer. A
+  deterministic test compares it with the slower reference evaluator over **100,000 random
+  hands** so the fast path cannot silently change hand ordering.
 - **Solver** (`pushfold.ts`): fictitious play — each player best-responds to the opponent's
-  time-averaged strategy under the standard chip-EV push/fold model; in this zero-sum game
-  that converges to Nash. Hands are weighted by combo counts (pairs 6, suited 4, offsuit
-  12).
-- **Validation** (`test/pushfold.test.ts`): equity symmetry `eq(i,j)+eq(j,i) ≈ 1`; AA is
+  time-averaged strategy under the chip-based push/fold model. Hands are weighted by combo
+  counts (pairs 6, suited 4, offsuit 12).
+- **Validation** (`test/pushfold.test.ts`): exact equity symmetry `eq(i,j)+eq(j,i) = 1`; AA is
   shoved and called at every depth; 72o is not called at 15bb; shove-range width increases
-  monotonically as the stack shrinks. At **10bb effective: SB shoves 58.0%, BB calls 37.5%**
-  — squarely in the published Nash ballpark (BB ~35–45%). The known textbook simplification
-  (no card-removal in the calling model) accounts for SB sitting a hand or two off the
-  widest published charts.
+  as the stack shrinks; every self-matchup is exactly 50%; and the remaining strategy gap is
+  at most **0.0005 big blinds** at every displayed depth after 20,000 rounds.
 
-Try it at `/solver` — a 13×13 grid re-solving live across stack depths.
+The UI reads 37 precomputed solutions from 2 to 20 big blinds, so moving the slider does not
+run the solver on the browser's main thread. Its status separates two questions:
+
+- **Did the solving method settle for this fixed matrix?** Measured by the strategy gap.
+- **Is the matrix itself exact?** No. Every non-self matchup uses 2,000 random boards, which
+  has a worst-case sampling error of about ±1.1 percentage points near a 50/50 matchup.
+  Self-matchups are exactly 50% by symmetry. Card removal between the two ranges is also not
+  modeled.
+
+The broad range widths are useful, but an individual hand at the edge can move when the random
+boards change. The explorer therefore labels those cells as `edge` instead of presenting their
+solver frequency as a precise real-poker recommendation.
+
+Try it at `/solver` — a 13×13 grid using the saved, measured solutions.
 
 ---
 
@@ -83,10 +108,10 @@ Try it at `/solver` — a 13×13 grid re-solving live across stack depths.
 - **Invariants over examples.** `test/invariants.test.ts` fuzzes with `fast-check`:
   chip conservation (`Σ payouts = Σ contributions`, no chips created or destroyed) across
   1,000 random pots; side-pot eligibility (a short stack never scoops a pot it didn't
-  match); betting-round conservation; evaluator ordering consistency. These caught nothing —
-  which, after thousands of random inputs, is the point.
+  match); best eligible hand wins every pot layer; betting-round conservation; and evaluator
+  ordering consistency.
 - **Ground-truth checks.** The Monte Carlo is pinned to exact enumeration; `score7` is
   pinned to `handScore`; ranges are pinned to their exact shipped thresholds.
 
-Run it all: `npm test` (57 tests) · `npm run bench` · CI runs lint + types + tests +
-build on every push.
+Run it all: `npm test` · `npm run typecheck` · `npm run test:e2e` · `npm run bench`. CI runs lint, types,
+domain/property tests, a production build, and Chromium smoke tests on every push.
