@@ -89,9 +89,13 @@ model rules, not solver outputs or promises that a play will make money.
    gets a sampling advantage from being chosen first.
 2. Completes the board from the remaining deck.
 3. Scores all hands head-to-head, crediting ties by exact pot share (`1 ÷ tied winners`).
+4. Records whether hero received all, some, or none of the chips hero could reach.
 
-The full-precision estimate is compared directly with the real price of calling. The engine
-caps short all-ins and excludes unmatched chips the caller cannot win. Table personality
+The unrounded estimate is compared directly with the real price of calling. The engine
+caps short all-ins and excludes unmatched chips the caller cannot win. When a call reaches
+multiple pot layers, one simulated table deal scores each layer against only the opponents
+eligible for it; the expected chip returns are added before the call cost is subtracted.
+Table personality
 changes the sampled opponent range, never the break-even equation. Value-bet sizing scales with equity and
 shrinks as the pot goes multiway, but the trainer does not model a separate range of hands
 that will call those bets. The semi-bluff fires at a fixed frequency only when the hand can
@@ -100,9 +104,11 @@ which hands call, it shows a pure-bluff fold-rate reference rather than claiming
 semi-bluff result. All ~12,000 simulations for a full hand run at deal time inside a single
 `useMemo`.
 
-**The numbers shown** — for each postflop decision the feed shows a random-deal estimate
-and the sampling error measured from the actual win, loss, and split-pot results. It also
-shows the call price, average result, and bet sizing. For a semi-bluff, it labels
+**The numbers shown** — for each postflop decision the feed shows a random-deal showdown
+estimate and sampling error measured from the actual win, loss, and split-pot results. It also
+shows the current call price and bet sizing. The price comparison assumes the remaining cards
+are dealt and the players still in the hand reach showdown; it does not simulate later bets
+or folds, so it is a current-price check rather than a complete profit forecast. For a semi-bluff, it labels
 `bet ÷ (pot + bet)` as the fold rate a hand with no chance when called would need. A real
 semi-bluff needs fewer folds because it can still win, but an exact number would require a
 separate model of the opponent's calling hands.
@@ -174,7 +180,7 @@ fixed). Coverage:
   `evalHand` and `handScore` never disagree.
 - **ranges** — exact tier boundaries (AA/KK/QQ/JJ = tier 1, TT = tier 2, …) asserted
   against the real function.
-- **equity** — purity, memoization consistency, multiway split shares, equal-weight whole-table
+- **equity** — purity, memoization consistency, multiway split shares, layered-pot returns, equal-weight whole-table
   sampling, measured sampling error, monotonicity, and — the load-bearing one —
   **the random-deal estimate agrees with full enumeration** on pinned river and turn cases
   within the measured sampling error. This catches important sampling bias without claiming
@@ -184,9 +190,10 @@ fixed). Coverage:
   every layer goes to the strongest eligible hand.
 - **engine** — a betting round driven by scripted decisions: checks move no chips, full and
   cumulative short raises reopen action correctly, dry side pots cannot be bet, illegal
-  undersized raises normalize to calls, short blinds never negative a stack, and over-bets cap all-in.
+  undersized raises normalize to calls, short blinds never negative a stack, over-bets cap all-in,
+  and current-pot quotes exclude uncalled excess.
 - **decide** — the full decision engine: stronger starting groups raise and weaker groups fold preflop, value bets
-  and folds-to-price postflop, exact call-EV classification, and street-aware board analysis.
+  and folds-to-price postflop, layer-aware call-price classification, and street-aware board analysis.
 - **invariants** (`fast-check` fuzzing) — **chip conservation** (Σ payouts = Σ contributions,
   no chips created/destroyed) across 1,000 random pots, side-pot eligibility, betting-round
   conservation, evaluator-ordering consistency, and call-profitability equivalence.

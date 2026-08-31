@@ -88,6 +88,35 @@ export interface CallQuoteState {
   folded: boolean[];
 }
 
+function contestableLayers(
+  playerIdx: number,
+  contributions: number[],
+  folded: boolean[],
+): Pick<CallQuote, "contestablePot" | "layers"> {
+  const callerCap = contributions[playerIdx] ?? 0;
+  const capped = contributions.map(amount => Math.min(Math.max(0, amount), callerCap));
+  const levels = [...new Set(capped.filter(amount => amount > 0))].sort((a, b) => a - b);
+  const layers: CallQuote["layers"] = [];
+  let previous = 0;
+  for (const level of levels) {
+    const contributors = contributions.map((amount, seat) => amount >= level ? seat : -1).filter(seat => seat >= 0);
+    const amount = (level - previous) * contributors.length;
+    previous = level;
+    // Chips above every opponent's contribution are uncalled and come back to the
+    // player. They are not part of a pot and must not inflate the displayed share.
+    if (amount <= 0 || (contributors.length === 1 && contributors[0] === playerIdx)) continue;
+    layers.push({
+      amount,
+      contributors,
+      eligibleOpponents: contributors.filter(seat => seat !== playerIdx && !folded[seat]),
+    });
+  }
+  return {
+    contestablePot: layers.reduce((total, layer) => total + layer.amount, 0),
+    layers,
+  };
+}
+
 export function quoteCall({
   playerIdx,
   currentBet,
@@ -99,28 +128,27 @@ export function quoteCall({
   const callCost = Math.min(Math.max(0, currentBet - playerBet), Math.max(0, stack));
   const after = [...contributions];
   after[playerIdx] = (after[playerIdx] ?? 0) + callCost;
-  const callerCap = after[playerIdx] ?? 0;
-  const capped = after.map(amount => Math.min(Math.max(0, amount), callerCap));
-  const levels = [...new Set(capped.filter(amount => amount > 0))].sort((a, b) => a - b);
-  const layers: CallQuote["layers"] = [];
-  let previous = 0;
-  for (const level of levels) {
-    const contributors = after.map((amount, seat) => amount >= level ? seat : -1).filter(seat => seat >= 0);
-    const amount = (level - previous) * contributors.length;
-    previous = level;
-    if (amount <= 0) continue;
-    layers.push({
-      amount,
-      contributors,
-      eligibleOpponents: contributors.filter(seat => seat !== playerIdx && !folded[seat]),
-    });
-  }
-  const contestablePot = layers.reduce((total, layer) => total + layer.amount, 0);
+  const { contestablePot, layers } = contestableLayers(playerIdx, after, folded);
   return {
     callCost,
     allIn: callCost > 0 && callCost === stack,
     contestablePot,
     requiredEquity: callCost === 0 || contestablePot === 0 ? 0 : callCost / contestablePot,
+    layers,
+  };
+}
+
+export function quoteCurrentPots(
+  playerIdx: number,
+  contributions: number[],
+  folded: boolean[],
+): CallQuote {
+  const { contestablePot, layers } = contestableLayers(playerIdx, contributions, folded);
+  return {
+    callCost: 0,
+    allIn: false,
+    contestablePot,
+    requiredEquity: 0,
     layers,
   };
 }

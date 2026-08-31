@@ -25,6 +25,27 @@ ranges, so it's estimated by simulation.
 
 Equity = the average pot share across the N trials.
 
+### Calls with side pots
+A single call can reach pots with different fields. For example, a short all-in player may
+contest the main pot while only two deeper stacks contest a side pot. Applying one
+three-player estimate to every chip is wrong.
+
+The call estimator therefore deals the whole modeled table once per trial, then:
+
+1. scores hero against only the opponents eligible for each pot layer;
+2. credits hero's exact share of that layer, including split pots;
+3. adds the chip return from every layer; and
+4. subtracts the call cost after averaging all trials.
+
+`combinedShare = expectedReturn ÷ contestablePot` gives the decision engine one consistent
+number while retaining the main-pot and side-pot estimates separately. Uncalled excess is
+excluded because it is returned, not won.
+
+This is a **current-price check**, not a complete expected-value model for an ordinary call.
+It assumes the players still in the hand reach showdown and does not simulate later bets or
+folds. The trainer can use that simplified check as a rule, but it must not describe the
+result as the call's complete long-run profit.
+
 ### Determinism seam
 The whole hand is recomputed inside one React `useMemo` on every hero action. Equity is
 therefore seeded **purely from the spot** — `hash(dealSeed, hole, board, opponents, style)`
@@ -49,6 +70,11 @@ constant result should report. A regression table checks the same forced-board r
 table size from two through six players. The old Bernoulli shortcut overstated error by `tie
 probability ÷ 4` in the variance; near a 50/50 result, a 1% tie rate made the reported error about
 0.5% too large and a 20% tie rate made it about 11.8% too large.
+
+For a layered call, the same running-variance method is applied to the **total chips returned
+in each trial**. That preserves the correlation between pot layers. A result within two
+standard errors of zero is marked close. This describes random-sampling error only;
+uncertainty about real opponents and future action is larger.
 
 ### Validation — does the estimate agree with a full count?
 `exactEquity()` computes ground truth by **full enumeration** against one range-filtered
@@ -112,6 +138,12 @@ Try it at `/solver` — a 13×13 grid using the saved, measured solutions.
   ordering consistency.
 - **Ground-truth checks.** The Monte Carlo is pinned to exact enumeration; `score7` is
   pinned to `handScore`; ranges are pinned to their exact shipped thresholds.
+- **Seams get their own regressions.** Layered calls are tested through the complete path
+  from pot eligibility to the trainer's final action, including a case where a heads-up side
+  pot makes a call profitable even though its three-way main-pot share alone does not cover
+  the price.
 
-Run it all: `npm test` · `npm run typecheck` · `npm run test:e2e` · `npm run bench`. CI runs lint, types,
-domain/property tests, a production build, and Chromium smoke tests on every push.
+Run it all: `npm test` · `npm run typecheck` · `npm run test:e2e` · `npm run audit:math` · `npm run bench`.
+The math audit checks all 2,598,960 five-card hands against the canonical category totals.
+CI runs lint, types, domain/property tests, a production build, and Chromium smoke tests on
+every push.

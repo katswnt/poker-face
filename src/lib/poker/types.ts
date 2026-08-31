@@ -22,7 +22,9 @@ export interface BoardAnalysis {
 }
 
 export interface Decision {
-  action: string; amount?: number; equity?: number; dialogue: string; reasoning: string;
+  action: string; amount?: number; equity?: number; equityStandardError?: number; equitySamples?: number;
+  callEstimate?: CallEstimate;
+  dialogue: string; reasoning: string;
   thoughts: string[]; math: string[];
 }
 
@@ -41,6 +43,39 @@ export interface CallQuote {
   contestablePot: number;
   requiredEquity: number;
   layers: CallQuoteLayer[];
+}
+
+export interface PotLayerEstimate {
+  amount: number;
+  eligibleOpponents: number[];
+  meanShare: number;
+  expectedReturn: number;
+}
+
+// What happened to the hero across sampled showdowns. These three rates always
+// sum to one when samples were run. "All" means the hero received every chip
+// they could reach; "some" covers a split pot or winning only some pot layers.
+export interface ShowdownOutcomeRates {
+  all: number;
+  some: number;
+  none: number;
+}
+
+// A call is evaluated in chips, one pot layer at a time. `combinedShare` is the
+// expected return divided by the total pot the caller can win; it exists so the
+// UI can still make a single, honest comparison with the call price.
+export interface CallEstimate {
+  callCost: number;
+  contestablePot: number;
+  combinedShare: number;
+  shareStandardError: number;
+  expectedReturn: number;
+  returnStandardError: number;
+  expectedValue: number;
+  samples: number;
+  isClose: boolean;
+  outcomes: ShowdownOutcomeRates;
+  layers: PotLayerEstimate[];
 }
 
 export interface AppliedAction {

@@ -1,5 +1,5 @@
 // Monte Carlo equity estimation.
-import type { CardObj, TableStyle } from "./types";
+import type { CallEstimate, CallQuote, CardObj, ShowdownOutcomeRates, TableStyle } from "./types";
 import { RANKS, ck, cv } from "./cards";
 import { getCombos, handScore } from "./eval";
 import { preflopHandTier } from "./ranges";
@@ -23,6 +23,7 @@ export interface EquityEstimate {
   equity: number;
   standardError: number;
   samples: number;
+  outcomes: ShowdownOutcomeRates;
 }
 
 export function standardErrorFromMoments(sum: number, sumSquares: number, samples: number): number {
@@ -98,10 +99,14 @@ function spotSeed(dealSeed: number, hole: CardObj[], board: CardObj[], numOppone
 // the 32-bit hash is used only as the PRNG seed, never as cache identity (different spots
 // can legitimately hash to the same seed). Cleared wholesale past a cap to bound memory.
 const equityCache = new Map<string, EquityEstimate>();
+const callEstimateCache = new Map<string, CallEstimate>();
 const EQUITY_CACHE_CAP = 4000;
-export function clearEquityCache() { equityCache.clear(); }
+export function clearEquityCache() {
+  equityCache.clear();
+  callEstimateCache.clear();
+}
 
-// Fraction of sims where hero beats all opponents. Opponents are dealt from a
+// Average pot share across the simulations. Opponents are dealt from a
 // range-filtered pool (hands actually in a plausible playing range), not random junk —
 // naive equity-vs-random overstates hero strength because real villains bet ranges.
 export function monteCarloEquity(
@@ -131,6 +136,46 @@ export function monteCarloEquityEstimate(
   const result = simulate(heroHole, board, numOpponents, numSims, style, mulberry32(seed));
   if (equityCache.size >= EQUITY_CACHE_CAP) equityCache.clear();
   equityCache.set(key, result);
+  return result;
+}
+
+export function monteCarloCallEstimate(
+  heroHole: CardObj[],
+  board: CardObj[],
+  quote: CallQuote,
+  fallbackNumOpponents: number,
+  numSims = 1000,
+  style: TableStyle = "gto",
+  dealSeed = 0,
+): CallEstimate {
+  const quotedSeats = [...new Set(quote.layers.flatMap(layer => layer.eligibleOpponents))].sort((a, b) => a - b);
+  const opponentSeats = quote.layers.length > 0
+    ? quotedSeats
+    : Array.from({ length: Math.max(0, fallbackNumOpponents) }, (_, index) => index);
+  const layers = quote.layers.length > 0
+    ? quote.layers.map(layer => ({ amount: layer.amount, eligibleOpponents: [...layer.eligibleOpponents] }))
+    : [{ amount: quote.contestablePot, eligibleOpponents: [...opponentSeats] }];
+  const layerKey = layers.map(layer => `${layer.amount}@${layer.eligibleOpponents.join(",")}`).join("|");
+  const key = [
+    "call",
+    dealSeed >>> 0,
+    numSims,
+    style,
+    quote.callCost,
+    quote.contestablePot,
+    opponentSeats.join(","),
+    layerKey,
+    heroHole.map(ck).join(","),
+    board.map(ck).join(","),
+  ].join(":");
+  const hit = callEstimateCache.get(key);
+  if (hit !== undefined) return hit;
+
+  let seed = spotSeed(dealSeed, heroHole, board, opponentSeats.length, style);
+  for (const char of layerKey) seed = Math.imul(seed ^ char.charCodeAt(0), 2654435761) >>> 0;
+  const result = simulateLayeredCall(heroHole, board, opponentSeats, layers, quote, numSims, style, mulberry32(seed));
+  if (callEstimateCache.size >= EQUITY_CACHE_CAP) callEstimateCache.clear();
+  callEstimateCache.set(key, result);
   return result;
 }
 
@@ -168,14 +213,21 @@ function hasCompatibleTuple(playablePairs: Array<[number, number]>, needed: numb
   return false;
 }
 
-function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims: number, style: TableStyle, rng: () => number): EquityEstimate {
+function visitSimulationScores(
+  heroHole: CardObj[],
+  board: CardObj[],
+  numOpponents: number,
+  numSims: number,
+  style: TableStyle,
+  rng: () => number,
+  visit: (heroScore: number, opponentScores: number[]) => void,
+): number {
   const allCards: CardObj[] = [];
   for (const s of ["♠", "♥", "♦", "♣"]) for (const r of RANKS) allCards.push({ rank: r, suit: s });
   const knownKeys = new Set([...heroHole, ...board].map(ck));
   const remaining = allCards.filter(c => !knownKeys.has(ck(c)));
   const boardNeeded = 5 - board.length;
-  if (numSims <= 0) return { equity: 0.5, standardError: 0, samples: 0 };
-  if (remaining.length < numOpponents * 2 + boardNeeded) return { equity: 0.5, standardError: 0, samples: 0 };
+  if (numSims <= 0 || remaining.length < numOpponents * 2 + boardNeeded) return 0;
 
   // Tight = tier ≤ 4, Loose = tier ≤ 5, Wild = anything.
   const maxTier = style === "wild" ? 6 : style === "loose" ? 5 : 4;
@@ -190,14 +242,9 @@ function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, n
     }
   }
   if (!hasCompatibleTuple(playablePairs, numOpponents)) {
-    return { equity: 0.5, standardError: 0, samples: 0 };
+    return 0;
   }
 
-  // Welford's running method avoids subtracting two nearly equal totals.
-  // That matters in forced chops: every trial has the same share, so the
-  // sampling uncertainty should be exactly zero.
-  let meanShare = 0;
-  let m2 = 0;
   for (let sim = 0; sim < numSims; sim++) {
     const usedIdx = new Set<number>();
     const tuple = sampleRangeTupleIndices(playablePairs, numOpponents, rng);
@@ -215,21 +262,124 @@ function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, n
 
     const heroSc = score7([...heroHole, ...simBoard]);
     const oppScores = oppHoles.map(opp => score7([...opp, ...simBoard]));
-    const bestOpp = Math.max(...oppScores);
-    let share = 0;
-    if (heroSc > bestOpp) share = 1;
-    else if (heroSc === bestOpp) {
-      const tiedOpponents = oppScores.filter(score => score === heroSc).length;
-      share = 1 / (tiedOpponents + 1);
-    }
-    const sampleNumber = sim + 1;
+    visit(heroSc, oppScores);
+  }
+  return numSims;
+}
+
+function shareAgainst(heroScore: number, opponentScores: number[]): number {
+  if (opponentScores.length === 0) return 1;
+  const bestOpponent = Math.max(...opponentScores);
+  if (heroScore > bestOpponent) return 1;
+  if (heroScore < bestOpponent) return 0;
+  const tiedOpponents = opponentScores.filter(score => score === heroScore).length;
+  return 1 / (tiedOpponents + 1);
+}
+
+function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims: number, style: TableStyle, rng: () => number): EquityEstimate {
+  // Welford's running method avoids subtracting two nearly equal totals.
+  // That matters in forced chops: every trial has the same share, so the
+  // sampling uncertainty should be exactly zero.
+  let meanShare = 0;
+  let m2 = 0;
+  let visited = 0;
+  const outcomeCounts = { all: 0, some: 0, none: 0 };
+  const samples = visitSimulationScores(heroHole, board, numOpponents, numSims, style, rng, (heroScore, opponentScores) => {
+    const share = shareAgainst(heroScore, opponentScores);
+    if (share === 1) outcomeCounts.all += 1;
+    else if (share > 0) outcomeCounts.some += 1;
+    else outcomeCounts.none += 1;
+    const sampleNumber = visited + 1;
     const delta = share - meanShare;
     meanShare += delta / sampleNumber;
     m2 += delta * (share - meanShare);
-  }
+    visited = sampleNumber;
+  });
+  if (samples === 0) return {
+    equity: 0.5,
+    standardError: 0,
+    samples: 0,
+    outcomes: { all: 0, some: 1, none: 0 },
+  };
   return {
     equity: meanShare,
-    standardError: standardErrorFromRunningVariance(m2, numSims),
-    samples: numSims,
+    standardError: standardErrorFromRunningVariance(m2, samples),
+    samples,
+    outcomes: {
+      all: outcomeCounts.all / samples,
+      some: outcomeCounts.some / samples,
+      none: outcomeCounts.none / samples,
+    },
+  };
+}
+
+function simulateLayeredCall(
+  heroHole: CardObj[],
+  board: CardObj[],
+  opponentSeats: number[],
+  layers: Array<{ amount: number; eligibleOpponents: number[] }>,
+  quote: CallQuote,
+  numSims: number,
+  style: TableStyle,
+  rng: () => number,
+): CallEstimate {
+  const opponentIndex = new Map(opponentSeats.map((seat, index) => [seat, index]));
+  const layerMeans = layers.map(() => 0);
+  let meanReturn = 0;
+  let returnM2 = 0;
+  let visited = 0;
+  const outcomeCounts = { all: 0, some: 0, none: 0 };
+
+  const samples = visitSimulationScores(heroHole, board, opponentSeats.length, numSims, style, rng, (heroScore, opponentScores) => {
+    const layerShares = layers.map(layer => shareAgainst(
+      heroScore,
+      layer.eligibleOpponents.map(seat => opponentScores[opponentIndex.get(seat)!]),
+    ));
+    const totalReturn = layerShares.reduce((total, share, index) => total + share * layers[index].amount, 0);
+    if (totalReturn === quote.contestablePot) outcomeCounts.all += 1;
+    else if (totalReturn > 0) outcomeCounts.some += 1;
+    else outcomeCounts.none += 1;
+    const sampleNumber = visited + 1;
+    layerShares.forEach((share, index) => {
+      layerMeans[index] += (share - layerMeans[index]) / sampleNumber;
+    });
+    const delta = totalReturn - meanReturn;
+    meanReturn += delta / sampleNumber;
+    returnM2 += delta * (totalReturn - meanReturn);
+    visited = sampleNumber;
+  });
+
+  if (samples === 0) {
+    layerMeans.forEach((_, index) => {
+      layerMeans[index] = layers[index].eligibleOpponents.length === 0 ? 1 : 0.5;
+    });
+    meanReturn = layerMeans.reduce((total, share, index) => total + share * layers[index].amount, 0);
+  }
+  const returnStandardError = standardErrorFromRunningVariance(returnM2, samples);
+  const combinedShare = quote.contestablePot > 0 ? meanReturn / quote.contestablePot : 0;
+  const expectedValue = meanReturn - quote.callCost;
+  return {
+    callCost: quote.callCost,
+    contestablePot: quote.contestablePot,
+    combinedShare,
+    shareStandardError: quote.contestablePot > 0 ? returnStandardError / quote.contestablePot : 0,
+    expectedReturn: meanReturn,
+    returnStandardError,
+    expectedValue,
+    samples,
+    isClose: Math.abs(expectedValue) <= 2 * returnStandardError,
+    outcomes: samples > 0
+      ? {
+          all: outcomeCounts.all / samples,
+          some: outcomeCounts.some / samples,
+          none: outcomeCounts.none / samples,
+        }
+      : { all: 0, some: 1, none: 0 },
+    layers: layers.map((layer, index) => ({
+      amount: layer.amount,
+      eligibleOpponents: [...layer.eligibleOpponents],
+      meanShare: layerMeans[index],
+      expectedReturn: layer.amount * layerMeans[index],
+    })),
   };
 }

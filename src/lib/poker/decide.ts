@@ -10,7 +10,7 @@ import { SUITS, SUIT_NAMES, RS, BB, cv, ck, cardStr, makeDeck, valName, valNameL
 import { bestHand } from "./eval";
 import { score7 } from "./score7";
 import { preflopHandTier, preflopRangePercent, preflopThresholds } from "./ranges";
-import { monteCarloEquityEstimate } from "./equity";
+import { monteCarloCallEstimate, monteCarloEquityEstimate } from "./equity";
 
 // Position name → short label. Lives here because the decision engine maps it; the UI
 // imports it too.
@@ -376,7 +376,7 @@ export function generateFullDecision(
       thoughts.push(`${handLabel} — playable from ${posShort} at this price.`);
       if (toCall > 0) {
         const pfPotOddsPct = Math.round(quote.requiredEquity * 100);
-        math.push(`Calling costs ${toCall}. If there were no later betting, winning about ${pfPotOddsPct} out of 100 times would cover that price. Later choices can change the result.`);
+        math.push(`Calling costs ${toCall}. If there were no later betting, receiving about ${pfPotOddsPct}% of the pot on average would cover that price. Later choices can change the result.`);
         if (highHole === 14) {
           math.push(`An ace can make top pair, but a stronger ace can also have this hand in bad shape. The model treats this hand as playable at the current price; it does not measure a guaranteed profit.`);
         } else if (suited) {
@@ -397,21 +397,50 @@ export function generateFullDecision(
 
   // ── POSTFLOP ─────────────────────────────────────────────────────────────
   const SIMS = 1000;
-  const estimate = monteCarloEquityEstimate(hole, board, numOpponents, SIMS, style, dealSeed);
+  const callEstimate = toCall > 0
+    ? monteCarloCallEstimate(hole, board, quote, numOpponents, SIMS, style, dealSeed)
+    : undefined;
+  const estimate = callEstimate
+    ? { equity: callEstimate.combinedShare, standardError: callEstimate.shareStandardError, samples: callEstimate.samples }
+    : monteCarloEquityEstimate(hole, board, numOpponents, SIMS, style, dealSeed);
   const equity = estimate.equity;
+  const estimateFields = {
+    equity,
+    equityStandardError: estimate.standardError,
+    equitySamples: estimate.samples,
+    ...(callEstimate ? { callEstimate } : {}),
+  };
   const equityPct = Math.round(equity * 100);
   const sePct = (estimate.standardError * 100).toFixed(1);
   // Value bets get sized thinner as the pot goes multiway — more players to get through.
   const mwFactor = Math.max(0.4, 1 - 0.18 * (numOpponents - 1));
   const isRiver = street === "river";
-  const callEvaluation = evaluateCallQuote(equity, quote);
+  const callEvaluation = callEstimate
+    ? {
+        requiredEquity: quote.requiredEquity,
+        expectedValue: callEstimate.expectedValue,
+        profitable: callEstimate.expectedValue >= 0,
+      }
+    : evaluateCallQuote(equity, quote);
   const potOddsPctPost = (callEvaluation.requiredEquity * 100).toFixed(1);
   const thoughts: string[] = [`Holding ${cardStr(hole[0])} ${cardStr(hole[1])}.`];
   const rangeLabel = style === "wild" ? "any two" : style === "loose" ? "semi-loose range" : "tight range";
+  const differentLayerFields = callEstimate
+    ? new Set(callEstimate.layers.map(layer => layer.eligibleOpponents.length)).size > 1
+    : false;
   const math: string[] = [
-    `Random-deal estimate: about ${equityPct}% of the pot against ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} after ${estimate.samples.toLocaleString()} deals. Random sampling adds about ±${sePct} percentage points of error.`,
-    `This estimate assumes each opponent uses the app's ${rangeLabel}. Different real players can produce a different answer.`,
+    differentLayerFields
+      ? `Random-deal estimate: about ${equityPct}% combined share of the pots this hand can win after ${estimate.samples.toLocaleString()} deals. Different pot layers have different numbers of opponents. Random sampling adds about ±${sePct} percentage points of error.`
+      : `Random-deal estimate: about ${equityPct}% of the pot against ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} after ${estimate.samples.toLocaleString()} deals. Random sampling adds about ±${sePct} percentage points of error.`,
+    `This estimate assumes each opponent uses the app's ${rangeLabel}. It does not use their earlier actions to narrow those possible hands, and different real players can produce a different answer.`,
   ];
+  if (callEstimate && callEstimate.layers.length > 1) {
+    math.push(...callEstimate.layers.map((layer, index) => {
+      const label = index === 0 ? "Main pot" : `Side pot ${index}`;
+      const opponents = layer.eligibleOpponents.length;
+      return `${label}: ${layer.amount} chips against ${opponents} opponent${opponents === 1 ? "" : "s"}; estimated share about ${Math.round(layer.meanShare * 100)}%, returning about ${layer.expectedReturn.toFixed(2)} chips on average.`;
+    }));
+  }
 
   // Position note
   if (playerPos === "Dealer") thoughts.push("In position (BTN) — acting last this round. Major structural advantage.");
@@ -422,6 +451,10 @@ export function generateFullDecision(
   if (toCall > 0) {
     const ev = callEvaluation.expectedValue;
     const evText = `${ev >= 0 ? "+" : ""}${ev.toFixed(2)}`;
+    const returnErrorText = callEstimate ? callEstimate.returnStandardError.toFixed(2) : "0.00";
+    const closeCopy = callEstimate?.isClose
+      ? ` Random sampling may move the estimated return by about ±${returnErrorText} chips, so this is a close decision.`
+      : "";
     math.push(`Calling costs ${toCall} toward a final pot of ${quote.contestablePot}, so the call needs about ${potOddsPctPost}% of that pot over many deals.`);
     if (callEvaluation.profitable) {
       const uniqueRiverNuts = isRiver && isUniqueRiverNuts(hole, board);
@@ -433,19 +466,25 @@ export function generateFullDecision(
           playerStack + playerBet,
         );
         if (raiseTarget > currentBet) {
-          math.push(`The call is estimated to gain ${evText} chips. This hand also passes the trainer's rule for a value raise${uniqueRiverNuts ? "; no possible river hand can beat it" : ""}.`);
+          math.push(`The showdown-share estimate clears the current call price by ${evText} chips in the trainer's simplified check. This hand also passes the trainer's rule for a value raise${uniqueRiverNuts ? "; no possible river hand can beat it" : ""}.`);
           math.push(`The trainer does not model a separate set of hands that will call the raise.`);
           thoughts.push(uniqueRiverNuts ? `No possible river hand can beat this one — raise.` : `Strong edge while facing a bet — raise for value.`);
-          return { action: "raise", amount: raiseTarget, equity, dialogue: `${playerName} raises to ${raiseTarget}.`, reasoning: `Raise to ${raiseTarget} for value.`, thoughts, math };
+          return { action: "raise", amount: raiseTarget, ...estimateFields, dialogue: `${playerName} raises to ${raiseTarget}.`, reasoning: `Raise to ${raiseTarget} for value.`, thoughts, math };
         }
       }
-      math.push(`Estimated result of calling: ${equity.toFixed(4)} × ${quote.contestablePot} − ${toCall} = ${evText} chips. The estimate supports a call.`);
-      thoughts.push(`The estimated share of the pot covers the price — call.`);
-      return { action: "call", equity, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: `The call is estimated to gain ${evText} chips.`, thoughts, math };
+      math.push(`Current-price check: ${equity.toFixed(4)} combined showdown share × ${quote.contestablePot} − ${toCall} = ${evText} chips of modeled room.${closeCopy || " The estimate clears this call's current price."}`);
+      math.push(quote.allIn
+        ? `No more chips can be asked of this player after the all-in call. Opponent hands and later folds are still modeled only approximately.`
+        : `Later bets and folds are not simulated, so this current-price check is not the call's full long-run profit.`);
+      thoughts.push(callEstimate?.isClose ? `The estimate slightly clears the current call price, but this is close.` : `The estimated showdown share covers the current price — call.`);
+      return { action: "call", ...estimateFields, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: callEstimate?.isClose ? `The estimate slightly clears the current call price, but this is close.` : `The cards' estimated showdown share clears the current call price.`, thoughts, math };
     } else {
-      math.push(`Estimated result of calling: ${equity.toFixed(4)} × ${quote.contestablePot} − ${toCall} = ${evText} chips. The estimate supports a fold.${isRiver ? " No cards remain to improve the hand." : ""}`);
-      thoughts.push(`The estimated share of the pot does not cover the price — fold.`);
-      return { action: "fold", equity, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: `The call is estimated to lose ${Math.abs(ev).toFixed(2)} chips.`, thoughts, math };
+      math.push(`Current-price check: ${equity.toFixed(4)} combined showdown share × ${quote.contestablePot} − ${toCall} = ${evText} chips.${closeCopy || ` The estimate misses this call's current price.${isRiver ? " No cards remain to improve the hand." : ""}`}`);
+      math.push(quote.allIn
+        ? `No more chips can be asked of this player after an all-in call. Opponent hands and later folds are still modeled only approximately.`
+        : `Later bets and folds are not simulated, so this current-price check is not the call's full long-run profit.`);
+      thoughts.push(callEstimate?.isClose ? `The estimate slightly misses the current call price, but this is close.` : `The estimated showdown share does not cover the current price — fold.`);
+      return { action: "fold", ...estimateFields, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: callEstimate?.isClose ? `The estimate slightly misses the current call price, but this is close.` : `The cards' estimated showdown share misses the current call price.`, thoughts, math };
     }
   }
   if (equity >= 0.65) {
@@ -458,7 +497,7 @@ export function generateFullDecision(
     math.push(`${frac} bet (${betSize}). If one opponent calls ${betSize}, the final pot is ${finalPotIfCalled}; that caller needs about ${callerEquityPct}% of the pot to cover the call.`);
     math.push(`The trainer uses the estimate to choose a bet size. It does not model a separate set of hands that will call.`);
     thoughts.push(`Strong estimate — the trainer bets for value.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a ${frac} value bet.`, thoughts, math };
+    return { action: "bet", amount: betSize, ...estimateFields, dialogue: `"${betSize}." ${playerName} bets confidently.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a ${frac} value bet.`, thoughts, math };
   }
   if (equity >= 0.52) {
     const betSize = snapToBB(pot * 0.33 * mwFactor, maxBetGlobal);
@@ -469,7 +508,7 @@ export function generateFullDecision(
     math.push(`${frac} bet (${betSize}). If one opponent calls ${betSize}, the final pot is ${finalPotIfCalled}; that caller needs about ${callerEquityPct}% of the pot to cover the call.`);
     math.push(`The trainer assumes a small bet may be called by weaker hands. It does not model a separate set of hands that will call.`);
     thoughts.push(`Small estimated edge — the trainer makes a small value bet.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a small ${frac} value bet.`, thoughts, math };
+    return { action: "bet", amount: betSize, ...estimateFields, dialogue: `"${betSize}." ${playerName} puts out a bet.`, reasoning: `About ${equityPct}% estimated pot share — the trainer makes a small ${frac} value bet.`, thoughts, math };
   }
   // Semi-bluff: no bets in front, and a hand that still has real equity to improve
   // (~30–52% plus a real draw or overcards, never pure air). Fire at a fixed frequency. This is a
@@ -491,9 +530,9 @@ export function generateFullDecision(
     math.push(`Pure-bluff reference: risking ${betSize} to win ${pot} would need everyone to fold about ${pureBluffFoldPct}% of the time to cover the risk.`);
     math.push(`This hand can also win when called, so its true break-even fold rate would be lower than ${pureBluffFoldPct}%. The app does not model which hands call, so it does not claim an exact result for this bet.`);
     thoughts.push(`Weak-ish but live hand, nobody has bet — mix in a semi-bluff.`);
-    return { action: "bet", amount: betSize, equity, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — about ${equityPct}% estimated pot share with room to improve.`, thoughts, math };
+    return { action: "bet", amount: betSize, ...estimateFields, dialogue: `"${betSize}." ${playerName} bets.`, reasoning: `Semi-bluff — about ${equityPct}% estimated pot share with room to improve.`, thoughts, math };
   }
   math.push(`About ${equityPct}% estimated pot share is below this trainer's betting rules, so it checks.`);
   thoughts.push(`Estimate is below the trainer's betting rules — check.`);
-  return { action: "check", equity, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `About ${equityPct}% estimated pot share — the trainer checks.`, thoughts, math };
+  return { action: "check", ...estimateFields, dialogue: `"Check." ${playerName} taps the table.`, reasoning: `About ${equityPct}% estimated pot share — the trainer checks.`, thoughts, math };
 }

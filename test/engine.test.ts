@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { legalActionsForState, postBlinds, quoteCall, runBettingRound, type DecideArgs } from "../src/lib/poker/engine";
+import { legalActionsForState, postBlinds, quoteCall, quoteCurrentPots, runBettingRound, type DecideArgs } from "../src/lib/poker/engine";
 import type { Decision, PlayerInfo } from "../src/lib/poker/types";
 import { cards } from "./helpers";
 
@@ -119,6 +119,24 @@ test("a short all-in is priced only against chips the caller can win", () => {
   assert.equal(quote.requiredEquity, 20 / 150);
   assert.equal(quote.allIn, true);
   assert.deepEqual(quote.layers.map(layer => layer.amount), [90, 60]);
+});
+
+test("current pot quote keeps main and side-pot fields separate", () => {
+  const quote = quoteCurrentPots(0, [100, 100, 50], [false, false, false]);
+
+  assert.equal(quote.callCost, 0);
+  assert.equal(quote.contestablePot, 250);
+  assert.deepEqual(quote.layers.map(layer => ({ amount: layer.amount, opponents: layer.eligibleOpponents })), [
+    { amount: 150, opponents: [1, 2] },
+    { amount: 100, opponents: [1] },
+  ]);
+});
+
+test("current pot quote excludes the player's own uncalled excess", () => {
+  const quote = quoteCurrentPots(0, [140, 100, 50], [false, false, false]);
+
+  assert.equal(quote.contestablePot, 250);
+  assert.deepEqual(quote.layers.map(layer => layer.amount), [150, 100]);
 });
 
 test("an undersized non-all-in raise is normalized to a call", () => {

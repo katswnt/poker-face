@@ -10,6 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
     "test:e2e": "playwright test",
+    "audit:math": "node --import tsx scripts/audit-math.ts",
     "bench": "node --import tsx bench/equity-bench.ts",
     "generate:solver": "node --import tsx scripts/gen-pushfold-solutions.mjs"
   },

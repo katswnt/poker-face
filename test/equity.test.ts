@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   monteCarloEquity,
   monteCarloEquityEstimate,
+  monteCarloCallEstimate,
   exactEquity,
   equityStandardError,
   clearEquityCache,
@@ -58,7 +59,88 @@ test("forced ties return the exact share for every table size from 2 through 6 p
     const estimate = monteCarloEquityEstimate(hole, board, playerCount - 1, 100, "wild", 100 + playerCount);
     assert.equal(estimate.equity, 1 / playerCount, `${playerCount}-way tie should return exactly 1/${playerCount}`);
     assert.equal(estimate.standardError, 0, `${playerCount}-way forced tie should have no sampling uncertainty`);
+    assert.deepEqual(estimate.outcomes, { all: 0, some: 1, none: 0 });
   }
+});
+
+test("showdown outcome rates describe wins, splits, and losses and sum to one", () => {
+  const estimate = monteCarloEquityEstimate(
+    cards("As", "Kd"),
+    cards("Ah", "7c", "2d", "Jc", "5s"),
+    2,
+    2000,
+    "loose",
+    54321,
+  );
+  const total = estimate.outcomes.all + estimate.outcomes.some + estimate.outcomes.none;
+  assert.ok(Math.abs(total - 1) < 1e-12);
+  assert.ok(estimate.outcomes.all > 0);
+  assert.ok(estimate.outcomes.none > 0);
+});
+
+test("an unbeatable hand wins all reachable chips in every sampled showdown", () => {
+  const estimate = monteCarloEquityEstimate(
+    cards("As", "Ks"),
+    cards("Qs", "Js", "Ts", "2d", "3c"),
+    5,
+    250,
+    "wild",
+    777,
+  );
+  assert.equal(estimate.equity, 1);
+  assert.deepEqual(estimate.outcomes, { all: 1, some: 0, none: 0 });
+});
+
+test("layered call estimates score each pot against only its eligible opponents", () => {
+  const estimate = monteCarloCallEstimate(
+    cards("2c", "3d"),
+    cards("As", "Ks", "Qs", "Js", "Ts"),
+    {
+      callCost: 50,
+      contestablePot: 200,
+      requiredEquity: 0.25,
+      allIn: false,
+      layers: [
+        { amount: 120, contributors: [0, 1, 2], eligibleOpponents: [1, 2] },
+        { amount: 80, contributors: [0, 1], eligibleOpponents: [1] },
+      ],
+    },
+    2,
+    100,
+    "wild",
+    17,
+  );
+
+  assert.deepEqual(estimate.layers.map(layer => layer.meanShare), [1 / 3, 1 / 2]);
+  assert.equal(estimate.expectedReturn, 80);
+  assert.equal(estimate.combinedShare, 0.4);
+  assert.equal(estimate.returnStandardError, 0);
+  assert.equal(estimate.expectedValue, 30);
+  assert.deepEqual(estimate.outcomes, { all: 0, some: 1, none: 0 });
+});
+
+test("side-pot regression: a profitable layered call is not priced as three-way for every chip", () => {
+  const estimate = monteCarloCallEstimate(
+    cards("Ac", "2c"),
+    cards("Qs", "8s", "3c"),
+    {
+      callCost: 50,
+      contestablePot: 250,
+      requiredEquity: 0.2,
+      allIn: false,
+      layers: [
+        { amount: 150, contributors: [0, 1, 2], eligibleOpponents: [1, 2] },
+        { amount: 100, contributors: [0, 1], eligibleOpponents: [1] },
+      ],
+    },
+    2,
+    20_000,
+    "loose",
+    3,
+  );
+
+  assert.ok(estimate.expectedValue > 10, `layered call should be clearly profitable, got ${estimate.expectedValue}`);
+  assert.ok(estimate.layers[1].meanShare > estimate.layers[0].meanShare, "the heads-up side pot should have more share than the three-way main pot");
 });
 
 test("whole opponent tuples are sampled without seat-order bias", () => {

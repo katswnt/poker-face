@@ -57,6 +57,44 @@ test("postflop: facing a bet, fold when equity is below pot odds", () => {
   assert.ok(d.math.some(m => m.includes("needs about") && m.includes("final pot")), "explains the call price in plain language");
 });
 
+test("postflop: side-pot calls use the field for each layer", () => {
+  const decision = generateFullDecision(
+    0,
+    cards("Ac", "2c"),
+    cards("Qs", "8s", "3c"),
+    200,
+    100,
+    50,
+    "flop",
+    false,
+    "Hero",
+    "Dealer",
+    200,
+    3,
+    "loose",
+    0,
+    3,
+    150,
+    false,
+    {
+      callCost: 50,
+      contestablePot: 250,
+      requiredEquity: 0.2,
+      allIn: false,
+      layers: [
+        { amount: 150, contributors: [0, 1, 2], eligibleOpponents: [1, 2] },
+        { amount: 100, contributors: [0, 1], eligibleOpponents: [1] },
+      ],
+    },
+  );
+
+  assert.equal(decision.action, "call");
+  assert.ok((decision.callEstimate?.expectedValue ?? 0) > 0);
+  assert.equal(decision.callEstimate?.layers.length, 2);
+  assert.ok(decision.math.some(line => line.startsWith("Main pot:")));
+  assert.ok(decision.math.some(line => line.startsWith("Side pot 1:")));
+});
+
 test("postflop: the unique river nuts raise instead of only calling", () => {
   const hole = cards("As", "Ks");
   const board = cards("Qs", "Js", "10s", "2d", "3c");
@@ -157,6 +195,8 @@ test("every decision carries a reasoning line and math trail", () => {
   assert.ok(d.reasoning.length > 0);
   assert.ok(Array.isArray(d.math) && d.math.length > 0);
   assert.ok(d.math[0].includes("±"), "equity readout includes the standard-error band");
+  assert.equal(d.equitySamples, 1000, "the UI receives the sample count as data, not parsed copy");
+  assert.equal(typeof d.equityStandardError, "number");
 });
 
 test("analyzeBoard flags texture", () => {
