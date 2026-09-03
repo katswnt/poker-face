@@ -214,6 +214,12 @@ The best-response calculation must choose once per information set, after combin
 hidden states the player cannot distinguish. Choosing separately for each hidden opponent
 card would let the scorekeeper cheat and report a false result.
 
+The implemented scorekeeper does this directly and checks that each player remembers their
+own earlier decisions. Kuhn's original 64-strategy exhaustive search remains as an
+independent oracle: the tests require both methods to agree across 100 reproducible mixed
+strategies. This makes the scorekeeper ready for Leduc without claiming it can avoid walking
+Leduc's complete game tree.
+
 For a saved strategy profile `σ = (σ0, σ1)`, use these definitions:
 
 ```text
@@ -259,6 +265,9 @@ the result **off path** instead of presenting a confident recommendation.
 - [x] Implement deterministic full-tree CFR.
 - [x] Implement average-strategy normalization.
 - [x] Implement the independent expected-value and best-response evaluator.
+- [x] Implement the scalable information-set best response.
+- [x] Match it against exhaustive grading across 100 reproducible mixed strategies.
+- [x] Reject games that require a player to forget an earlier choice.
 - [x] Assert all probabilities are finite, within `[0, 1]`, and sum to one.
 - [x] Assert player 0's solved value is within `0.001` chip of `-1/18`.
 - [x] Assert exploitability is at most `0.001` chip before calling the fixture solved.

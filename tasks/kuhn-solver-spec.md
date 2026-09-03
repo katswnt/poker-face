@@ -33,9 +33,10 @@ The committed 100,000-iteration solve currently reports:
 | Exploitability | `0.000676220` chips |
 | Difference from Brown's independently generated value | `0.000002029` chips |
 
-`npm run audit:kuhn` regenerates the answer, grades it exhaustively, checks it against the
-pinned Brown fixture, verifies the payload hash, and fails if the committed artifact has
-drifted. CI runs this audit on every push and pull request.
+`npm run audit:kuhn` regenerates the answer, grades it with the information-set evaluator,
+checks it against the pinned Brown fixture, verifies the payload hash, and fails if the
+committed artifact has drifted. The test suite checks that evaluator against exhaustive
+grading. CI runs both on every push and pull request.
 
 ## Definition of done
 
@@ -226,6 +227,29 @@ to the player.
 The grader lives in `best-response.ts` and does not import the CFR implementation. It may
 use the shared game rules and public strategy type, but it must not use regret totals as
 evidence that the strategy is good.
+
+### Scalable information-set best response
+
+The release grader now calculates the same exact answer without trying every combination
+of choices. For each information set, it:
+
+1. groups together every full state that looks the same to the player;
+2. weights those states by chance and by the opponent's fixed strategy;
+3. compares the total value of each legal action across the whole group; and
+4. chooses one action for the group.
+
+The player's own earlier action probabilities are left out of those weights. That is what
+makes this a counterfactual best response: it asks what the player could earn by changing
+their plan, including at decisions their current plan rarely reaches.
+
+This removes the exponential `2⁶` strategy search. It still walks the complete game tree,
+so it is suitable for Leduc but is not a claim that full no-limit hold'em is now cheap to
+solve. The implementation also rejects a game if one information set would require a player
+to forget one of their own earlier choices.
+
+The original 64-strategy search remains in the code as an independent oracle. Tests compare
+the two graders on 100 reproducible mixed Kuhn strategies, including a case that proves a
+full-state `max()` would cheat by reacting to a hidden card.
 
 ### Nash gap and exploitability
 
@@ -507,8 +531,9 @@ hidden situations the player cannot tell apart.
 **Symptom:** spectacularly high best-response values or a strategy that appears much more
 exploitable than it really is.
 
-**Prevention:** brute-force only the 64 strategies keyed by legal information sets. Add the
-generic best-response algorithm later and require it to match this brute-force answer.
+**Prevention:** brute-force only the 64 strategies keyed by legal information sets. Require
+the generic best-response algorithm to match this brute-force answer across reproducible
+mixed strategies, and keep a test where a hidden-card-peeking implementation scores higher.
 
 ### 2. Pot received is confused with profit — highest risk
 
@@ -614,6 +639,8 @@ key order and hash only the mathematical payload and locked configuration.
 - Add exact profile evaluation.
 - Enumerate the 64 pure strategies per player.
 - Add best-response, Nash-gap, and known-equilibrium tests.
+- Add the scalable information-set best response and compare it with exhaustive grading.
+- Reject games that violate perfect recall.
 - This gives us a trustworthy scoreboard before training begins.
 
 ### Slice C — ordinary CFR

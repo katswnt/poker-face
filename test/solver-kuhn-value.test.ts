@@ -70,8 +70,10 @@ test("the exact Kuhn equilibrium has value -1/18 and zero exploitability", () =>
   const grade = gradeStrategy(kuhnGame, strategy, index);
   assert.ok(grade.nashGap < 1e-12, `Nash gap ${grade.nashGap}`);
   assert.ok(grade.exploitability < 1e-12, `exploitability ${grade.exploitability}`);
-  assert.equal(grade.bestResponses[0].pureStrategiesChecked, 64);
-  assert.equal(grade.bestResponses[1].pureStrategiesChecked, 64);
+  assert.equal(grade.bestResponses[0].method, "information-set");
+  assert.equal(grade.bestResponses[1].method, "information-set");
+  assert.equal(grade.bestResponses[0].informationSetsOptimized, 6);
+  assert.equal(grade.bestResponses[1].informationSetsOptimized, 6);
 });
 
 test("each Kuhn player has exactly 64 pure information-set strategies", () => {

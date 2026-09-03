@@ -71,10 +71,11 @@ are labeled as such instead of being presented as exact recommendations. See
 
 The repository also contains a **non-UI Kuhn poker reference lab**. It walks the complete
 small game tree without random sampling, learns with ordinary CFR, and is graded by a
-separate exhaustive best-response evaluator. The committed strategy is within `0.001` chip
-of the known game value and below `0.001` chip exploitability; `npm run audit:kuhn`
-regenerates and verifies it. This is a mathematical foundation for a future explainable
-river solver, not a new claim about the four-player trainer.
+separate information-set-aware best-response evaluator. On Kuhn, that scalable evaluator
+is checked against all 64 pure strategies for each player. The committed strategy is within
+`0.001` chip of the known game value and below `0.001` chip exploitability;
+`npm run audit:kuhn` regenerates and verifies it. This is a mathematical foundation for a
+future explainable river solver, not a new claim about the four-player trainer.
 
 ---
 
