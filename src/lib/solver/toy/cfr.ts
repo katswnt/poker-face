@@ -33,6 +33,29 @@ interface MutableInformationSet<Action extends string> {
   readonly strategySum: number[];
 }
 
+type CfrTreeNode<Action extends string> =
+  | {
+      readonly id: number;
+      readonly kind: "terminal";
+      readonly utility: readonly [number, number];
+    }
+  | {
+      readonly id: number;
+      readonly kind: "chance";
+      readonly children: readonly {
+        readonly probability: number;
+        readonly node: CfrTreeNode<Action>;
+      }[];
+    }
+  | {
+      readonly id: number;
+      readonly kind: "player";
+      readonly player: SolverPlayer;
+      readonly informationSet: InformationSetKey;
+      readonly actions: readonly Action[];
+      readonly children: readonly CfrTreeNode<Action>[];
+    };
+
 export interface CfrOptions {
   readonly iterations: number;
   readonly checkpointIterations?: readonly number[];
@@ -97,110 +120,137 @@ function strategyAt<Action extends string>(
   return entry;
 }
 
-function regretDeltas<Action extends string>(
-  tables: ReadonlyMap<InformationSetKey, MutableInformationSet<Action>>,
-  player: SolverPlayer,
-): Map<InformationSetKey, number[]> {
-  return new Map([...tables.entries()]
-    .filter(([, table]) => table.player === player)
-    .map(([key, table]) => [key, table.actions.map(() => 0)] as const));
+/** Compile immutable states once so every CFR iteration only performs numeric work. */
+function buildCfrTree<State, Action extends string, ChanceOutcome>(
+  game: ExtensiveFormGame<State, Action, ChanceOutcome>,
+  index: GameTreeIndex<Action>,
+): CfrTreeNode<Action> {
+  let nextId = 0;
+  const visit = (state: State): CfrTreeNode<Action> => {
+    const id = nextId;
+    nextId += 1;
+    if (nextId > index.totalStates) {
+      throw new Error(`${game.id} changed while its CFR tree was being built`);
+    }
+
+    const node = game.node(state);
+    if (node.kind === "terminal") return { id, kind: "terminal", utility: node.utility };
+    if (node.kind === "chance") {
+      return {
+        id,
+        kind: "chance",
+        children: node.outcomes.map(({ outcome, probability }) => ({
+          probability,
+          node: visit(game.nextChance(state, outcome)),
+        })),
+      };
+    }
+    return {
+      id,
+      kind: "player",
+      player: node.player,
+      informationSet: game.informationSet(state, node.player),
+      actions: [...node.actions],
+      children: node.actions.map(action => visit(game.nextAction(state, action))),
+    };
+  };
+
+  const root = visit(game.initialState());
+  if (nextId !== index.totalStates) {
+    throw new Error(`${game.id} CFR tree has ${nextId} states; its index has ${index.totalStates}`);
+  }
+  return root;
 }
 
-function collectRegretDeltas<State, Action extends string, ChanceOutcome>(
-  game: ExtensiveFormGame<State, Action, ChanceOutcome>,
+interface IterationData {
+  readonly deltas: readonly [
+    ReadonlyMap<InformationSetKey, readonly number[]>,
+    ReadonlyMap<InformationSetKey, readonly number[]>,
+  ];
+  readonly ownReach: ReadonlyMap<InformationSetKey, number>;
+}
+
+function collectIterationData<Action extends string>(
+  gameId: string,
+  root: CfrTreeNode<Action>,
   strategy: BehavioralStrategy<Action>,
-  targetPlayer: SolverPlayer,
-  deltas: Map<InformationSetKey, number[]>,
-): void {
+  tables: ReadonlyMap<InformationSetKey, MutableInformationSet<Action>>,
+): IterationData {
+  const deltas = ([0, 1] as const).map(player => new Map([...tables.entries()]
+    .filter(([, table]) => table.player === player)
+    .map(([key, table]) => [key, table.actions.map(() => 0)] as const))) as [
+      Map<InformationSetKey, number[]>,
+      Map<InformationSetKey, number[]>,
+    ];
+  const ownReach = new Map<InformationSetKey, number>();
+
+  // One frozen-strategy traversal collects both players' regret changes plus
+  // their own reach. Updates are applied only after this traversal returns.
   const visit = (
-    state: State,
+    node: CfrTreeNode<Action>,
     reach0: number,
     reach1: number,
     chanceReach: number,
-  ): number => {
-    const node = game.node(state);
-    if (node.kind === "terminal") return node.utility[targetPlayer];
+  ): readonly [number, number] => {
+    if (node.kind === "terminal") return node.utility;
     if (node.kind === "chance") {
-      let value = 0;
-      for (const { outcome, probability } of node.outcomes) {
-        value += probability * visit(
-          game.nextChance(state, outcome),
+      let value0 = 0;
+      let value1 = 0;
+      for (const child of node.children) {
+        const childValue = visit(
+          child.node,
           reach0,
           reach1,
-          chanceReach * probability,
+          chanceReach * child.probability,
         );
+        value0 += child.probability * childValue[0];
+        value1 += child.probability * childValue[1];
       }
-      return value;
+      return [value0, value1];
     }
 
-    const key = game.informationSet(state, node.player);
-    const entry = strategyAt(strategy, key);
-    const actionValues = node.actions.map((action, actionIndex) => {
+    const reach = node.player === 0 ? reach0 : reach1;
+    const priorReach = ownReach.get(node.informationSet);
+    if (priorReach === undefined) {
+      ownReach.set(node.informationSet, reach);
+    } else if (Math.abs(priorReach - reach) > REACH_TOLERANCE) {
+      throw new Error(
+        `${gameId} information set ${node.informationSet} violates perfect recall: ` +
+        `own reach ${priorReach} vs ${reach}`,
+      );
+    }
+
+    const entry = strategyAt(strategy, node.informationSet);
+    const actionValues = node.actions.map((_, actionIndex) => {
       const probability = entry.probabilities[actionIndex];
       return node.player === 0
-        ? visit(game.nextAction(state, action), reach0 * probability, reach1, chanceReach)
-        : visit(game.nextAction(state, action), reach0, reach1 * probability, chanceReach);
+        ? visit(node.children[actionIndex], reach0 * probability, reach1, chanceReach)
+        : visit(node.children[actionIndex], reach0, reach1 * probability, chanceReach);
     });
-    const mixedValue = actionValues.reduce(
-      (value, actionValue, actionIndex) => value + entry.probabilities[actionIndex] * actionValue,
-      0,
+    const mixedValue = actionValues.reduce<readonly [number, number]>(
+      (value, actionValue, actionIndex) => [
+        value[0] + entry.probabilities[actionIndex] * actionValue[0],
+        value[1] + entry.probabilities[actionIndex] * actionValue[1],
+      ],
+      [0, 0],
     );
 
-    if (node.player === targetPlayer) {
-      const opponentReach = targetPlayer === 0 ? reach1 : reach0;
-      const counterfactualReach = chanceReach * opponentReach;
-      const informationSetDeltas = deltas.get(key);
-      if (!informationSetDeltas) throw new Error(`Missing regret accumulator at ${key}`);
-      for (let actionIndex = 0; actionIndex < actionValues.length; actionIndex += 1) {
-        informationSetDeltas[actionIndex] += counterfactualReach
-          * (actionValues[actionIndex] - mixedValue);
-      }
+    const opponentReach = node.player === 0 ? reach1 : reach0;
+    const counterfactualReach = chanceReach * opponentReach;
+    const informationSetDeltas = deltas[node.player].get(node.informationSet);
+    if (!informationSetDeltas) {
+      throw new Error(`Missing regret accumulator at ${node.informationSet}`);
+    }
+    for (let actionIndex = 0; actionIndex < actionValues.length; actionIndex += 1) {
+      informationSetDeltas[actionIndex] += counterfactualReach
+        * (actionValues[actionIndex][node.player] - mixedValue[node.player]);
     }
 
     return mixedValue;
   };
 
-  visit(game.initialState(), 1, 1, 1);
-}
-
-function collectOwnReach<State, Action extends string, ChanceOutcome>(
-  game: ExtensiveFormGame<State, Action, ChanceOutcome>,
-  strategy: BehavioralStrategy<Action>,
-): Map<InformationSetKey, number> {
-  const ownReach = new Map<InformationSetKey, number>();
-
-  const visit = (state: State, reach0: number, reach1: number): void => {
-    const node = game.node(state);
-    if (node.kind === "terminal") return;
-    if (node.kind === "chance") {
-      for (const { outcome } of node.outcomes) visit(game.nextChance(state, outcome), reach0, reach1);
-      return;
-    }
-
-    const key = game.informationSet(state, node.player);
-    const reach = node.player === 0 ? reach0 : reach1;
-    const prior = ownReach.get(key);
-    if (prior === undefined) {
-      ownReach.set(key, reach);
-    } else if (Math.abs(prior - reach) > REACH_TOLERANCE) {
-      throw new Error(
-        `${game.id} information set ${key} violates perfect recall: own reach ${prior} vs ${reach}`,
-      );
-    }
-
-    const entry = strategyAt(strategy, key);
-    for (let actionIndex = 0; actionIndex < node.actions.length; actionIndex += 1) {
-      const probability = entry.probabilities[actionIndex];
-      if (node.player === 0) {
-        visit(game.nextAction(state, node.actions[actionIndex]), reach0 * probability, reach1);
-      } else {
-        visit(game.nextAction(state, node.actions[actionIndex]), reach0, reach1 * probability);
-      }
-    }
-  };
-
-  visit(game.initialState(), 1, 1);
-  return ownReach;
+  visit(root, 1, 1, 1);
+  return { deltas, ownReach };
 }
 
 function accumulateAverageStrategy<Action extends string>(
@@ -233,6 +283,7 @@ export function solveCfr<State, Action extends string, ChanceOutcome>(
       strategySum: definition.actions.map(() => 0),
     }] as const),
   );
+  const tree = buildCfrTree(game, index);
   const requestedCheckpoints = new Set(options.checkpointIterations ?? []);
   const checkpoints: CfrCheckpoint<Action>[] = [];
   const updateOrder = options.updateOrder ?? [0, 1] as const;
@@ -240,15 +291,11 @@ export function solveCfr<State, Action extends string, ChanceOutcome>(
   let currentStrategy = regretMatchedStrategy(tables);
   for (let iteration = 1; iteration <= options.iterations; iteration += 1) {
     currentStrategy = regretMatchedStrategy(tables);
-    const allDeltas = updateOrder.map(player => {
-      const deltas = regretDeltas(tables, player);
-      collectRegretDeltas(game, currentStrategy, player, deltas);
-      return deltas;
-    });
+    const iterationData = collectIterationData(game.id, tree, currentStrategy, tables);
+    accumulateAverageStrategy(tables, currentStrategy, iterationData.ownReach);
 
-    accumulateAverageStrategy(tables, currentStrategy, collectOwnReach(game, currentStrategy));
-
-    for (const deltas of allDeltas) {
+    for (const player of updateOrder) {
+      const deltas = iterationData.deltas[player];
       for (const [key, values] of deltas) {
         const table = tables.get(key);
         if (!table) throw new Error(`Missing CFR table at ${key}`);

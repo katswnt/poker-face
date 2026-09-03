@@ -2,6 +2,7 @@ import {
   buildGameTreeIndex,
   validateStrategy,
   type BehavioralStrategy,
+  type GameTreeIndex,
   type InformationSetKey,
 } from "./game";
 import { gradeStrategy } from "./best-response";
@@ -9,10 +10,12 @@ import type { CfrSolveResult } from "./cfr";
 import { kuhnDecisionFacts, type KuhnDecisionFacts } from "./explain";
 import { kuhnGame, type KuhnAction } from "./kuhn";
 
-export type SerializedKuhnStrategy = Readonly<Record<
+export type SerializedBehavioralStrategy<Action extends string> = Readonly<Record<
   InformationSetKey,
-  Readonly<Partial<Record<KuhnAction, number>>>
+  Readonly<Partial<Record<Action, number>>>
 >>;
+
+export type SerializedKuhnStrategy = SerializedBehavioralStrategy<KuhnAction>;
 
 export interface KuhnConvergenceCheckpoint {
   readonly iteration: number;
@@ -71,34 +74,57 @@ function sortedJsonValue(value: unknown): unknown {
   return value;
 }
 
-export function canonicalKuhnJson(value: unknown, pretty = false): string {
+export function canonicalSolverJson(value: unknown, pretty = false): string {
   return JSON.stringify(sortedJsonValue(value), null, pretty ? 2 : undefined);
 }
 
-export function serializeKuhnStrategy(
-  strategy: BehavioralStrategy<KuhnAction>,
-): SerializedKuhnStrategy {
-  return Object.fromEntries([...strategy.entries()]
-    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
-    .map(([key, entry]) => [
-      key,
-      Object.fromEntries(entry.actions.map((action, index) => [action, entry.probabilities[index]])),
-    ]));
+export function canonicalKuhnJson(value: unknown, pretty = false): string {
+  return canonicalSolverJson(value, pretty);
 }
 
-export function deserializeKuhnStrategy(
-  serialized: SerializedKuhnStrategy,
-): BehavioralStrategy<KuhnAction> {
-  const index = buildGameTreeIndex(kuhnGame);
+export function serializeBehavioralStrategy<Action extends string>(
+  strategy: BehavioralStrategy<Action>,
+): SerializedBehavioralStrategy<Action> {
+  const serialized: Record<InformationSetKey, Partial<Record<Action, number>>> = {};
+  const entries = [...strategy.entries()]
+    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0);
+  for (const [key, entry] of entries) {
+    const actionProbabilities: Partial<Record<Action, number>> = {};
+    for (let index = 0; index < entry.actions.length; index += 1) {
+      actionProbabilities[entry.actions[index]] = entry.probabilities[index];
+    }
+    serialized[key] = actionProbabilities;
+  }
+  return serialized;
+}
+
+export function deserializeBehavioralStrategy<Action extends string>(
+  index: GameTreeIndex<Action>,
+  serialized: SerializedBehavioralStrategy<Action>,
+): BehavioralStrategy<Action> {
+  const serializedKeys = Object.keys(serialized);
+  if (
+    serializedKeys.length !== index.informationSets.length ||
+    serializedKeys.some(key => !index.informationSetByKey.has(key))
+  ) {
+    throw new Error(`Serialized ${index.gameId} strategy does not match the game information sets`);
+  }
   const strategy = new Map(index.informationSets.map(definition => {
     const serializedEntry = serialized[definition.key];
-    if (!serializedEntry) throw new Error(`Missing serialized Kuhn strategy at ${definition.key}`);
+    if (!serializedEntry) throw new Error(`Missing serialized strategy at ${definition.key}`);
+    const serializedActions = Object.keys(serializedEntry);
+    if (
+      serializedActions.length !== definition.actions.length ||
+      serializedActions.some(action => !definition.actions.includes(action as Action))
+    ) {
+      throw new Error(`Serialized actions do not match the game at ${definition.key}`);
+    }
     return [definition.key, {
       actions: [...definition.actions],
       probabilities: definition.actions.map(action => {
         const probability = serializedEntry[action];
         if (probability === undefined) {
-          throw new Error(`Missing serialized Kuhn action ${action} at ${definition.key}`);
+          throw new Error(`Missing serialized action ${action} at ${definition.key}`);
         }
         return probability;
       }),
@@ -106,6 +132,18 @@ export function deserializeKuhnStrategy(
   }));
   validateStrategy(index, strategy);
   return strategy;
+}
+
+export function serializeKuhnStrategy(
+  strategy: BehavioralStrategy<KuhnAction>,
+): SerializedKuhnStrategy {
+  return serializeBehavioralStrategy(strategy);
+}
+
+export function deserializeKuhnStrategy(
+  serialized: SerializedKuhnStrategy,
+): BehavioralStrategy<KuhnAction> {
+  return deserializeBehavioralStrategy(buildGameTreeIndex(kuhnGame), serialized);
 }
 
 export function createKuhnSolveArtifactPayload(

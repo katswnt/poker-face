@@ -31,6 +31,9 @@ jobs:
       - name: Audit Kuhn solver artifact
         run: npm run audit:kuhn
 
+      - name: Audit Leduc solver artifact
+        run: npm run audit:leduc
+
       - name: Build
         run: npm run build
 

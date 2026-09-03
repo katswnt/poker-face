@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc rules locked and generic solver smoke-tested; reference solve is next
+**Status:** Leduc mathematical core implemented and independently checked; teaching facts are next
 **Last updated:** 2026-09-03
 
 This document is the source of truth for the next solver project. It records what we
@@ -136,6 +136,30 @@ The count comes from structure, not from accepting one program's output: each pr
 has a six-decision first-round tree, four immediate fold endings, and five paths to a board
 card. Each board chance has four physical cards, followed by another six-decision tree with
 nine possible endings.
+
+### Implemented Leduc solve audit
+
+The committed deterministic solve uses 12,800 ordinary-CFR iterations. Its exact
+information-set best-response grade is:
+
+| Measurement | TypeScript result | Pinned Brown result |
+|---|---:|---:|
+| Player 0 value | `-0.053274276` | `-0.053539972` |
+| Exploitability | `0.005268743` | `0.008071216` |
+| Iterations | 12,800 | 1,600 |
+
+The player-0 values differ by `0.000265695` chip, inside the locked `0.001` tolerance.
+Both independently graded strategies are below the `0.01` exploitability gate.
+
+The local 2026-09-03 audit took about 12 seconds and ended at roughly 247 MiB RSS. Those
+numbers describe one machine and are printed for engineering visibility; CI does not use
+runtime or memory as a correctness test. The reproducible artifact hash, exact value,
+reference difference, and exploitability are the release gates.
+
+To make the full-tree run practical, CFR builds the immutable game tree once and collects
+both players' frozen-strategy regret changes and own-reach weights in one traversal per
+iteration. Kuhn regenerated to the exact same payload hash after this optimization, which
+guards the claim that the optimization changed execution cost rather than solver math.
 
 ## Technical design
 
@@ -314,9 +338,9 @@ the result **off path** instead of presenting a confident recommendation.
 - [x] Implement the public-card chance node and two betting rounds.
 - [x] Test bet size, raise cap, round ending, folding, pairs, high cards, and splits.
 - [x] Reuse the Kuhn CFR and best-response code without game-specific branches.
-- [ ] Compare expected value and exploitability with the pinned Brown Leduc reference.
-- [ ] Lock a maximum exploitability of `0.01` chip for the committed Leduc artifact.
-- [ ] Record convergence and memory measurements, but do not use a laptop-specific timing
+- [x] Compare expected value and exploitability with the pinned Brown Leduc reference.
+- [x] Lock a maximum exploitability of `0.01` chip for the committed Leduc artifact.
+- [x] Record convergence and memory measurements, but do not use a laptop-specific timing
       assertion in CI.
 
 ### Milestone 5 — product review before UI

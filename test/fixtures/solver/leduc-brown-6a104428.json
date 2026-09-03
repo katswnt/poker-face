@@ -1,0 +1,18 @@
+{
+  "source": "noambrown/poker_solver",
+  "commit": "6a10442877ffc8fd28af93e16e279b9bbdd97b2a",
+  "game": "leduc",
+  "algorithm": "cfr",
+  "iterations": 1600,
+  "value": [
+    -0.05353997157999436,
+    0.05353997157999436
+  ],
+  "exploitability": 0.008071216238093887,
+  "provenance": {
+    "runtime": "Python reference implementation",
+    "command": "CFRTrainer(LeducPoker(), CFRConfig(use_plus=False, linear_weighting=False, alternating=False)).run(1600)",
+    "valueDefinition": "exact full-tree expected net chips per hand",
+    "exploitabilityDefinition": "half the sum of both exact best-response values"
+  }
+}

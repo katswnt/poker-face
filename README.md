@@ -77,6 +77,12 @@ is checked against all 64 pure strategies for each player. The committed strateg
 `npm run audit:kuhn` regenerates and verifies it. This is a mathematical foundation for a
 future explainable river solver, not a new claim about the four-player trainer.
 
+The same audited core now solves **Leduc poker**, which adds a public card, a second betting
+round, and one legal raise per round. Its complete 9,451-state tree matches the independently
+implemented pinned reference. The committed 12,800-iteration strategy measures `0.00527`
+chip exploitability and differs from the reference game value by `0.00027` chip. This remains
+a non-UI validation lab; it does not silently replace the trainer's four-player model.
+
 ---
 
 ## How decisions are made
