@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Kuhn mathematical core implemented and audited; Leduc is next
-**Last updated:** 2026-09-02
+**Status:** Leduc rules locked and generic solver smoke-tested; reference solve is next
+**Last updated:** 2026-09-03
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -116,6 +116,26 @@ Use the same convention as the pinned Brown reference:
 
 There are `6 × 5 × 4 = 120` ordered private-card-and-board deals. The engine should model
 their exact probabilities rather than sample them.
+
+### Implemented Leduc tree audit
+
+The TypeScript rule engine and the pinned Brown implementation independently produce the
+same complete tree:
+
+| Item | Exact count |
+|---|---:|
+| Physical private-card deals | 30 |
+| Complete private-card-and-board deals | 120 |
+| Chance nodes | 151 |
+| Player decisions | 3,780 |
+| Terminal endings | 5,520 |
+| Total states | 9,451 |
+| Information sets | 288 |
+
+The count comes from structure, not from accepting one program's output: each private deal
+has a six-decision first-round tree, four immediate fold endings, and five paths to a board
+card. Each board chance has four physical cards, followed by another six-decision tree with
+nine possible endings.
 
 ## Technical design
 
@@ -289,11 +309,11 @@ the result **off path** instead of presenting a confident recommendation.
 
 ### Milestone 4 — Leduc generalization
 
-- [ ] Implement the locked six-card deck and exact chance probabilities.
-- [ ] Enumerate all 120 ordered complete deals without duplicates.
-- [ ] Implement the public-card chance node and two betting rounds.
-- [ ] Test bet size, raise cap, round ending, folding, pairs, high cards, and splits.
-- [ ] Reuse the Kuhn CFR and best-response code without game-specific branches.
+- [x] Implement the locked six-card deck and exact chance probabilities.
+- [x] Enumerate all 120 ordered complete deals without duplicates.
+- [x] Implement the public-card chance node and two betting rounds.
+- [x] Test bet size, raise cap, round ending, folding, pairs, high cards, and splits.
+- [x] Reuse the Kuhn CFR and best-response code without game-specific branches.
 - [ ] Compare expected value and exploitability with the pinned Brown Leduc reference.
 - [ ] Lock a maximum exploitability of `0.01` chip for the committed Leduc artifact.
 - [ ] Record convergence and memory measurements, but do not use a laptop-specific timing
