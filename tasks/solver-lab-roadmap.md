@@ -1,0 +1,342 @@
+# Explainable solver lab — guiding plan
+
+**Status:** Kuhn mathematical core implemented and audited; Leduc is next
+**Last updated:** 2026-09-02
+
+This document is the source of truth for the next solver project. It records what we
+are building, what we are deliberately not building, how we will know the math is
+right, and what the learner should gain from it.
+
+## The decision
+
+Build a small solver we can understand and verify from end to end:
+
+1. **Kuhn poker** proves the basic solver and its tests. Its detailed, implementation-ready
+   contract is in [Kuhn solver — implementation specification](kuhn-solver-spec.md).
+2. **Leduc poker** proves the design works with a public card and two betting rounds.
+3. **Heads-up river hold'em** becomes the first portfolio-sized real-poker lab.
+
+Keep this lab separate from the four-player trainer. None of the audited open-source
+projects solves live four-player no-limit hold'em, and a two-player answer must never
+be presented as a four-player answer.
+
+The goal is not to put a “GTO” badge on the app. The goal is to make an answer we can
+defend:
+
+> For this precisely defined game, these actions have these average values. The
+> strategy is this far from perfect play, under these stated assumptions.
+
+## Why start with toy poker?
+
+Kuhn and Leduc are small, but they contain the ideas that make poker interesting:
+hidden information, bluffing, value betting, calling, folding, ranges, and mixed
+strategies.
+
+They are small enough that we can count every possible deal and walk every possible
+action. That removes random-sampling error and makes subtle bugs visible before we add
+the much larger hold'em card tree.
+
+- **Kuhn** is the unit test for the mathematical method.
+- **Leduc** is the integration test for cards, public information, betting rounds, and
+  range changes.
+- **River hold'em** is the product-sized result.
+
+## Plain-language glossary
+
+- **Strategy:** how often a player chooses each legal action in each situation they can
+  recognize.
+- **Information set:** situations that look identical to a player. The player knows
+  their own card and the actions so far, but not the opponent's card.
+- **Expected value (EV):** the average number of chips an action earns if the same spot
+  is repeated many times.
+- **Regret:** how much better an action would have performed than the choices made so
+  far. Counterfactual regret minimization, or CFR, gradually gives more weight to
+  actions with positive regret.
+- **Best response:** the most profitable strategy against one fixed opposing strategy.
+- **Nash gap:** the combined amount both players could gain by switching to their best
+  responses. Smaller is better; zero means neither player can improve.
+- **Exploitability:** half of the Nash gap in this two-player zero-sum project. Every
+  report must state that convention and its chip units because solver libraries do not
+  all use the word the same way.
+
+## Audited references and how we may use them
+
+The audit used pinned versions so later upstream changes cannot rewrite our evidence.
+
+| Project | Pinned commit | What it is useful for | Why it is not the product engine |
+|---|---|---|---|
+| [Noam Brown's solver](https://github.com/noambrown/poker_solver) | `6a10442877ffc8fd28af93e16e279b9bbdd97b2a` | A readable MIT-licensed Kuhn/Leduc/river reference | Its Python river path crashes on some unequal ranges, accepts duplicate board cards, and can permit an under-raise with custom sizing. We use controlled fixtures, not blind trust. |
+| [b-inary postflop-solver](https://github.com/b-inary/postflop-solver) | `9d1509fe5077d019825f833eed04b16d342dfda1` | A strong second opinion for heads-up postflop values | It is AGPL, maintenance is suspended, and a clean build currently needs reconstructed dependency pins. It is an offline referee unless licensing and maintenance are deliberately resolved. |
+| [amaster97 poker_solver](https://github.com/amaster97/poker_solver) | `f78f1b2bc338dd8cbb5226ecb8398bbdb3635676` | Experimental preflop and postflop research | Its 27 bundled files passed their intended checksum check, but their final exploitability fields are empty, action-level EV export is unfinished, and the full Brown parity test timed out after 660 seconds in this audit. |
+
+The earlier claim that amaster97's blueprint files failed their checksums was wrong: it
+hashed the compressed bytes instead of the canonical uncompressed JSON. The corrected
+audit loaded and verified all 27 files. This correction stays in the record.
+
+We will write our own implementation from the game rules. Reference projects are
+independent test oracles. Do not copy AGPL implementation code into this repository.
+Before incorporating any third-party code, settle Poker Face's own license and record the
+source and license in a third-party notice.
+
+## Locked game rules
+
+Comparing two solvers is meaningless if they are solving slightly different games. These
+rules are part of the test contract and must change only through a reviewed decision.
+
+### Kuhn poker v1
+
+- Two players and a three-card deck: jack, queen, king.
+- Each player antes one chip and receives one private card without replacement.
+- Player 0 acts first.
+- A player may check or bet one chip when no bet is open.
+- Facing a bet, a player may call or fold. There are no raises.
+- Two checks or a called bet reaches showdown; the higher card wins.
+- A fold awards the pot to the other player.
+- Utility is **net chip change**, including the ante and any bet. Player 0's utility must
+  always be the negative of player 1's.
+
+The equilibrium value for player 0 in this version is `-1/18` chip. Kuhn poker has more
+than one equilibrium strategy, so tests must not demand one exact set of action
+percentages. They should test value and exploitability.
+
+### Leduc poker v1
+
+Use the same convention as the pinned Brown reference:
+
+- Two players and six physical cards: two copies each of jack, queen, and king.
+- Each player antes one chip and receives one private card without replacement.
+- Player 0 acts first in both betting rounds.
+- Round one has fixed one-chip bets. Round two has fixed two-chip bets.
+- At most two betting increments are allowed per round: the opening bet and one raise.
+- Checking around or calling the current bet ends a round.
+- After round one, reveal one public card from the remaining four physical cards.
+- At showdown, pairing the public rank beats an unpaired hand. Otherwise, the higher
+  private rank wins; equal ranks split the pot.
+- Utility is net chip change and remains exactly zero-sum.
+
+There are `6 × 5 × 4 = 120` ordered private-card-and-board deals. The engine should model
+their exact probabilities rather than sample them.
+
+## Technical design
+
+Start in TypeScript beside the existing push/fold model. Clarity is more valuable than
+speed at this size.
+
+```text
+src/lib/solver/toy/
+  game.ts              generic game contract and shared types
+  kuhn.ts              Kuhn rules only
+  leduc.ts             Leduc rules only
+  cfr.ts               deterministic full-tree CFR
+  best-response.ts     exact value, best responses, Nash gap
+  artifact.ts          stable, versioned result format
+  explain.ts           structured teaching facts; no UI prose
+
+scripts/
+  solve-toy-games.ts   regenerates committed reference results
+
+test/
+  solver-kuhn.test.ts
+  solver-leduc.test.ts
+  solver-cfr.test.ts
+  solver-artifact.test.ts
+```
+
+The game interface should provide only the operations the solver needs:
+
+```ts
+interface ExtensiveFormGame<State, Action, ChanceOutcome> {
+  initialState(): State;
+  node(state: State):
+    | { kind: "chance"; outcomes: readonly Weighted<ChanceOutcome>[] }
+    | { kind: "player"; player: 0 | 1; actions: readonly Action[] }
+    | { kind: "terminal"; utility: readonly [number, number] };
+  next(state: State, action: Action | ChanceOutcome): State;
+  informationSet(state: State, player: 0 | 1): string;
+}
+```
+
+Important boundary: the complete state may contain both private cards so the rules can
+score the hand. The information-set key must contain only what the acting player is
+allowed to know. Accidentally putting the opponent's card into that key would create a
+superhuman solver that cheats.
+
+Each result artifact should record:
+
+- schema version and game-rule version;
+- algorithm and implementation version;
+- iteration count;
+- average strategy at every reached information set;
+- exact expected value for both players;
+- best-response values, Nash gap, and our stated exploitability convention;
+- convergence checkpoints and runtime as observations, not accuracy claims;
+- a stable hash of the configuration and strategy payload.
+
+This is the same shape the later river solver will need. The UI should consume this
+structured result, never scrape numbers out of explanation strings.
+
+## Mathematical implementation
+
+### Reference algorithm
+
+Implement ordinary, deterministic, full-tree CFR first:
+
+1. Enumerate every chance outcome with its exact probability.
+2. At each information set, turn positive accumulated regrets into a strategy. If no
+   action has positive regret, use equal probabilities.
+3. Walk every action and calculate its counterfactual value.
+4. Add the difference between each action's value and the current strategy's value to
+   that action's regret.
+5. Accumulate the average strategy, weighted by how often the acting player reaches the
+   information set.
+6. Apply both players' regret changes from a frozen start-of-iteration strategy so the
+   answer does not depend on which player happened to update first.
+
+Use JavaScript `number` values, validate every number is finite, and use stable iteration
+order. Kuhn and Leduc do not need randomness. Given the same version and iteration count,
+the saved artifact should be byte-for-byte reproducible.
+
+CFR+ or discounted CFR may be added only after ordinary CFR passes the entire reference
+suite. The simple version remains as an independent oracle instead of being deleted when
+the faster version arrives.
+
+### Independent scorekeeper
+
+The solver is not allowed to grade itself with its regret totals. Implement a separate
+tree walk that calculates:
+
+- the exact value of the saved average strategy;
+- player 0's best response without seeing player 1's hidden card;
+- player 1's best response without seeing player 0's hidden card;
+- Nash gap and exploitability from those values.
+
+The best-response calculation must choose once per information set, after combining all
+hidden states the player cannot distinguish. Choosing separately for each hidden opponent
+card would let the scorekeeper cheat and report a false result.
+
+For a saved strategy profile `σ = (σ0, σ1)`, use these definitions:
+
+```text
+gain0 = bestResponseValue0(σ1) - value0(σ0, σ1)
+gain1 = bestResponseValue1(σ0) - value1(σ0, σ1)
+Nash gap = gain0 + gain1
+exploitability = Nash gap / 2
+```
+
+All four values are expected **net chips per hand**. In a zero-sum result,
+`value0 + value1` must equal zero apart from a small floating-point tolerance.
+
+An action EV shown to a learner means:
+
+> Expected net chips from the start of the hand, conditioned on reaching this information
+> set, taking this action now, and then following the saved average strategy.
+
+Its hidden-card weights must come from the cards and actions actually consistent with the
+information set. If the saved strategy essentially never reaches that information set, mark
+the result **off path** instead of presenting a confident recommendation.
+
+## Delivery checklist
+
+### Milestone 0 — contract before algorithm
+
+- [x] Add the generic game, action, strategy, and result types.
+- [x] Encode the locked Kuhn rules in code comments and tests.
+- [x] Implement the documented Nash-gap and exploitability formulas and chip units.
+- [ ] Add a repository license before borrowing any implementation code. No third-party
+      implementation code has been copied into the current solver.
+
+### Milestone 1 — Kuhn rule engine
+
+- [x] Enumerate all six ordered private-card deals with probability `1/6` each.
+- [x] Implement legal actions and immutable state transitions.
+- [x] Implement every fold and showdown payoff.
+- [x] Prove with tests that terminal utilities sum to zero.
+- [x] Prove information-set keys do not contain the opponent's card.
+- [x] Enumerate the entire tree and lock its node/terminal counts as a regression fixture.
+
+### Milestone 2 — Kuhn solver and scorekeeper
+
+- [x] Implement deterministic full-tree CFR.
+- [x] Implement average-strategy normalization.
+- [x] Implement the independent expected-value and best-response evaluator.
+- [x] Assert all probabilities are finite, within `[0, 1]`, and sum to one.
+- [x] Assert player 0's solved value is within `0.001` chip of `-1/18`.
+- [x] Assert exploitability is at most `0.001` chip before calling the fixture solved.
+- [x] Compare value and exploitability with the pinned Brown reference.
+- [x] Do not require identical action frequencies where multiple equilibria are valid.
+- [x] Show that a large solve has a smaller gap than a deliberately short solve; do not
+      claim the gap must decrease at every single checkpoint.
+
+### Milestone 3 — reproducible artifact and teaching facts
+
+- [x] Add `npm run solve:toy` to regenerate the result.
+- [x] Commit one human-readable Kuhn artifact.
+- [x] Regenerating twice must produce the same bytes, excluding separately recorded
+      wall-clock time.
+- [x] Export structured facts for each decision: legal actions, frequencies, action EVs,
+      EV difference, reach probability, and exploitability of the whole strategy.
+- [ ] Explain value betting, bluffing, bluff-catching, and mixing from those facts.
+- [x] Keep generated sentences out of the mathematical result object.
+
+### Milestone 4 — Leduc generalization
+
+- [ ] Implement the locked six-card deck and exact chance probabilities.
+- [ ] Enumerate all 120 ordered complete deals without duplicates.
+- [ ] Implement the public-card chance node and two betting rounds.
+- [ ] Test bet size, raise cap, round ending, folding, pairs, high cards, and splits.
+- [ ] Reuse the Kuhn CFR and best-response code without game-specific branches.
+- [ ] Compare expected value and exploitability with the pinned Brown Leduc reference.
+- [ ] Lock a maximum exploitability of `0.01` chip for the committed Leduc artifact.
+- [ ] Record convergence and memory measurements, but do not use a laptop-specific timing
+      assertion in CI.
+
+### Milestone 5 — product review before UI
+
+- [ ] Have the math audit answer: “Can either player gain materially by deviating?”
+- [ ] Have the poker audit answer: “Do the rules and chip payoffs match the written game?”
+- [ ] Have the engineering audit answer: “Can hidden information, stale artifacts, or a
+      changed rule silently corrupt the answer?”
+- [ ] Have the teaching audit answer: “Can a learner understand why two actions mix?”
+- [ ] Have the product audit answer: “Does the page teach one useful idea without implying
+      this toy strategy applies directly to ordinary hold'em?”
+- [ ] Only then add a separate `/solver/lab` experience. Do not replace the current trainer
+      or the existing push/fold explorer.
+
+## First teaching experience, after the core passes
+
+The first page should let the learner select a Kuhn card and an action history, then show:
+
+1. **The recommendation:** bet, check, call, or fold—and whether it mixes.
+2. **The chip values:** the average value of each legal action.
+3. **The reason:** value bet, bluff, bluff-catch, or protection against exploitation.
+4. **The opponent's possible cards:** only the range consistent with what the learner can
+   know.
+5. **The reliability:** the measured exploitability of the entire saved strategy.
+
+A later “imperfect opponent” lesson may let the user change how often the opponent calls
+or bluffs and then calculate a best response. That is an exploitative strategy against an
+explicit model, not a different version of the math and not automatically GTO.
+
+## Stop conditions
+
+Pause instead of expanding scope if any of these is true:
+
+- We cannot reproduce the known Kuhn value.
+- Our best-response evaluator can see hidden cards.
+- Brown and our Leduc result disagree beyond the locked tolerance and we cannot explain why.
+- A result is labeled solved without a measured Nash gap.
+- The planned UI needs a multiway or earlier-street claim the engine does not support.
+- Performance work would replace the readable reference before an independent fast version
+  agrees with it.
+
+## Definition of success
+
+The first portfolio milestone is complete when a reviewer can run one command, reproduce
+the Kuhn and Leduc artifacts, inspect the game rules, see an independently measured error,
+and understand one mixed strategy in plain language.
+
+The portfolio story is then honest and strong:
+
+> I started with a game small enough to count exactly, separated the solver from its
+> scorekeeper, tested hidden-information boundaries, checked the result against an
+> independent implementation, and used the measured action values to teach the strategy.

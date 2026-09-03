@@ -28,6 +28,9 @@ jobs:
       - name: Test (domain suite)
         run: npm test
 
+      - name: Audit Kuhn solver artifact
+        run: npm run audit:kuhn
+
       - name: Build
         run: npm run build
 

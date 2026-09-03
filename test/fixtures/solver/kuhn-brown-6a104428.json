@@ -1,0 +1,38 @@
+{
+  "source": "https://github.com/noambrown/poker_solver",
+  "commit": "6a10442877ffc8fd28af93e16e279b9bbdd97b2a",
+  "generatedOn": "2026-09-02",
+  "game": "kuhn",
+  "gameConvention": "Three ranks; one ante each; one-chip bet; no raises; net-chip utility",
+  "algorithm": "ordinary CFR, non-alternating",
+  "iterations": 102400,
+  "command": "python3 python/src/cli/run_exploitability.py --game kuhn --algo cfr --no-alternating --target-exp 0.001 --dump-strategy /private/tmp/kuhn-brown-strategy.json",
+  "value": [
+    -0.05555267161403776,
+    0.05555267161403776
+  ],
+  "bestResponseValue": [
+    -0.055263325093932614,
+    0.056103313071105304
+  ],
+  "nashGap": 0.0008399879771726904,
+  "exploitability": 0.0004199939885863452,
+  "exploitabilityConvention": "half-nash-gap",
+  "exploitabilityUnits": "net-chips-per-hand",
+  "strategyFileSha256": "d5184a89a335957e31e73f4d15467e6479ac49cbc5e11bccb33213c02a261867",
+  "checkpoints": [
+    { "iteration": 25, "exploitability": 0.048120 },
+    { "iteration": 50, "exploitability": 0.027034 },
+    { "iteration": 100, "exploitability": 0.023301 },
+    { "iteration": 200, "exploitability": 0.011947 },
+    { "iteration": 400, "exploitability": 0.011118 },
+    { "iteration": 800, "exploitability": 0.008039 },
+    { "iteration": 1600, "exploitability": 0.005387 },
+    { "iteration": 3200, "exploitability": 0.003652 },
+    { "iteration": 6400, "exploitability": 0.001730 },
+    { "iteration": 12800, "exploitability": 0.001334 },
+    { "iteration": 25600, "exploitability": 0.001424 },
+    { "iteration": 51200, "exploitability": 0.001170 },
+    { "iteration": 102400, "exploitability": 0.000420 }
+  ]
+}

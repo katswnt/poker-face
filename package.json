@@ -11,8 +11,11 @@
     "test": "node --import tsx --test test/*.test.ts",
     "test:e2e": "playwright test",
     "audit:math": "node --import tsx scripts/audit-math.ts",
+    "audit:kuhn": "node --import tsx scripts/solve-kuhn.ts --check",
     "bench": "node --import tsx bench/equity-bench.ts",
-    "generate:solver": "node --import tsx scripts/gen-pushfold-solutions.mjs"
+    "generate:solver": "node --import tsx scripts/gen-pushfold-solutions.mjs",
+    "solve:kuhn": "node --import tsx scripts/solve-kuhn.ts",
+    "solve:toy": "npm run solve:kuhn"
   },
   "dependencies": {
     "next": "16.3.3",

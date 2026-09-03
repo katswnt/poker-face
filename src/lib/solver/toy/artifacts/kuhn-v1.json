@@ -1,0 +1,532 @@
+{
+  "acceptance": {
+    "maximumExploitability": 0.001,
+    "passed": true,
+    "player0ValueTolerance": 0.001,
+    "referencePlayer0Value": -0.05555555555555555
+  },
+  "algorithm": "full-tree-cfr",
+  "algorithmVersion": 1,
+  "bestResponseValue": [
+    -0.05476979504495355,
+    0.05612223440563288
+  ],
+  "convergence": [
+    {
+      "exploitability": 0.02567473584694803,
+      "iteration": 100,
+      "nashGap": 0.05134947169389606,
+      "value": [
+        -0.055987211609916265,
+        0.055987211609916265
+      ]
+    },
+    {
+      "exploitability": 0.0072691064085644574,
+      "iteration": 1000,
+      "nashGap": 0.014538212817128915,
+      "value": [
+        -0.05555721950490666,
+        0.05555721950490666
+      ]
+    },
+    {
+      "exploitability": 0.0023177863149745487,
+      "iteration": 10000,
+      "nashGap": 0.004635572629949097,
+      "value": [
+        -0.05554639582927165,
+        0.05554639582927165
+      ]
+    },
+    {
+      "exploitability": 0.0006762196803396653,
+      "iteration": 100000,
+      "nashGap": 0.0013524393606793306,
+      "value": [
+        -0.055554701098179865,
+        0.055554701098179865
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 0,
+          "expectedValue": -1,
+          "frequency": 0.999996854033156
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 1,
+          "expectedValue": -2,
+          "frequency": 0.000003145966844059239
+        }
+      ],
+      "card": "J",
+      "history": [
+        "check",
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p0:card=J:history=check-bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "Q",
+          "probability": 0.00003772603805693634
+        },
+        {
+          "card": "K",
+          "probability": 0.9999622739619431
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.13244904466083351
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0,
+          "expectedValue": -1.0000015730349014,
+          "frequency": 0.7946682606401076
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0.00010849522404288159,
+          "expectedValue": -1.0001100682589443,
+          "frequency": 0.2053317393598923
+        }
+      ],
+      "card": "J",
+      "history": [],
+      "informationSet": "kuhn-v1:p0:card=J:history=start",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "Q",
+          "probability": 0.5
+        },
+        {
+          "card": "K",
+          "probability": 0.5
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.3333333333333333
+    },
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 3,
+          "expectedValue": -1,
+          "frequency": 0.000006655381890172398
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 0,
+          "expectedValue": 2,
+          "frequency": 0.9999933446181098
+        }
+      ],
+      "card": "K",
+      "history": [
+        "check",
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p0:card=K:history=check-bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.9998876184436329
+        },
+        {
+          "card": "Q",
+          "probability": 0.00011238155636703229
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.021017262422688105
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0,
+          "expectedValue": 1.1678501378635338,
+          "frequency": 0.3756358449830799
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0.0011417817772187977,
+          "expectedValue": 1.166708356086315,
+          "frequency": 0.6243641550169201
+        }
+      ],
+      "card": "K",
+      "history": [],
+      "informationSet": "kuhn-v1:p0:card=K:history=start",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.5
+        },
+        {
+          "card": "Q",
+          "probability": 0.5
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.3333333333333333
+    },
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 0.005250386599682688,
+          "expectedValue": -1,
+          "frequency": 0.4588440720792108
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 0,
+          "expectedValue": -0.9947496134003173,
+          "frequency": 0.5411559279207891
+        }
+      ],
+      "card": "Q",
+      "history": [
+        "check",
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p0:card=Q:history=check-bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.25131259664992067
+        },
+        {
+          "card": "K",
+          "probability": 0.7486874033500793
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.22260300991779233
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0,
+          "expectedValue": -0.3337717546145735,
+          "frequency": 0.9999654166666667
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0.16621824538542646,
+          "expectedValue": -0.49998999999999993,
+          "frequency": 0.00003458333333333334
+        }
+      ],
+      "card": "Q",
+      "history": [],
+      "informationSet": "kuhn-v1:p0:card=Q:history=start",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.5
+        },
+        {
+          "card": "K",
+          "probability": 0.5
+        }
+      ],
+      "player": 0,
+      "reachProbability": 0.3333333333333333
+    },
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 0,
+          "expectedValue": -1,
+          "frequency": 0.999995
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 1,
+          "expectedValue": -2,
+          "frequency": 0.000005
+        }
+      ],
+      "card": "J",
+      "history": [
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p1:card=J:history=bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "Q",
+          "probability": 0.00005538661629058896
+        },
+        {
+          "card": "K",
+          "probability": 0.9999446133837094
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.1040664563917089
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0.0006476073701325857,
+          "expectedValue": -1,
+          "frequency": 0.6643307487712244
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0,
+          "expectedValue": -0.9993523926298674,
+          "frequency": 0.33566925122877556
+        }
+      ],
+      "card": "J",
+      "history": [
+        "check"
+      ],
+      "informationSet": "kuhn-v1:p1:card=J:history=check",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "Q",
+          "probability": 0.726929703064838
+        },
+        {
+          "card": "K",
+          "probability": 0.27307029693516205
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.22926687694162443
+    },
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 3,
+          "expectedValue": -1,
+          "frequency": 0.000005
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 0,
+          "expectedValue": 2,
+          "frequency": 0.999995
+        }
+      ],
+      "card": "K",
+      "history": [
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p1:card=K:history=bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.999831601730606
+        },
+        {
+          "card": "Q",
+          "probability": 0.000168398269393924
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.03422772044887094
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0.30153212869438795,
+          "expectedValue": 1,
+          "frequency": 0.000005
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0,
+          "expectedValue": 1.301532128694388,
+          "frequency": 0.999995
+        }
+      ],
+      "card": "K",
+      "history": [
+        "check"
+      ],
+      "informationSet": "kuhn-v1:p1:card=K:history=check",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.442802489827715
+        },
+        {
+          "card": "Q",
+          "probability": 0.5571975101722851
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.29910561288446236
+    },
+    {
+      "actions": [
+        {
+          "action": "fold",
+          "differenceFromBest": 0,
+          "expectedValue": -1,
+          "frequency": 0.6665882878273703
+        },
+        {
+          "action": "call",
+          "differenceFromBest": 0.010086752259427678,
+          "expectedValue": -1.0100867522594277,
+          "frequency": 0.3334117121726296
+        }
+      ],
+      "card": "Q",
+      "history": [
+        "bet"
+      ],
+      "informationSet": "kuhn-v1:p1:card=Q:history=bet",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.24747831193514302
+        },
+        {
+          "card": "K",
+          "probability": 0.7525216880648569
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.13828264906280208
+    },
+    {
+      "actions": [
+        {
+          "action": "check",
+          "differenceFromBest": 0,
+          "expectedValue": 0.35805429857386756,
+          "frequency": 0.9999622727272728
+        },
+        {
+          "action": "bet",
+          "differenceFromBest": 0.3209643059254747,
+          "expectedValue": 0.03708999264839285,
+          "frequency": 0.00003772727272727274
+        }
+      ],
+      "card": "Q",
+      "history": [
+        "check"
+      ],
+      "informationSet": "kuhn-v1:p1:card=Q:history=check",
+      "offPath": false,
+      "opponentCards": [
+        {
+          "card": "J",
+          "probability": 0.6790271492869338
+        },
+        {
+          "card": "K",
+          "probability": 0.32097285071306625
+        }
+      ],
+      "player": 1,
+      "reachProbability": 0.19505068427053124
+    }
+  ],
+  "exploitability": 0.0006762196803396653,
+  "exploitabilityConvention": "half-nash-gap",
+  "exploitabilityUnits": "net-chips-per-hand",
+  "gains": [
+    0.0007849060532263141,
+    0.0005675333074530164
+  ],
+  "game": "kuhn-v1",
+  "iterations": 100000,
+  "nashGap": 0.0013524393606793306,
+  "payloadHash": "22b0eb743d32c50d1ab684e71ecc8a7be8ad2dc4cb07d5f844a4c7e950a259f5",
+  "schemaVersion": 1,
+  "strategy": {
+    "kuhn-v1:p0:card=J:history=check-bet": {
+      "call": 0.000003145966844059239,
+      "fold": 0.999996854033156
+    },
+    "kuhn-v1:p0:card=J:history=start": {
+      "bet": 0.2053317393598923,
+      "check": 0.7946682606401076
+    },
+    "kuhn-v1:p0:card=K:history=check-bet": {
+      "call": 0.9999933446181098,
+      "fold": 0.000006655381890172398
+    },
+    "kuhn-v1:p0:card=K:history=start": {
+      "bet": 0.6243641550169201,
+      "check": 0.3756358449830799
+    },
+    "kuhn-v1:p0:card=Q:history=check-bet": {
+      "call": 0.5411559279207891,
+      "fold": 0.4588440720792108
+    },
+    "kuhn-v1:p0:card=Q:history=start": {
+      "bet": 0.00003458333333333334,
+      "check": 0.9999654166666667
+    },
+    "kuhn-v1:p1:card=J:history=bet": {
+      "call": 0.000005,
+      "fold": 0.999995
+    },
+    "kuhn-v1:p1:card=J:history=check": {
+      "bet": 0.33566925122877556,
+      "check": 0.6643307487712244
+    },
+    "kuhn-v1:p1:card=K:history=bet": {
+      "call": 0.999995,
+      "fold": 0.000005
+    },
+    "kuhn-v1:p1:card=K:history=check": {
+      "bet": 0.999995,
+      "check": 0.000005
+    },
+    "kuhn-v1:p1:card=Q:history=bet": {
+      "call": 0.3334117121726296,
+      "fold": 0.6665882878273703
+    },
+    "kuhn-v1:p1:card=Q:history=check": {
+      "bet": 0.00003772727272727274,
+      "check": 0.9999622727272728
+    }
+  },
+  "tree": {
+    "chanceNodes": 1,
+    "decisionNodes": 24,
+    "informationSets": 12,
+    "terminalNodes": 30,
+    "totalStates": 55
+  },
+  "value": [
+    -0.055554701098179865,
+    0.055554701098179865
+  ]
+}

@@ -69,6 +69,13 @@ trainer. Its 20,000-round solutions make the broad range widths useful, but nois
 are labeled as such instead of being presented as exact recommendations. See
 [METHODOLOGY.md](METHODOLOGY.md).
 
+The repository also contains a **non-UI Kuhn poker reference lab**. It walks the complete
+small game tree without random sampling, learns with ordinary CFR, and is graded by a
+separate exhaustive best-response evaluator. The committed strategy is within `0.001` chip
+of the known game value and below `0.001` chip exploitability; `npm run audit:kuhn`
+regenerates and verifies it. This is a mathematical foundation for a future explainable
+river solver, not a new claim about the four-player trainer.
+
 ---
 
 ## How decisions are made
@@ -132,6 +139,7 @@ src/
     decide.ts               the full decision engine (board/holding analysis + choice)
     types.ts                shared domain types
   lib/solver/               heads-up push/fold model + precomputed equity and strategy data
+    toy/                    exact Kuhn game + CFR + independent best-response audit
 test/                       node:test suites that import the REAL lib/ (not copies)
 e2e/                        Playwright keyboard and training-flow smoke tests
 bench/                      equity throughput + memoization benchmark (npm run bench)

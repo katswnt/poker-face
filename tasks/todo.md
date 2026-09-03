@@ -1,5 +1,8 @@
 # Poker-face — "make the claims true" + honest README
 
+> **Current forward plan:** [Explainable solver lab roadmap](solver-lab-roadmap.md).
+> This file preserves the earlier repair history; the linked roadmap governs new solver work.
+
 Goal: turn the weaknesses a hiring manager's LLM would flag into either (a) fixed code
 that makes the README's claims true, or (b) honestly-documented, deliberate scope.
 
