@@ -59,6 +59,7 @@ console.log(`Nash gap:              ${artifact.nashGap.toFixed(9)} chips`);
 console.log(`Exploitability:        ${artifact.exploitability.toFixed(9)} chips`);
 console.log(`Reference value delta: ${artifact.acceptance.referenceValueDifference.toFixed(9)} chips`);
 console.log(`Brown exploitability:  ${artifact.reference.exploitability.toFixed(9)} chips`);
+console.log(`Rules SHA-256:         ${artifact.rulesFingerprint}`);
 console.log(`Payload SHA-256:       ${artifact.payloadHash}`);
 console.log(`Observed runtime:      ${elapsedSeconds.toFixed(2)} seconds (not an acceptance gate)`);
 console.log(`End-of-run RSS:        ${endResidentMemoryMiB.toFixed(1)} MiB (not an acceptance gate)`);

@@ -11,6 +11,7 @@ import {
 } from "./artifact";
 import { gradeStrategy } from "./best-response";
 import type { CfrSolveResult } from "./cfr";
+import { leducDecisionFacts, type LeducDecisionFacts } from "./leduc-explain";
 import { leducGame, type LeducAction } from "./leduc";
 
 export type SerializedLeducStrategy = SerializedBehavioralStrategy<LeducAction>;
@@ -39,10 +40,12 @@ export interface LeducConvergenceCheckpoint {
 }
 
 export interface LeducSolveArtifactPayload {
-  readonly schemaVersion: 1;
+  readonly schemaVersion: 2;
   readonly game: "leduc-v1";
   readonly algorithm: "full-tree-cfr";
   readonly algorithmVersion: 1;
+  /** SHA-256 of every chance edge, public decision, information set, and terminal payoff. */
+  readonly rulesFingerprint: string;
   readonly iterations: number;
   readonly tree: {
     readonly totalStates: number;
@@ -67,6 +70,7 @@ export interface LeducSolveArtifactPayload {
     readonly referenceValueDifference: number;
     readonly passed: boolean;
   };
+  readonly decisions: readonly LeducDecisionFacts[];
 }
 
 export interface LeducSolveArtifact extends LeducSolveArtifactPayload {
@@ -115,11 +119,15 @@ export function deserializeLeducStrategy(
 export function createLeducSolveArtifactPayload(
   result: CfrSolveResult<LeducAction>,
   reference: LeducReferenceResult,
+  rulesFingerprint: string,
 ): LeducSolveArtifactPayload {
   if (result.gameId !== leducGame.id) {
     throw new Error(`Cannot create a Leduc artifact from ${result.gameId}`);
   }
   validateReference(reference);
+  if (!/^[a-f0-9]{64}$/.test(rulesFingerprint)) {
+    throw new Error(`Invalid Leduc rules fingerprint ${rulesFingerprint}`);
+  }
 
   const grade = gradeStrategy(leducGame, result.averageStrategy, result.index);
   const convergence = result.checkpoints.map(checkpoint => {
@@ -138,10 +146,11 @@ export function createLeducSolveArtifactPayload(
     reference.exploitability <= MAXIMUM_EXPLOITABILITY;
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     game: "leduc-v1",
     algorithm: result.algorithm,
     algorithmVersion: result.algorithmVersion,
+    rulesFingerprint,
     iterations: result.iterations,
     tree: {
       totalStates: result.index.totalStates,
@@ -166,6 +175,7 @@ export function createLeducSolveArtifactPayload(
       referenceValueDifference,
       passed,
     },
+    decisions: leducDecisionFacts(result.averageStrategy),
   };
 }
 

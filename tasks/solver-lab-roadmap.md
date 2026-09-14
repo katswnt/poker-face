@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc mathematical core implemented and independently checked; teaching facts are next
-**Last updated:** 2026-09-03
+**Status:** Leduc mathematical core and teaching facts implemented; separate lab UI is next
+**Last updated:** 2026-09-14
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -156,6 +156,12 @@ numbers describe one machine and are printed for engineering visibility; CI does
 runtime or memory as a correctness test. The reproducible artifact hash, exact value,
 reference difference, and exploitability are the release gates.
 
+Artifact schema 2 also records exact teaching facts for all 288 information sets. Those
+facts include values from the hand's start and from the current decision, opponent-rank
+weights, terminal-outcome weights, immediate fold response to aggression, and explicit
+off-path markers. The artifact is also bound to a SHA-256 fingerprint of the complete
+game tree: chance edges, action edges, information-set grouping, and terminal payoffs.
+
 To make the full-tree run practical, CFR builds the immutable game tree once and collects
 both players' frozen-strategy regret changes and own-reach weights in one traversal per
 iteration. Kuhn regenerated to the exact same payload hash after this optimization, which
@@ -171,6 +177,7 @@ src/lib/solver/toy/
   game.ts              generic game contract and shared types
   kuhn.ts              Kuhn rules only
   leduc.ts             Leduc rules only
+  leduc-explain.ts     Leduc teaching facts; no UI prose
   cfr.ts               deterministic full-tree CFR
   best-response.ts     exact value, best responses, Nash gap
   artifact.ts          stable, versioned result format
@@ -328,7 +335,7 @@ the result **off path** instead of presenting a confident recommendation.
       wall-clock time.
 - [x] Export structured facts for each decision: legal actions, frequencies, action EVs,
       EV difference, reach probability, and exploitability of the whole strategy.
-- [ ] Explain value betting, bluffing, bluff-catching, and mixing from those facts.
+- [x] Explain value betting, bluffing, bluff-catching, and mixing from those facts.
 - [x] Keep generated sentences out of the mathematical result object.
 
 ### Milestone 4 — Leduc generalization
@@ -345,15 +352,18 @@ the result **off path** instead of presenting a confident recommendation.
 
 ### Milestone 5 — product review before UI
 
-- [ ] Have the math audit answer: “Can either player gain materially by deviating?”
-- [ ] Have the poker audit answer: “Do the rules and chip payoffs match the written game?”
-- [ ] Have the engineering audit answer: “Can hidden information, stale artifacts, or a
+- [x] Have the math audit answer: “Can either player gain materially by deviating?”
+- [x] Have the poker audit answer: “Do the rules and chip payoffs match the written game?”
+- [x] Have the engineering audit answer: “Can hidden information, stale artifacts, or a
       changed rule silently corrupt the answer?”
-- [ ] Have the teaching audit answer: “Can a learner understand why two actions mix?”
-- [ ] Have the product audit answer: “Does the page teach one useful idea without implying
+- [x] Have the teaching audit answer: “Can a learner understand why two actions mix?”
+- [x] Have the product audit answer: “Does the planned page teach one useful idea without implying
       this toy strategy applies directly to ordinary hold'em?”
 - [ ] Only then add a separate `/solver/lab` experience. Do not replace the current trainer
       or the existing push/fold explorer.
+
+The five reviews and their claim boundaries are recorded in
+[Leduc solver lab — product-readiness audit](leduc-product-readiness-audit.md).
 
 ## First teaching experience, after the core passes
 
