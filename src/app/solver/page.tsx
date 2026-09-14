@@ -45,10 +45,16 @@ export default function SolverPage() {
     <main style={{ minHeight: "100dvh", background: T.bg, color: T.ink, fontFamily: T.mono, padding: "clamp(16px, 4vw, 40px)" }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <header style={{ borderBottom: `1px solid ${T.hair}`, paddingBottom: 16, marginBottom: 20 }}>
-          <Link href="/" aria-label="Back to the Hold'em Trainer"
-            style={{ display: "inline-block", fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none", marginBottom: 12 }}>
-            <span aria-hidden="true">←</span> back to trainer
-          </Link>
+          <nav aria-label="Solver navigation" style={{ display: "flex", flexWrap: "wrap", gap: 18, marginBottom: 12 }}>
+            <Link href="/" aria-label="Back to the Hold'em Trainer"
+              style={{ fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none" }}>
+              <span aria-hidden="true">←</span> back to trainer
+            </Link>
+            <Link href="/solver/lab"
+              style={{ fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none" }}>
+              explainable solver lab <span aria-hidden="true">→</span>
+            </Link>
+          </nav>
           <div style={{ fontSize: 12, color: T.dim, textTransform: "uppercase" }}>Heads-Up · Push / Fold</div>
           <h1 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, margin: "6px 0 10px", color: T.ink }}>
             Push/Fold Strategy Explorer

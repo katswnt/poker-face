@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc mathematical core and teaching facts implemented; separate lab UI is next
+**Status:** Leduc mathematical core, teaching facts, audits, and separate lab UI implemented
 **Last updated:** 2026-09-14
 
 This document is the source of truth for the next solver project. It records what we
@@ -359,7 +359,7 @@ the result **off path** instead of presenting a confident recommendation.
 - [x] Have the teaching audit answer: “Can a learner understand why two actions mix?”
 - [x] Have the product audit answer: “Does the planned page teach one useful idea without implying
       this toy strategy applies directly to ordinary hold'em?”
-- [ ] Only then add a separate `/solver/lab` experience. Do not replace the current trainer
+- [x] Only then add a separate `/solver/lab` experience. Do not replace the current trainer
       or the existing push/fold explorer.
 
 The five reviews and their claim boundaries are recorded in
