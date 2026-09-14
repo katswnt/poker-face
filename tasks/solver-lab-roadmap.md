@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc lab shipped; bounded heads-up river milestone implemented and audited
+**Status:** Leduc lab and bounded heads-up river solver shipped; multiway plan written
 **Last updated:** 2026-09-14
 
 This document is the source of truth for the next solver project. It records what we
@@ -384,6 +384,9 @@ The five reviews and their claim boundaries are recorded in
 The full contract is in [Heads-up river hold'em solver — v1 specification](river-solver-spec.md).
 The measured result and six-perspective review are in
 [Heads-up river hold'em solver — release audit](river-solver-audit.md).
+
+The next stage is specified in
+[Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 
 ## First teaching experience, after the core passes
 
