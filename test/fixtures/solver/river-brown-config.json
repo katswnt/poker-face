@@ -1,0 +1,24 @@
+{
+  "board": ["Ks", "8s", "4s", "2c", "9d"],
+  "pot": 100,
+  "stack": 100,
+  "bet_sizes": [0.5, 1.0],
+  "oop_first_bets": [0.5, 1.0],
+  "ip_first_bets": [0.5, 1.0],
+  "oop_first_raises": [0.25],
+  "ip_first_raises": [0.25],
+  "oop_next_raises": [0.25],
+  "ip_next_raises": [0.25],
+  "include_all_in": true,
+  "max_raises": 2,
+  "players": [
+    {
+      "hands": ["AsQs", "QsJs", "KhQh", "KcJc", "9h9c", "AhQh", "QhJh", "7h6h"],
+      "weights": [1, 1, 1, 1, 1, 1, 1, 1]
+    },
+    {
+      "hands": ["AsJs", "Ts7s", "KdQd", "8h8c", "9c8c", "AcQc", "QdJd", "6c5c"],
+      "weights": [1, 1, 1, 1, 1, 1, 1, 1]
+    }
+  ]
+}

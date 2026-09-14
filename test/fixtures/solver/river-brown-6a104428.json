@@ -1,0 +1,335 @@
+{
+  "algorithm": "alternating-vector-cfr-naive-showdown",
+  "bestResponseValue": [
+    -1.301679412211687,
+    1.3200190077559975
+  ],
+  "commit": "6a10442877ffc8fd28af93e16e279b9bbdd97b2a",
+  "comparison": {
+    "exactSharedTree": true,
+    "exploitabilityDifference": 9.992007221626409e-15,
+    "maximumBestResponseDifference": 1.6431300764452317e-14
+  },
+  "exploitability": 0.009169797772155208,
+  "exploitabilityConvention": "half-nash-gap",
+  "exploitabilityUnits": "net-chips-per-hand",
+  "gains": [
+    0.009904189268423735,
+    0.008435406275886681
+  ],
+  "game": "river_nlth",
+  "iterations": 12800,
+  "license": "MIT",
+  "mappedStrategy": {
+    "river-holdem-v1:p0:hand=7h6h:history=bet-half-raise-all-in": {
+      "call": 0.000039223123471687193,
+      "fold": 0.9999607768765283
+    },
+    "river-holdem-v1:p0:hand=7h6h:history=check-bet-half": {
+      "call": 0.000034677114556188015,
+      "fold": 0.9991974932593688,
+      "raise-all-in": 0.0007678296260750138
+    },
+    "river-holdem-v1:p0:hand=7h6h:history=check-bet-pot": {
+      "call": 0.000052015671834282037,
+      "fold": 0.9999479843281658
+    },
+    "river-holdem-v1:p0:hand=7h6h:history=start": {
+      "bet-half": 0.33196829270193795,
+      "bet-pot": 0.41770650963808204,
+      "check": 0.25032519765998007
+    },
+    "river-holdem-v1:p0:hand=9h9c:history=bet-half-raise-all-in": {
+      "call": 0.8001862003270731,
+      "fold": 0.19981379967292687
+    },
+    "river-holdem-v1:p0:hand=9h9c:history=check-bet-half": {
+      "call": 0.8895060940340963,
+      "fold": 0.0026438790036444424,
+      "raise-all-in": 0.10785002696225919
+    },
+    "river-holdem-v1:p0:hand=9h9c:history=check-bet-pot": {
+      "call": 0.9960341814945334,
+      "fold": 0.0039658185054666645
+    },
+    "river-holdem-v1:p0:hand=9h9c:history=start": {
+      "bet-half": 0.994960767372649,
+      "bet-pot": 0.0017559675673425802,
+      "check": 0.0032832650600083746
+    },
+    "river-holdem-v1:p0:hand=AhQh:history=bet-half-raise-all-in": {
+      "call": 0.49006871500959176,
+      "fold": 0.5099312849904082
+    },
+    "river-holdem-v1:p0:hand=AhQh:history=check-bet-half": {
+      "call": 0.5439653567803734,
+      "fold": 0.42674019903224036,
+      "raise-all-in": 0.029294444187386248
+    },
+    "river-holdem-v1:p0:hand=AhQh:history=check-bet-pot": {
+      "call": 0.3404379565159811,
+      "fold": 0.6595620434840189
+    },
+    "river-holdem-v1:p0:hand=AhQh:history=start": {
+      "bet-half": 0.00018642036994402812,
+      "bet-pot": 0.00012242024715513727,
+      "check": 0.9996911593829008
+    },
+    "river-holdem-v1:p0:hand=AsQs:history=bet-half-raise-all-in": {
+      "call": 0.9827608442507245,
+      "fold": 0.01723915574927555
+    },
+    "river-holdem-v1:p0:hand=AsQs:history=check-bet-half": {
+      "call": 0.000014915013547137621,
+      "fold": 0.000014915013547137621,
+      "raise-all-in": 0.9999701699729057
+    },
+    "river-holdem-v1:p0:hand=AsQs:history=check-bet-pot": {
+      "call": 0.9999776274796792,
+      "fold": 0.00002237252032070643
+    },
+    "river-holdem-v1:p0:hand=AsQs:history=start": {
+      "bet-half": 0.0007553057425031071,
+      "bet-pot": 0.41724350947000977,
+      "check": 0.5820011847874872
+    },
+    "river-holdem-v1:p0:hand=KcJc:history=bet-half-raise-all-in": {
+      "call": 0.5079115294588546,
+      "fold": 0.4920884705411453
+    },
+    "river-holdem-v1:p0:hand=KcJc:history=check-bet-half": {
+      "call": 0.549997435253551,
+      "fold": 0.38836530625289994,
+      "raise-all-in": 0.06163725849354902
+    },
+    "river-holdem-v1:p0:hand=KcJc:history=check-bet-pot": {
+      "call": 0.38344090252833307,
+      "fold": 0.616559097471667
+    },
+    "river-holdem-v1:p0:hand=KcJc:history=start": {
+      "bet-half": 0.00033032444437026623,
+      "bet-pot": 0.00011562065789677321,
+      "check": 0.999554054897733
+    },
+    "river-holdem-v1:p0:hand=KhQh:history=bet-half-raise-all-in": {
+      "call": 0.9398227439011074,
+      "fold": 0.060177256098892566
+    },
+    "river-holdem-v1:p0:hand=KhQh:history=check-bet-half": {
+      "call": 0.608051047007631,
+      "fold": 0.20710733939703008,
+      "raise-all-in": 0.1848416135953388
+    },
+    "river-holdem-v1:p0:hand=KhQh:history=check-bet-pot": {
+      "call": 0.4429580061731718,
+      "fold": 0.5570419938268282
+    },
+    "river-holdem-v1:p0:hand=KhQh:history=start": {
+      "bet-half": 0.0004258195772564077,
+      "bet-pot": 0.00012013847201869455,
+      "check": 0.9994540419507248
+    },
+    "river-holdem-v1:p0:hand=QhJh:history=bet-half-raise-all-in": {
+      "call": 0.2539903894800623,
+      "fold": 0.7460096105199376
+    },
+    "river-holdem-v1:p0:hand=QhJh:history=check-bet-half": {
+      "call": 0.00042930428056243833,
+      "fold": 0.9772030338365422,
+      "raise-all-in": 0.022367661882895327
+    },
+    "river-holdem-v1:p0:hand=QhJh:history=check-bet-pot": {
+      "call": 0.000013025520799779014,
+      "fold": 0.9999869744792003
+    },
+    "river-holdem-v1:p0:hand=QhJh:history=start": {
+      "bet-half": 0.0001870478295269129,
+      "bet-pot": 0.00017282004199502103,
+      "check": 0.999640132128478
+    },
+    "river-holdem-v1:p0:hand=QsJs:history=bet-half-raise-all-in": {
+      "call": 0.9827608442507245,
+      "fold": 0.01723915574927555
+    },
+    "river-holdem-v1:p0:hand=QsJs:history=check-bet-half": {
+      "call": 0.000014915013547137621,
+      "fold": 0.000014915013547137621,
+      "raise-all-in": 0.9999701699729057
+    },
+    "river-holdem-v1:p0:hand=QsJs:history=check-bet-pot": {
+      "call": 0.9999776274796792,
+      "fold": 0.00002237252032070643
+    },
+    "river-holdem-v1:p0:hand=QsJs:history=start": {
+      "bet-half": 0.0007553057425031071,
+      "bet-pot": 0.41724350947000977,
+      "check": 0.5820011847874872
+    },
+    "river-holdem-v1:p1:hand=6c5c:history=bet-half": {
+      "call": 0.00005208333333333333,
+      "fold": 0.9984221702375394,
+      "raise-all-in": 0.0015257464291272363
+    },
+    "river-holdem-v1:p1:hand=6c5c:history=bet-pot": {
+      "call": 0.0000390625,
+      "fold": 0.9999609375
+    },
+    "river-holdem-v1:p1:hand=6c5c:history=check": {
+      "bet-half": 0.003104772120419598,
+      "bet-pot": 0.9967279370929307,
+      "check": 0.00016729078664969933
+    },
+    "river-holdem-v1:p1:hand=6c5c:history=check-bet-half-raise-all-in": {
+      "call": 0.00838762577626703,
+      "fold": 0.9916123742237329
+    },
+    "river-holdem-v1:p1:hand=8h8c:history=bet-half": {
+      "call": 0.6403915514938816,
+      "fold": 0.12959843982981617,
+      "raise-all-in": 0.2300100086763023
+    },
+    "river-holdem-v1:p1:hand=8h8c:history=bet-pot": {
+      "call": 0.5183281244940388,
+      "fold": 0.4816718755059612
+    },
+    "river-holdem-v1:p1:hand=8h8c:history=check": {
+      "bet-half": 0.000365719822568776,
+      "bet-pot": 0.0003534177552063293,
+      "check": 0.9992808624222249
+    },
+    "river-holdem-v1:p1:hand=8h8c:history=check-bet-half-raise-all-in": {
+      "call": 0.928793395764679,
+      "fold": 0.07120660423532106
+    },
+    "river-holdem-v1:p1:hand=9c8c:history=bet-half": {
+      "call": 0.9988133233792414,
+      "fold": 0.00005208333333333334,
+      "raise-all-in": 0.0011345932874252422
+    },
+    "river-holdem-v1:p1:hand=9c8c:history=bet-pot": {
+      "call": 0.8160306901265924,
+      "fold": 0.18396930987340765
+    },
+    "river-holdem-v1:p1:hand=9c8c:history=check": {
+      "bet-half": 0.010894231496918292,
+      "bet-pot": 0.6589731271791442,
+      "check": 0.3301326413239374
+    },
+    "river-holdem-v1:p1:hand=9c8c:history=check-bet-half-raise-all-in": {
+      "call": 0.7844104920161501,
+      "fold": 0.21558950798384993
+    },
+    "river-holdem-v1:p1:hand=AcQc:history=bet-half": {
+      "call": 0.41007082213261964,
+      "fold": 0.5715207583605515,
+      "raise-all-in": 0.018408419506828862
+    },
+    "river-holdem-v1:p1:hand=AcQc:history=bet-pot": {
+      "call": 0.1974262003914491,
+      "fold": 0.8025737996085509
+    },
+    "river-holdem-v1:p1:hand=AcQc:history=check": {
+      "bet-half": 0.00005208333333333333,
+      "bet-pot": 0.00008047441769993671,
+      "check": 0.9998674422489668
+    },
+    "river-holdem-v1:p1:hand=AcQc:history=check-bet-half-raise-all-in": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "river-holdem-v1:p1:hand=AsJs:history=bet-half": {
+      "call": 0.00008535280520993475,
+      "fold": 0.00005208333333333333,
+      "raise-all-in": 0.9998625638614567
+    },
+    "river-holdem-v1:p1:hand=AsJs:history=bet-pot": {
+      "call": 0.9999609375,
+      "fold": 0.0000390625
+    },
+    "river-holdem-v1:p1:hand=AsJs:history=check": {
+      "bet-half": 0.0009145470141994617,
+      "bet-pot": 0.9990333696524673,
+      "check": 0.00005208333333333333
+    },
+    "river-holdem-v1:p1:hand=AsJs:history=check-bet-half-raise-all-in": {
+      "call": 0.9715250651280493,
+      "fold": 0.028474934871950717
+    },
+    "river-holdem-v1:p1:hand=KdQd:history=bet-half": {
+      "call": 0.6174085794311662,
+      "fold": 0.23523668973656076,
+      "raise-all-in": 0.14735473083227296
+    },
+    "river-holdem-v1:p1:hand=KdQd:history=bet-pot": {
+      "call": 0.4750569094663836,
+      "fold": 0.5249430905336163
+    },
+    "river-holdem-v1:p1:hand=KdQd:history=check": {
+      "bet-half": 0.0002291162525853368,
+      "bet-pot": 0.00015958025300392666,
+      "check": 0.9996113034944107
+    },
+    "river-holdem-v1:p1:hand=KdQd:history=check-bet-half-raise-all-in": {
+      "call": 0.8863386321449755,
+      "fold": 0.11366136785502445
+    },
+    "river-holdem-v1:p1:hand=QdJd:history=bet-half": {
+      "call": 0.263121988242034,
+      "fold": 0.7334187218363962,
+      "raise-all-in": 0.0034592899215698607
+    },
+    "river-holdem-v1:p1:hand=QdJd:history=bet-pot": {
+      "call": 0.000057311369387263026,
+      "fold": 0.9999426886306128
+    },
+    "river-holdem-v1:p1:hand=QdJd:history=check": {
+      "bet-half": 0.0013951873055846342,
+      "bet-pot": 0.3314621485273142,
+      "check": 0.6671426641671012
+    },
+    "river-holdem-v1:p1:hand=QdJd:history=check-bet-half-raise-all-in": {
+      "call": 0.02574918347353333,
+      "fold": 0.9742508165264666
+    },
+    "river-holdem-v1:p1:hand=Ts7s:history=bet-half": {
+      "call": 0.0007656369626730623,
+      "fold": 0.00005208333333333333,
+      "raise-all-in": 0.9991822797039935
+    },
+    "river-holdem-v1:p1:hand=Ts7s:history=bet-pot": {
+      "call": 0.9922160916600785,
+      "fold": 0.007783908339921459
+    },
+    "river-holdem-v1:p1:hand=Ts7s:history=check": {
+      "bet-half": 0.0009145470141994622,
+      "bet-pot": 0.9990333696524673,
+      "check": 0.00005208333333333333
+    },
+    "river-holdem-v1:p1:hand=Ts7s:history=check-bet-half-raise-all-in": {
+      "call": 0.9715250651280493,
+      "fold": 0.028474934871950703
+    }
+  },
+  "nashGap": 0.018339595544310416,
+  "provenance": {
+    "adapter": "scripts/reference/run-brown-river.py",
+    "command": "python3 scripts/reference/run-brown-river.py --solver-dir <PINNED_CHECKOUT> --config test/fixtures/solver/river-brown-config.json --strategy-out <TEMP_STRATEGY> --result-out <TEMP_RESULT> --iterations 12800",
+    "config": "test/fixtures/solver/river-brown-config.json",
+    "maxRaisesTranslation": "reference value 2 counts the opening bet plus one later raise",
+    "notes": [
+      "The reference counts an opening bet in max_raises, so 2 means one later raise.",
+      "Its utilities include the 100-chip starting pot as a constant sum; subtracting 50 chips per player gives Poker Face net-from-hand-start utilities.",
+      "Its vector showdown shortcut fails on this unequal-strength fixture, so this run uses the repository's independent naive showdown path."
+    ],
+    "showdownPath": "reference naive exact enumeration; its vector shortcut raises KeyError on this fixture",
+    "utilityTranslation": "subtract 50 prior chips from each player's constant-sum payoff"
+  },
+  "repository": "https://github.com/noambrown/poker_solver",
+  "schemaVersion": 1,
+  "source": "noambrown/poker_solver",
+  "sourceStrategySha256": "c76ea983db9898625296d54fd9b25a021dab6354ad2c509e67a76a8ac84b5fe7",
+  "value": [
+    -1.3115836014801108,
+    1.3115836014801108
+  ]
+}

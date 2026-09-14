@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc mathematical core, teaching facts, audits, and separate lab UI implemented
+**Status:** Leduc lab shipped; bounded heads-up river milestone implemented and audited
 **Last updated:** 2026-09-14
 
 This document is the source of truth for the next solver project. It records what we
@@ -364,6 +364,26 @@ the result **off path** instead of presenting a confident recommendation.
 
 The five reviews and their claim boundaries are recorded in
 [Leduc solver lab — product-readiness audit](leduc-product-readiness-audit.md).
+
+### Milestone 6 — bounded heads-up river hold'em
+
+- [x] Lock the board, exact ranges, prior pot, stacks, position, bet sizes, and one-raise cap
+      before solving.
+- [x] Enumerate all 61 compatible private-hand pairs and all river showdowns exactly.
+- [x] Keep hidden opponent cards out of all 64 information-set keys.
+- [x] Keep net result from the hand's start separate from chip change at the current choice.
+- [x] Export exact action values, response frequencies, fold probability, showdown equity,
+      opponent ranges, and action differences for the saved strategy.
+- [x] Compare the scalable scorekeeper with exhaustive grading on a reduced hold'em game.
+- [x] Compare the exact shared tree with Noam Brown's solver at the pinned MIT commit.
+- [x] Bind the artifact to the full rule tree and reject stale bytes.
+- [x] Pass the locked `0.25`-chip exploitability and reference-value gates.
+- [x] Complete CTO, poker, math, teaching, product, and engineering audits.
+- [x] Keep this solver separate from the four-player trainer.
+
+The full contract is in [Heads-up river hold'em solver — v1 specification](river-solver-spec.md).
+The measured result and six-perspective review are in
+[Heads-up river hold'em solver — release audit](river-solver-audit.md).
 
 ## First teaching experience, after the core passes
 
