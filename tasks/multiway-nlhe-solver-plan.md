@@ -1,6 +1,6 @@
 # Multiway no-limit hold'em solver — staged research and delivery plan
 
-**Status:** Stage 1 and both bounded Stage 2 betting milestones are implemented and audited
+**Status:** Stage 1 and all bounded Stage 2 betting milestones are implemented and audited
 
 **Written:** 2026-09-14
 
@@ -178,11 +178,17 @@ After Stage 1 passes:
 2. [Done] Recount the complete tree and re-run every oracle.
 3. [Done] Add a second opening size at 60 chips all-in.
 4. [Done] Keep equal stacks until fold, call, and raise behavior is independently verified.
-5. Add unequal stacks and side pots only as a separate milestone.
+5. [Done] Add unequal stacks and side pots as a separate, independently audited milestone.
 
 When side pots arrive, each pot layer needs its own eligible seats and terminal award. A
 single “win percentage” is no longer enough. The teaching data must say which pot a hand
 can win and how much of that pot it expects to receive.
+
+The accepted implementation and evidence are recorded in the
+[unequal-stack specification](multiway-side-pot-river-spec.md) and
+[six-perspective release audit](multiway-side-pot-river-audit.md). Stage 3 is next; it
+returns to the simplest betting tree so the fourth player is the only new source of
+complexity.
 
 ## Stage 3 — four-player bounded river
 
