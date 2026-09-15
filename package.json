@@ -15,12 +15,14 @@
     "audit:leduc": "node --import tsx scripts/solve-leduc.ts --check",
     "audit:river": "node --import tsx scripts/solve-river.ts --check",
     "audit:multiway-river": "node --import tsx scripts/solve-multiway-river.ts --check",
+    "audit:multiway-raised-river": "node --import tsx scripts/solve-multiway-raised-river.ts --check",
     "bench": "node --import tsx bench/equity-bench.ts",
     "generate:solver": "node --import tsx scripts/gen-pushfold-solutions.mjs",
     "solve:kuhn": "node --import tsx scripts/solve-kuhn.ts",
     "solve:leduc": "node --import tsx scripts/solve-leduc.ts",
     "solve:river": "node --import tsx scripts/solve-river.ts",
     "solve:multiway-river": "node --import tsx scripts/solve-multiway-river.ts",
+    "solve:multiway-raised-river": "node --import tsx scripts/solve-multiway-raised-river.ts",
     "solve:toy": "npm run solve:kuhn && npm run solve:leduc"
   },
   "dependencies": {

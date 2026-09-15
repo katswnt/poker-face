@@ -1,6 +1,6 @@
 # Multiway no-limit hold'em solver — staged research and delivery plan
 
-**Status:** Stage 1 implemented and audited; Stage 2 is next
+**Status:** Stage 1 and the first Stage 2 milestone are implemented and audited
 
 **Written:** 2026-09-14
 
@@ -174,10 +174,10 @@ seeing the answer.
 
 After Stage 1 passes:
 
-1. Add one all-in raise after the 30-chip opening bet.
-2. Recount the complete tree and re-run every oracle.
-3. Only then add a second opening size, recommended at 60 chips all-in.
-4. Keep equal stacks until fold, call, and raise behavior is independently verified.
+1. [Done] Add one all-in raise after the 30-chip opening bet.
+2. [Done] Recount the complete tree and re-run every oracle.
+3. Next, add a second opening size, recommended at 60 chips all-in.
+4. [Done] Keep equal stacks until fold, call, and raise behavior is independently verified.
 5. Add unequal stacks and side pots only as a separate milestone.
 
 When side pots arrive, each pot layer needs its own eligible seats and terminal award. A
@@ -586,5 +586,8 @@ The claim is not: “I built a full multiway no-limit hold'em solver.”
 
 Stage 1's locked rules and measured result are recorded in
 [the exact fixture specification](multiway-river-proof-spec.md) and
-[the release audit](multiway-river-proof-audit.md). Stage 2 adds one all-in raise after
-the 30-chip opening bet and repeats every proof before adding a second opening size.
+[the release audit](multiway-river-proof-audit.md). The first Stage 2 milestone is
+recorded in [the raised fixture specification](multiway-raised-river-spec.md) and
+[the raised release audit](multiway-raised-river-audit.md). Its one all-in raise passed
+every proof. The next milestone adds the predeclared second opening size without adding
+unequal stacks or side pots.
