@@ -1,6 +1,6 @@
 # Multiway no-limit hold'em solver — staged research and delivery plan
 
-**Status:** Stage 1 and all bounded Stage 2 betting milestones are implemented and audited
+**Status:** Stages 1–3 are implemented and audited; Stage 4 sampling is next
 
 **Written:** 2026-09-14
 
@@ -204,6 +204,12 @@ accepted only when:
 - relabeling seats and applying the same relabeling to action order preserves values;
 - every player's exact best-response gain passes the locked multiway gate;
 - an independent small-game exhaustive grader agrees with the scalable checker.
+
+The accepted implementation and evidence are recorded in the
+[four-player specification](four-player-river-spec.md) and
+[six-perspective release audit](four-player-river-audit.md). It passed the locked
+`0.60`-chip maximum unilateral-gain gate. The non-monotone convergence record is kept in
+the audit rather than presented as a smooth or guaranteed path.
 
 ## Stage 4 — larger river ranges through sampling
 
