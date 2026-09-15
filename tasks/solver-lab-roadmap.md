@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc lab and bounded heads-up river solver shipped; multiway plan written
-**Last updated:** 2026-09-14
+**Status:** Leduc lab, bounded heads-up river solver, and exact three-player river proof shipped
+**Last updated:** 2026-09-15
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -388,6 +388,27 @@ The measured result and six-perspective review are in
 The next stage is specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 
+### Milestone 7 — exact three-player river proof
+
+- [x] Lock the board, three weighted six-combination ranges, money, action order, one bet
+      size, and no-raise boundary before solving.
+- [x] Enumerate all 172 compatible joint private states and all 2,236 terminals exactly.
+- [x] Add a separate N-player contract without changing the two-player solver artifacts.
+- [x] Keep both opponent hands out of every information-set key.
+- [x] Preserve the blocker-aware joint range through every public action.
+- [x] Compare the scalable best response with 256 exhaustive pure strategies per player on
+      an eight-deal reduced game.
+- [x] Prove the hidden-information boundary with a deliberately cheating statewise grader.
+- [x] Pass the locked maximum unilateral gain of `0.45` chip per hand.
+- [x] Bind the rules, strategy, checks, and teaching facts to reproducible SHA-256 hashes.
+- [x] Pass CTO, poker, math, poker-teaching, product, and engineering reviews.
+- [x] Keep the proof out of the four-player trainer.
+
+The exact contract is in
+[Exact three-player river proof — v1 specification](multiway-river-proof-spec.md).
+The measurements and six-perspective review are in
+[Exact three-player river proof — release audit](multiway-river-proof-audit.md).
+
 ## First teaching experience, after the core passes
 
 The first page should let the learner select a Kuhn card and an action history, then show:
@@ -410,7 +431,8 @@ Pause instead of expanding scope if any of these is true:
 - We cannot reproduce the known Kuhn value.
 - Our best-response evaluator can see hidden cards.
 - Brown and our Leduc result disagree beyond the locked tolerance and we cannot explain why.
-- A result is labeled solved without a measured Nash gap.
+- A heads-up result is labeled solved without a measured Nash gap, or a multiway result
+  is accepted without every player's measured unilateral gain.
 - The planned UI needs a multiway or earlier-street claim the engine does not support.
 - Performance work would replace the readable reference before an independent fast version
   agrees with it.

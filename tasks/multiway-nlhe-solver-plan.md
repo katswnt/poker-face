@@ -1,6 +1,6 @@
 # Multiway no-limit hold'em solver — staged research and delivery plan
 
-**Status:** approved direction; planning only
+**Status:** Stage 1 implemented and audited; Stage 2 is next
 
 **Written:** 2026-09-14
 
@@ -570,16 +570,21 @@ The claim is not: “I built a full multiway no-limit hold'em solver.”
 
 ## Implementation checklist for the next work session
 
-- [ ] Write the exact three-player river fixture and lock its final cards and ranges.
-- [ ] Add an N-player game contract beside the two-player one.
-- [ ] Adapt tree indexing, strategy validation, and utility validation to `N` players.
-- [ ] Build joint compatible-deal enumeration and action-based reweighting.
-- [ ] Build the pure public betting state with no raises.
-- [ ] Build a separate multiway terminal and pot oracle.
-- [ ] Implement per-player profile value and information-set best response.
-- [ ] Compare the scalable checker with exhaustive reduced fixtures.
-- [ ] Add deterministic candidate generation and checkpoint grading.
-- [ ] Lock the `0.45`-chip maximum-unilateral-gain gate before the full solve.
-- [ ] Generate a versioned, hashed artifact and exact teaching facts.
-- [ ] Run CTO, poker, math, poker-teaching, product, and engineering audits.
-- [ ] Keep all multiway output out of the existing trainer until those checks pass.
+- [x] Write the exact three-player river fixture and lock its final cards and ranges.
+- [x] Add an N-player game contract beside the two-player one.
+- [x] Adapt tree indexing, strategy validation, and utility validation to `N` players.
+- [x] Build joint compatible-deal enumeration and action-based reweighting.
+- [x] Build the pure public betting state with no raises.
+- [x] Build a separate multiway terminal and pot oracle.
+- [x] Implement per-player profile value and information-set best response.
+- [x] Compare the scalable checker with exhaustive reduced fixtures.
+- [x] Add deterministic candidate generation and checkpoint grading.
+- [x] Lock the `0.45`-chip maximum-unilateral-gain gate before the full solve.
+- [x] Generate a versioned, hashed artifact and exact teaching facts.
+- [x] Run CTO, poker, math, poker-teaching, product, and engineering audits.
+- [x] Keep all multiway output out of the existing trainer until those checks pass.
+
+Stage 1's locked rules and measured result are recorded in
+[the exact fixture specification](multiway-river-proof-spec.md) and
+[the release audit](multiway-river-proof-audit.md). Stage 2 adds one all-in raise after
+the 30-chip opening bet and repeats every proof before adding a second opening size.
