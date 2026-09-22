@@ -2,15 +2,39 @@ import {
   buildGameTreeIndex,
   validateStrategy,
   type BehavioralStrategy,
+  type ExtensiveFormGame,
   type InformationSetKey,
   type SolverPlayer,
+  type Weighted,
 } from "../../toy/game";
 import { riverComboKey, type RiverCombo } from "../cards";
-import type {
-  ConfigurableRiverAction,
-  ConfigurableRiverGame,
-  ConfigurableRiverState,
-} from "./game";
+import type { ConfigurableRiverAction } from "./game";
+import type { ConfigurableRiverRangeEntry } from "./range";
+
+interface ExplainableRiverState {
+  readonly hands: readonly [RiverCombo, RiverCombo] | null;
+  readonly public: {
+    readonly terminal: "fold" | "showdown" | null;
+    readonly foldedPlayer: SolverPlayer | null;
+    readonly history: readonly ConfigurableRiverAction[];
+  };
+}
+
+interface ExplainableRiverGame<State extends ExplainableRiverState>
+  extends ExtensiveFormGame<State, ConfigurableRiverAction, { readonly hands: readonly [RiverCombo, RiverCombo] }> {
+  readonly scenario: {
+    readonly ranges: readonly [
+      readonly ConfigurableRiverRangeEntry[],
+      readonly ConfigurableRiverRangeEntry[],
+    ];
+    readonly positions: readonly ["out-of-position", "in-position"];
+  };
+  readonly deals: readonly Weighted<{ readonly hands: readonly [RiverCombo, RiverCombo] }>[];
+  readonly preflight: { readonly limits: { readonly maxProjectedStates: number } };
+  totalContributions(state: State): readonly [number, number];
+  toCall(state: State, player: SolverPlayer): number;
+  settlement(state: State): { readonly winners: readonly SolverPlayer[] };
+}
 
 export interface ConfigurableRiverOpponentComboWeight {
   readonly cards: RiverCombo;
@@ -56,8 +80,8 @@ export interface ConfigurableRiverDecisionFacts {
   readonly actions: readonly ConfigurableRiverActionFact[];
 }
 
-interface ReachedState {
-  readonly state: ConfigurableRiverState;
+interface ReachedState<State extends ExplainableRiverState> {
+  readonly state: State;
   readonly probability: number;
 }
 
@@ -109,9 +133,9 @@ function entry(
   return found;
 }
 
-function terminalSummary(
-  game: ConfigurableRiverGame,
-  state: ConfigurableRiverState,
+function terminalSummary<State extends ExplainableRiverState>(
+  game: ExplainableRiverGame<State>,
+  state: State,
   player: SolverPlayer,
 ): Summary {
   const node = game.node(state);
@@ -129,11 +153,11 @@ function terminalSummary(
     : { ...result, showdownLoss: 1 };
 }
 
-function continuationEvaluator(
-  game: ConfigurableRiverGame,
+function continuationEvaluator<State extends ExplainableRiverState>(
+  game: ExplainableRiverGame<State>,
   strategy: BehavioralStrategy<ConfigurableRiverAction>,
 ) {
-  const evaluate = (state: ConfigurableRiverState, player: SolverPlayer): Summary => {
+  const evaluate = (state: State, player: SolverPlayer): Summary => {
     const node = game.node(state);
     if (node.kind === "terminal") return terminalSummary(game, state, player);
     let result = zero();
@@ -169,17 +193,17 @@ function nullOutcomes(): ConfigurableRiverOutcomeBreakdown {
   };
 }
 
-export function configurableRiverDecisionFacts(
-  game: ConfigurableRiverGame,
+export function configurableRiverDecisionFacts<State extends ExplainableRiverState>(
+  game: ExplainableRiverGame<State>,
   strategy: BehavioralStrategy<ConfigurableRiverAction>,
 ): readonly ConfigurableRiverDecisionFacts[] {
   const index = buildGameTreeIndex(game, { maxStates: game.preflight.limits.maxProjectedStates });
   validateStrategy(index, strategy);
   const continuation = continuationEvaluator(game, strategy);
-  const reached = new Map<InformationSetKey, ReachedState[]>();
+  const reached = new Map<InformationSetKey, ReachedState<State>[]>();
 
   const visit = (
-    state: ConfigurableRiverState,
+    state: State,
     chanceReach: number,
     reach0: number,
     reach1: number,

@@ -459,6 +459,26 @@ The contract is in the
 six-perspective review are in the
 [factorized river engine release audit](factorized-river-engine-audit.md).
 
+### Milestone 6f — configurable river solver v3
+
+- [x] Profile private-deal growth, public-tree growth, solve time, grade time, and working storage.
+- [x] Raise the measured factorized boundary to one million equivalent states.
+- [x] Add up to five opening sizes, five raise targets, and two raises after the opening bet.
+- [x] Enforce minimum raises, short all-ins, returned chips, and no raises into an all-in player.
+- [x] Reduce exactly to v2 when configured with one raise.
+- [x] Match readable CFR and readable legal best responses on the richer tree.
+- [x] Check all 7,216 locked deal/terminal outcomes with an independent money and showdown oracle.
+- [x] Preserve the hidden-card cheating regression and generated-profile differential checks.
+- [x] Export structured teaching facts below a separate 100,000-state bulk-data limit.
+- [x] Commit and reproduce a hashed 1,000-iteration CFR+ artifact below the quality gate.
+- [x] Recheck the pinned MIT referee and withhold a false comparison when its sizing semantics differ.
+- [x] Pass CTO, poker, math, teaching, product, and engineering reviews.
+
+The contract is in the
+[configurable river v3 specification](configurable-river-v3-spec.md). The profile, accepted result,
+open-source compatibility finding, and six-perspective review are in the
+[configurable river v3 release audit](configurable-river-v3-audit.md).
+
 The multiway stages are specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 

@@ -1,0 +1,1769 @@
+{
+  "acceptance": {
+    "maximumDifferentialError": 1e-10,
+    "maximumExploitability": 0.25,
+    "maximumRulesAuditError": 1e-9,
+    "passed": true
+  },
+  "algorithm": "factorized-river-alternating-cfr-plus",
+  "algorithmVersion": 1,
+  "averagingDelay": 20,
+  "bestResponseValue": [
+    16.096050169414262,
+    -16.07790090750005
+  ],
+  "convergence": [
+    {
+      "exploitability": 0.3190390834827479,
+      "gains": [
+        0.47455690430510167,
+        0.16352126266039413
+      ],
+      "iteration": 100,
+      "nashGap": 0.6380781669654958,
+      "value": [
+        15.842199486482388,
+        -15.842199486482388
+      ]
+    },
+    {
+      "exploitability": 0.04723193712916185,
+      "gains": [
+        0.08000514223741817,
+        0.01445873202090553
+      ],
+      "iteration": 400,
+      "nashGap": 0.0944638742583237,
+      "value": [
+        16.03646434912702,
+        -16.03646434912702
+      ]
+    },
+    {
+      "exploitability": 0.009074630957105256,
+      "gains": [
+        0.014993444017406432,
+        0.0031558178968040806
+      ],
+      "iteration": 1000,
+      "nashGap": 0.018149261914210513,
+      "value": [
+        16.081056725396856,
+        -16.081056725396856
+      ]
+    }
+  ],
+  "exploitability": 0.009074630957105256,
+  "exploitabilityConvention": "half-nash-gap",
+  "exploitabilityUnits": "net-chips-per-hand",
+  "factorizedTree": {
+    "actionSlots": 868,
+    "compatiblePrivateDeals": 176,
+    "equivalentRepeatedStates": 11089,
+    "informationSets": 308,
+    "publicStates": 63,
+    "solveWorkingBytes": 31752,
+    "structuralTypedBytes": 16669
+  },
+  "gains": [
+    0.014993444017406432,
+    0.0031558178968040806
+  ],
+  "game": "river-configurable-v3",
+  "independentChecks": {
+    "exactV2OneRaiseReduction": true,
+    "factorizedGradeMaximumDifference": 0,
+    "hiddenOpponentCardsExcluded": true,
+    "ordinaryCfrMaximumDifference": 0
+  },
+  "iterations": 1000,
+  "nashGap": 0.018149261914210513,
+  "payloadHash": "320759e74808f8c5cb784b0e92c3410de02567252346d671a7b0a6eb722ea4e9",
+  "preflight": {
+    "compatibleDeals": 176,
+    "limits": {
+      "maxCompatibleDeals": 15000,
+      "maxOpeningBetSizes": 5,
+      "maxProjectedStates": 1000000,
+      "maxRaiseToSizes": 5,
+      "maxRaises": 2,
+      "maxRangeEntriesPerPlayer": 128
+    },
+    "projectedDecisionStates": 3872,
+    "projectedFullStates": 11089,
+    "projectedTerminalStates": 7216,
+    "publicDecisionStatesPerDeal": 22,
+    "publicStatesPerDeal": 63,
+    "publicTerminalStatesPerDeal": 41,
+    "rangeEntries": [
+      14,
+      14
+    ],
+    "roughRepeatedTreeMemoryBytes": 2838784
+  },
+  "rules": {
+    "actionOrder": [
+      0,
+      1
+    ],
+    "board": [
+      "Ks",
+      "8s",
+      "4s",
+      "2c",
+      "9d"
+    ],
+    "committedBeforeRiver": [
+      50,
+      50
+    ],
+    "maximumRaisesAfterOpeningBet": 2,
+    "openingBetSizes": [
+      50,
+      100,
+      200
+    ],
+    "positions": [
+      "out-of-position",
+      "in-position"
+    ],
+    "raiseToSizes": [
+      100,
+      150,
+      200
+    ],
+    "rangeParserVersion": 1,
+    "ranges": [
+      [
+        {
+          "cards": "7c6c",
+          "weight": 1
+        },
+        {
+          "cards": "7d6d",
+          "weight": 1
+        },
+        {
+          "cards": "7h6h",
+          "weight": 1
+        },
+        {
+          "cards": "7s6s",
+          "weight": 1
+        },
+        {
+          "cards": "AcQc",
+          "weight": 1
+        },
+        {
+          "cards": "AdAc",
+          "weight": 1
+        },
+        {
+          "cards": "AdQd",
+          "weight": 1
+        },
+        {
+          "cards": "AhAc",
+          "weight": 1
+        },
+        {
+          "cards": "AhAd",
+          "weight": 1
+        },
+        {
+          "cards": "AhQh",
+          "weight": 1
+        },
+        {
+          "cards": "AsAc",
+          "weight": 1
+        },
+        {
+          "cards": "AsAd",
+          "weight": 1
+        },
+        {
+          "cards": "AsAh",
+          "weight": 1
+        },
+        {
+          "cards": "AsQs",
+          "weight": 1
+        }
+      ],
+      [
+        {
+          "cards": "6c5c",
+          "weight": 1
+        },
+        {
+          "cards": "6d5d",
+          "weight": 1
+        },
+        {
+          "cards": "6h5h",
+          "weight": 1
+        },
+        {
+          "cards": "6s5s",
+          "weight": 1
+        },
+        {
+          "cards": "AcTc",
+          "weight": 1
+        },
+        {
+          "cards": "AdTd",
+          "weight": 1
+        },
+        {
+          "cards": "AhTh",
+          "weight": 1
+        },
+        {
+          "cards": "AsTs",
+          "weight": 1
+        },
+        {
+          "cards": "JdJc",
+          "weight": 1
+        },
+        {
+          "cards": "JhJc",
+          "weight": 1
+        },
+        {
+          "cards": "JhJd",
+          "weight": 1
+        },
+        {
+          "cards": "JsJc",
+          "weight": 1
+        },
+        {
+          "cards": "JsJd",
+          "weight": 1
+        },
+        {
+          "cards": "JsJh",
+          "weight": 1
+        }
+      ]
+    ],
+    "stackBehind": [
+      200,
+      200
+    ],
+    "version": 3
+  },
+  "rulesAudit": {
+    "dealsChecked": 176,
+    "maximumProbabilityDifference": 0,
+    "maximumUtilityDifference": 0,
+    "maximumZeroSumError": 0,
+    "publicTerminals": 41,
+    "terminalsChecked": 7216
+  },
+  "rulesFingerprint": "36ec8173c65b6c503a2e11636f63538a38dd65acf031d5b675abf695f521bbab",
+  "schemaVersion": 3,
+  "strategy": {
+    "river-configurable-v3:v3:p0:hand=7c6c:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8842190900748751,
+      "bet-to-200": 0.0004142587811960853,
+      "bet-to-50": 0.011418483404165987,
+      "check": 0.10394816773976293
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0,
+      "fold": 0.9999980525621398,
+      "raise-to-200": 0.00000194743786025798
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.00005497372612868732,
+      "fold": 0.999859337201178,
+      "raise-to-100": 7.024919564768586e-7,
+      "raise-to-150": 0.000022633174127601703,
+      "raise-to-200": 0.00006235340660906249
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.05426439471053343,
+      "fold": 0.9457356052894664
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.08374153804498372,
+      "fold": 0.9162584619550163
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.000008479111742038046,
+      "fold": 0.8285624751261693,
+      "raise-to-150": 0.11180974000543467,
+      "raise-to-200": 0.05961930575665384
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9644666742415169,
+      "raise-to-200": 0.035533325758483225
+    },
+    "river-configurable-v3:v3:p0:hand=7c6c:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8842190900748751,
+      "bet-to-200": 0.0004142587811960853,
+      "bet-to-50": 0.011418483404165987,
+      "check": 0.10394816773976293
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0,
+      "fold": 0.9999980525621398,
+      "raise-to-200": 0.00000194743786025798
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.00005497372612868732,
+      "fold": 0.999859337201178,
+      "raise-to-100": 7.024919564768586e-7,
+      "raise-to-150": 0.000022633174127601703,
+      "raise-to-200": 0.00006235340660906249
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.05426439471053343,
+      "fold": 0.9457356052894664
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.08374153804498372,
+      "fold": 0.9162584619550163
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.000008479111742038046,
+      "fold": 0.8285624751261693,
+      "raise-to-150": 0.11180974000543467,
+      "raise-to-200": 0.05961930575665384
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9644666742415169,
+      "raise-to-200": 0.035533325758483225
+    },
+    "river-configurable-v3:v3:p0:hand=7d6d:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8842190900748751,
+      "bet-to-200": 0.0004142587811960853,
+      "bet-to-50": 0.011418483404165987,
+      "check": 0.10394816773976293
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0,
+      "fold": 0.9999980525621398,
+      "raise-to-200": 0.00000194743786025798
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.00005497372612868732,
+      "fold": 0.999859337201178,
+      "raise-to-100": 7.024919564768586e-7,
+      "raise-to-150": 0.000022633174127601703,
+      "raise-to-200": 0.00006235340660906249
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.05426439471053343,
+      "fold": 0.9457356052894664
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.08374153804498372,
+      "fold": 0.9162584619550163
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.000008479111742038046,
+      "fold": 0.8285624751261693,
+      "raise-to-150": 0.11180974000543467,
+      "raise-to-200": 0.05961930575665384
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9644666742415169,
+      "raise-to-200": 0.035533325758483225
+    },
+    "river-configurable-v3:v3:p0:hand=7h6h:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.9172397593728688,
+      "bet-to-200": 0.00033423316173625847,
+      "bet-to-50": 0.028896556462488454,
+      "check": 0.05352945100290644
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.0012093842626473173,
+      "fold": 0,
+      "raise-to-200": 0.9987906157373527
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 2.4118244411814015e-7,
+      "fold": 0,
+      "raise-to-100": 0.000060647791100694045,
+      "raise-to-150": 0.0020197573875024247,
+      "raise-to-200": 0.9979193536389528
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9359886019353584,
+      "fold": 0.06401139806464162
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.9999948793827573,
+      "fold": 0.000005120617242704477
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.9688965180064422,
+      "fold": 0.03110348199355775
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.9871186548435609,
+      "fold": 0.012881345156439067
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.650544815043172,
+      "fold": 0.000027371182186905068,
+      "raise-to-150": 0.2978853052295395,
+      "raise-to-200": 0.0515425085451016
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.9282260815829032,
+      "fold": 0.005529928635580973,
+      "raise-to-200": 0.06624398978151577
+    },
+    "river-configurable-v3:v3:p0:hand=7s6s:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.32746492773921027,
+      "bet-to-200": 0.00005856177976362843,
+      "bet-to-50": 0.008237481833960164,
+      "check": 0.664239028647066
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.36813284735423685,
+      "fold": 0.5860036011896225,
+      "raise-to-200": 0.04586355145614071
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.220769062130291,
+      "fold": 0.779230937869709
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.552162030024303,
+      "fold": 0.3559225431912399,
+      "raise-to-100": 0.000002026059330898626,
+      "raise-to-150": 0.0003793505363784356,
+      "raise-to-200": 0.09153405018874772
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.3322756778596957,
+      "fold": 0.6677243221403042
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.021511310002028886,
+      "fold": 0.9784886899979712
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.040222423363659165,
+      "fold": 0.9597775766363408
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.16137816744332753,
+      "fold": 0.587566914990385,
+      "raise-to-150": 0.1416675484566461,
+      "raise-to-200": 0.10938736910964134
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.05492960473295139,
+      "fold": 0.8679228776179863,
+      "raise-to-200": 0.0771475176490624
+    },
+    "river-configurable-v3:v3:p0:hand=AcQc:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8200317337081837,
+      "bet-to-200": 0.000010565039300275512,
+      "bet-to-50": 0.04206175063325055,
+      "check": 0.1378959506192655
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.4481175686603074,
+      "fold": 4.769906044469587e-7,
+      "raise-to-200": 0.5518819543490882
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.821625590328214,
+      "fold": 0.1783744096717861
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.29765903977623615,
+      "fold": 0,
+      "raise-to-100": 0.000007694239662115341,
+      "raise-to-150": 0.0041709991569122236,
+      "raise-to-200": 0.6981622668271896
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9910529105246335,
+      "fold": 0.008947089475366585
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.2611940179713436,
+      "fold": 0.7388059820286564
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.539082676968943,
+      "fold": 0.460917323031057
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.8800984506975315,
+      "fold": 0.11990154930246859
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.5841409833240202,
+      "fold": 0.2824625261080349,
+      "raise-to-150": 0.060521653176394324,
+      "raise-to-200": 0.07287483739155064
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.47680710773865753,
+      "fold": 0.4584978946853594,
+      "raise-to-200": 0.06469499757598304
+    },
+    "river-configurable-v3:v3:p0:hand=AdAc:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0.3997172450652255,
+      "fold": 0.6002827549347746
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.32746492773921027,
+      "bet-to-200": 0.00005856177976362843,
+      "bet-to-50": 0.008237481833960164,
+      "check": 0.664239028647066
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.36813284735423685,
+      "fold": 0.5860036011896225,
+      "raise-to-200": 0.04586355145614071
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.220769062130291,
+      "fold": 0.779230937869709
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.552162030024303,
+      "fold": 0.3559225431912399,
+      "raise-to-100": 0.000002026059330898626,
+      "raise-to-150": 0.0003793505363784356,
+      "raise-to-200": 0.09153405018874772
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.3322756778596957,
+      "fold": 0.6677243221403042
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.021511310002028886,
+      "fold": 0.9784886899979712
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.040222423363659165,
+      "fold": 0.9597775766363408
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.16137816744332753,
+      "fold": 0.587566914990385,
+      "raise-to-150": 0.1416675484566461,
+      "raise-to-200": 0.10938736910964134
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.05492960473295139,
+      "fold": 0.8679228776179863,
+      "raise-to-200": 0.0771475176490624
+    },
+    "river-configurable-v3:v3:p0:hand=AdQd:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8200317337081837,
+      "bet-to-200": 0.000010565039300275512,
+      "bet-to-50": 0.04206175063325055,
+      "check": 0.1378959506192655
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.4481175686603074,
+      "fold": 4.769906044469587e-7,
+      "raise-to-200": 0.5518819543490882
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.821625590328214,
+      "fold": 0.1783744096717861
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.29765903977623615,
+      "fold": 0,
+      "raise-to-100": 0.000007694239662115341,
+      "raise-to-150": 0.0041709991569122236,
+      "raise-to-200": 0.6981622668271896
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9910529105246335,
+      "fold": 0.008947089475366585
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.2611940179713436,
+      "fold": 0.7388059820286564
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.539082676968943,
+      "fold": 0.460917323031057
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.8800984506975315,
+      "fold": 0.11990154930246859
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.5841409833240202,
+      "fold": 0.2824625261080349,
+      "raise-to-150": 0.060521653176394324,
+      "raise-to-200": 0.07287483739155064
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.47680710773865753,
+      "fold": 0.4584978946853594,
+      "raise-to-200": 0.06469499757598304
+    },
+    "river-configurable-v3:v3:p0:hand=AhAc:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0.3997172450652255,
+      "fold": 0.6002827549347746
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.8200317337081837,
+      "bet-to-200": 0.000010565039300275512,
+      "bet-to-50": 0.04206175063325055,
+      "check": 0.1378959506192655
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.4481175686603074,
+      "fold": 4.769906044469587e-7,
+      "raise-to-200": 0.5518819543490882
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.821625590328214,
+      "fold": 0.1783744096717861
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.29765903977623615,
+      "fold": 0,
+      "raise-to-100": 0.000007694239662115341,
+      "raise-to-150": 0.0041709991569122236,
+      "raise-to-200": 0.6981622668271896
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9910529105246335,
+      "fold": 0.008947089475366585
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.2611940179713436,
+      "fold": 0.7388059820286564
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.539082676968943,
+      "fold": 0.460917323031057
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.8800984506975315,
+      "fold": 0.11990154930246859
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.5841409833240202,
+      "fold": 0.2824625261080349,
+      "raise-to-150": 0.060521653176394324,
+      "raise-to-200": 0.07287483739155064
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.47680710773865753,
+      "fold": 0.4584978946853594,
+      "raise-to-200": 0.06469499757598304
+    },
+    "river-configurable-v3:v3:p0:hand=AhAd:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0.3997172450652255,
+      "fold": 0.6002827549347746
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.32746492773921027,
+      "bet-to-200": 0.00005856177976362843,
+      "bet-to-50": 0.008237481833960164,
+      "check": 0.664239028647066
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.36813284735423685,
+      "fold": 0.5860036011896225,
+      "raise-to-200": 0.04586355145614071
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 0.220769062130291,
+      "fold": 0.779230937869709
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.552162030024303,
+      "fold": 0.3559225431912399,
+      "raise-to-100": 0.000002026059330898626,
+      "raise-to-150": 0.0003793505363784356,
+      "raise-to-200": 0.09153405018874772
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.3322756778596957,
+      "fold": 0.6677243221403042
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.021511310002028886,
+      "fold": 0.9784886899979712
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.040222423363659165,
+      "fold": 0.9597775766363408
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.16137816744332753,
+      "fold": 0.587566914990385,
+      "raise-to-150": 0.1416675484566461,
+      "raise-to-200": 0.10938736910964134
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.05492960473295139,
+      "fold": 0.8679228776179863,
+      "raise-to-200": 0.0771475176490624
+    },
+    "river-configurable-v3:v3:p0:hand=AhQh:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.9797779348393362,
+      "bet-to-200": 0.00032361196068387464,
+      "bet-to-50": 0.006339047548809991,
+      "check": 0.013559405651169991
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.003422808986943966,
+      "fold": 0,
+      "raise-to-200": 0.9965771910130561
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.000011346249275896213,
+      "fold": 0,
+      "raise-to-100": 0.000210812816034531,
+      "raise-to-150": 0.008750955253936134,
+      "raise-to-200": 0.9910268856807535
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9936066930396312,
+      "fold": 0.006393306960368671
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.9999942532295809,
+      "fold": 0.0000057467704190145945
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.9092209953357141,
+      "fold": 0.09077900466428582
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.9835677551213382,
+      "fold": 0.01643224487866186
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.46042079182858625,
+      "fold": 0.0002315400455085782,
+      "raise-to-150": 0.40677674717233764,
+      "raise-to-200": 0.13257092095356746
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.8163408947688461,
+      "fold": 0.0024443711924588014,
+      "raise-to-200": 0.181214734038695
+    },
+    "river-configurable-v3:v3:p0:hand=AsAc:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.9797779348393362,
+      "bet-to-200": 0.00032361196068387464,
+      "bet-to-50": 0.006339047548809991,
+      "check": 0.013559405651169991
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.003422808986943966,
+      "fold": 0,
+      "raise-to-200": 0.9965771910130561
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.000011346249275896213,
+      "fold": 0,
+      "raise-to-100": 0.000210812816034531,
+      "raise-to-150": 0.008750955253936134,
+      "raise-to-200": 0.9910268856807535
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9936066930396312,
+      "fold": 0.006393306960368671
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.9999942532295809,
+      "fold": 0.0000057467704190145945
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.9092209953357141,
+      "fold": 0.09077900466428582
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.9835677551213382,
+      "fold": 0.01643224487866186
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.46042079182858625,
+      "fold": 0.0002315400455085782,
+      "raise-to-150": 0.40677674717233764,
+      "raise-to-200": 0.13257092095356746
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.8163408947688461,
+      "fold": 0.0024443711924588014,
+      "raise-to-200": 0.181214734038695
+    },
+    "river-configurable-v3:v3:p0:hand=AsAd:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.9797779348393362,
+      "bet-to-200": 0.00032361196068387464,
+      "bet-to-50": 0.006339047548809991,
+      "check": 0.013559405651169991
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0.003422808986943966,
+      "fold": 0,
+      "raise-to-200": 0.9965771910130561
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0.000011346249275896213,
+      "fold": 0,
+      "raise-to-100": 0.000210812816034531,
+      "raise-to-150": 0.008750955253936134,
+      "raise-to-200": 0.9910268856807535
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9936066930396312,
+      "fold": 0.006393306960368671
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 0.9999942532295809,
+      "fold": 0.0000057467704190145945
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.9092209953357141,
+      "fold": 0.09077900466428582
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.9835677551213382,
+      "fold": 0.01643224487866186
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0.46042079182858625,
+      "fold": 0.0002315400455085782,
+      "raise-to-150": 0.40677674717233764,
+      "raise-to-200": 0.13257092095356746
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0.8163408947688461,
+      "fold": 0.0024443711924588014,
+      "raise-to-200": 0.181214734038695
+    },
+    "river-configurable-v3:v3:p0:hand=AsAh:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=0,0:bet=0:last=0:raises=0:checks=0:history=start": {
+      "bet-to-100": 0.9535317975073881,
+      "bet-to-200": 0.0007876634196262711,
+      "bet-to-50": 0.002667316763403269,
+      "check": 0.043013222309582294
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=0,100:bet=100:last=100:raises=0:checks=0:history=check-bet-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-200": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=0,200:bet=200:last=200:raises=0:checks=0:history=check-bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=0,50:bet=50:last=50:raises=0:checks=0:history=check-bet-to-50": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-100": 0.00001445624687272615,
+      "raise-to-150": 0.0026939276710063105,
+      "raise-to-200": 0.997291616082121
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=100,150:bet=150:last=50:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-150": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=100,200:bet=200:last=100:raises=1:checks=0:history=bet-to-100-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=100,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-100-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=150,200:bet=200:last=100:raises=2:checks=0:history=check-bet-to-50-raise-to-150-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=50,100:bet=100:last=50:raises=1:checks=0:history=bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-150": 0.15881875681066351,
+      "raise-to-200": 0.8411812431893364
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=50,150:bet=150:last=100:raises=1:checks=0:history=bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-200": 1
+    },
+    "river-configurable-v3:v3:p0:hand=AsQs:put=50,200:bet=200:last=150:raises=1:checks=0:history=bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.13007216658512216,
+      "bet-to-200": 0.2554438426334086,
+      "bet-to-50": 0.08764365915579371,
+      "check": 0.5268403316256755
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0,
+      "fold": 1,
+      "raise-to-200": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.871084460203039,
+      "raise-to-150": 0.0002020910838648146,
+      "raise-to-200": 0.12871344871309615
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9435917810725512,
+      "raise-to-200": 0.05640821892744893
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6c5c:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0,
+      "fold": 0.9974932234067139,
+      "raise-to-100": 0.0004751609266132439,
+      "raise-to-150": 0.00046170094355920457,
+      "raise-to-200": 0.0015699147231137908
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.13007216658512216,
+      "bet-to-200": 0.2554438426334086,
+      "bet-to-50": 0.08764365915579371,
+      "check": 0.5268403316256755
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0,
+      "fold": 1,
+      "raise-to-200": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.871084460203039,
+      "raise-to-150": 0.0002020910838648146,
+      "raise-to-200": 0.12871344871309615
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9435917810725512,
+      "raise-to-200": 0.05640821892744893
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6d5d:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0,
+      "fold": 0.9974932234067139,
+      "raise-to-100": 0.0004751609266132439,
+      "raise-to-150": 0.00046170094355920457,
+      "raise-to-200": 0.0015699147231137908
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.13007216658512216,
+      "bet-to-200": 0.2554438426334086,
+      "bet-to-50": 0.08764365915579371,
+      "check": 0.5268403316256755
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0,
+      "fold": 1,
+      "raise-to-200": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.871084460203039,
+      "raise-to-150": 0.0002020910838648146,
+      "raise-to-200": 0.12871344871309615
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9435917810725512,
+      "raise-to-200": 0.05640821892744893
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6h5h:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0,
+      "fold": 0.9974932234067139,
+      "raise-to-100": 0.0004751609266132439,
+      "raise-to-150": 0.00046170094355920457,
+      "raise-to-200": 0.0015699147231137908
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.13800047009587854,
+      "bet-to-200": 0.7530434856308017,
+      "bet-to-50": 0.10895604427331972,
+      "check": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-200": 1
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-150": 0.017125930203867958,
+      "raise-to-200": 0.9828740697961321
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9999803311576959,
+      "fold": 0.000019668842304117285
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.0005754857404824085,
+      "fold": 0.0001652983998773778,
+      "raise-to-200": 0.9992592158596403
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.9988523946001978,
+      "fold": 0.0011476053998022732
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.9999942410211798,
+      "fold": 0.000005758978820252443
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.9997786499130077,
+      "fold": 0.00022135008699236753
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.9997607551360836,
+      "fold": 0.00023924486391633113
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=6s5s:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.00044127174099529336,
+      "fold": 0.000024025802651848128,
+      "raise-to-100": 0.0034978406721086265,
+      "raise-to-150": 0.012463562108225029,
+      "raise-to-200": 0.9835732996760193
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.000039431970432272825,
+      "bet-to-200": 0.13960013224207563,
+      "bet-to-50": 0.0000036588960477493264,
+      "check": 0.8603567768914443
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.28090921797314605,
+      "fold": 0.7190904688937969,
+      "raise-to-200": 3.131330570709795e-7
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.9475728627491555,
+      "raise-to-150": 0.011480385098136286,
+      "raise-to-200": 0.040946752152708245
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.8336215297183631,
+      "fold": 0.1663784702816369
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9708937906161232,
+      "raise-to-200": 0.029106209383876733
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.16834584433412164,
+      "fold": 0.8316541556658784
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.18782340279174253,
+      "fold": 0.8121765972082574
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.4234053681691551,
+      "fold": 0.5765946318308449
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AcTc:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.39890011301961786,
+      "fold": 0.5545324167293385,
+      "raise-to-100": 0.0011849538111792753,
+      "raise-to-150": 0.0026982120639470596,
+      "raise-to-200": 0.04268430437591736
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.000039431970432272825,
+      "bet-to-200": 0.13960013224207563,
+      "bet-to-50": 0.0000036588960477493264,
+      "check": 0.8603567768914443
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.28090921797314605,
+      "fold": 0.7190904688937969,
+      "raise-to-200": 3.131330570709795e-7
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.9475728627491555,
+      "raise-to-150": 0.011480385098136286,
+      "raise-to-200": 0.040946752152708245
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.8336215297183631,
+      "fold": 0.1663784702816369
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9708937906161232,
+      "raise-to-200": 0.029106209383876733
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.16834584433412164,
+      "fold": 0.8316541556658784
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.18782340279174253,
+      "fold": 0.8121765972082574
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.4234053681691551,
+      "fold": 0.5765946318308449
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AdTd:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.39890011301961786,
+      "fold": 0.5545324167293385,
+      "raise-to-100": 0.0011849538111792753,
+      "raise-to-150": 0.0026982120639470596,
+      "raise-to-200": 0.04268430437591736
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.000039431970432272825,
+      "bet-to-200": 0.13960013224207563,
+      "bet-to-50": 0.0000036588960477493264,
+      "check": 0.8603567768914443
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.28090921797314605,
+      "fold": 0.7190904688937969,
+      "raise-to-200": 3.131330570709795e-7
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0.9475728627491555,
+      "raise-to-150": 0.011480385098136286,
+      "raise-to-200": 0.040946752152708245
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.8336215297183631,
+      "fold": 0.1663784702816369
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0.9708937906161232,
+      "raise-to-200": 0.029106209383876733
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.16834584433412164,
+      "fold": 0.8316541556658784
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.18782340279174253,
+      "fold": 0.8121765972082574
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.4234053681691551,
+      "fold": 0.5765946318308449
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0,
+      "fold": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AhTh:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.39890011301961786,
+      "fold": 0.5545324167293385,
+      "raise-to-100": 0.0011849538111792753,
+      "raise-to-150": 0.0026982120639470596,
+      "raise-to-200": 0.04268430437591736
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.15288597763584438,
+      "bet-to-200": 0.7312907553188387,
+      "bet-to-50": 0.11582326704531692,
+      "check": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-200": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-150": 0.054586943407423406,
+      "raise-to-200": 0.9454130565925767
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-200": 1
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 1,
+      "fold": 0
+    },
+    "river-configurable-v3:v3:p1:hand=AsTs:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0,
+      "fold": 0,
+      "raise-to-100": 0.00399901653432365,
+      "raise-to-150": 0.0111955147216391,
+      "raise-to-200": 0.9848054687440372
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JdJc:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JhJc:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JhJd:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JsJc:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JsJd:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=0,0:bet=0:last=0:raises=0:checks=1:history=check": {
+      "bet-to-100": 0.08161964077785651,
+      "bet-to-200": 0.013988828380456597,
+      "bet-to-50": 0.09400403227348961,
+      "check": 0.8103874985681973
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=100,0:bet=100:last=100:raises=0:checks=0:history=bet-to-100": {
+      "call": 0.43810172176414,
+      "fold": 0.47858089748972926,
+      "raise-to-200": 0.08331738074613088
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=100,50:bet=100:last=50:raises=1:checks=0:history=check-bet-to-50-raise-to-100": {
+      "call": 0.7051769731430771,
+      "fold": 0.261096647239002,
+      "raise-to-150": 0.00017504615268533726,
+      "raise-to-200": 0.033551333465235374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=150,100:bet=150:last=50:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-150": {
+      "call": 0.9769712803595249,
+      "fold": 0.023028719640475058
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=150,50:bet=150:last=100:raises=1:checks=0:history=check-bet-to-50-raise-to-150": {
+      "call": 0.5082779205049222,
+      "fold": 0.47418265333932186,
+      "raise-to-200": 0.01753942615575593
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=200,0:bet=200:last=200:raises=0:checks=0:history=bet-to-200": {
+      "call": 0.26201558333281194,
+      "fold": 0.7379844166671881
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=200,100:bet=200:last=100:raises=1:checks=0:history=check-bet-to-100-raise-to-200": {
+      "call": 0.6015435511446964,
+      "fold": 0.39845644885530374
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=200,100:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-100-raise-to-200": {
+      "call": 0.990858605010839,
+      "fold": 0.009141394989160887
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=200,150:bet=200:last=100:raises=2:checks=0:history=bet-to-50-raise-to-150-raise-to-200": {
+      "call": 0.7516797000367541,
+      "fold": 0.24832029996324598
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=200,50:bet=200:last=150:raises=1:checks=0:history=check-bet-to-50-raise-to-200": {
+      "call": 0.4006370166846727,
+      "fold": 0.5993629833153273
+    },
+    "river-configurable-v3:v3:p1:hand=JsJh:put=50,0:bet=50:last=50:raises=0:checks=0:history=bet-to-50": {
+      "call": 0.6436072645984284,
+      "fold": 0.22216698334334184,
+      "raise-to-100": 0.0006671965280478854,
+      "raise-to-150": 0.0006196295580345627,
+      "raise-to-200": 0.13293892597214726
+    }
+  },
+  "teaching": {
+    "bulkExportStateLimit": 100000,
+    "decisionCount": 308,
+    "decisionsSha256": "164cc6ea37e8139a4a98e7d48090544e157d3ed0cd324bb499ef29ae777a7857"
+  },
+  "traversal": {
+    "reachOnlyPasses": 1000,
+    "regretPasses": 2000
+  },
+  "value": [
+    16.081056725396856,
+    -16.081056725396856
+  ]
+}

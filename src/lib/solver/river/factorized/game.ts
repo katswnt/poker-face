@@ -1,25 +1,51 @@
 import type {
+  ExtensiveFormGame,
   GameTreeIndex,
   InformationSetDefinition,
   InformationSetKey,
   SolverPlayer,
+  Weighted,
 } from "../../toy/game";
-import { riverComboKey } from "../cards";
-import {
-  configurableRiverState,
-  type ConfigurableRiverAction,
-  type ConfigurableRiverGame,
-  type ConfigurableRiverState,
-} from "../configurable/game";
+import { riverComboKey, type RiverCombo } from "../cards";
+import type { ConfigurableRiverAction } from "../configurable/game";
+import type { ConfigurableRiverRangeEntry } from "../configurable/range";
 
 export const FACTORIZED_TERMINAL_NODE = 0;
 export const FACTORIZED_PLAYER_NODE = 1;
 export const FACTORIZED_NO_INDEX = -1;
 
+export interface FactorizedRiverSourceState {
+  readonly hands: readonly [RiverCombo, RiverCombo] | null;
+  readonly public: {
+    readonly terminal: "fold" | "showdown" | null;
+    readonly history: readonly ConfigurableRiverAction[];
+  };
+}
+
+export interface FactorizedRiverSourcePreflight {
+  readonly publicStatesPerDeal: number;
+  readonly publicTerminalStatesPerDeal: number;
+  readonly projectedFullStates: number;
+}
+
+export interface FactorizedRiverSource<State extends FactorizedRiverSourceState>
+  extends ExtensiveFormGame<State, ConfigurableRiverAction, { readonly hands: readonly [RiverCombo, RiverCombo] }> {
+  readonly scenario: {
+    readonly ranges: readonly [
+      readonly ConfigurableRiverRangeEntry[],
+      readonly ConfigurableRiverRangeEntry[],
+    ];
+  };
+  readonly deals: readonly Weighted<{ readonly hands: readonly [RiverCombo, RiverCombo] }>[];
+  readonly preflight: FactorizedRiverSourcePreflight;
+  totalContributions(state: State): readonly [number, number];
+  showdownWinner(hands: readonly [RiverCombo, RiverCombo]): SolverPlayer | null;
+}
+
 export interface CompiledFactorizedRiverGame {
   readonly gameId: string;
-  readonly source: ConfigurableRiverGame;
   readonly index: GameTreeIndex<ConfigurableRiverAction>;
+  readonly rangeEntryCounts: readonly [number, number];
   readonly publicNodeCount: number;
   readonly publicDecisionNodes: number;
   readonly publicTerminalNodes: number;
@@ -71,13 +97,15 @@ function sameActions(
   return left.length === right.length && left.every((action, index) => action === right[index]);
 }
 
-function terminalUtilities(
-  game: ConfigurableRiverGame,
-  state: ConfigurableRiverState,
+function terminalUtilities<State extends FactorizedRiverSourceState>(
+  game: FactorizedRiverSource<State>,
+  state: State,
 ): readonly [number, number, number, boolean] {
   if (!state.public.terminal) throw new Error("Factorized terminal compiler received a live state");
   if (state.public.terminal === "fold") {
-    const utility = game.settlement(state).utility[0];
+    const node = game.node(state);
+    if (node.kind !== "terminal") throw new Error("Factorized fold state is not terminal");
+    const utility = node.utility[0];
     return [utility, utility, utility, false];
   }
 
@@ -95,8 +123,8 @@ function terminalUtilities(
  * Store the public betting tree once, then attach exact blocker-compatible private deals.
  * The readable configurable game remains the rules and settlement oracle.
  */
-export function compileFactorizedRiverGame(
-  game: ConfigurableRiverGame,
+export function compileFactorizedRiverGame<State extends FactorizedRiverSourceState>(
+  game: FactorizedRiverSource<State>,
 ): CompiledFactorizedRiverGame {
   if (game.deals.length === 0) throw new Error(`${game.id} has no compatible private deals`);
   const representativeHands = game.deals[0].outcome.hands;
@@ -120,7 +148,7 @@ export function compileFactorizedRiverGame(
   let publicDecisionNodes = 0;
   let publicTerminalNodes = 0;
 
-  const visit = (state: ConfigurableRiverState): number => {
+  const visit = (state: State): number => {
     const nodeId = nextNode;
     nextNode += 1;
     if (nodeId >= expectedPublicNodes) {
@@ -218,7 +246,8 @@ export function compileFactorizedRiverGame(
         continue;
       }
       const hands = game.deals[deal].outcome.hands;
-      const state = configurableRiverState(game, hands, publicHistories[publicNode]);
+      let state = game.nextChance(game.initialState(), { hands });
+      for (const action of publicHistories[publicNode]) state = game.nextAction(state, action);
       const stateNode = game.node(state);
       if (stateNode.kind !== "player" || stateNode.player !== player || !sameActions(stateNode.actions, actions)) {
         throw new Error(`${game.id} public structure depends on hidden cards at node ${publicNode}`);
@@ -310,8 +339,8 @@ export function compileFactorizedRiverGame(
   ] as const;
   return {
     gameId: game.id,
-    source: game,
     index,
+    rangeEntryCounts: [game.scenario.ranges[0].length, game.scenario.ranges[1].length],
     publicNodeCount: expectedPublicNodes,
     publicDecisionNodes,
     publicTerminalNodes,
@@ -351,7 +380,7 @@ export function factorizedInformationSet(
 ): number {
   const player = game.nodePlayers[publicNode] as SolverPlayer;
   const handIndex = player === 0 ? game.dealHand0[deal] : game.dealHand1[deal];
-  const rangeSize = game.source.scenario.ranges[player].length;
+  const rangeSize = game.rangeEntryCounts[player];
   const lookup = player === 0 ? game.informationSetLookup0 : game.informationSetLookup1;
   const informationSet = lookup[publicNode * rangeSize + handIndex];
   if (informationSet === FACTORIZED_NO_INDEX) {
