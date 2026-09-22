@@ -385,6 +385,25 @@ The full contract is in [Heads-up river hold'em solver — v1 specification](riv
 The measured result and six-perspective review are in
 [Heads-up river hold'em solver — release audit](river-solver-audit.md).
 
+### Milestone 6b — configurable bounded heads-up river
+
+- [x] Lock an additive v2 contract without changing v1 artifacts or claims.
+- [x] Expand a small documented range syntax into exact weighted combinations.
+- [x] Generate a finite betting tree from explicit whole-chip opening and raise targets.
+- [x] Handle unequal stacks, short all-ins, calls, and returned unmatched chips.
+- [x] Reject oversized exact games through a measured preflight before building CFR state.
+- [x] Reproduce the v1 joint deals, public tree, terminal money, and solver grade.
+- [x] Export exact action values, posterior ranges, response frequencies, and showdown facts.
+- [x] Bind one accepted demonstration to versioned rules and reproducible hashes.
+- [x] Re-audit a current external heads-up river solver as an offline numerical referee.
+- [x] Pass the locked math, poker, teaching, product, CTO, and engineering gates.
+- [x] Keep the result separate from the four-player trainer.
+
+The locked contract is in
+[Configurable heads-up river solver — v2 specification](configurable-river-v2-spec.md).
+The measured result and six-perspective review are in the
+[configurable river v2 release audit](configurable-river-v2-audit.md).
+
 The next stage is specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 
