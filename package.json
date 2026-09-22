@@ -17,6 +17,7 @@
     "audit:river:v2": "node --import tsx scripts/solve-configurable-river.ts --check",
     "audit:river:compact": "node --import tsx scripts/audit-compact-river.ts",
     "audit:river:scorekeeper": "node --import tsx scripts/audit-compact-scorekeeper.ts",
+    "audit:river:factorized": "node --import tsx scripts/audit-factorized-river.ts",
     "audit:multiway-river": "node --import tsx scripts/solve-multiway-river.ts --check",
     "audit:multiway-raised-river": "node --import tsx scripts/solve-multiway-raised-river.ts --check",
     "audit:multiway-two-size-river": "node --import tsx scripts/solve-multiway-two-size-river.ts --check",

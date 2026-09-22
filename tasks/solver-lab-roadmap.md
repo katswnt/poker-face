@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc lab, bounded river solvers, exact multiway proofs, and compact CPU engine shipped
+**Status:** Leduc lab, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
@@ -439,6 +439,25 @@ The contract is in the
 [compact river scorekeeper specification](compact-river-scorekeeper-spec.md). The measured
 result and six-perspective review are in the
 [compact river scorekeeper release audit](compact-river-scorekeeper-audit.md).
+
+### Milestone 6e — factorized exact-card river engine
+
+- [x] Keep configurable river v2 as the readable poker-rules source of truth.
+- [x] Store the public betting tree once instead of once per compatible private deal.
+- [x] Keep an exact blocker-compatible weighted deal list and exact river showdowns.
+- [x] Preserve every information-set key, legal action, terminal utility, and state count.
+- [x] Match readable and repeated-compact ordinary CFR exactly.
+- [x] Match repeated-compact CFR+ on a fixture representing more than 100,000 states.
+- [x] Match readable and compact profile values and legal best responses.
+- [x] Preserve the deliberate hidden-card cheating regression and exhaustive reduced-game check.
+- [x] Reduce locked wider-fixture structural typed storage below 25% of the repeated layout.
+- [x] Keep finite deal/state limits and leave the engine disconnected from the trainer.
+- [x] Pass CTO, poker, math, teaching, product, and engineering reviews.
+
+The contract is in the
+[factorized river engine specification](factorized-river-engine-spec.md). The measured result and
+six-perspective review are in the
+[factorized river engine release audit](factorized-river-engine-audit.md).
 
 The multiway stages are specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
