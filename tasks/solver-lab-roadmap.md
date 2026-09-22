@@ -422,6 +422,24 @@ The locked contract is in the
 six-perspective review are in the
 [compact river engine release audit](compact-river-engine-audit.md).
 
+### Milestone 6d — compact independent scorekeeper
+
+- [x] Keep the readable object-tree scorekeeper as the differential oracle.
+- [x] Evaluate saved strategies on typed arrays without using CFR regret totals.
+- [x] Choose once per information set after combining hidden opponent hands.
+- [x] Match profile values, best-response values, and action choices exactly.
+- [x] Match exhaustive pure-strategy values on the reduced river fixture.
+- [x] Preserve the deliberate hidden-card cheating regression.
+- [x] Reject missing, malformed, non-normalized, and non-finite strategies.
+- [x] Clear the locked `3×` wider-fixture speed gate.
+- [x] Use the faster scorekeeper only in the isolated compact river entry point.
+- [x] Pass CTO, poker, math, teaching, product, and engineering reviews.
+
+The contract is in the
+[compact river scorekeeper specification](compact-river-scorekeeper-spec.md). The measured
+result and six-perspective review are in the
+[compact river scorekeeper release audit](compact-river-scorekeeper-audit.md).
+
 The multiway stages are specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 

@@ -12,6 +12,7 @@ import { configurableRiverV2DemoGame } from "../src/lib/solver/river/configurabl
 import type { ConfigurableRiverAction } from "../src/lib/solver/river/configurable/game";
 import { auditConfigurableRiverRules } from "../src/lib/solver/river/configurable/oracle";
 import { solveCompactConfigurableRiver } from "../src/lib/solver/river/compact/solve";
+import { COMPACT_RIVER_WIDER_REQUEST } from "../src/lib/solver/river/compact/fixture";
 
 const EQUIVALENCE_ITERATIONS = 1_000;
 const CFR_PLUS_ITERATIONS = 1_000;
@@ -19,16 +20,6 @@ const BENCHMARK_ITERATIONS = 2_000;
 const BENCHMARK_SAMPLES = 5;
 const MINIMUM_SPEEDUP = 3;
 const MAXIMUM_EXPLOITABILITY = 0.25;
-
-const WIDER_REQUEST = {
-  id: "compact-wide-fixture",
-  board: ["2c", "3d", "4h", "7s", "9c"],
-  rangeText: ["AA KK QQ JJ TT", "AA KK QQ JJ TT"],
-  committed: [50, 50],
-  stackBehind: [100, 100],
-  openingBetSizes: [50, 100],
-  raiseToSizes: [100],
-} as const;
 
 function maximumStrategyDifference(
   left: BehavioralStrategy<ConfigurableRiverAction>,
@@ -155,7 +146,7 @@ if (speedup < MINIMUM_SPEEDUP) {
 
 const referenceValue = acceptedArtifact.reference.value[0];
 const widerStarted = performance.now();
-const wider = solveCompactConfigurableRiver(WIDER_REQUEST, {
+const wider = solveCompactConfigurableRiver(COMPACT_RIVER_WIDER_REQUEST, {
   iterations: 400,
   algorithm: "cfr-plus",
   includeDecisionFacts: false,

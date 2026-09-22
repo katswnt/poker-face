@@ -1,4 +1,3 @@
-import { gradeStrategy, type StrategyGrade } from "../../toy/best-response";
 import type { ConfigurableRiverDecisionFacts } from "../configurable/explain";
 import { configurableRiverDecisionFacts } from "../configurable/explain";
 import type {
@@ -16,6 +15,11 @@ import {
   type CompactCfrOptions,
   type CompactCfrSolveResult,
 } from "./cfr";
+import {
+  compileCompactScorekeeper,
+  gradeCompactStrategy,
+  type CompactStrategyGrade,
+} from "./scorekeeper";
 
 /**
  * A conservative first increase over configurable v2's 500-deal ceiling.
@@ -37,7 +41,7 @@ export interface CompactConfigurableRiverSolve {
   readonly prepared: PreparedConfigurableRiver;
   readonly game: ConfigurableRiverGame;
   readonly result: CompactCfrSolveResult<ConfigurableRiverAction>;
-  readonly grade: StrategyGrade<ConfigurableRiverAction>;
+  readonly grade: CompactStrategyGrade<ConfigurableRiverAction>;
   readonly decisions: readonly ConfigurableRiverDecisionFacts[] | null;
 }
 
@@ -48,7 +52,10 @@ export function solveCompactConfigurableRiver(
 ): CompactConfigurableRiverSolve {
   const prepared = prepareConfigurableRiver(request, COMPACT_CONFIGURABLE_RIVER_LIMITS);
   const result = solveCompactCfr(prepared.game, options);
-  const grade = gradeStrategy(prepared.game, result.averageStrategy, result.index);
+  const grade = gradeCompactStrategy(
+    compileCompactScorekeeper(result.compiled),
+    result.averageStrategy,
+  );
   return {
     prepared,
     game: prepared.game,

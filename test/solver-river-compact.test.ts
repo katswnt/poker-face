@@ -14,16 +14,7 @@ import {
   COMPACT_CONFIGURABLE_RIVER_LIMITS,
   solveCompactConfigurableRiver,
 } from "../src/lib/solver/river/compact/solve";
-
-const WIDER_REQUEST = {
-  id: "compact-wide-fixture",
-  board: ["2c", "3d", "4h", "7s", "9c"],
-  rangeText: ["AA KK QQ JJ TT", "AA KK QQ JJ TT"],
-  committed: [50, 50],
-  stackBehind: [100, 100],
-  openingBetSizes: [50, 100],
-  raiseToSizes: [100],
-} as const;
+import { COMPACT_RIVER_WIDER_REQUEST } from "../src/lib/solver/river/compact/fixture";
 
 test("compact compilation preserves the accepted river tree's public counts", () => {
   const compiled = compileCompactGame(configurableRiverV2DemoGame);
@@ -122,10 +113,10 @@ test("compact CFR+ recovers Kuhn poker's known value", () => {
 
 test("the compact entry point safely admits a wider exact range game", () => {
   assert.throws(
-    () => prepareConfigurableRiver(WIDER_REQUEST),
+    () => prepareConfigurableRiver(COMPACT_RIVER_WIDER_REQUEST),
     /750 compatible deals; exact limit is 500/,
   );
-  const solved = solveCompactConfigurableRiver(WIDER_REQUEST, {
+  const solved = solveCompactConfigurableRiver(COMPACT_RIVER_WIDER_REQUEST, {
     iterations: 400,
     algorithm: "cfr-plus",
     includeDecisionFacts: false,
