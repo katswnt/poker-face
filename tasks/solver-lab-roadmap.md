@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc lab, bounded heads-up river solver, and exact three-player river proof shipped
-**Last updated:** 2026-09-15
+**Status:** Leduc lab, bounded river solvers, exact multiway proofs, and compact CPU engine shipped
+**Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -404,7 +404,25 @@ The locked contract is in
 The measured result and six-perspective review are in the
 [configurable river v2 release audit](configurable-river-v2-audit.md).
 
-The next stage is specified in
+### Milestone 6c — compact heads-up river CPU engine
+
+- [x] Keep configurable river v2 as the readable rules and ordinary-CFR oracle.
+- [x] Compile the same finite game into deterministic typed numeric arrays.
+- [x] Match ordinary-CFR strategies, regrets, values, and exploitability exactly.
+- [x] Differential-test different boards, weights, stacks, short all-ins, and bet trees.
+- [x] Add separately named alternating CFR+ with documented work counts and averaging.
+- [x] Recover Kuhn poker's known value and grade CFR+ with independent best responses.
+- [x] Clear the locked `3×` local speed gate without changing accepted artifacts.
+- [x] Raise only the compatible-deal ceiling, retain the 50,000-state preflight, and keep
+      the compact entry point out of the trainer.
+- [x] Pass CTO, poker, math, teaching, product, and engineering reviews.
+
+The locked contract is in the
+[compact river engine specification](compact-river-engine-spec.md). The measurements and
+six-perspective review are in the
+[compact river engine release audit](compact-river-engine-audit.md).
+
+The multiway stages are specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
 
 ### Milestone 7 — exact three-player river proof
