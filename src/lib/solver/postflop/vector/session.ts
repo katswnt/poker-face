@@ -1,6 +1,6 @@
 import { TURN_CHANCE, TURN_PLAYER, TURN_TERMINAL } from "../compact-turn";
 import { validateCompactTurnOptions } from "../session";
-import { decodeVectorPolicy, type VectorTurnGame } from "./game";
+import { decodeVectorPolicy, type VectorCoreGame } from "./core";
 import { createVectorKernelScratch, naiveTerminalValues, vectorTerminalValues } from "./kernels";
 
 export interface VectorTurnOptions {
@@ -28,7 +28,7 @@ export interface VectorCheckpoint {
   readonly strategySums: readonly number[];
 }
 
-function validateCheckpoint(game: VectorTurnGame, checkpoint: VectorCheckpoint) {
+function validateCheckpoint<Action extends string>(game: VectorCoreGame<Action>, checkpoint: VectorCheckpoint) {
   if (!checkpoint || checkpoint.schemaVersion !== 1 || checkpoint.backend !== "vector-turn" || checkpoint.backendVersion !== 1
     || checkpoint.gameIdentity !== game.gameIdentity) throw new Error("Checkpoint version or game identity mismatch");
   const options = validateVectorOptions(checkpoint.options), iterations = checkpoint.iterations;
@@ -53,7 +53,7 @@ function validateCheckpoint(game: VectorTurnGame, checkpoint: VectorCheckpoint) 
 }
 
 /** Public-node × own-hand work, never public-node × compatible-deal work. */
-export function createVectorTurnSession(game: VectorTurnGame, input: VectorTurnOptions, saved?: VectorCheckpoint) {
+export function createVectorTurnSession<Action extends string>(game: VectorCoreGame<Action>, input: VectorTurnOptions, saved?: VectorCheckpoint) {
   const options = validateVectorOptions(input);
   if (saved && JSON.stringify(validateCheckpoint(game, saved)) !== JSON.stringify(options)) throw new Error("Checkpoint options mismatch");
   const regrets = saved ? Float64Array.from(saved.regrets) : new Float64Array(game.actionSlotCount);
@@ -197,6 +197,6 @@ export function createVectorTurnSession(game: VectorTurnGame, input: VectorTurnO
     },
   });
 }
-export function restoreVectorTurnSession(game: VectorTurnGame, checkpoint: VectorCheckpoint) {
+export function restoreVectorTurnSession<Action extends string>(game: VectorCoreGame<Action>, checkpoint: VectorCheckpoint) {
   return createVectorTurnSession(game, validateCheckpoint(game, checkpoint), checkpoint);
 }

@@ -23,7 +23,7 @@ export interface VectorRanges {
 }
 
 /** O(public cards × hands), with no private-pair or private-pair/runout table. */
-export function compileVectorRanges(request: TurnRequest): VectorRanges {
+export function compileVectorRanges(request: Pick<TurnRequest, "board" | "rangeText">): VectorRanges {
   if (!Array.isArray(request.rangeText) || request.rangeText.length !== 2) throw new Error("Two vector ranges are required");
   const parsed = request.rangeText.map(text => {
     if (typeof text !== "string" || text.length > 16384) throw new Error("Vector range text exceeds 16384 characters");

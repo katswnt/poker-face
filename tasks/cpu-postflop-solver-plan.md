@@ -4,11 +4,12 @@
 
 **Baseline:** `7d2ea37` — audited turn reference and worker-backed trainer equity
 
-**Status:** M0–M2 implemented; the remaining stages are planned, not implemented.
+**Status:** M0–M3 implemented; the remaining stages are planned, not implemented.
 
-**Active next milestone:** M3 versioned richer turn/river betting and accepted examples.
-See the [compact turn audit](compact-turn-engine-audit.md) and
-[M2 vector turn audit](vector-turn-engine-audit.md).
+**Active next milestone:** M4 minimal saved-turn explorer.
+See the [compact turn audit](compact-turn-engine-audit.md),
+[M2 vector turn audit](vector-turn-engine-audit.md), and
+[M3 configurable turn audit](configurable-turn-v2-audit.md).
 
 **Purpose:** The working reference for subsequent solver-capacity work. Update the
 execution record at the end of this file after each milestone.
@@ -479,7 +480,7 @@ an audit record. Update this table with the commit/evidence only after completio
 | M0 | Baselines, benchmark matrix, locked v1-equivalence and resource contract | Reproduced references; exact counts and numeric/resource gates recorded | Complete; compact turn audit |
 | M1 | Compact resumable turn engine for unchanged v1 rules | Same transitions, information sets, ordinary-CFR updates and independent grade | Complete; compact turn audit |
 | M2 | Range-vector terminal/traversal engine and scalable scorekeeper | Naive/readable/exhaustive parity; wider-range profile within envelope | Complete; vector turn audit |
-| M3 | Configurable richer turn/river betting and accepted wider examples | Rule reductions, short-all-in audit, independent quality gate | Not started |
+| M3 | Configurable richer turn/river betting and accepted wider examples | Rule reductions, short-all-in audit, independent quality gate | Complete; configurable turn-v2 audit |
 | M4 | Minimal saved-turn explorer and artifact pipeline | Genuine engine result navigable; conditional semantics and accessibility tested | Not started |
 | M5 | Bounded joint flop/turn/river engine | No future-card cheating; exact runouts, reductions and accepted flop fixture | Not started |
 | M6 | Curated postflop library and broader explorer | Every published scenario reproducible, graded, documented and load-budgeted | Not started |
@@ -786,7 +787,7 @@ on a different approximation. More compute remains an option, not a hidden requi
 - [x] M0: baseline profile and locked compact-turn contract.
 - [x] M1: compact v1-equivalent turn engine.
 - [x] M2: wider-range vector engine and scalable independent grader.
-- [ ] M3: richer turn/river betting and accepted practical examples.
+- [x] M3: richer turn/river betting and accepted practical examples.
 - [ ] M4: minimal saved-turn explorer.
 - [ ] M5: joint flop/turn/river reference and scalable implementation.
 - [ ] M6: curated solution library and broader explorer.
@@ -813,13 +814,26 @@ bit-identically at the same iteration. A separate vector grader and explicit-pai
 agree; hidden-hand/future-card cheating tests remain. Existing engines/artifacts are unchanged.
 This is wider **synthetic-range** turn solving, not full-range or arbitrary-bet-size NLHE.
 
-**Next implementation session:** lock M3's new turn rules and resource contract before
-implementation or acceptance solves. Add declared betting menus and raises with minimum
-raises, short-all-ins, stack caps, street resets and returned unmatched chips. Reduce
-single-size/no-raise games to v1 and completed-turn continuations to river v3; include
-ordinary play examples with independently measured quality. Preserve the M2 gate and
-64-combination cap until new profiles justify changing them. Do not bundle a flop engine,
-UI expansion, neural model or GPU dependency into this step.
+**M3 execution, 2026-09-23:** See [locked contract](configurable-turn-v2-spec.md),
+[pre-solve input hashes](configurable-turn-v2-input-hashes.json) and
+[release audit](configurable-turn-v2-audit.md). Turn-v2 adds three opening targets,
+three raise targets, optional all-in and one raise per street with immediate refunds
+and street-specific amounts. All five locked examples pass at the first scheduled
+checkpoint (256 CFR+, delay 20), including 64-by-64 ranges, two openings and legal raises
+on both streets: 6,699 public states, 147,840 information sets, 23,177,540 equivalent
+states, exploitability 0.033587175026543514 chips. First accepted run: 17.082 seconds,
+607.6 MiB sampled worker RSS, 802.2 MiB sampled combined RSS. The shared numeric engine
+is action-generic without changing arithmetic; the complete M2 artifact still reproduces.
+The separate M3 budget is 2 GiB within this plan's envelope; M2 remains 1 GiB. No UI,
+flop solver, training dependency or external numerical validation claim was added.
+
+**Next implementation session:** lock M4's saved-turn explorer contract before UI work.
+Use compact derived data for a few accepted examples instead of shipping the full wide
+policy to the browser. Keep math independent of React. Show turn choices and reachable
+river-card consequences with plain explanations, measured whole-game quality, action EVs,
+conditional ranges and honest rare/off-path handling. Preserve Leduc/River Labs and the
+100,000-state custom browser cap. Reread baseline-ui, fixing-accessibility and installed
+Next.js guides. M4 does not authorize a flop engine, live wide browser solves or a GPU.
 
 At the end of each milestone add:
 

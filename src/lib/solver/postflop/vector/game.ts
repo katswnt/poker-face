@@ -1,9 +1,11 @@
 import { assertDistinctRiverCards, RIVER_DECK, riverComboKey, type RiverCombo } from "../../river/cards";
-import { validateStrategy, type BehavioralStrategy, type GameTreeIndex } from "../../toy/game";
+import type { GameTreeIndex } from "../../toy/game";
 import type { TurnAction, TurnRequest, TurnState } from "../../turn/game";
 import { compileCompactTurn, TURN_PLAYER } from "../compact-turn";
 import { compileVectorRanges, type VectorRanges } from "./ranges";
 import { createVectorKernelScratch, vectorTerminalValues } from "./kernels";
+import type { VectorCoreGame } from "./core";
+export { encodeVectorPolicy, decodeVectorPolicy } from "./core";
 
 export const VECTOR_TURN_VERSION = 1;
 export const VECTOR_MEMORY_LIMIT = 1024 * 1024 * 1024;
@@ -46,7 +48,7 @@ export function vectorInformationKey(request: TurnRequest, state: TurnState, pla
     + `:river=${state.street === 0 ? "hidden" : state.river}:street=${state.street}`
     + `:turn=${state.histories[0].join("-") || "start"}:river-actions=${state.histories[1].join("-") || "start"}`;
 }
-export interface VectorTurnGame {
+export interface VectorTurnGame extends VectorCoreGame<TurnAction> {
   readonly version: 1;
   readonly request: TurnRequest;
   readonly ranges: VectorRanges;
@@ -132,24 +134,4 @@ export function compileVectorTurn(input: TurnRequest, memoryLimitBytes = VECTOR_
   return Object.freeze({ version: VECTOR_TURN_VERSION, request, ranges, preflight, index, ...arrays,
     publicStates: topology.publicStates, actions: topology.actions, lookup: Object.freeze(lookup),
     actionSlotCount, rootNormalizer, maximumDepth: Math.max(...depth), gameIdentity, typedStorageBytes });
-}
-
-export function encodeVectorPolicy(game: VectorTurnGame, policy: BehavioralStrategy<TurnAction>): Float64Array {
-  validateStrategy(game.index, policy);
-  const flat = new Float64Array(game.actionSlotCount);
-  game.index.informationSets.forEach((info, i) => {
-    const entry = policy.get(info.key)!;
-    entry.probabilities.forEach((p, a) => {
-      if (p < 0 || p > 1) throw new Error("Vector strategy probabilities must be in [0,1]");
-      flat[game.actionStarts[i] + a] = p;
-    });
-  });
-  return flat;
-}
-export function decodeVectorPolicy(game: VectorTurnGame, flat: Float64Array): BehavioralStrategy<TurnAction> {
-  if (flat.length !== game.actionSlotCount) throw new Error("Vector policy size mismatch");
-  const result = new Map(game.index.informationSets.map((info, i) => [info.key, { actions: [...info.actions],
-    probabilities: Array.from(flat.subarray(game.actionStarts[i], game.actionStarts[i] + game.actionCounts[i])) }]));
-  validateStrategy(game.index, result);
-  return result;
 }

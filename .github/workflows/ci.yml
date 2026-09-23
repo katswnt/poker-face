@@ -43,6 +43,9 @@ jobs:
       - name: Reproduce and independently grade wider-range turn artifact
         run: npm run audit:turn:vector
 
+      - name: Reproduce and independently grade configurable turn corpus
+        run: npm run audit:turn:v2
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

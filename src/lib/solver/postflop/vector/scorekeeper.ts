@@ -1,11 +1,10 @@
 import type { BehavioralStrategy } from "../../toy/game";
-import type { TurnAction } from "../../turn/game";
 import { TURN_CHANCE, TURN_TERMINAL } from "../compact-turn";
-import { encodeVectorPolicy, type VectorTurnGame } from "./game";
+import { encodeVectorPolicy, type VectorCoreGame } from "./core";
 import { createVectorKernelScratch, naiveTerminalValues, vectorTerminalValues } from "./kernels";
 
 /** Independent depth-first evaluation. No session, regrets, deltas or solver traversal. */
-export function gradeVectorTurn(game: VectorTurnGame, policy: BehavioralStrategy<TurnAction>, kernel: "vector" | "naive" = "vector") {
+export function gradeVectorTurn<Action extends string>(game: VectorCoreGame<Action>, policy: BehavioralStrategy<Action>, kernel: "vector" | "naive" = "vector") {
   if (kernel !== "vector" && kernel !== "naive") throw new Error("Unknown grading kernel");
   const flat = encodeVectorPolicy(game, policy);
   let workingStorageBytes = flat.byteLength;
@@ -15,7 +14,7 @@ export function gradeVectorTurn(game: VectorTurnGame, policy: BehavioralStrategy
     const rows = Array.from({ length: game.maximumDepth + 1 }, () => new Float64Array(h));
     const opponentRows = Array.from({ length: rows.length }, () => new Float64Array(k));
     opponentRows[0].set(other.weights);
-    const scratch = createVectorKernelScratch(k), choices = new Map<string, TurnAction>();
+    const scratch = createVectorKernelScratch(k), choices = new Map<string, Action>();
     workingStorageBytes = Math.max(workingStorageBytes, flat.byteLength + [...rows, ...opponentRows,
       scratch.cardMass, scratch.cardCount, scratch.weights, scratch.included].reduce((sum, a) => sum + a.byteLength, 0));
     const walk = (node: number, depth: number): Float64Array => {

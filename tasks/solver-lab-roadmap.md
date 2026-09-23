@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Wider-range CPU turn engine with restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
+**Status:** Configurable two-street CPU solver with accepted examples and restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
 **Last updated:** 2026-09-23
 
 This document is the source of truth for the next solver project. It records what we
@@ -10,7 +10,7 @@ right, and what the learner should gain from it.
 **Active implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
 The user has prioritized solver capacity over a standalone turn lesson. That plan now
 controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
-implemented through M2. A separate backend admits up to 64 combinations/player;
+implemented through M3. A separate backend admits up to 64 combinations/player;
 existing reference-engine and browser limits remain unchanged.
 
 ## Where we are now and what comes next
@@ -41,9 +41,15 @@ policy reproduces on Node 20/24. Full disk checkpoints, cancellation, blocker/ra
 oracles and independent wider grading are implemented; no old artifacts changed.
 See the [vector audit](vector-turn-engine-audit.md) for exact gates, hashes and measurements.
 
-**Active next step:** M3 versioned richer turn/river betting menus and raises, with
-independent reductions and accepted examples, before a thin saved-result
-explorer and bounded flop solving. See the [implementation plan](cpu-postflop-solver-plan.md).
+**Completed CPU-first M3:** versioned turn-v2 rules add up to three opening sizes, three
+raise targets, explicit all-in options and one raise per street. Five locked examples pass
+at 256 CFR+ iterations; the wider 64-by-64 case has 147,840 information sets and
+0.033587175-chip exploitability. Independent history/money replay, v1 reductions, conditional
+river-v3 reductions, readable grading and explicit-pair kernels agree. See the
+[M3 contract](configurable-turn-v2-spec.md) and [audit](configurable-turn-v2-audit.md).
+
+**Active next step:** M4's thin saved-result turn explorer, then bounded flop solving.
+See the [implementation plan](cpu-postflop-solver-plan.md).
 The standalone turn lesson is deferred, not completed. This path does not depend on
 collaboration and does not replace the **three-player** turn contract in multiway Stage 5.
 
@@ -79,7 +85,7 @@ Other remaining work is deliberately separated:
   a separate best-response workflow; it must not be presented as equilibrium play.
 - **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then its
   bounded three-player earlier-street experiment. The separate heads-up turn reference is
-  implemented, but larger ranges, raises, and more sizes are not. Profile any GPU/WASM/native candidate and prove parity
+  implemented; wider bounded ranges, raises and more sizes now exist in turn-v2, not in the old reference. Profile any GPU/WASM/native candidate and prove parity
   on exact small games before expanding limits. Larger teaching views and scorekeeper
   memory remain engineering constraints, not reasons to relax mathematical quality gates.
 - **Reuse:** settle the repository license before copying or combining implementation code.
