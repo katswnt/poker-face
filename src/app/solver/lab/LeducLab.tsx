@@ -71,6 +71,7 @@ export default function LeducLab({ data }: Readonly<{ data: LeducLabData }>) {
           <nav className={styles.nav} aria-label="Solver navigation">
             <Link href="/">← Trainer</Link>
             <Link href="/solver">Push/fold explorer</Link>
+            <Link href="/solver/river">River solver lab</Link>
           </nav>
           <p className={styles.eyebrow}>Explainable solver lab</p>
           <h1>Why can two poker choices both make sense?</h1>

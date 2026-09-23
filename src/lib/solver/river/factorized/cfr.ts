@@ -295,57 +295,92 @@ function regretMap(
   }));
 }
 
-/** Solve one already compiled exact river game without expanding its repeated full tree. */
-export function solveCompiledFactorizedRiverCfr(
+export interface FactorizedRiverCfrSession {
+  readonly iterations: number;
+  readonly done: boolean;
+  /** Advance this same workspace. Chunk boundaries do not change the arithmetic. */
+  advance(iterations: number): void;
+  /** Detached numeric results; inspecting a session does not reset its averages. */
+  snapshot(): FactorizedRiverCfrResult;
+}
+
+/** A resumable, deterministic session with no timers, browser APIs, or React dependency. */
+export function createFactorizedRiverCfrSession(
   game: CompiledFactorizedRiverGame,
   input: FactorizedRiverCfrOptions,
-): FactorizedRiverCfrResult {
+): FactorizedRiverCfrSession {
   const options = validateOptions(input);
   const workspace = createWorkspace(game);
   const requestedCheckpoints = new Set(options.checkpointIterations);
   const checkpoints: FactorizedRiverCfrCheckpoint[] = [];
+  let completed = 0;
 
-  for (let iteration = 1; iteration <= options.iterations; iteration += 1) {
-    if (options.algorithm === "vanilla") {
-      rebuildStrategy(game, workspace);
-      regretPass(game, workspace, null);
-      accumulateAverage(game, workspace, 1);
-      applyRegrets(game, workspace, null, false);
-    } else {
-      for (const player of [0, 1] as const) {
-        rebuildStrategy(game, workspace);
-        regretPass(game, workspace, player);
-        applyRegrets(game, workspace, player, true);
-      }
-      rebuildStrategy(game, workspace);
-      reachOnlyPass(game, workspace);
-      accumulateAverage(game, workspace, Math.max(0, iteration - options.averagingDelay));
+  function advance(count: number): void {
+    if (!Number.isSafeInteger(count) || count <= 0) {
+      throw new Error("CFR session chunk must be a positive safe integer");
     }
-    if (requestedCheckpoints.has(iteration)) {
-      checkpoints.push({ iteration, averageStrategy: averageStrategy(game, workspace) });
+    const end = completed + Math.min(count, options.iterations - completed);
+    for (let iteration = completed + 1; iteration <= end; iteration += 1) {
+      if (options.algorithm === "vanilla") {
+        rebuildStrategy(game, workspace);
+        regretPass(game, workspace, null);
+        accumulateAverage(game, workspace, 1);
+        applyRegrets(game, workspace, null, false);
+      } else {
+        for (const player of [0, 1] as const) {
+          rebuildStrategy(game, workspace);
+          regretPass(game, workspace, player);
+          applyRegrets(game, workspace, player, true);
+        }
+        rebuildStrategy(game, workspace);
+        reachOnlyPass(game, workspace);
+        accumulateAverage(game, workspace, Math.max(0, iteration - options.averagingDelay));
+      }
+      if (requestedCheckpoints.has(iteration)) {
+        checkpoints.push({ iteration, averageStrategy: averageStrategy(game, workspace) });
+      }
+      completed = iteration;
     }
   }
 
-  rebuildStrategy(game, workspace);
-  const currentStrategy = decodedStrategy(game, workspace.strategy);
-  const savedAverageStrategy = averageStrategy(game, workspace);
-  validateStrategy(game.index, currentStrategy);
-  validateStrategy(game.index, savedAverageStrategy);
+  function snapshot(): FactorizedRiverCfrResult {
+    rebuildStrategy(game, workspace);
+    const currentStrategy = decodedStrategy(game, workspace.strategy);
+    const savedAverageStrategy = averageStrategy(game, workspace);
+    validateStrategy(game.index, currentStrategy);
+    validateStrategy(game.index, savedAverageStrategy);
+    return {
+      gameId: game.gameId,
+      algorithm: options.algorithm === "vanilla"
+        ? "factorized-river-full-tree-cfr"
+        : "factorized-river-alternating-cfr-plus",
+      algorithmVersion: 1,
+      iterations: completed,
+      averagingDelay: options.averagingDelay,
+      fullDealRegretPasses: completed * (options.algorithm === "vanilla" ? 1 : 2),
+      reachOnlyPasses: options.algorithm === "vanilla" ? 0 : completed,
+      compiled: game,
+      currentStrategy,
+      averageStrategy: savedAverageStrategy,
+      cumulativeRegrets: regretMap(game, workspace),
+      checkpoints: [...checkpoints],
+      workingStorageBytes: typedArrayBytes(Object.values(workspace)),
+    };
+  }
   return {
-    gameId: game.gameId,
-    algorithm: options.algorithm === "vanilla"
-      ? "factorized-river-full-tree-cfr"
-      : "factorized-river-alternating-cfr-plus",
-    algorithmVersion: 1,
-    iterations: options.iterations,
-    averagingDelay: options.averagingDelay,
-    fullDealRegretPasses: options.iterations * (options.algorithm === "vanilla" ? 1 : 2),
-    reachOnlyPasses: options.algorithm === "vanilla" ? 0 : options.iterations,
-    compiled: game,
-    currentStrategy,
-    averageStrategy: savedAverageStrategy,
-    cumulativeRegrets: regretMap(game, workspace),
-    checkpoints,
-    workingStorageBytes: typedArrayBytes(Object.values(workspace)),
+    get iterations() { return completed; },
+    get done() { return completed === options.iterations; },
+    advance,
+    snapshot,
   };
+}
+
+/** The script API and resumable API execute exactly the same iterations. */
+export function solveCompiledFactorizedRiverCfr(
+  game: CompiledFactorizedRiverGame,
+  input: FactorizedRiverCfrOptions,
+): FactorizedRiverCfrResult {
+  const session = createFactorizedRiverCfrSession(game, input);
+  session.advance(input.iterations);
+  return session.snapshot();
 }

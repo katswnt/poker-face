@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc lab, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
+**Status:** Leduc and River Solver Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
@@ -478,6 +478,21 @@ The contract is in the
 [configurable river v3 specification](configurable-river-v3-spec.md). The profile, accepted result,
 open-source compatibility finding, and six-perspective review are in the
 [configurable river v3 release audit](configurable-river-v3-audit.md).
+
+### Milestone 6g — River Solver Lab
+
+- [x] Add `/solver/river` while retaining the Leduc lab and existing trainer.
+- [x] Open an instant checked-in example and accept explicit custom v3 game inputs.
+- [x] Count exact deals and public states before solving; enforce a 100,000-state browser ceiling.
+- [x] Resume one CFR workspace in a Web Worker with real iteration counts, measured grades, and cancellation.
+- [x] Inspect all decisions, frequencies, chip values, responses, call prices, and blocker-aware ranges.
+- [x] Update opponent ranges after a response without revealing hidden cards or inventing off-path values.
+- [x] Preserve accepted strategy bytes and the independent scorekeeper's existing results.
+- [x] Add worker/session, mathematical teaching, UI, keyboard, and responsive checks.
+- [x] Use scoped styling and plain-language approximation claims; preserve unrelated local work.
+
+The browser contract is in [River Solver Lab specification](river-solver-lab-spec.md).
+Verification evidence and known limitations are in [River Solver Lab release audit](river-solver-lab-audit.md).
 
 The multiway stages are specified in
 [Multiway no-limit hold'em solver — staged research and delivery plan](multiway-nlhe-solver-plan.md).
