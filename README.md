@@ -11,7 +11,7 @@ For a solver-first tour, open `/solver/river` locally or on a deployment contain
 
 As of 2026-09-22, the configurable heads-up river solver v3, its dedicated browser lab,
 a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline heads-up turn-and-river reference** are implemented. They are separate from
+**offline heads-up turn-and-river reference with a resumable compact backend** are implemented. They are separate from
 the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
@@ -136,6 +136,25 @@ turn-solver match claimed. The reference caps ranges at 8 combinations each, 16 
 deals, 25,000 states, and 100,000 iterations. It is not wired into the River Lab or trainer.
 This heads-up milestone does **not** complete the separate multiway turn stage.
 
+The new [compact turn backend](tasks/compact-turn-engine-audit.md) reproduces the complete
+saved ordinary-CFR policy exactly while storing the public tree once. It adds resumable
+ordinary CFR and CFR+, genuine progress, cancellation, and hashed offline output. The
+same tiny-range limits still apply; this is groundwork for wider solving, not wider solving yet.
+On the 16-deal benchmark its structural typed arrays are about 91% smaller, but it is slower
+than the older repeated-tree compact engine. Total process memory is roughly unchanged:
+independent grading still builds a repeated tree. See the audit for measured costs and limits.
+
+```sh
+npm run audit:turn:compact
+npm run solve:turn:compact -- --fixture demo --iterations 1000 --algorithm cfr-plus --delay 20
+npm run profile:turn:compact
+```
+
+The solve command writes a complete JSON result to stdout and real progress to stderr.
+Use `--request file.json` for a bounded custom `TurnRequest`, `--timeout-ms` to shorten the
+ten-minute maximum, or Ctrl+C to cancel. Cancelled work does not export a partial policy.
+Disk restart checkpoints and a turn interface are not implemented.
+
 ### Share a game and grade a strategy
 
 The CLI now exports four versioned benchmark games and independently grades imported
@@ -221,18 +240,20 @@ combining implementation code.
 The bounded river engine, labs, exchange, guided comparisons, and offline heads-up turn
 reference are implemented. The active path does not depend on a collaboration.
 
-1. **Teach the two-street result.** Add a bounded turn lesson showing how the price now,
-   possible river cards, and later betting change one decision. Design honest conditional
-   action values and quality limits before exposing custom browser turn solves.
+1. **Grow the CPU solver first.** Baseline profiling and the compact turn engine are complete.
+   Next: range-vector calculations and a scalable independent grader, targeting a locked
+   64-combination-per-player turn fixture. Then richer turn/river betting, a small saved-result
+   explorer, bounded joint flop solving, and a curated library. The standalone turn lesson
+   is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
+   the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
 2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
    no external turn parity is claimed yet. Extend reproduction CI to older river/multiway
-   artifacts; Kuhn, Leduc, turn, v3, and exchange already have checks. Expand browser and
+   artifacts; Kuhn, Leduc, turn, compact turn, v3, and exchange already have checks. Expand browser and
    assistive-technology coverage beyond Chromium and make random trainer setups deterministic.
 3. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
-4. **Separate scale research.** Larger turn ranges, raises and multiple sizes need new
-   budgets and audits. Sampled multiway ranges retain their own Stage 4 gate; a three-player
+4. **Separate multiway research.** Sampled multiway ranges retain their own Stage 4 gate; a three-player
    turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
    exact-small-game parity. Flop play and learned leaf values are not implemented.
 5. **Optional integration.** The benchmark exchange is available now. Build an adapter only
@@ -492,7 +513,7 @@ fixed). Coverage:
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 
-CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/v3
+CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/turn/compact-turn/v3
 artifact and exchange-manifest reproduction, a production build, and Chromium browser
 tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, one-change comparisons, and responsive layouts.

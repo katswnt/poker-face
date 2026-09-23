@@ -37,6 +37,9 @@ jobs:
       - name: Audit heads-up turn and river artifact
         run: npm run audit:turn
 
+      - name: Audit shared-public turn backend
+        run: npm run audit:turn:compact
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

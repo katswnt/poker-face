@@ -1,11 +1,16 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Offline heads-up turn reference, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
+**Status:** Compact resumable heads-up turn engine, offline turn reference, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
 right, and what the learner should gain from it.
+
+**Active implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
+The user has prioritized solver capacity over a standalone turn lesson. That plan now
+controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
+implemented through M0/M1; wider-range work starts at M2. Existing game limits remain unchanged.
 
 ## Where we are now and what comes next
 
@@ -22,10 +27,17 @@ The 16,384-iteration fixture has 3,592 states and exploitability 0.014643152 chi
 below its pre-set 0.10-chip gate. See the [locked contract](heads-up-turn-v1-spec.md)
 and [release audit](heads-up-turn-v1-audit.md).
 
-**Active next step:** teach one cross-street decision, with explicit conditional-value
-semantics and bounded work before a turn UI. Also seek an independently compatible
-external turn referee. This path does not depend on collaboration. It does not satisfy
-or replace the **three-player** turn contract in the separate multiway Stage 5 plan.
+**Completed CPU-first M0/M1:** the compact turn engine reproduces the complete accepted
+ordinary-CFR policy, adds separately checked CFR+, resumes without restarting, and runs
+in a cancellable offline process. The [compact audit](compact-turn-engine-audit.md) records
+the locked contract, hashes and measured tradeoff: much smaller structural arrays, slower
+iterations than repeated compact, and roughly unchanged total RSS with the readable grader.
+
+**Active next step:** M2 range-vector calculations and scalable independent grading.
+Then richer turn/river betting before a thin saved-result
+explorer and bounded flop solving. See the [implementation plan](cpu-postflop-solver-plan.md).
+The standalone turn lesson is deferred, not completed. This path does not depend on
+collaboration and does not replace the **three-player** turn contract in multiway Stage 5.
 
 The **portable benchmark games and external-strategy grading** milestone is implemented
 for four versioned v3 games, without changing the accepted solver or its old artifacts:
