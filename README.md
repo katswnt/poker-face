@@ -10,15 +10,15 @@ For a solver-first tour, open `/solver/river` locally or on a deployment contain
 ## Current state
 
 As of 2026-09-22, the configurable heads-up river solver v3, its dedicated browser lab,
-and a portable benchmark/strategy-grading CLI are implemented. They are separate from
-the heuristic four-player trainer.
+a portable benchmark/strategy-grading CLI, and guided one-change comparisons are
+implemented. They are separate from the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
 | `/` — hold'em trainer | Observe or practice four-player hands, with equity and price explanations | Heuristic decisions and sampled equity, not an equilibrium solver |
 | `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
-| `/solver/river` — River Solver Lab | Saved example, bounded custom worker solves, and decision inspection | Two players, known final board, explicit ranges and finite bet menu |
+| `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -48,12 +48,18 @@ training iterations or regret totals.
   differences, opponent responses, fold probability, conditional showdown equity, and
   blocker-aware changes in the opponent's possible hands. Unreachable decisions are
   marked off path instead of receiving invented values.
+- Pin a decision and change only the opponent range, opening bet menu, or opponent stack.
+  Compare the same player, exact hand, and history, with frequency and chip-value changes,
+  independent grades, and warnings for rare, off-path, or removed decisions. Both players
+  adapt; this is not opponent locking. Changing the main form does not change the pin.
 - Use native keyboard controls, visible focus, associated field errors, and layouts
   checked at phone and desktop widths and 200% text size.
 
 **Limits:** river only; two players; no rake; equal prior contributions to an even starting
 pot, though remaining stacks may differ. Only declared bet sizes are available. The
 browser permits at most **100,000 equivalent repeated states and 2,000 iterations**.
+A comparison requires both games together to fit the 100,000-state limit, reuses the
+pinned result, and solves only the changed game with the same iteration count.
 The script/library defaults allow up to 15,000 compatible deals and 1,000,000 equivalent
 states, with at most 128 combinations per player's range. Bulk teaching data retains the
 100,000-state cap. These are safety limits, not claims that every device finishes quickly.
@@ -63,6 +69,9 @@ copied for every private deal. The factorized engine stores that public tree onc
 Cancellation yields between worker tasks; an individual preparation, grading, or teaching
 operation must finish first. See the [lab specification](tasks/river-solver-lab-spec.md)
 and [release audit, including known limits](tasks/river-solver-lab-audit.md).
+The [comparison contract](tasks/river-comparison-spec.md) and
+[comparison audit](tasks/river-comparison-audit.md) explain exact decision matching and
+whole-game value bounds. Those bounds are not error bars for individual action values.
 
 ### Reproducible v3 example
 
@@ -177,8 +186,9 @@ combining implementation code.
 
 ## Roadmap: what is left
 
-The bounded v3 engine, River Lab, and version-one benchmark exchange are complete. The next
-work is about connecting and teaching them—not completing an unrestricted poker solver.
+The bounded v3 engine, River Lab, version-one benchmark exchange, and first guided
+comparison feature are complete. Remaining work connects and teaches them—it is not
+completion of an unrestricted poker solver.
 
 1. **Integration, when a collaborator's code is available.** Inspect its rules, algorithm,
    output, and license; build only the adapter actually needed. The local CPU round trip
@@ -188,9 +198,10 @@ work is about connecting and teaching them—not completing an unrestricted poke
    river and multiway artifacts; Kuhn, Leduc, v3, and the exchange manifest now have checks.
    Make the existing random-hand-dependent trainer keyboard test deterministic. Expand
    browser and assistive-technology checks beyond current Chromium coverage.
-3. **More useful teaching.** Add guided “change one thing” comparisons for price, position,
-   ranges, blockers, stacks, and bet size. An opponent-mistake lesson would compute a best
-   response to a stated opponent model, not rename it GTO.
+3. **More useful teaching.** One-change comparisons now cover opponent ranges, opening
+   bet sizes, and opponent stacks. Extend the design to price, position, and board/blocker
+   changes only with explicit decision-matching rules. An opponent-mistake lesson would
+   compute a best response to a stated opponent model, not rename it GTO.
 4. **Separate research track.** Sample larger multiway ranges only after agreement with
    exact small games and uncertainty checks. Explore a tightly bounded turn game before
    flop or learned leaf values. GPU/WASM/native acceleration needs profiling and parity
@@ -423,7 +434,7 @@ fixed). Coverage:
 CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/v3
 artifact and exchange-manifest reproduction, a production build, and Chromium browser
 tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
-operation, validation, decision inspection, and responsive layouts.
+operation, validation, decision inspection, one-change comparisons, and responsive layouts.
 Older river and multiway reproduction commands below are not all CI jobs yet.
 [Release records](tasks/river-solver-lab-audit.md) distinguish working-tree test runs from
 committed artifacts; test totals are not a substitute for running the current checkout.

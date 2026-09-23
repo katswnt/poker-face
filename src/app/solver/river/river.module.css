@@ -82,6 +82,14 @@
 .lessons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 20px 0; }
 .lessons dt { color: #eeeeea; font-weight: 700; margin-bottom: 6px; }
 .lessons dd { color: #a8a8a0; font-size: 0.8rem; }
+.comparisonPin { margin: 22px 0; padding: 18px; border-left: 3px solid #7dd3a0; background: #13171c; }
+.comparisonPair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.comparisonPair > div { min-width: 0; overflow-wrap: anywhere; }
+.comparisonPair h4 { margin-top: 10px; }
+.comparisonPair dt { color: #a8a8a0; font-size: 0.75rem; }
+.comparisonPair dd { margin-bottom: 8px; color: #eeeeea; }
+.comparisonAction { border-top: 1px solid #3a4048; padding: 8px 0 18px; }
+.comparisonChange { overflow-wrap: anywhere; }
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; gap: 32px; }
   .setup { border-top: 1px solid #3a4048; padding-top: 32px; }
@@ -92,4 +100,5 @@
   .situation { gap: 8px; }
   .situation strong { font-size: 0.875rem; }
   .settings div { grid-template-columns: 1fr; gap: 2px; }
+  .comparisonPair { gap: 12px; }
 }

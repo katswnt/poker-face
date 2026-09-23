@@ -6,6 +6,7 @@ import { AVERAGING_DELAY, BROWSER_STATE_LIMIT, EXAMPLE_INPUT, SMALL_INPUT,
   type RiverLabCommand, type RiverLabErrors, type RiverLabEvent, type RiverLabInput,
   type RiverLabPreflight, type RiverLabResult } from "@/lib/solver/river/lab/model";
 import DecisionInspector from "./DecisionInspector";
+import RiverComparison from "./RiverComparison";
 import styles from "./river.module.css";
 
 const count = (value: number) => value.toLocaleString("en-US");
@@ -19,6 +20,8 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
   const [decision, setDecision] = useState(example.initialDecision);
   const [selectedKey, setSelectedKey] = useState(example.initialDecision.facts.informationSet);
   const [busy, setBusy] = useState<"preflight" | "solve" | "inspect" | null>(null);
+  const [comparisonBusy, setComparisonBusy] = useState(false);
+  const locked = busy !== null || comparisonBusy;
   const [progress, setProgress] = useState<Progress | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [message, setMessage] = useState("The checked-in example is ready to explore.");
@@ -110,7 +113,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
   }
 
   function solve() {
-    if (!preflight?.allowed || busy) return;
+    if (!preflight?.allowed || locked) return;
     started.current = performance.now(); setElapsed(0); setProgress(null); setErrors({});
     setBusy("solve"); setMessage("Solving in the background. You can cancel at any time.");
     post({ type: "solve", id: ++requestId.current, input });
@@ -126,7 +129,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
   function field(name: keyof RiverLabInput, label: string, help: string, numeric = false) {
     return <div className={styles.field}>
       <label htmlFor={`river-${name}`}>{label}</label>
-      <input id={`river-${name}`} name={name} value={input[name]} disabled={busy !== null}
+      <input id={`river-${name}`} name={name} value={input[name]} disabled={locked}
         inputMode={numeric ? "numeric" : "text"} autoCapitalize="off" autoComplete="off" spellCheck={false}
         maxLength={name.startsWith("range") ? 2000 : 100} required={name !== "raises"}
         aria-invalid={!!errors[name]} aria-describedby={`river-${name}-help${errors[name] ? ` river-${name}-error` : ""}`}
@@ -148,7 +151,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
         <p className={styles.intro}>See what makes a river choice work. Start with a checked example, or build a small game of your own.</p>
         <p className={styles.scope}>An approximate strategy for this specific finite game. It is not universal or exact GTO.
           Every compatible deal and showdown is counted exactly; the strategy is learned over a limited number of iterations.</p>
-        <div className={styles.nav}><a href="#river-result">Explore the result ↓</a><a href="#setup-heading">Customize a game ↓</a></div>
+        <div className={styles.nav}><a href="#river-result">Explore the result ↓</a><a href="#setup-heading">Customize a game ↓</a><a href="#river-comparison">Change one thing ↓</a></div>
       </header>
 
       <div className={styles.layout}>
@@ -157,11 +160,12 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
           <p>“Position” here means who acts first and who acts second. The first player acts first on the river;
             after each action, the other player responds.</p>
           <div className={styles.buttons}>
-            <button type="button" disabled={busy !== null} onClick={showExample}>View checked-in example</button>
-            <button type="button" disabled={busy !== null} onClick={() => preset(SMALL_INPUT)}>Fill small custom game</button>
+            <button type="button" disabled={locked} onClick={showExample}>View checked-in example</button>
+            <button type="button" disabled={locked} onClick={() => preset(SMALL_INPUT)}>Fill small custom game</button>
           </div>
-          <form noValidate onSubmit={event => { event.preventDefault(); if (!busy) check(); }}>
-            <fieldset disabled={busy !== null}>
+          {comparisonBusy && <p className={styles.notice}>The comparison is running. Finish or cancel it before starting another lab task.</p>}
+          <form noValidate onSubmit={event => { event.preventDefault(); if (!locked) check(); }}>
+            <fieldset disabled={locked}>
               <legend>Cards and ranges</legend>
               {field("board", "Five board cards", "Ranks: 2–9, T, J, Q, K, A. Suits: c clubs, d diamonds, h hearts, s spades.")}
               {field("range0", "First player's range", "Example: AA AQs 7h6h:50%")}
@@ -174,7 +178,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
                 <p>Board cards and overlapping private cards are removed automatically. Each range may contain at most 128 combinations after board removal.</p>
               </details>
             </fieldset>
-            <fieldset disabled={busy !== null}>
+            <fieldset disabled={locked}>
               <legend>Chips and available choices</legend>
               {field("pot", "Starting pot", "Even whole chips. Each player has already put in half.", true)}
               <div className={styles.pickers}>
@@ -192,7 +196,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
               </div>
               {field("iterations", "Solver iterations", "21–2000 passes through the learning loop. More work can improve the strategy; quality need not improve at every checkpoint.", true)}
             </fieldset>
-            <button className={styles.primary} type="submit" disabled={busy !== null}>Check game size</button>
+            <button className={styles.primary} type="submit" disabled={locked}>Check game size</button>
           </form>
 
           <section className={styles.preflight} aria-labelledby="preflight-heading">
@@ -210,7 +214,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
               <p className={styles.notice}>{preflight.allowed ? `Within the ${count(BROWSER_STATE_LIMIT)}-state browser teaching limit.`
                 : `Too large for the browser: the limit is ${count(BROWSER_STATE_LIMIT)} states. Reduce ranges or available sizes. Larger games remain available through the local v3 script.`}</p>
             </> : <p>Check the game size to see exact deal and state counts, estimated work, and whether it fits the browser limit.</p>}
-            <button type="button" className={styles.primary} disabled={!preflight?.allowed || busy !== null}
+            <button type="button" className={styles.primary} disabled={!preflight?.allowed || locked}
               aria-describedby="solve-help" onClick={solve}>Solve in browser</button>
             <p id="solve-help" className={styles.note}>{!preflight ? "Check the current inputs first. Changing any input requires another check."
               : !preflight.allowed ? "Solving is disabled because this game exceeds the browser limit." : "Runs on this device in a background worker. Speed depends on your device."}</p>
@@ -274,13 +278,14 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
               </> : <p>This custom result is a local calculation, not a separately audited, hashed release artifact.</p>}
             </details>
           </section>
-          <DecisionInspector result={result} decision={decision} selectedKey={selectedKey} busy={busy !== null}
-            disabled={busy === "solve" || busy === "preflight"}
+          <DecisionInspector result={result} decision={decision} selectedKey={selectedKey} busy={locked}
+            disabled={comparisonBusy || busy === "solve" || busy === "preflight"}
             choose={key => {
               setSelectedKey(key); setBusy("inspect"); setErrors({});
               setMessage("Loading a decision in the background…");
               post({ type: "inspect", id: ++requestId.current, source: result.source, key });
             }} />
+          <RiverComparison result={result} decision={decision} disabled={busy !== null} onBusyChange={setComparisonBusy} />
           <section className={styles.inset} aria-labelledby="ideas-heading">
             <h2 id="ideas-heading">What shapes the answer?</h2>
             <dl className={styles.lessons}>

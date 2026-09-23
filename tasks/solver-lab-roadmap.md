@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** River benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
+**Status:** Guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
@@ -40,9 +40,10 @@ Other remaining work is deliberately separated:
 - **Verification:** extend explicit reproduction CI coverage to older river/multiway artifacts; deterministic
   setup for the known random-hand-dependent trainer keyboard check; broader browser and
   assistive-technology testing. CI now reproduces Kuhn, Leduc, v3, and the exchange manifest.
-- **Teaching (next independent product step):** guided one-variable comparisons and an
-  explicitly modeled imperfect-opponent lesson. The existing River Lab already supports
-  custom inputs and decision inspection; this work need not wait for a collaborator's repo.
+- **Teaching:** one-variable comparisons now cover opponent ranges, opening bet menus,
+  and opponent stacks. Position, board/blocker, and pot/price comparisons need explicit
+  matching semantics. An imperfect-opponent lesson needs a stated opponent model and
+  a separate best-response workflow; it must not be presented as equilibrium play.
 - **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then a
   bounded earlier-street experiment. Profile any GPU/WASM/native candidate and prove parity
   on exact small games before expanding limits. Larger teaching views and scorekeeper
@@ -575,11 +576,19 @@ lessons. River lets the learner inspect a hand and action history, compare frequ
 and chip values, see possible opponent responses and hands, and inspect the independently
 measured quality of the saved strategy. Neither replaces the four-player trainer.
 
-A proposed next teaching layer would guide the learner through changing one assumption
-at a time: price, action order, ranges, blockers, stacks, or bet sizes. A later “imperfect
-opponent” lesson could change how often the opponent calls or bluffs and then calculate a
-best response. That would be an exploitative strategy against an explicit model, not
-automatically GTO. Neither guided comparison nor opponent-locking is implemented yet.
+The first guided comparison layer is implemented: pin an inspected decision, then change
+only the opponent range, opening bet menu, or opponent stack. It reuses the pinned result,
+solves the changed game in a resumable worker, and compares the exact same player, private
+hand, and public history. Missing decisions are not replaced; off-path values stay unknown.
+Both games together must fit 100,000 equivalent repeated states. Independent grades and
+whole-game value bounds stay separate from conditional action values, with rare-decision
+warnings. See the [comparison contract](river-comparison-spec.md) and
+[release evidence](river-comparison-audit.md).
+
+Price, action-order, and board/blocker comparisons are deferred. A later “imperfect
+opponent” lesson could change how often the opponent calls or bluffs and calculate a best
+response. That would be an exploitative strategy against an explicit model, not automatically
+GTO. Opponent-locking and a collaborator-specific adapter are not implemented.
 
 ## Stop conditions
 
