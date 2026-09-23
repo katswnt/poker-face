@@ -4,10 +4,11 @@
 
 **Baseline:** `7d2ea37` — audited turn reference and worker-backed trainer equity
 
-**Status:** Plan saved; the new implementation described here has not started.
+**Status:** M0–M2 implemented; the remaining stages are planned, not implemented.
 
-**Active next milestone:** M2 range-vector engine and scalable independent grader.
-M0/M1 are implemented; see the [compact turn audit](compact-turn-engine-audit.md).
+**Active next milestone:** M3 versioned richer turn/river betting and accepted examples.
+See the [compact turn audit](compact-turn-engine-audit.md) and
+[M2 vector turn audit](vector-turn-engine-audit.md).
 
 **Purpose:** The working reference for subsequent solver-capacity work. Update the
 execution record at the end of this file after each milestone.
@@ -477,7 +478,7 @@ an audit record. Update this table with the commit/evidence only after completio
 |---|---|---|---|
 | M0 | Baselines, benchmark matrix, locked v1-equivalence and resource contract | Reproduced references; exact counts and numeric/resource gates recorded | Complete; compact turn audit |
 | M1 | Compact resumable turn engine for unchanged v1 rules | Same transitions, information sets, ordinary-CFR updates and independent grade | Complete; compact turn audit |
-| M2 | Range-vector terminal/traversal engine and scalable scorekeeper | Naive/readable/exhaustive parity; wider-range profile within envelope | Not started |
+| M2 | Range-vector terminal/traversal engine and scalable scorekeeper | Naive/readable/exhaustive parity; wider-range profile within envelope | Complete; vector turn audit |
 | M3 | Configurable richer turn/river betting and accepted wider examples | Rule reductions, short-all-in audit, independent quality gate | Not started |
 | M4 | Minimal saved-turn explorer and artifact pipeline | Genuine engine result navigable; conditional semantics and accessibility tested | Not started |
 | M5 | Bounded joint flop/turn/river engine | No future-card cheating; exact runouts, reductions and accepted flop fixture | Not started |
@@ -784,7 +785,7 @@ on a different approximation. More compute remains an option, not a hidden requi
 - [x] Save this CPU-first implementation plan and link it from the roadmap.
 - [x] M0: baseline profile and locked compact-turn contract.
 - [x] M1: compact v1-equivalent turn engine.
-- [ ] M2: wider-range vector engine and scalable independent grader.
+- [x] M2: wider-range vector engine and scalable independent grader.
 - [ ] M3: richer turn/river betting and accepted practical examples.
 - [ ] M4: minimal saved-turn explorer.
 - [ ] M5: joint flop/turn/river reference and scalable implementation.
@@ -800,11 +801,25 @@ on the 16-deal boundary fell from 977,650 to 88,685 bytes; solve workspaces from
 iterations were slower than repeated compact. This is a correctness/storage foundation,
 not an accepted wider-range solver. Full restartable disk checkpoints remain M2 work.
 
-**Next implementation session:** lock M2's kernel/scorekeeper contract, implement independently
-checked blocker-sum and rank-group kernels, then integrate range-vector CFR and grading.
-The fixed 64-by-64 benchmark has 3,773 compatible pairs; current M1 correctly refuses it.
-Do not increase caps before the new computations and resource checks work. Preserve the
-unchanged reference engines, M1 parity suite, and existing browser teaching limits.
+**M2 execution, 2026-09-23:** See [locked contract](vector-turn-engine-spec.md) and
+[release audit](vector-turn-engine-audit.md). The unchanged 64-by-64 probe (3,773 compatible
+deals) passes at the first scheduled checkpoint: 256 CFR+ iterations, delay 20,
+exploitability 0.026707309503037013 chips, below the 0.25-chip gate. The full policy is
+reproducible on Node 20/24. The first accepted run took 3.344 seconds including worker
+compile/grade/export, with 295.2 MiB sampled peak worker RSS. There are 1,305 public states
+and 35,584 information sets, representing 4,516,282 equivalent repeated states without
+allocating that tree. Full checksummed iteration-boundary disk checkpoints can resume
+bit-identically at the same iteration. A separate vector grader and explicit-pair kernels
+agree; hidden-hand/future-card cheating tests remain. Existing engines/artifacts are unchanged.
+This is wider **synthetic-range** turn solving, not full-range or arbitrary-bet-size NLHE.
+
+**Next implementation session:** lock M3's new turn rules and resource contract before
+implementation or acceptance solves. Add declared betting menus and raises with minimum
+raises, short-all-ins, stack caps, street resets and returned unmatched chips. Reduce
+single-size/no-raise games to v1 and completed-turn continuations to river v3; include
+ordinary play examples with independently measured quality. Preserve the M2 gate and
+64-combination cap until new profiles justify changing them. Do not bundle a flop engine,
+UI expansion, neural model or GPU dependency into this step.
 
 At the end of each milestone add:
 

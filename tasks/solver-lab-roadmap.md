@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Compact resumable heads-up turn engine, offline turn reference, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
-**Last updated:** 2026-09-22
+**Status:** Wider-range CPU turn engine with restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
+**Last updated:** 2026-09-23
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -10,7 +10,8 @@ right, and what the learner should gain from it.
 **Active implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
 The user has prioritized solver capacity over a standalone turn lesson. That plan now
 controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
-implemented through M0/M1; wider-range work starts at M2. Existing game limits remain unchanged.
+implemented through M2. A separate backend admits up to 64 combinations/player;
+existing reference-engine and browser limits remain unchanged.
 
 ## Where we are now and what comes next
 
@@ -33,8 +34,15 @@ in a cancellable offline process. The [compact audit](compact-turn-engine-audit.
 the locked contract, hashes and measured tradeoff: much smaller structural arrays, slower
 iterations than repeated compact, and roughly unchanged total RSS with the readable grader.
 
-**Active next step:** M2 range-vector calculations and scalable independent grading.
-Then richer turn/river betting before a thin saved-result
+**Completed CPU-first M2:** the separate vector engine and independent grader accept the
+locked 64-by-64 synthetic-range fixture: 3,773 compatible deals, 35,584 information sets,
+256 CFR+ iterations and 0.026707310-chip exploitability in a 100-chip pot. The accepted
+policy reproduces on Node 20/24. Full disk checkpoints, cancellation, blocker/rank-kernel
+oracles and independent wider grading are implemented; no old artifacts changed.
+See the [vector audit](vector-turn-engine-audit.md) for exact gates, hashes and measurements.
+
+**Active next step:** M3 versioned richer turn/river betting menus and raises, with
+independent reductions and accepted examples, before a thin saved-result
 explorer and bounded flop solving. See the [implementation plan](cpu-postflop-solver-plan.md).
 The standalone turn lesson is deferred, not completed. This path does not depend on
 collaboration and does not replace the **three-player** turn contract in multiway Stage 5.

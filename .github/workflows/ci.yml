@@ -40,6 +40,9 @@ jobs:
       - name: Audit shared-public turn backend
         run: npm run audit:turn:compact
 
+      - name: Reproduce and independently grade wider-range turn artifact
+        run: npm run audit:turn:vector
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

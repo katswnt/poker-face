@@ -9,9 +9,9 @@ For a solver-first tour, open `/solver/river` locally or on a deployment contain
 
 ## Current state
 
-As of 2026-09-22, the configurable heads-up river solver v3, its dedicated browser lab,
+As of 2026-09-23, the configurable heads-up river solver v3, its dedicated browser lab,
 a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline heads-up turn-and-river reference with a resumable compact backend** are implemented. They are separate from
+**offline turn-and-river solver with a wider-range CPU backend and disk checkpoints** are implemented. They are separate from
 the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
@@ -20,7 +20,7 @@ the heuristic four-player trainer.
 | `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
-| Offline turn-and-river reference | Joint two-street solve, exact river-card enumeration, independent grading | Tiny heads-up ranges, one bet size per street, no raises; no turn UI yet |
+| Offline turn-and-river solver | Joint two-street solve, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player in the new backend; one bet size per street, no raises; no turn UI yet |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -109,7 +109,7 @@ externally checked v2 game, readable-solver comparisons, independent grading, an
 hidden-card-cheating regressions. See the
 [reference compatibility finding](tasks/configurable-river-v3-audit.md#independent-open-source-referee-attempted-not-forced).
 
-### New: a bounded turn-and-river reference
+### Offline turn-and-river solving
 
 The offline [turn contract](tasks/heads-up-turn-v1-spec.md) now starts with four board
 cards and solves both remaining betting rounds together. It carries earlier actions and
@@ -153,7 +153,61 @@ npm run profile:turn:compact
 The solve command writes a complete JSON result to stdout and real progress to stderr.
 Use `--request file.json` for a bounded custom `TurnRequest`, `--timeout-ms` to shorten the
 ten-minute maximum, or Ctrl+C to cancel. Cancelled work does not export a partial policy.
-Disk restart checkpoints and a turn interface are not implemented.
+That compact reference has no disk restart support; the separate wider backend below does.
+A turn interface is not implemented.
+
+#### Wider ranges, still the same declared betting rules
+
+The [range-vector backend](tasks/vector-turn-engine-audit.md) now supports up to **64
+physical hand combinations per player**. It calculates values for a range together,
+instead of repeating the public tree for every private-hand pair. A separate grader
+checks the strategy without reading the solver's regret updates. Neither uses Monte Carlo.
+
+The fixed synthetic benchmark has 3,773 compatible deals, 166,012 deal–river pairs,
+1,305 public states, and 35,584 information sets—equivalent to 4,516,282 repeated states.
+At 256 CFR+ iterations, delay 20, its exploitability is **0.026707310 chips per hand**
+in a 100-chip pot (0.0267% of pot), below the pre-set 0.25-chip gate. That percentage is
+an incentive-to-deviate measure, **not** an action-frequency accuracy percentage.
+The first player's value is −6.754015282 chips; best-response gains are
+0.034413024 / 0.019001595 chips. An explicit-pair calculation agrees.
+
+The accepted solve took about 3.3 seconds on the recorded M1 Pro/Node 24 run, including
+compile, grading and export, with about 295 MiB sampled peak worker RSS. These are local
+measurements, not performance promises. The full hashed policy is checked in offline;
+Node 20 and 24 reproduce it. Ranges are synthetic test inputs, not recommended play.
+
+```sh
+npm run audit:turn:vector       # reproduce and independently check the saved result
+npm run profile:turn:vector     # five-sample range ladder and phase timings
+npm run --silent solve:turn:vector -- --fixture wide --checkpoint fresh-checkpoint.json
+npm run --silent solve:turn:vector -- --resume fresh-checkpoint.json --checkpoint another-fresh-file.json
+```
+
+Use `--request file.json` for the same `TurnRequest` shape. Each player declares prior
+contributions (`committedPerPlayer`); the starting pot is twice that number.
+The two `betSizes` entries mean one turn size and one river size, **not two choices per street**.
+`stackBehind` supplies the two remaining stacks. Player 0 acts first on both streets.
+Relative hand weights below 1e-12 of that player's maximum are refused, never silently dropped.
+
+The vector CLI defaults to CFR+, delay 20, a 100,000-iteration budget and a quality target
+of 0.25% of pot. `--target-chips` sets a chip target; `--iterations`, `--algorithm`,
+`--delay`, and `--timeout-ms` set explicit budgets/settings. It reports real iteration
+counts and the last independent grade with its iteration, not a predicted completion bar.
+JSON goes to stdout; progress to stderr. Exit 0 means target met; exit 2 means the budget
+ended before that target; exit 1 means invalid input, cancellation, timeout, or another error.
+
+Optional full checkpoints retain completed iterations, regrets, and average sums.
+Ctrl+C stops the worker; an already-saved checkpoint remains usable. Output checkpoint
+paths must be new; never point output at the resume input. Restores preserve solver
+settings and are independently regraded. At the same completed iteration they continue
+bit-identically, though an extra resume-time grade can stop earlier if it already meets
+the target. Convergence history records grades from the current invocation.
+
+This is an **approximate strategy for one finite heads-up game**, not exact or universal
+GTO. The new backend keeps one capped opening size per street and no raises/rake/flop.
+It uses a conservative 1 GiB estimated/sampled-worker budget (or less on smaller machines),
+not an OS hard total-memory guarantee; the parent process and checkpoint I/O also use RAM.
+The old solver limits, saved artifacts, and 100,000-state browser teaching cap are unchanged.
 
 ### Share a game and grade a strategy
 
@@ -228,6 +282,12 @@ opponent's private cards. A good small-game result does not establish full-game 
 7. [Turn game](src/lib/solver/turn/game.ts), [solve API](src/lib/solver/turn/solve.ts), and
    [independent rules oracle](src/lib/solver/turn/oracle.ts): `createTurnGame`, `solveTurn`,
    and `auditTurnRules`; offline, bounded, no browser/UI dependencies.
+8. [Wider CPU turn engine](src/lib/solver/postflop/vector/game.ts),
+   [restartable session](src/lib/solver/postflop/vector/session.ts), and
+   [independent vector grader](src/lib/solver/postflop/vector/scorekeeper.ts):
+   `compileVectorTurn`, `createVectorTurnSession`, `restoreVectorTurnSession`,
+   and `gradeVectorTurn`. See the [locked M2 contract](tasks/vector-turn-engine-spec.md)
+   for probability, blocker, averaging and checkpoint conventions.
 
 The CLI exchange is implemented; a browser importer and collaborator-specific adapters
 are not. The import format constrains the submitted policy's observations but cannot
@@ -240,15 +300,16 @@ combining implementation code.
 The bounded river engine, labs, exchange, guided comparisons, and offline heads-up turn
 reference are implemented. The active path does not depend on a collaboration.
 
-1. **Grow the CPU solver first.** Baseline profiling and the compact turn engine are complete.
-   Next: range-vector calculations and a scalable independent grader, targeting a locked
-   64-combination-per-player turn fixture. Then richer turn/river betting, a small saved-result
-   explorer, bounded joint flop solving, and a curated library. The standalone turn lesson
+1. **Grow the CPU solver first.** Baseline profiling, compact solving, wider-range vector
+   calculations, scalable independent grading, and disk restart checkpoints are complete.
+   Next: versioned richer turn/river betting menus and raises, with reductions to the old
+   rules and new quality gates. Then a small saved-result explorer, bounded joint flop
+   solving, and a curated library. The standalone turn lesson
    is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
    the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
 2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
    no external turn parity is claimed yet. Extend reproduction CI to older river/multiway
-   artifacts; Kuhn, Leduc, turn, compact turn, v3, and exchange already have checks. Expand browser and
+   artifacts; Kuhn, Leduc, turn, compact/vector turn, v3, and exchange already have checks. Expand browser and
    assistive-technology coverage beyond Chromium and make random trainer setups deterministic.
 3. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
@@ -431,6 +492,9 @@ src/
     types.ts                shared domain types
   lib/solver/               solver code independent of React
     toy/                    Kuhn/Leduc rules, readable CFR, independent grading, artifacts
+    turn/                   unchanged tiny joint turn/river reference and accepted artifact
+    postflop/               compact v1-equivalent turn engine and CPU-first fixtures
+      vector/               wider range calculations, independent grader, restart checkpoints
     river/                  bounded heads-up river rules, ranges, and teaching facts
       configurable-v3/      current rules, preparation/solve API, fixture, hashed artifact
       factorized/           shared public tree, resumable CPU CFR/CFR+, independent grader
@@ -513,7 +577,7 @@ fixed). Coverage:
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 
-CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/turn/compact-turn/v3
+CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/turn/compact-turn/vector-turn/v3
 artifact and exchange-manifest reproduction, a production build, and Chromium browser
 tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, one-change comparisons, and responsive layouts.
