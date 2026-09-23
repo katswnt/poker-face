@@ -9,8 +9,9 @@ For a solver-first tour, open `/solver/river` locally or on a deployment contain
 
 ## Current state
 
-As of 2026-09-22, the configurable heads-up river solver v3 and its dedicated browser lab
-are implemented. They are separate from the heuristic four-player trainer.
+As of 2026-09-22, the configurable heads-up river solver v3, its dedicated browser lab,
+and a portable benchmark/strategy-grading CLI are implemented. They are separate from
+the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -97,6 +98,31 @@ externally checked v2 game, readable-solver comparisons, independent grading, an
 hidden-card-cheating regressions. See the
 [reference compatibility finding](tasks/configurable-river-v3-audit.md#independent-open-source-referee-attempted-not-forced).
 
+### Share a game and grade a strategy
+
+The CLI now exports four versioned benchmark games and independently grades imported
+policies. Start with the small weighted-range example; output files must be new:
+
+```sh
+npm run solver:river -- list
+npm run solver:river -- export weighted-blockers --out river-game.json
+npm run solver:river -- solve weighted-blockers --out river-policy.json
+npm run solver:river -- grade weighted-blockers --strategy river-policy.json
+npm run audit:river:exchange
+```
+
+Replace the policy-producing step with another implementation once its output can be
+adapted. Exported games include compatible deals, legal decisions, action edges, and
+terminal payouts. Imports require a complete information-set policy bound to the game's
+fingerprint; incomplete, hidden-card-keyed, or invalid distributions are rejected.
+The grader uses trusted local rules, not imported payouts or claimed quality scores.
+
+See the [exchange guide](tasks/river-strategy-exchange-guide.md) for the schema, commands,
+observation boundary, and precision requirements, and the
+[reference manifest](src/lib/solver/river/exchange/artifacts/benchmarks-v1.json) for measured
+results. The CLI supports the four catalog games, not arbitrary imported game definitions.
+These are public correctness fixtures, not a representative or held-out strength test.
+
 ## What this could contribute to a GPU or training project
 
 This repository currently has **no GPU backend, neural-network training, or learned
@@ -106,7 +132,7 @@ here is missing there. Hardware alone does not tell us which of these pieces the
 | Existing contribution | Possible use in a collaboration |
 |---|---|
 | Explicit game rules, exact compatible deals, and independent money/showdown checks | Agree on the game being trained and catch card, betting, or payoff mismatches |
-| Independent, hidden-information-safe best-response grader | Evaluate an imported policy on the same bounded game, regardless of how it was trained |
+| Independent, hidden-information-safe best-response grader and policy-import CLI | Evaluate an imported complete policy on the same benchmark game, regardless of how it was trained |
 | Readable CPU reference, faster factorized CFR/CFR+, and reproducible artifacts | Check an accelerated implementation's values and quality before measuring speed |
 | Structured action values, opponent responses, and posterior ranges | Supply small reference cases for learning experiments or explain a validated policy to a person |
 | Worker-backed, keyboard-accessible teaching UI | A possible presentation layer after an adapter is built; not an existing plug-and-play integration |
@@ -134,33 +160,34 @@ opponent's private cards. A good small-game result does not establish full-game 
    synchronous solving and `createFactorizedRiverCfrSession` for chunked execution.
 4. [Independent scorekeeper](src/lib/solver/river/factorized/scorekeeper.ts):
    `compileFactorizedRiverScorekeeper` and `gradeFactorizedRiverStrategy`.
-5. [Strategy serialization and validation](src/lib/solver/toy/artifact.ts):
-   action probabilities keyed by information set; missing hands/actions and invalid
-   distributions are rejected. Existing artifacts are game-specific, not a general
-   cross-project exchange standard.
+5. [Portable game/policy format](src/lib/solver/river/exchange/types.ts) and
+   [strict import and grading API](src/lib/solver/river/exchange/exchange-node.ts):
+   `prepareRiverExchange`, `exportRiverPolicy`, `importRiverPolicy`, `gradeRiverPolicy`.
+   [Benchmark catalog](src/lib/solver/river/exchange/catalog.ts) and
+   [CLI](scripts/river-exchange.ts) provide the four supported reference games.
 6. [Worker protocol](src/lib/solver/river/lab/model.ts),
    [worker runtime](src/lib/solver/river/lab/runtime.ts), and
    [teaching facts](src/lib/solver/river/lab/teaching.ts): math stays independent of React.
 
-There is not yet a general “export game / import external policy / grade” CLI or browser
-importer. That adapter is the next integration milestone, not something this README claims
-already works. No repository license has been selected; agree on reuse permission and
-third-party licensing before copying or combining implementation code.
+The CLI exchange is implemented; a browser importer and collaborator-specific adapters
+are not. The import format constrains the submitted policy's observations but cannot
+certify its author's training process or absence of data leakage. No repository license
+has been selected; agree on reuse permission and third-party licensing before copying or
+combining implementation code.
 
 ## Roadmap: what is left
 
-The bounded v3 engine and River Lab milestone are complete. The next work is about making
-them easier to exchange, verify, and teach—not completing an unrestricted poker solver.
+The bounded v3 engine, River Lab, and version-one benchmark exchange are complete. The next
+work is about connecting and teaching them—not completing an unrestricted poker solver.
 
-1. **Shareable benchmark and strategy exchange (recommended next).** Package a small
-   versioned set of games; export rules and legal decisions; import a complete policy;
-   reject mismatched games or invalid probabilities; independently report values and
-   best-response gains. Test a round trip with the existing CPU strategy first. Then
-   inspect a collaborator's repo and build only the adapter actually needed.
-2. **Verification and reliability.** Add dedicated river/multiway artifact reproduction
-   jobs to CI (currently only Kuhn and Leduc have explicit reproduction jobs). Make the
-   existing random-hand-dependent trainer keyboard test deterministic. Expand browser and
-   assistive-technology checks beyond the current Chromium coverage.
+1. **Integration, when a collaborator's code is available.** Inspect its rules, algorithm,
+   output, and license; build only the adapter actually needed. The local CPU round trip
+   and independent CLI grading already work. Add separately declared held-out scenarios
+   before using the exchange to evaluate a learned model's generalization.
+2. **Verification and reliability.** Extend explicit reproduction CI coverage to older
+   river and multiway artifacts; Kuhn, Leduc, v3, and the exchange manifest now have checks.
+   Make the existing random-hand-dependent trainer keyboard test deterministic. Expand
+   browser and assistive-technology checks beyond current Chromium coverage.
 3. **More useful teaching.** Add guided “change one thing” comparisons for price, position,
    ranges, blockers, stacks, and bet size. An opponent-mistake lesson would compute a best
    response to a stated opponent model, not rename it GTO.
@@ -393,11 +420,11 @@ fixed). Coverage:
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 
-CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc
-artifact reproduction, a production build, and Chromium browser tests on pushes to main
-and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
+CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/v3
+artifact and exchange-manifest reproduction, a production build, and Chromium browser
+tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, and responsive layouts.
-The separate river and multiway reproduction commands below are not all CI jobs yet.
+Older river and multiway reproduction commands below are not all CI jobs yet.
 [Release records](tasks/river-solver-lab-audit.md) distinguish working-tree test runs from
 committed artifacts; test totals are not a substitute for running the current checkout.
 See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, validation, and error bounds.
@@ -477,6 +504,7 @@ npm run audit:leduc
 npm run audit:river
 npm run audit:river:v2
 npm run audit:river:v3
+npm run audit:river:exchange
 npm run audit:river:compact
 npm run audit:river:scorekeeper
 npm run audit:river:factorized
@@ -493,8 +521,8 @@ npm run audit:multiway-side-pot-river
 npm run audit:multiway-four-player-river
 ```
 
-The corresponding `solve:*` commands write artifacts; use them only when intentionally
-regenerating results and review the diff. Custom library solves use
+The corresponding `solve:*` commands and `generate:river:benchmarks` write artifacts;
+use them only when intentionally regenerating results and review the diff. Custom library solves use
 `solveConfigurableRiverV3(request, options)`; the artifact script itself regenerates the
 locked example rather than accepting arbitrary input files.
 

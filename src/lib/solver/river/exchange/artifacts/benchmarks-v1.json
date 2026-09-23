@@ -1,0 +1,208 @@
+{
+  "benchmarks": [
+    {
+      "counts": {
+        "compatibleDeals": 176,
+        "equivalentRepeatedStates": 11089,
+        "informationSets": 308,
+        "publicStates": 63,
+        "terminalStates": 7216
+      },
+      "description": "The accepted v3 example: several sizes and two raises.",
+      "id": "v3-two-raise",
+      "maximumGradeDifference": 0,
+      "report": {
+        "bestResponseValue": [
+          16.096050169414262,
+          -16.07790090750005
+        ],
+        "evaluation": "full-enumeration-floating-point",
+        "exploitability": 0.009074630957105256,
+        "exploitabilityConvention": "half-nash-gap-two-player-zero-sum",
+        "format": "poker-face-river-grade",
+        "gains": [
+          0.014993444017406432,
+          0.0031558178968040806
+        ],
+        "gameFingerprint": "cff8cad246739b85b6273d7f5a97798b2f81c6d18bbad68a91dfde2d61af1579",
+        "method": "independent-factorized-information-set-best-response",
+        "nashGap": 0.018149261914210513,
+        "policyHash": "c4b18392397300390da4cf9635317f4bcfe05572b9c485e2a2221209d32b241c",
+        "schemaVersion": 1,
+        "units": "net-chips-per-hand",
+        "utilityOrigin": "hand-start-including-prior-contributions",
+        "value": [
+          16.081056725396856,
+          -16.081056725396856
+        ]
+      },
+      "rulesAudit": {
+        "dealsChecked": 176,
+        "maximumProbabilityDifference": 0,
+        "maximumUtilityDifference": 0,
+        "maximumZeroSumError": 0,
+        "publicTerminals": 41,
+        "terminalsChecked": 7216
+      },
+      "solver": {
+        "algorithm": "cfr-plus",
+        "averagingDelay": 20,
+        "iterations": 1000
+      }
+    },
+    {
+      "counts": {
+        "compatibleDeals": 8,
+        "equivalentRepeatedStates": 169,
+        "informationSets": 24,
+        "publicStates": 21,
+        "terminalStates": 104
+      },
+      "description": "Unequal range weights, shared private cards, and one raise.",
+      "id": "weighted-blockers",
+      "maximumGradeDifference": 0,
+      "report": {
+        "bestResponseValue": [
+          22.000491712518517,
+          -21.999161150858455
+        ],
+        "evaluation": "full-enumeration-floating-point",
+        "exploitability": 0.0006652808300309232,
+        "exploitabilityConvention": "half-nash-gap-two-player-zero-sum",
+        "format": "poker-face-river-grade",
+        "gains": [
+          0.0002633880365578989,
+          0.0010671736235039475
+        ],
+        "gameFingerprint": "5fc1fa70d5614229ee3a977d499d5e2bc9ef873326d5273113e1617445f25b17",
+        "method": "independent-factorized-information-set-best-response",
+        "nashGap": 0.0013305616600618464,
+        "policyHash": "ca7fdad76d89cfc3663d0c4c4b2e3115453a2d9adafd22e645e491c7c5df8768",
+        "schemaVersion": 1,
+        "units": "net-chips-per-hand",
+        "utilityOrigin": "hand-start-including-prior-contributions",
+        "value": [
+          22.00022832448196,
+          -22.00022832448196
+        ]
+      },
+      "rulesAudit": {
+        "dealsChecked": 8,
+        "maximumProbabilityDifference": 0,
+        "maximumUtilityDifference": 0,
+        "maximumZeroSumError": 0,
+        "publicTerminals": 13,
+        "terminalsChecked": 104
+      },
+      "solver": {
+        "algorithm": "cfr-plus",
+        "averagingDelay": 20,
+        "iterations": 1000
+      }
+    },
+    {
+      "counts": {
+        "compatibleDeals": 4,
+        "equivalentRepeatedStates": 133,
+        "informationSets": 24,
+        "publicStates": 33,
+        "terminalStates": 84
+      },
+      "description": "Unequal stacks, a short all-in raise, and returned uncalled chips.",
+      "id": "short-all-in",
+      "maximumGradeDifference": 0,
+      "report": {
+        "bestResponseValue": [
+          25.00000119314535,
+          -24.99999648468171
+        ],
+        "evaluation": "full-enumeration-floating-point",
+        "exploitability": 0.00000235423182104455,
+        "exploitabilityConvention": "half-nash-gap-two-player-zero-sum",
+        "format": "poker-face-river-grade",
+        "gains": [
+          0.0000015728958047134256,
+          0.0000031355678373756746
+        ],
+        "gameFingerprint": "57f6f17838d0040006af791e57216e494fed792e22f57b40db9e9647adb49266",
+        "method": "independent-factorized-information-set-best-response",
+        "nashGap": 0.0000047084636420891,
+        "policyHash": "6190aad4ada7a96091cfe64e794bde529c749c28e48aae068fcb60d130e90017",
+        "schemaVersion": 1,
+        "units": "net-chips-per-hand",
+        "utilityOrigin": "hand-start-including-prior-contributions",
+        "value": [
+          24.999999620249547,
+          -24.999999620249547
+        ]
+      },
+      "rulesAudit": {
+        "dealsChecked": 4,
+        "maximumProbabilityDifference": 0,
+        "maximumUtilityDifference": 0,
+        "maximumZeroSumError": 0,
+        "publicTerminals": 21,
+        "terminalsChecked": 84
+      },
+      "solver": {
+        "algorithm": "cfr-plus",
+        "averagingDelay": 20,
+        "iterations": 1000
+      }
+    },
+    {
+      "counts": {
+        "compatibleDeals": 3,
+        "equivalentRepeatedStates": 73,
+        "informationSets": 18,
+        "publicStates": 24,
+        "terminalStates": 45
+      },
+      "description": "The board plays for everyone; blockers still affect compatible deals.",
+      "id": "board-ties",
+      "maximumGradeDifference": 0,
+      "report": {
+        "bestResponseValue": [
+          0,
+          0
+        ],
+        "evaluation": "full-enumeration-floating-point",
+        "exploitability": 0,
+        "exploitabilityConvention": "half-nash-gap-two-player-zero-sum",
+        "format": "poker-face-river-grade",
+        "gains": [
+          0,
+          0
+        ],
+        "gameFingerprint": "17acedde7885d6ae5a42e80f4dfd3ebe17674460e756bbd472e8b26bc89e9ef8",
+        "method": "independent-factorized-information-set-best-response",
+        "nashGap": 0,
+        "policyHash": "33fc46ff0faba1d10c18e7b405ac6f71296437a254ae12a61e1c76998162af30",
+        "schemaVersion": 1,
+        "units": "net-chips-per-hand",
+        "utilityOrigin": "hand-start-including-prior-contributions",
+        "value": [
+          0,
+          0
+        ]
+      },
+      "rulesAudit": {
+        "dealsChecked": 3,
+        "maximumProbabilityDifference": 0,
+        "maximumUtilityDifference": 0,
+        "maximumZeroSumError": 0,
+        "publicTerminals": 15,
+        "terminalsChecked": 45
+      },
+      "solver": {
+        "algorithm": "cfr-plus",
+        "averagingDelay": 20,
+        "iterations": 1000
+      }
+    }
+  ],
+  "format": "poker-face-river-benchmark-manifest",
+  "schemaVersion": 1,
+  "scope": "reference-approximations-for-four-declared-finite-games-not-full-holdem-strength",
+  "suiteVersion": 1
+}

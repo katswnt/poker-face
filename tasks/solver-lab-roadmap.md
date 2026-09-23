@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Leduc and River Solver Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
+**Status:** River benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
@@ -14,30 +14,35 @@ Kuhn, Leduc, compact/factorized CPU engines, configurable river v3, and the sepa
 multiway Stages 1–3 have accepted artifacts and audit records. Exact enumeration and
 grading do not make their finite-iteration strategies exact equilibria.
 
-The next recommended milestone is **portable benchmark games and external-strategy
-grading**, not a larger poker claim. It is not implemented yet:
+The **portable benchmark games and external-strategy grading** milestone is implemented
+for four versioned v3 games, without changing the accepted solver or its old artifacts:
 
-- [ ] Define a small, versioned collection of game configurations and reference grades.
-- [ ] Export the game fingerprint, information sets, legal actions, and payoff convention.
-- [ ] Import a complete strategy, rejecting mismatched games, hidden-information leaks,
+- [x] Define a small, versioned collection of game configurations and reference grades.
+- [x] Export the game fingerprint, information sets, legal actions, and payoff convention.
+- [x] Import a complete strategy, rejecting mismatched games, hidden-card-conditioned keys,
       missing actions, invalid probabilities, and incompatible sizing conventions.
-- [ ] Round-trip the existing CPU strategy without changing its independent grade.
-- [ ] Add a CLI report of values and both players' best-response gains in chips; do not
+- [x] Round-trip the existing CPU strategy without changing its independent grade.
+- [x] Add a CLI report of values and both players' best-response gains in chips; do not
       require identical action percentages when comparing independently trained strategies.
 - [ ] Inspect a collaborator's rules, algorithm, output format, and license before choosing
       an adapter. No GPU, neural-policy, or learned-value integration exists today.
 
-Existing game-specific artifacts, serialization helpers, and scorekeeper APIs are the
-foundation, not a finished cross-project protocol. A value predictor alone is not a
-complete strategy and cannot be assigned an exploitability score.
+The [exchange guide](river-strategy-exchange-guide.md),
+[locked contract](river-strategy-exchange-spec.md), and
+[release audit](river-strategy-exchange-audit.md) describe the shipped v1 protocol.
+The CLI accepts policies for trusted local catalog games, not arbitrary game definitions.
+It constrains the imported policy's observations, not the author's training process.
+A value predictor alone is not a complete strategy and cannot receive exploitability.
+The four public fixtures are not held-out evidence of a learned model's generalization.
 
 Other remaining work is deliberately separated:
 
-- **Verification:** explicit river/multiway artifact-reproduction CI jobs; deterministic
+- **Verification:** extend explicit reproduction CI coverage to older river/multiway artifacts; deterministic
   setup for the known random-hand-dependent trainer keyboard check; broader browser and
-  assistive-technology testing. Current CI explicitly reproduces Kuhn and Leduc only.
-- **Teaching:** guided one-variable comparisons and an explicitly modeled imperfect-opponent
-  lesson. The existing River Lab already supports custom inputs and decision inspection.
+  assistive-technology testing. CI now reproduces Kuhn, Leduc, v3, and the exchange manifest.
+- **Teaching (next independent product step):** guided one-variable comparisons and an
+  explicitly modeled imperfect-opponent lesson. The existing River Lab already supports
+  custom inputs and decision inspection; this work need not wait for a collaborator's repo.
 - **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then a
   bounded earlier-street experiment. Profile any GPU/WASM/native candidate and prove parity
   on exact small games before expanding limits. Larger teaching views and scorekeeper

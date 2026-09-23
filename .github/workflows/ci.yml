@@ -34,6 +34,12 @@ jobs:
       - name: Audit Leduc solver artifact
         run: npm run audit:leduc
 
+      - name: Audit configurable river v3 artifact
+        run: npm run audit:river:v3
+
+      - name: Audit river benchmark exchange
+        run: npm run audit:river:exchange
+
       - name: Build
         run: npm run build
 
