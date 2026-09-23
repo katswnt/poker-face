@@ -19,6 +19,7 @@ test("Space activates a focused training choice exactly once", async ({ page }) 
   await page.goto("/");
   await expect(page.getByRole("button", { name: "train", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: /deal/i }).click();
+  await expect(page.getByText("Blinds posted", { exact: true }).last()).toBeVisible();
 
   const promptLabel = page.getByText("Your decision", { exact: true });
   for (let step = 0; step < 24 && !(await promptLabel.isVisible()); step++) {
@@ -54,6 +55,7 @@ test("language choice is saved and poker terms explain themselves", async ({ pag
 
   await page.getByRole("button", { name: "observe", exact: true }).click();
   await page.getByRole("button", { name: /deal/i }).click();
+  await expect(page.getByText("Blinds posted", { exact: true }).last()).toBeVisible();
   await page.getByRole("button", { name: "Next →", exact: true }).click();
   const term = page.locator(".explained-term-button").first();
   await expect(term).toBeVisible();
@@ -83,6 +85,7 @@ test("a dealt hand fits a phone-sized viewport without sideways scrolling", asyn
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.getByRole("button", { name: /deal/i }).click();
+  await expect(page.getByText("Blinds posted", { exact: true }).last()).toBeVisible();
   await expect(page.getByText("Blinds posted")).toBeVisible();
   const hasHorizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -94,6 +97,7 @@ test("changing table style does not move the mode controls or masthead divider",
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await page.getByRole("button", { name: /deal/i }).click();
+  await expect(page.getByText("Blinds posted", { exact: true }).last()).toBeVisible();
 
   const masthead = page.locator("header");
   const modeControls = page.getByRole("group", { name: "Training mode" });

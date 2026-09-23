@@ -10,7 +10,7 @@ import { SUITS, SUIT_NAMES, RS, BB, cv, ck, cardStr, makeDeck, valName, valNameL
 import { bestHand } from "./eval";
 import { score7 } from "./score7";
 import { preflopHandTier, preflopRangePercent, preflopThresholds } from "./ranges";
-import { monteCarloCallEstimate, monteCarloEquityEstimate } from "./equity";
+import { estimateCall, estimateEquity, samplingUncertaintyCopy, TRAINER_EQUITY_SAMPLES } from "./equity";
 
 // Position name → short label. Lives here because the decision engine maps it; the UI
 // imports it too.
@@ -396,22 +396,25 @@ export function generateFullDecision(
   }
 
   // ── POSTFLOP ─────────────────────────────────────────────────────────────
-  const SIMS = 1000;
+  const SIMS = TRAINER_EQUITY_SAMPLES;
   const callEstimate = toCall > 0
-    ? monteCarloCallEstimate(hole, board, quote, numOpponents, SIMS, style, dealSeed)
+    ? estimateCall(hole, board, quote, numOpponents, SIMS, style, dealSeed)
     : undefined;
   const estimate = callEstimate
-    ? { equity: callEstimate.combinedShare, standardError: callEstimate.shareStandardError, samples: callEstimate.samples }
-    : monteCarloEquityEstimate(hole, board, numOpponents, SIMS, style, dealSeed);
+    ? { equity: callEstimate.combinedShare, standardError: callEstimate.shareStandardError, samples: callEstimate.samples, method: callEstimate.method }
+    : estimateEquity(hole, board, numOpponents, SIMS, style, dealSeed);
   const equity = estimate.equity;
   const estimateFields = {
     equity,
     equityStandardError: estimate.standardError,
     equitySamples: estimate.samples,
+    equityMethod: estimate.method,
     ...(callEstimate ? { callEstimate } : {}),
   };
   const equityPct = Math.round(equity * 100);
-  const sePct = (estimate.standardError * 100).toFixed(1);
+  const methodCopy = estimate.method === "enumerated"
+    ? `All ${estimate.samples.toLocaleString()} allowed opponent deals were enumerated, so there is no random sampling error. The opponent-range assumption can still be wrong.`
+    : `${estimate.samples.toLocaleString()} random deals. ${samplingUncertaintyCopy(estimate.standardError)}`;
   // Value bets get sized thinner as the pot goes multiway — more players to get through.
   const mwFactor = Math.max(0.4, 1 - 0.18 * (numOpponents - 1));
   const isRiver = street === "river";
@@ -430,8 +433,8 @@ export function generateFullDecision(
     : false;
   const math: string[] = [
     differentLayerFields
-      ? `Random-deal estimate: about ${equityPct}% combined share of the pots this hand can win after ${estimate.samples.toLocaleString()} deals. Different pot layers have different numbers of opponents. Random sampling adds about ±${sePct} percentage points of error.`
-      : `Random-deal estimate: about ${equityPct}% of the pot against ${numOpponents} opponent${numOpponents > 1 ? "s" : ""} after ${estimate.samples.toLocaleString()} deals. Random sampling adds about ±${sePct} percentage points of error.`,
+      ? `Showdown estimate: about ${equityPct}% combined share of the pots this hand can win. Different pot layers have different numbers of opponents. ${methodCopy}`
+      : `Showdown estimate: about ${equityPct}% of the pot against ${numOpponents} opponent${numOpponents > 1 ? "s" : ""}. ${methodCopy}`,
     `This estimate assumes each opponent uses the app's ${rangeLabel}. It does not use their earlier actions to narrow those possible hands, and different real players can produce a different answer.`,
   ];
   if (callEstimate && callEstimate.layers.length > 1) {
@@ -451,9 +454,14 @@ export function generateFullDecision(
   if (toCall > 0) {
     const ev = callEvaluation.expectedValue;
     const evText = `${ev >= 0 ? "+" : ""}${ev.toFixed(2)}`;
-    const returnErrorText = callEstimate ? callEstimate.returnStandardError.toFixed(2) : "0.00";
+    const exactBreakEven = callEstimate?.method === "enumerated" && callEstimate.isClose;
+    const closeCallReason = exactBreakEven
+      ? "Calling breaks even within floating-point precision at the current price under these assumed opponent hands."
+      : "The estimate slightly clears the current call price, but this is close.";
     const closeCopy = callEstimate?.isClose
-      ? ` Random sampling may move the estimated return by about ±${returnErrorText} chips, so this is a close decision.`
+      ? exactBreakEven
+        ? ` ${closeCallReason} No random sampling was used.`
+        : ` The modeled gain is within two measured standard errors of zero (two SE: ${(2 * callEstimate.returnStandardError).toFixed(2)} chips), so this is close, not a proven advantage.`
       : "";
     math.push(`Calling costs ${toCall} toward a final pot of ${quote.contestablePot}, so the call needs about ${potOddsPctPost}% of that pot over many deals.`);
     if (callEvaluation.profitable) {
@@ -476,15 +484,16 @@ export function generateFullDecision(
       math.push(quote.allIn
         ? `No more chips can be asked of this player after the all-in call. Opponent hands and later folds are still modeled only approximately.`
         : `Later bets and folds are not simulated, so this current-price check is not the call's full long-run profit.`);
-      thoughts.push(callEstimate?.isClose ? `The estimate slightly clears the current call price, but this is close.` : `The estimated showdown share covers the current price — call.`);
-      return { action: "call", ...estimateFields, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: callEstimate?.isClose ? `The estimate slightly clears the current call price, but this is close.` : `The cards' estimated showdown share clears the current call price.`, thoughts, math };
+      thoughts.push(callEstimate?.isClose ? closeCallReason : `The estimated showdown share covers the current price — call.`);
+      return { action: "call", ...estimateFields, dialogue: `${playerName} recounts the pot. "Call."`, reasoning: callEstimate?.isClose ? closeCallReason : `The cards' estimated showdown share clears the current call price.`, thoughts, math };
     } else {
       math.push(`Current-price check: ${equity.toFixed(4)} combined showdown share × ${quote.contestablePot} − ${toCall} = ${evText} chips.${closeCopy || ` The estimate misses this call's current price.${isRiver ? " No cards remain to improve the hand." : ""}`}`);
       math.push(quote.allIn
         ? `No more chips can be asked of this player after an all-in call. Opponent hands and later folds are still modeled only approximately.`
         : `Later bets and folds are not simulated, so this current-price check is not the call's full long-run profit.`);
-      thoughts.push(callEstimate?.isClose ? `The estimate slightly misses the current call price, but this is close.` : `The estimated showdown share does not cover the current price — fold.`);
-      return { action: "fold", ...estimateFields, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: callEstimate?.isClose ? `The estimate slightly misses the current call price, but this is close.` : `The cards' estimated showdown share misses the current call price.`, thoughts, math };
+      const closeFoldReason = exactBreakEven ? closeCallReason : "The estimate slightly misses the current call price, but this is close.";
+      thoughts.push(callEstimate?.isClose ? closeFoldReason : `The estimated showdown share does not cover the current price — fold.`);
+      return { action: "fold", ...estimateFields, dialogue: `${playerName} considers the pot, then folds. "Fold."`, reasoning: callEstimate?.isClose ? closeFoldReason : `The cards' estimated showdown share misses the current price.`, thoughts, math };
     }
   }
   if (equity >= 0.65) {
@@ -514,7 +523,7 @@ export function generateFullDecision(
   // (~30–52% plus a real draw or overcards, never pure air). Fire at a fixed frequency. This is a
   // simple heuristic, NOT a solver-derived mixed strategy: real GTO would balance bluffs
   // against a value range so the two are indifferent. The hash keeps the choice
-  // deterministic across the useMemo re-runs (see equity.ts) without a stateful RNG.
+  // deterministic across worker replays (see equity.ts) without a stateful RNG.
   const BLUFF_FREQUENCY = 0.3;
   const boardAnalysis = analyzeBoard(board);
   const holdingAnalysis = boardAnalysis ? analyzeHolding(hole, board, boardAnalysis) : null;

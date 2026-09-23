@@ -10,15 +10,17 @@ For a solver-first tour, open `/solver/river` locally or on a deployment contain
 ## Current state
 
 As of 2026-09-22, the configurable heads-up river solver v3, its dedicated browser lab,
-a portable benchmark/strategy-grading CLI, and guided one-change comparisons are
-implemented. They are separate from the heuristic four-player trainer.
+a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
+**offline heads-up turn-and-river reference** are implemented. They are separate from
+the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
-| `/` — hold'em trainer | Observe or practice four-player hands, with equity and price explanations | Heuristic decisions and sampled equity, not an equilibrium solver |
+| `/` — hold'em trainer | Observe or practice four-player hands, with worker-backed equity and price explanations | Heuristic strategy; exact heads-up river equity, sampled equity elsewhere; not an equilibrium solver |
 | `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
+| Offline turn-and-river reference | Joint two-street solve, exact river-card enumeration, independent grading | Tiny heads-up ranges, one bet size per street, no raises; no turn UI yet |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -107,6 +109,33 @@ externally checked v2 game, readable-solver comparisons, independent grading, an
 hidden-card-cheating regressions. See the
 [reference compatibility finding](tasks/configurable-river-v3-audit.md#independent-open-source-referee-attempted-not-forced).
 
+### New: a bounded turn-and-river reference
+
+The offline [turn contract](tasks/heads-up-turn-v1-spec.md) now starts with four board
+cards and solves both remaining betting rounds together. It carries earlier actions and
+blocker-compatible range weights forward; it does not solve each river independently and
+average the answers. The future river card stays hidden during every turn decision.
+All branches end in a fold or an enumerated showdown—there are no guessed leaf values.
+
+The saved example uses `Ks 8s 4d 2c`, weighted ranges `AsQs:0.5 KdKh` versus `QsJs 9h9d:2`,
+a 100-chip pot, 150-chip stacks, and turn/river bets of 50/100. Its 3 compatible private
+deals have 132 deal–river pairs, 3,592 full states, and 1,088 information sets. After
+16,384 **ordinary CFR** iterations (not CFR+), the first player's value is +50.012559646
+chips, best-response gains are 0.008481882 / 0.020804423 chips, and exploitability is
+**0.014643152 chips per hand**. This passes the pre-set 0.10-chip gate for this fixture.
+
+```sh
+npm run audit:turn  # reproduce the complete hashed result without overwriting it
+npm run solve:turn  # deliberately regenerate the fixture artifact
+```
+
+The [release audit](tasks/heads-up-turn-v1-audit.md) records independent payout checks,
+river-v3 reduction, exhaustive reduced-game best responses, and a regression showing
+why peeking at the future card produces an illegal advantage. There is no external
+turn-solver match claimed. The reference caps ranges at 8 combinations each, 16 compatible
+deals, 25,000 states, and 100,000 iterations. It is not wired into the River Lab or trainer.
+This heads-up milestone does **not** complete the separate multiway turn stage.
+
 ### Share a game and grade a strategy
 
 The CLI now exports four versioned benchmark games and independently grades imported
@@ -177,6 +206,9 @@ opponent's private cards. A good small-game result does not establish full-game 
 6. [Worker protocol](src/lib/solver/river/lab/model.ts),
    [worker runtime](src/lib/solver/river/lab/runtime.ts), and
    [teaching facts](src/lib/solver/river/lab/teaching.ts): math stays independent of React.
+7. [Turn game](src/lib/solver/turn/game.ts), [solve API](src/lib/solver/turn/solve.ts), and
+   [independent rules oracle](src/lib/solver/turn/oracle.ts): `createTurnGame`, `solveTurn`,
+   and `auditTurnRules`; offline, bounded, no browser/UI dependencies.
 
 The CLI exchange is implemented; a browser importer and collaborator-specific adapters
 are not. The import format constrains the submitted policy's observations but cannot
@@ -186,27 +218,26 @@ combining implementation code.
 
 ## Roadmap: what is left
 
-The bounded v3 engine, River Lab, version-one benchmark exchange, and first guided
-comparison feature are complete. Remaining work connects and teaches them—it is not
-completion of an unrestricted poker solver.
+The bounded river engine, labs, exchange, guided comparisons, and offline heads-up turn
+reference are implemented. The active path does not depend on a collaboration.
 
-1. **Integration, when a collaborator's code is available.** Inspect its rules, algorithm,
-   output, and license; build only the adapter actually needed. The local CPU round trip
-   and independent CLI grading already work. Add separately declared held-out scenarios
-   before using the exchange to evaluate a learned model's generalization.
-2. **Verification and reliability.** Extend explicit reproduction CI coverage to older
-   river and multiway artifacts; Kuhn, Leduc, v3, and the exchange manifest now have checks.
-   Make the existing random-hand-dependent trainer keyboard test deterministic. Expand
-   browser and assistive-technology checks beyond current Chromium coverage.
-3. **More useful teaching.** One-change comparisons now cover opponent ranges, opening
-   bet sizes, and opponent stacks. Extend the design to price, position, and board/blocker
-   changes only with explicit decision-matching rules. An opponent-mistake lesson would
-   compute a best response to a stated opponent model, not rename it GTO.
-4. **Separate research track.** Sample larger multiway ranges only after agreement with
-   exact small games and uncertainty checks. Explore a tightly bounded turn game before
-   flop or learned leaf values. GPU/WASM/native acceleration needs profiling and parity
-   tests; larger teaching views need memory work. None of these is implemented or promised
-   by the current River Lab.
+1. **Teach the two-street result.** Add a bounded turn lesson showing how the price now,
+   possible river cards, and later betting change one decision. Design honest conditional
+   action values and quality limits before exposing custom browser turn solves.
+2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
+   no external turn parity is claimed yet. Extend reproduction CI to older river/multiway
+   artifacts; Kuhn, Leduc, turn, v3, and exchange already have checks. Expand browser and
+   assistive-technology coverage beyond Chromium and make random trainer setups deterministic.
+3. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
+   and stacks. Price, position, and board/blocker changes need explicit matching rules.
+   An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
+4. **Separate scale research.** Larger turn ranges, raises and multiple sizes need new
+   budgets and audits. Sampled multiway ranges retain their own Stage 4 gate; a three-player
+   turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
+   exact-small-game parity. Flop play and learned leaf values are not implemented.
+5. **Optional integration.** The benchmark exchange is available now. Build an adapter only
+   after inspecting another implementation's rules and license; add held-out games before
+   claiming a learned model generalizes.
 
 There is no present full-range, all-streets, arbitrary-bet-size NLHE solver, and the
 four-player trainer does not inherit the heads-up solver's guarantees.
@@ -214,6 +245,24 @@ The [detailed solver roadmap](tasks/solver-lab-roadmap.md) preserves completed m
 the [multiway research plan](tasks/multiway-nlhe-solver-plan.md) defines its separate gates.
 
 ---
+
+## Trainer equity accuracy
+
+The trainer now enumerates heads-up rivers instead of sampling them, and uses a fixed
+10,000 random deals elsewhere. Both heavier hand calculations and local teaching readouts
+run in Web Workers. New requests cancel obsolete workers; errors are shown rather than
+falling back to a blocking calculation. Sampled uncertainty is labeled separately as one
+standard error and an approximate 95% sampling margin. Close decisions stay close, not
+proven mistakes.
+
+At 50% equity, the approximate 95% margin for independent win/loss samples falls from
+±3.1 percentage points at 1,000 samples to ±0.98 at 10,000. Actual split-pot uncertainty
+uses measured variance. More samples do not fix the assumed opponent ranges or account
+for future betting. Exact equity is also conditional on those assumptions, not exact GTO.
+
+See the [accuracy contract](tasks/trainer-equity-accuracy-spec.md) and
+[benchmark and release evidence](tasks/trainer-equity-accuracy-audit.md).
+Run `npm run bench:trainer` to reproduce the fixed-seed precision/timing benchmark.
 
 ## What the four-player trainer does
 
@@ -296,8 +345,11 @@ styles. Every percentage shown in the app is counted directly from all 1,326 sta
 combinations, so the explanation cannot drift away from the shipped hand groups. These are
 model rules, not solver outputs or promises that a play will make money.
 
-**Postflop** — a **1,000-simulation Monte Carlo** equity estimate per decision
-(`src/lib/poker/equity.ts`). Each sim:
+**Postflop** — the trainer counts every allowed opposing hand on a heads-up river
+(at most 990), with no random sampling error. Other estimates use a fixed
+**10,000-deal Monte Carlo sample** (`src/lib/poker/equity.ts`) in a Web Worker.
+This improves showdown-share precision, not the opponent model or strategy optimality.
+Each sampled deal:
 1. Samples the whole set of opponent hands from the app's **range-filtered pool**, rather
    than assuming every player holds two random cards. This is a modeling choice, not a
    claim to know a real opponent's range. Incompatible sets are rejected as a whole, so no opponent seat
@@ -316,11 +368,16 @@ shrinks as the pot goes multiway, but the trainer does not model a separate rang
 that will call those bets. The semi-bluff fires at a fixed frequency only when the hand can
 still improve (a draw / overcards), never on pure air. Because the trainer does not model
 which hands call, it shows a pure-bluff fold-rate reference rather than claiming an exact
-semi-bluff result. All ~12,000 simulations for a full hand run at deal time inside a single
-`useMemo`.
+semi-bluff result. The pure hand replay runs in a background worker at deal time and
+after a learner changes a choice. New requests terminate old workers; stale results
+cannot replace a newer hand. Worker failures are visible, with no blocking fallback.
 
-**The numbers shown** — for each postflop decision the feed shows a random-deal showdown
-estimate and sampling error measured from the actual win, loss, and split-pot results. It also
+**The numbers shown** — each postflop decision labels whether all allowed hands were
+enumerated or deals were sampled. Sampled results report one standard error and a
+separate approximate 95% sampling margin (1.96 standard errors), measured from actual
+win, loss, split-pot, or layered-return values. These are not guaranteed bounds and do
+not cover incorrect opponent ranges or future betting. Zero measured sample variation
+is not proof of zero sampling error. The feed also
 shows the current call price and bet sizing. The price comparison assumes the remaining cards
 are dealt and the players still in the hand reach showdown; it does not simulate later bets
 or folds, so it is a current-price check rather than a complete profit forecast. For a semi-bluff, it labels
@@ -344,7 +401,9 @@ src/
     eval.ts                 readable reference hand evaluator
     score7.ts               fast seven-card evaluator used in simulations
     ranges.ts               preflop tiers & position thresholds
-    equity.ts               Monte Carlo, exact-equity validation, the determinism seam
+    equity.ts               exact river enumeration, fixed-budget sampling, deterministic seeds
+    trainer-hand.ts         pure four-player hand replay
+    trainer-worker-*.ts     typed background protocol, runtime, and stale-result guards
     pots.ts                 side-pot & split-pot distribution
     engine.ts               one betting round, shared by preflop & postflop
     decide.ts               the full decision engine (board/holding analysis + choice)
@@ -358,18 +417,19 @@ src/
     multiway/               separate bounded three-/four-player river proofs
 test/                       node:test suites that import the REAL lib/ (not copies)
 e2e/                        Playwright keyboard and training-flow smoke tests
-bench/                      equity throughput + memoization benchmark (npm run bench)
+bench/                      equity throughput, memoization, and 1,000/10,000 accuracy benchmarks
 .github/workflows/ci.yml    lint + types + domain tests + build + browser tests
 ```
 
-**The determinism seam** (`equity.ts`) is the core correctness insight. The whole hand is
-recomputed inside one `useMemo` on every hero action. If the Monte Carlo used
+**The determinism seam** (`equity.ts`) is a key correctness safeguard. The whole hand is
+replayed in a worker after each hero action. If the Monte Carlo used
 `Math.random`, each recompute would return different equities → the number of simulated
 stages would shift → the hero's recorded choices would misalign with the streets they were
 made on. So each equity is seeded **purely from the spot itself** (hole, board, opponents,
 style, plus the deal's base seed): it's a referentially-transparent function of its inputs,
 identical across re-runs regardless of what the hero did earlier — and therefore safe to
-**memoize**, so re-simulated earlier streets are free on later decisions. A test asserts
+**memoize within a worker**. A new worker starts with a cold cache, so earlier streets
+are recalculated rather than described as free. A test asserts
 same-inputs → identical equity. (The earlier version used one sequential RNG for the whole
 hand, so a spot's equity depended on how many draws preceded it — reproducible only if the
 exact same sequence of spots recurred. The per-spot seed is strictly more robust.)
@@ -386,7 +446,8 @@ to the UI and records requested decisions separately from applied actions, so th
 cannot offer or announce a move the engine did not execute.
 
 \* **Why is the component still one file?** After extracting `decide.ts`, `PokerSim.tsx` is
-now essentially UI: the per-deal `useMemo` game loop and rendering. The entire decision
+now UI and rendering: the pure per-deal loop lives in `trainer-hand.ts` and runs in a
+worker through `useTrainerTask`. The entire decision
 engine — board/holding/threat analysis and the full per-spot choice — lives in
 `lib/poker/decide.ts` and is unit-tested directly. What remains in the component is
 genuinely view-layer and changes together with the markup; splitting the presentational
@@ -457,9 +518,9 @@ matters because stacks carry across hands.
 | Decision | Why |
 |---|---|
 | No poker libraries — evaluator, equity, ranges from scratch | The point of the project is to demonstrate the math, not import it |
-| Monte Carlo (not exact enumeration) for equity | 1,000 sims is fast enough (`useMemo` at deal time) and the teaching value is in the method, not the 3rd decimal |
+| Exact heads-up rivers; fixed 10,000 samples elsewhere | Count cheap cases completely and improve sampling precision without blocking the UI; neither fixes a wrong range assumption |
 | Range-filtered opponents in the sim | Equity-vs-random is a real modeling trap; filtering to plausible ranges is more honest |
-| Per-spot-seeded, memoized equity | Keeps the `useMemo`-recompute model consistent (the determinism seam) and makes re-simulated streets free |
+| Per-spot-seeded equity with per-worker memoization | Replayed choices see the same estimate for the same inputs; new workers intentionally start cold |
 | Pure logic in `lib/`, UI + prose in one component | Isolate and test what benefits from it; don't over-split coupled UI/prose |
 | No CSS framework | Preserve the terminal aesthetic; River Lab styles are isolated in a CSS module |
 | Keep the trainer separate from solver labs | A bounded heads-up or toy-game result must not become an unsupported four-player recommendation |

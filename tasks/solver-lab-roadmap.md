@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine shipped
+**Status:** Offline heads-up turn reference, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
 **Last updated:** 2026-09-22
 
 This document is the source of truth for the next solver project. It records what we
@@ -13,6 +13,19 @@ The bounded heads-up river engine and `/solver/river` teaching lab are implement
 Kuhn, Leduc, compact/factorized CPU engines, configurable river v3, and the separate
 multiway Stages 1–3 have accepted artifacts and audit records. Exact enumeration and
 grading do not make their finite-iteration strategies exact equilibria.
+
+The next independent solver milestone is now implemented: an **offline heads-up
+turn-and-river reference** with tiny weighted ranges, one bet per street, and no raises.
+Both streets are solved together with ordinary CFR. Exact river-card enumeration and
+an independent legal best-response grade keep future cards hidden at turn decisions.
+The 16,384-iteration fixture has 3,592 states and exploitability 0.014643152 chips,
+below its pre-set 0.10-chip gate. See the [locked contract](heads-up-turn-v1-spec.md)
+and [release audit](heads-up-turn-v1-audit.md).
+
+**Active next step:** teach one cross-street decision, with explicit conditional-value
+semantics and bounded work before a turn UI. Also seek an independently compatible
+external turn referee. This path does not depend on collaboration. It does not satisfy
+or replace the **three-player** turn contract in the separate multiway Stage 5 plan.
 
 The **portable benchmark games and external-strategy grading** milestone is implemented
 for four versioned v3 games, without changing the accepted solver or its old artifacts:
@@ -39,13 +52,14 @@ Other remaining work is deliberately separated:
 
 - **Verification:** extend explicit reproduction CI coverage to older river/multiway artifacts; deterministic
   setup for the known random-hand-dependent trainer keyboard check; broader browser and
-  assistive-technology testing. CI now reproduces Kuhn, Leduc, v3, and the exchange manifest.
+  assistive-technology testing. CI now reproduces Kuhn, Leduc, turn, v3, and the exchange manifest.
 - **Teaching:** one-variable comparisons now cover opponent ranges, opening bet menus,
   and opponent stacks. Position, board/blocker, and pot/price comparisons need explicit
   matching semantics. An imperfect-opponent lesson needs a stated opponent model and
   a separate best-response workflow; it must not be presented as equilibrium play.
-- **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then a
-  bounded earlier-street experiment. Profile any GPU/WASM/native candidate and prove parity
+- **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then its
+  bounded three-player earlier-street experiment. The separate heads-up turn reference is
+  implemented, but larger ranges, raises, and more sizes are not. Profile any GPU/WASM/native candidate and prove parity
   on exact small games before expanding limits. Larger teaching views and scorekeeper
   memory remain engineering constraints, not reasons to relax mathematical quality gates.
 - **Reuse:** settle the repository license before copying or combining implementation code.

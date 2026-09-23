@@ -1,4 +1,4 @@
-// Monte Carlo equity estimation.
+// Exact inexpensive river enumeration and fixed-budget Monte Carlo estimates.
 import type { CallEstimate, CallQuote, CardObj, ShowdownOutcomeRates, TableStyle } from "./types";
 import { RANKS, ck, cv } from "./cards";
 import { getCombos, handScore } from "./eval";
@@ -20,10 +20,53 @@ export function equityStandardError(p: number, n: number): number {
 }
 
 export interface EquityEstimate {
+  method: "enumerated" | "sampled";
   equity: number;
   standardError: number;
-  samples: number;
+  samples: number; // Accepted random deals, or the full deal count when enumerated.
   outcomes: ShowdownOutcomeRates;
+}
+
+export const TRAINER_EQUITY_SAMPLES = 10_000;
+
+function validateEstimateInput(hole: CardObj[], board: CardObj[], opponents: number, samples: number, style: TableStyle): void {
+  const all = [...hole, ...board];
+  if (hole.length !== 2 || board.length > 5 || all.some(card => !RANKS.includes(card.rank) || !["♠", "♥", "♦", "♣"].includes(card.suit)) || new Set(all.map(ck)).size !== all.length) {
+    throw new Error("Equity needs two distinct hole cards and up to five distinct board cards.");
+  }
+  if (!Number.isSafeInteger(opponents) || opponents < 0 || opponents > 5) throw new Error("The trainer supports zero through five opponents.");
+  if (!Number.isSafeInteger(samples) || samples < 2 || samples > 100_000) throw new Error("Use a fixed sample budget from 2 through 100,000.");
+  if (!["gto", "loose", "wild"].includes(style)) throw new Error("Unknown opponent style.");
+}
+
+// This is a normal approximation for a fixed sample budget, not a guaranteed
+// interval or a bound on the range/model error. Ties use the measured variance.
+export function samplingUncertaintyCopy(standardError: number): string {
+  const points = standardError * 100;
+  return `Sampling standard error (one SE): ${points.toFixed(2)} percentage points. Approximate 95% sampling margin: ±${(1.96 * points).toFixed(2)} points, not a guaranteed bound. This does not cover wrong opponent ranges or later betting; zero measured variation does not prove zero sampling error.`;
+}
+
+export function estimateEquity(
+  heroHole: CardObj[], board: CardObj[], numOpponents: number,
+  numSims = TRAINER_EQUITY_SAMPLES, style: TableStyle = "gto", dealSeed = 0,
+): EquityEstimate {
+  validateEstimateInput(heroHole, board, numOpponents, numSims, style);
+  if (board.length === 5 && numOpponents === 1) {
+    return simulate(heroHole, board, numOpponents, numSims, style, mulberry32(0), true);
+  }
+  return monteCarloEquityEstimate(heroHole, board, numOpponents, numSims, style, dealSeed);
+}
+
+export function estimateCall(
+  heroHole: CardObj[], board: CardObj[], quote: CallQuote, fallbackNumOpponents: number,
+  numSims = TRAINER_EQUITY_SAMPLES, style: TableStyle = "gto", dealSeed = 0,
+): CallEstimate {
+  validateEstimateInput(heroHole, board, fallbackNumOpponents, numSims, style);
+  if (!Number.isFinite(quote.callCost) || quote.callCost < 0 || !Number.isFinite(quote.contestablePot) || quote.contestablePot < 0) throw new Error("The call quote must have finite, nonnegative chip amounts.");
+  const seats = new Set(quote.layers.flatMap(layer => layer.eligibleOpponents));
+  if (seats.size > 5 || quote.layers.some(layer => !Number.isFinite(layer.amount) || layer.amount < 0 || new Set(layer.eligibleOpponents).size !== layer.eligibleOpponents.length || layer.eligibleOpponents.some(seat => !Number.isSafeInteger(seat) || seat < 0))) throw new Error("Invalid opponents or amounts in the call quote.");
+  if (quote.layers.length && Math.abs(quote.layers.reduce((sum, layer) => sum + layer.amount, 0) - quote.contestablePot) > 1e-9) throw new Error("Call layers must add to the reachable pot.");
+  return callEstimate(heroHole, board, quote, fallbackNumOpponents, numSims, style, dealSeed, true);
 }
 
 export function standardErrorFromMoments(sum: number, sumSquares: number, samples: number): number {
@@ -78,7 +121,7 @@ export function mulberry32(seed: number): () => number {
   return () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = Math.imul(t ^ (t >>> 7), 61 | t) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
 
-// Determinism seam. The whole hand is recomputed inside one React useMemo on every hero
+// Determinism seam. The pure hand is replayed in a worker after every hero
 // action. Equity here is seeded PURELY from the spot itself (hole, board, opponents,
 // style) plus the deal's base seed — NOT from a shared, order-dependent RNG stream. That
 // makes each equity a referentially-transparent function of its inputs: identical across
@@ -148,6 +191,13 @@ export function monteCarloCallEstimate(
   style: TableStyle = "gto",
   dealSeed = 0,
 ): CallEstimate {
+  return callEstimate(heroHole, board, quote, fallbackNumOpponents, numSims, style, dealSeed, false);
+}
+
+function callEstimate(
+  heroHole: CardObj[], board: CardObj[], quote: CallQuote, fallbackNumOpponents: number,
+  numSims: number, style: TableStyle, dealSeed: number, allowEnumeration: boolean,
+): CallEstimate {
   const quotedSeats = [...new Set(quote.layers.flatMap(layer => layer.eligibleOpponents))].sort((a, b) => a - b);
   const opponentSeats = quote.layers.length > 0
     ? quotedSeats
@@ -155,9 +205,10 @@ export function monteCarloCallEstimate(
   const layers = quote.layers.length > 0
     ? quote.layers.map(layer => ({ amount: layer.amount, eligibleOpponents: [...layer.eligibleOpponents] }))
     : [{ amount: quote.contestablePot, eligibleOpponents: [...opponentSeats] }];
+  const enumerate = allowEnumeration && board.length === 5 && opponentSeats.length <= 1;
   const layerKey = layers.map(layer => `${layer.amount}@${layer.eligibleOpponents.join(",")}`).join("|");
   const key = [
-    "call",
+    enumerate ? "exact-call" : "call",
     dealSeed >>> 0,
     numSims,
     style,
@@ -173,7 +224,7 @@ export function monteCarloCallEstimate(
 
   let seed = spotSeed(dealSeed, heroHole, board, opponentSeats.length, style);
   for (const char of layerKey) seed = Math.imul(seed ^ char.charCodeAt(0), 2654435761) >>> 0;
-  const result = simulateLayeredCall(heroHole, board, opponentSeats, layers, quote, numSims, style, mulberry32(seed));
+  const result = simulateLayeredCall(heroHole, board, opponentSeats, layers, quote, numSims, style, mulberry32(seed), enumerate);
   if (callEstimateCache.size >= EQUITY_CACHE_CAP) callEstimateCache.clear();
   callEstimateCache.set(key, result);
   return result;
@@ -221,6 +272,7 @@ function visitSimulationScores(
   style: TableStyle,
   rng: () => number,
   visit: (heroScore: number, opponentScores: number[]) => void,
+  enumerate = false,
 ): number {
   const allCards: CardObj[] = [];
   for (const s of ["♠", "♥", "♦", "♣"]) for (const r of RANKS) allCards.push({ rank: r, suit: s });
@@ -243,6 +295,16 @@ function visitSimulationScores(
   }
   if (!hasCompatibleTuple(playablePairs, numOpponents)) {
     return 0;
+  }
+
+  if (enumerate) {
+    if (board.length !== 5 || numOpponents > 1) throw new Error("Exact trainer enumeration requires a river and at most one opponent.");
+    const heroScore = score7([...heroHole, ...board]);
+    if (numOpponents === 0) { visit(heroScore, []); return 1; }
+    for (const [first, second] of playablePairs) {
+      visit(heroScore, [score7([remaining[first], remaining[second], ...board])]);
+    }
+    return playablePairs.length;
   }
 
   for (let sim = 0; sim < numSims; sim++) {
@@ -276,7 +338,7 @@ function shareAgainst(heroScore: number, opponentScores: number[]): number {
   return 1 / (tiedOpponents + 1);
 }
 
-function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims: number, style: TableStyle, rng: () => number): EquityEstimate {
+function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, numSims: number, style: TableStyle, rng: () => number, enumerate = false): EquityEstimate {
   // Welford's running method avoids subtracting two nearly equal totals.
   // That matters in forced chops: every trial has the same share, so the
   // sampling uncertainty should be exactly zero.
@@ -294,16 +356,18 @@ function simulate(heroHole: CardObj[], board: CardObj[], numOpponents: number, n
     meanShare += delta / sampleNumber;
     m2 += delta * (share - meanShare);
     visited = sampleNumber;
-  });
+  }, enumerate);
   if (samples === 0) return {
+    method: "sampled",
     equity: 0.5,
     standardError: 0,
     samples: 0,
     outcomes: { all: 0, some: 1, none: 0 },
   };
   return {
+    method: enumerate ? "enumerated" : "sampled",
     equity: meanShare,
-    standardError: standardErrorFromRunningVariance(m2, samples),
+    standardError: enumerate ? 0 : standardErrorFromRunningVariance(m2, samples),
     samples,
     outcomes: {
       all: outcomeCounts.all / samples,
@@ -322,6 +386,7 @@ function simulateLayeredCall(
   numSims: number,
   style: TableStyle,
   rng: () => number,
+  enumerate = false,
 ): CallEstimate {
   const opponentIndex = new Map(opponentSeats.map((seat, index) => [seat, index]));
   const layerMeans = layers.map(() => 0);
@@ -347,7 +412,7 @@ function simulateLayeredCall(
     meanReturn += delta / sampleNumber;
     returnM2 += delta * (totalReturn - meanReturn);
     visited = sampleNumber;
-  });
+  }, enumerate);
 
   if (samples === 0) {
     layerMeans.forEach((_, index) => {
@@ -355,10 +420,17 @@ function simulateLayeredCall(
     });
     meanReturn = layerMeans.reduce((total, share, index) => total + share * layers[index].amount, 0);
   }
-  const returnStandardError = standardErrorFromRunningVariance(returnM2, samples);
+  const returnStandardError = enumerate ? 0 : standardErrorFromRunningVariance(returnM2, samples);
   const combinedShare = quote.contestablePot > 0 ? meanReturn / quote.contestablePot : 0;
   const expectedValue = meanReturn - quote.callCost;
+  // Full enumeration has no sampling error, but accumulated chip means still
+  // have floating-point roundoff. This tolerance is numerical, not statistical;
+  // keep the raw EV unchanged so callers can inspect it.
+  const closeTolerance = enumerate
+    ? 64 * Number.EPSILON * Math.max(1, quote.contestablePot, quote.callCost)
+    : 2 * returnStandardError;
   return {
+    method: enumerate ? "enumerated" : "sampled",
     callCost: quote.callCost,
     contestablePot: quote.contestablePot,
     combinedShare,
@@ -367,7 +439,7 @@ function simulateLayeredCall(
     returnStandardError,
     expectedValue,
     samples,
-    isClose: Math.abs(expectedValue) <= 2 * returnStandardError,
+    isClose: Math.abs(expectedValue) <= closeTolerance,
     outcomes: samples > 0
       ? {
           all: outcomeCounts.all / samples,

@@ -1,0 +1,4494 @@
+{
+  "acceptance": {
+    "maximumExploitability": 0.1,
+    "passed": true
+  },
+  "algorithm": "full-tree-cfr",
+  "algorithmVersion": 1,
+  "bestResponseValue": [
+    50.021041527598,
+    -49.99175522291101
+  ],
+  "convergence": [
+    {
+      "exploitability": 0.9330104121007814,
+      "gains": [
+        0.525613253980886,
+        1.3404075702206768
+      ],
+      "iteration": 256,
+      "value": [
+        50.8210445122913,
+        -50.8210445122913
+      ]
+    },
+    {
+      "exploitability": 0.23429043749593959,
+      "gains": [
+        0.13425692521209243,
+        0.33432394977978674
+      ],
+      "iteration": 1024,
+      "value": [
+        50.20240751635595,
+        -50.20240751635595
+      ]
+    },
+    {
+      "exploitability": 0.058572609373985784,
+      "gains": [
+        0.033854868581457254,
+        0.08329035016651432
+      ],
+      "iteration": 4096,
+      "value": [
+        50.050311241810554,
+        -50.050311241810554
+      ]
+    },
+    {
+      "exploitability": 0.014643152343495558,
+      "gains": [
+        0.008481881975271222,
+        0.020804422711719894
+      ],
+      "iteration": 16384,
+      "value": [
+        50.01255964562273,
+        -50.01255964562273
+      ]
+    }
+  ],
+  "equilibriumValueIntervalPlayer0": [
+    49.99175522291101,
+    50.021041527598
+  ],
+  "exploitability": 0.014643152343495558,
+  "exploitabilityConvention": "half-nash-gap",
+  "exploitabilityUnits": "net-chips-per-hand",
+  "gains": [
+    0.008481881975271222,
+    0.020804422711719894
+  ],
+  "game": "heads-up-turn-v1",
+  "informationSets": 1088,
+  "iterations": 16384,
+  "limitations": [
+    "Two players, turn and river only",
+    "Tiny explicit ranges",
+    "One bet size per street; no raises",
+    "Approximate full-tree CFR strategy for this finite game, not universal or exact GTO",
+    "No independent external turn-solver comparison yet"
+  ],
+  "nashGap": 0.029286304686991116,
+  "payloadHash": "bd98eacacfb5de375cc8c485dfde8c44e890e41a151afa0d15caebcb7019995e",
+  "preflight": {
+    "blockedCombos": [
+      0,
+      0
+    ],
+    "chanceNodes": 10,
+    "compatibleDeals": 3,
+    "dealRiverPairs": 132,
+    "decisionNodes": 1596,
+    "legalRiversPerDeal": 44,
+    "rangeEntries": [
+      2,
+      2
+    ],
+    "stateLimit": 25000,
+    "terminalNodes": 1986,
+    "totalStates": 3592
+  },
+  "request": {
+    "betSizes": [
+      50,
+      100
+    ],
+    "board": [
+      "Ks",
+      "8s",
+      "4d",
+      "2c"
+    ],
+    "committedPerPlayer": 50,
+    "id": "heads-up-turn-v1",
+    "rangeText": [
+      "AsQs:0.5 KdKh",
+      "QsJs 9h9d:2"
+    ],
+    "stackBehind": [
+      150,
+      150
+    ]
+  },
+  "rulesAudit": {
+    "dealRiverPairsChecked": 132,
+    "dealsChecked": 3,
+    "maximumProbabilityDifference": 0,
+    "maximumUtilityDifference": 0,
+    "maximumZeroSumError": 0,
+    "terminalsChecked": 1986
+  },
+  "rulesFingerprint": "b7aca81487749ed21b51478400da52352d3fc433b1b1925971938b134cb413c1",
+  "rulesVersion": 1,
+  "schemaVersion": 1,
+  "strategy": {
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.00000763447564178402,
+      "fold": 0.9999923655243582
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.015541890904421641,
+      "fold": 0.9844581090955785
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.01773252437336019,
+      "fold": 0.9822674756266399
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kd:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.00000763447564178402,
+      "fold": 0.9999923655243582
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.015541890904421641,
+      "fold": 0.9844581090955785
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.01773252437336019,
+      "fold": 0.9822674756266399
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Kh:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.003844055876175439,
+      "fold": 0.9961559441238246
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9980143902055514,
+      "check": 0.0019856097944485913
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.01800273135036392,
+      "fold": 0.9819972686496361
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.16271849185161044,
+      "check": 0.8372815081483895
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.9657496418738173,
+      "check": 0.03425035812618268
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923655243582,
+      "fold": 0.00000763447564178402
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00022013871302561122,
+      "check": 0.9997798612869744
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9844581090955785,
+      "fold": 0.015541890904421641
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.030146708111645985,
+      "check": 0.969853291888354
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9822674756266399,
+      "fold": 0.01773252437336019
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.03425035812618268,
+      "check": 0.9657496418738173
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=hidden:street=0:turn=check-bet:river-actions=start": {
+      "call": 0.5680613286090666,
+      "fold": 0.4319386713909334
+    },
+    "turn-v1:p0:AsQs:board=Ks8s4d2c:river=hidden:street=0:turn=start:river-actions=start": {
+      "bet": 0.999554492568916,
+      "check": 0.00044550743108392267
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9999847222830353,
+      "check": 0.00001527771696473778
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01377164581118362,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930359530415125,
+      "fold": 0.006964046958487485
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9d:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1157310844281926,
+      "check": 0.8842689155718074
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.9999847222830353,
+      "check": 0.00001527771696473778
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01377164581118362,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930359530415125,
+      "fold": 0.006964046958487485
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9h:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1157310844281926,
+      "check": 0.8842689155718074
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.5790788692954284,
+      "fold": 0.42092113070457166
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01377164581118362,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357104097286,
+      "fold": 0.006964289590271369
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11576189184101462,
+      "check": 0.8842381081589853
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.013771645811183618,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357914037484,
+      "fold": 0.0069642085962515945
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11575160811705242,
+      "check": 0.8842483918829477
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968390281343157,
+      "fold": 0.003160971865684274
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01377164581118362,
+      "check": 0.9862283541888164
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9930357104097286,
+      "fold": 0.006964289590271369
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Qs:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.11576189184101462,
+      "check": 0.8842381081589853
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999527475441666,
+      "fold": 0.000047252455833373246
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.8383394397678623,
+      "check": 0.1616605602321377
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.99648536659727,
+      "fold": 0.003514633402729902
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.11301130914263725,
+      "check": 0.8869886908573628
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.9503774661878376,
+      "fold": 0.04962253381216242
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.875901333952771,
+      "check": 0.12409866604722898
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=check-bet": {
+      "call": 0.9999923604673139,
+      "fold": 0.00000763953268612887
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=start": {
+      "bet": 0.00008825196352736786,
+      "check": 0.9999117480364726
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=check-bet": {
+      "call": 0.9968269037196468,
+      "fold": 0.003173096280353277
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=start": {
+      "bet": 0.01754002863604447,
+      "check": 0.9824599713639556
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=check-bet": {
+      "call": 0.4311656100140753,
+      "fold": 0.5688343899859247
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=start": {
+      "bet": 0.1193818838599177,
+      "check": 0.8806181161400822
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=hidden:street=0:turn=check-bet:river-actions=start": {
+      "call": 0.9876838194960542,
+      "fold": 0.012316180503945744
+    },
+    "turn-v1:p0:KhKd:board=Ks8s4d2c:river=hidden:street=0:turn=start:river-actions=start": {
+      "bet": 0.998761077831101,
+      "check": 0.0012389221688989967
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.30978285806390793,
+      "check": 0.6902171419360921
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.705545460255203,
+      "check": 0.294454539744797
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.001122320088521118,
+      "check": 0.9988776799114789
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Js:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.9763950257700603,
+      "fold": 0.023604974229939686
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.9763950257700603,
+      "check": 0.023604974229939686
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9218859581883189,
+      "fold": 0.07811404181168116
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9218859581883189,
+      "check": 0.07811404181168116
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.9999847382297048,
+      "fold": 0.000015261770295172813
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kd:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.9999847382297048,
+      "check": 0.000015261770295172813
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.9763950257700603,
+      "fold": 0.023604974229939686
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.9763950257700603,
+      "check": 0.023604974229939686
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9218859581883189,
+      "fold": 0.07811404181168116
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9218859581883189,
+      "check": 0.07811404181168116
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.9999847382297048,
+      "fold": 0.000015261770295172813
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Kh:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.9999847382297048,
+      "check": 0.000015261770295172813
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7063690069311882,
+      "check": 0.2936309930688118
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.30978285806390793,
+      "check": 0.6902171419360921
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7052547967225022,
+      "check": 0.29474520327749776
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Qs:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007174762196017968,
+      "check": 0.9999282523780398
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.6186108177070486,
+      "fold": 0.3813891822929514
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.6348526704341124,
+      "check": 0.3651473295658876
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.7062452057968898,
+      "fold": 0.2937547942031102
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7092341188963808,
+      "check": 0.2907658811036193
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.0008910889695166862,
+      "fold": 0.9991089110304834
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00013054945020843283,
+      "check": 0.9998694505497916
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.023604974229939686,
+      "fold": 0.9763950257700603
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.1953279082201942,
+      "check": 0.8046720917798058
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.07811404181168116,
+      "fold": 0.9218859581883189
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.7068050022302392,
+      "check": 0.29319499776976077
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261770295172813,
+      "fold": 0.9999847382297048
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.08491104705834693,
+      "check": 0.915088952941653
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=hidden:street=0:turn=bet:river-actions=start": {
+      "call": 0.0006464226104998797,
+      "fold": 0.9993535773895001
+    },
+    "turn-v1:p1:9h9d:board=Ks8s4d2c:river=hidden:street=0:turn=check:river-actions=start": {
+      "bet": 0.00019533989931395666,
+      "check": 0.999804660100686
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=2s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=3s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=4s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=5s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=6s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=7s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=8h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9c:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9d:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9h:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=9s:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ac:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ad:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ah:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=As:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jd:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Jh:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Kc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qd:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8524809768987847,
+      "check": 0.14751902310121523
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Qh:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Tc:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Td:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.09442443865465287,
+      "fold": 0.9055755613453471
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.8547618589047066,
+      "check": 0.14523814109529337
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.000015261255248987218,
+      "fold": 0.999984738744751
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Th:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.00007180055367670687,
+      "check": 0.9999281994463233
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=bet": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=bet-call:river-actions=check": {
+      "bet": 0.5,
+      "check": 0.5
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=bet": {
+      "call": 0.9055755613453471,
+      "fold": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=check-bet-call:river-actions=check": {
+      "bet": 0.9055755613453471,
+      "check": 0.09442443865465287
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=bet": {
+      "call": 0.999984738744751,
+      "fold": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=Ts:street=1:turn=check-check:river-actions=check": {
+      "bet": 0.999984738744751,
+      "check": 0.000015261255248987218
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=hidden:street=0:turn=bet:river-actions=start": {
+      "call": 0.000030517578125,
+      "fold": 0.999969482421875
+    },
+    "turn-v1:p1:QsJs:board=Ks8s4d2c:river=hidden:street=0:turn=check:river-actions=start": {
+      "bet": 0.0001615978795310329,
+      "check": 0.9998384021204689
+    }
+  },
+  "value": [
+    50.01255964562273,
+    -50.01255964562273
+  ]
+}

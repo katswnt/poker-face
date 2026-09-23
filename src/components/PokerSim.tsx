@@ -2,11 +2,9 @@
 
 import { createContext, useState, useCallback, useContext, useId, useMemo, useRef, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { SB, BB, SUIT_NAMES, makeDeck, shuffle, cardStr, valNameL } from "@/lib/poker/cards";
-import { bestHand } from "@/lib/poker/eval";
-import { distributePots } from "@/lib/poker/pots";
-import { postBlinds, runBettingRound } from "@/lib/poker/engine";
-import { generateFullDecision, snapToBB, analyzeBoard, POS_SHORT } from "@/lib/poker/decide";
+import { useTrainerTask } from "./useTrainerTask";
+import { BB, SUIT_NAMES, makeDeck, shuffle, valNameL } from "@/lib/poker/cards";
+import { snapToBB, analyzeBoard, POS_SHORT } from "@/lib/poker/decide";
 import type { CardObj, Decision, LegalActions, PlayerInfo, Stage } from "@/lib/poker/types";
 
 // ═══════════════════════════════════════════
@@ -15,6 +13,7 @@ import type { CardObj, Decision, LegalActions, PlayerInfo, Stage } from "@/lib/p
 const PLAYER_NAMES = ["Alice", "Bob", "Carol", "Dan"];
 // Position assigned by offset from dealer index
 const POSITIONS_ORDER = ["Dealer", "Small Blind", "Big Blind", "UTG"];
+const EMPTY_STAGES: Stage[] = [];
 
 // ═══════════════════════════════════════════
 // THEME (terminal only)
@@ -74,7 +73,7 @@ function subscribeToLanguage(onChange: () => void): () => void {
 
 const TERM_DEFINITIONS: Record<string, string> = {
   "monte carlo": "random-deal estimate",
-  "standard error": "likely sampling error",
+  "standard error": "one measure of random sampling variation",
   "implied odds": "possible future winnings",
   "fold equity": "chance everyone else folds",
   "pot odds": "share needed to call",
@@ -519,6 +518,7 @@ function TrainingPrompt({ stage, players, onChoice }: { stage: Stage; players: P
 function gradeChoice(userAction: string, aiAction: string, stage: Stage): ChoiceGrade {
   if (!stage.legalActions?.[userAction as keyof LegalActions]) return "illegal";
   if (userAction === aiAction) return "model";
+  if (stage.aiDecision?.callEstimate?.isClose) return "different";
   const facingBet = (stage.callQuote?.callCost ?? 0) > 0;
   const hasMeasuredPostflopPrice = stage.street !== "preflop" && facingBet && stage.aiDecision?.equity !== undefined;
   const directCost = hasMeasuredPostflopPrice && (
@@ -863,6 +863,7 @@ export default function PokerSim() {
       if (target?.closest('button, a, input, textarea, select, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="link"], [role="tab"], [role="slider"]')) return;
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
       const len = stagesRef.current.length;
+      if (len === 0) return;
       const curStage = stagesRef.current[stepRef.current];
       const heroActionId = curStage?.heroActionId;
       const needsChoice = trainingRef.current && curStage?.type === "action" && curStage?.decision?.action !== "already_folded" && curStage?.playerIdx === heroIdxRef.current && heroActionId !== undefined && !heroChoicesRef.current[heroActionId];
@@ -1000,98 +1001,14 @@ export default function PokerSim() {
 
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const stages = useMemo((): Stage[] => {
-    if (!gs) return [];
-    const dealSeed = gs.seed; // per-spot equity is seeded from this (see equity.ts)
-    const { hands, board } = gs;
-    const handStyle = gs.style;
-    const all: Stage[] = [];
-    let folded = [false, false, false, false];
-
-    // Dynamic positions from dealerIdx
-    const btnIdx = dealerIdx;
-    const sbIdx = (dealerIdx + 1) % 4;
-    const bbIdx = (dealerIdx + 2) % 4;
-    const utgIdx = (dealerIdx + 3) % 4;
-
-    // Stacks and blinds. Short stacks post only what they have; the nominal bring-in
-    // remains one full BB for everyone else.
-    const blindPosting = postBlinds(startingStacks, sbIdx, bbIdx, SB, BB);
-    let stacks = blindPosting.stacks;
-    let pot = blindPosting.pot;
-    let contributions = blindPosting.contributions;
-
-    const sbName = players[sbIdx].name;
-    const bbName = players[bbIdx].name;
-    const sbAllIn = blindPosting.smallBlindPosted < SB ? " and is all-in" : "";
-    const bbAllIn = blindPosting.bigBlindPosted < BB ? " and is all-in" : "";
-    all.push({ type: "info", street: "preflop", title: "Blinds posted", board: [], pot, folded: [...folded], stacks: [...stacks], description: `${sbName} posts ${blindPosting.smallBlindPosted} (SB)${sbAllIn}. ${bbName} posts ${blindPosting.bigBlindPosted} (BB)${bbAllIn}. Forced bets seed the pot.` });
-
-    // Preflop: UTG first, then BTN, SB, BB. Blinds are already posted (in `stacks`/`pot`),
-    // so they carry into the round as the starting bets with currentBet = BB.
-    const preflopOrder = [utgIdx, btnIdx, sbIdx, bbIdx];
-    const preflopBets = blindPosting.bets;
-    const pf = runBettingRound({
-      order: preflopOrder, hands, board: [], street: "preflop", players,
-      pot, contributions, folded, stacks, bets: preflopBets, currentBet: blindPosting.currentBet, raiseCount: 0, countRaises: true,
-      heroIdx, heroChoices, heroActionStart: 0,
-      decide: ({ pi, pot, currentBet, playerBet, stack, numActive, raiseCount, minRaiseTo, canRaise, callQuote }) =>
-        generateFullDecision(pi, hands[pi], [], pot, currentBet, playerBet, "preflop", false, players[pi].name, players[pi].pos, stack, numActive, handStyle, raiseCount, dealSeed, minRaiseTo, canRaise, callQuote),
-    });
-    all.push(...pf.stages);
-    pot = pf.pot; folded = pf.folded; stacks = pf.stacks; contributions = pf.contributions;
-
-    // Postflop: SB first, then BB, UTG, BTN. Fresh betting each street (currentBet 0).
-    const postflopOrder = [sbIdx, bbIdx, utgIdx, btnIdx];
-    const streets = [{ name: "flop", n: 3 }, { name: "turn", n: 4 }, { name: "river", n: 5 }];
-    let heroActions = pf.heroActionsConsumed;
-    for (const { name, n } of streets) {
-      if (folded.filter(f => !f).length <= 1) break;
-      const curBoard = board.slice(0, n);
-      const streetLabel = name === "flop" ? `Flop — ${curBoard.map(cardStr).join("  ")}` : `${name.charAt(0).toUpperCase() + name.slice(1)} — ${cardStr(board[n - 1])}`;
-      const baseNotes: Record<string, string> = { flop: "Three community cards dealt. New betting round begins.", turn: "Fourth card. Outs now use Rule of 2.", river: "Final card. No more outs." };
-      const activePlayers = postflopOrder.filter(i => !folded[i]);
-      const playersWithChips = activePlayers.filter(i => stacks[i] > 0);
-      const bettingClosed = activePlayers.length >= 2 && playersWithChips.length < 2;
-      const heroAllIn = heroIdx !== null && !folded[heroIdx] && stacks[heroIdx] === 0;
-      const note = bettingClosed
-        ? `${baseNotes[name]} No side pot can be contested — board running out, no betting.`
-        : heroAllIn
-        ? `${baseNotes[name]} You are all-in — no more decisions to make.`
-        : baseNotes[name];
-      all.push({ type: "street", street: name, title: streetLabel, note, board: curBoard, pot, folded: [...folded], stacks: [...stacks] });
-      const result = runBettingRound({
-        order: postflopOrder, hands, board: curBoard, street: name, players,
-        pot, contributions, folded, stacks, bets: [0, 0, 0, 0], currentBet: 0, raiseCount: 0, countRaises: false,
-        heroIdx, heroChoices, heroActionStart: heroActions,
-        decide: ({ pi, pot, currentBet, playerBet, stack, numActive, minRaiseTo, canRaise, callQuote }) =>
-          generateFullDecision(pi, hands[pi], curBoard, pot, currentBet, playerBet, name, false, players[pi].name, players[pi].pos, stack, numActive, handStyle, 0, dealSeed, minRaiseTo, canRaise, callQuote),
-      });
-      heroActions += result.heroActionsConsumed;
-      all.push(...result.stages);
-      pot = result.pot; folded = result.folded; stacks = result.stacks; contributions = result.contributions;
-    }
-
-    if (folded.filter(f => !f).length > 1) {
-      const finalBoard = board.slice(0, 5);
-      const results = hands.map((h, i) => folded[i] ? { idx: i, folded: true, hand: null } : { idx: i, folded: false, hand: bestHand(h, finalBoard) });
-      // The betting engine tracks each seat's total contribution so this payout path uses
-      // the same money record as call pricing and the action feed.
-      const awardOrder = [sbIdx, bbIdx, utgIdx, btnIdx]; // first active seat clockwise from BTN
-      const { payouts, rankedResults, pots } = distributePots(contributions, folded, hands, finalBoard, awardOrder);
-      payouts.forEach((amt, i) => { stacks[i] += amt; });
-      const chop = pots.some(layer => layer.winners.length > 1);
-      const winner = pots[0]?.winners[0] ?? rankedResults[0]?.idx ?? results.find(r => !r.folded)!.idx;
-      all.push({ type: "showdown", board: finalBoard, pot, folded: [...folded], results, rankedResults, pots, winner, payouts, chop, stacks: [...stacks] });
-    } else {
-      const w = folded.findIndex(f => !f);
-      if (w >= 0) {
-        stacks[w] += pot;
-        all.push({ type: "showdown", board: all[all.length - 1]?.board || [], pot, folded: [...folded], results: [], rankedResults: [], winner: w, foldWin: true, stacks: [...stacks] });
-      }
-    }
-    return all;
-  }, [gs, dealerIdx, startingStacks, players, heroIdx, heroChoices]);
+  const [calculationRetry, setCalculationRetry] = useState(0);
+  const handCalculation = useTrainerTask(gs ? {
+    kind: "hand",
+    input: { gs, dealerIdx, startingStacks, players, heroIdx, heroChoices },
+  } : null, calculationRetry);
+  const stages = handCalculation.status === "complete" && handCalculation.result.kind === "hand"
+    ? handCalculation.result.stages
+    : EMPTY_STAGES;
 
   // Sync latest-value refs after each render (read only by the keyboard listener,
   // auto-advance timeout, and click handlers — all post-commit — so an effect is correct
@@ -1373,6 +1290,21 @@ export default function PokerSim() {
     const aiAction = rawAiAction === "call" && stepToCall === 0 ? "check" : rawAiAction;
     const containerStyle = desktopFill ? { flex: 1, overflowY: "auto" as const } : { maxHeight: 400, overflowY: "auto" as const };
 
+    if (handCalculation.status === "pending" || handCalculation.status === "error") return (
+      <div>
+        <p role={handCalculation.status === "error" ? "alert" : "status"} style={{ color: T.inkSoft, lineHeight: 1.5, textWrap: "pretty" }}>
+          {handCalculation.status === "error"
+            ? handCalculation.message
+            : "Calculating this hand in the background. Sampled estimates use 10,000 deals; heads-up rivers count every allowed hand."}
+        </p>
+        <button
+          type="button"
+          aria-disabled={handCalculation.status === "pending"}
+          onClick={() => { if (handCalculation.status === "error") setCalculationRetry(value => value + 1); }}
+          style={{ padding: "8px 12px", fontFamily: T.mono, background: T.panel, color: handCalculation.status === "pending" ? T.dim : T.ink, border: `1px solid ${T.hair}` }}
+        >Retry calculation</button>
+      </div>
+    );
     return (
       <>
         <div style={{ marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -1531,7 +1463,7 @@ export default function PokerSim() {
     );
   };
 
-  const navBar = (borderTop = true) => gs && (
+  const navBar = (borderTop = true) => gs && handCalculation.status === "complete" && (
     <div style={{ background: T.bg, ...(borderTop ? { borderTop: `1px solid ${T.ink}` } : {}), padding: "10px 14px", display: "flex", gap: 8, alignItems: "center" }}>
       {step > 0 && !isEnd && (
         <button type="button" onClick={() => setStep(s => Math.max(s - 1, 0))} style={{ padding: "9px 14px", fontFamily: T.mono, fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", background: "transparent", color: T.ink, border: `1px solid ${T.ink}`, borderRadius: T.radius, cursor: "pointer" }}>

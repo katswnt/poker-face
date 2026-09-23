@@ -195,7 +195,7 @@ test("every decision carries a reasoning line and math trail", () => {
   assert.ok(d.reasoning.length > 0);
   assert.ok(Array.isArray(d.math) && d.math.length > 0);
   assert.ok(d.math[0].includes("±"), "equity readout includes the standard-error band");
-  assert.equal(d.equitySamples, 1000, "the UI receives the sample count as data, not parsed copy");
+  assert.equal(d.equitySamples, 10_000, "the UI receives the fixed sample count as data, not parsed copy");
   assert.equal(typeof d.equityStandardError, "number");
 });
 

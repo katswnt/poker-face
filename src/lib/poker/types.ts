@@ -23,6 +23,7 @@ export interface BoardAnalysis {
 
 export interface Decision {
   action: string; amount?: number; equity?: number; equityStandardError?: number; equitySamples?: number;
+  equityMethod?: "enumerated" | "sampled";
   callEstimate?: CallEstimate;
   dialogue: string; reasoning: string;
   thoughts: string[]; math: string[];
@@ -52,8 +53,8 @@ export interface PotLayerEstimate {
   expectedReturn: number;
 }
 
-// What happened to the hero across sampled showdowns. These three rates always
-// sum to one when samples were run. "All" means the hero received every chip
+// What happened across sampled or enumerated showdowns. These three rates always
+// sum to one when deals were evaluated. "All" means the hero received every chip
 // they could reach; "some" covers a split pot or winning only some pot layers.
 export interface ShowdownOutcomeRates {
   all: number;
@@ -65,6 +66,8 @@ export interface ShowdownOutcomeRates {
 // expected return divided by the total pot the caller can win; it exists so the
 // UI can still make a single, honest comparison with the call price.
 export interface CallEstimate {
+  // Optional for older saved decisions; new production results always include it.
+  method?: "enumerated" | "sampled";
   callCost: number;
   contestablePot: number;
   combinedShare: number;
@@ -72,7 +75,7 @@ export interface CallEstimate {
   expectedReturn: number;
   returnStandardError: number;
   expectedValue: number;
-  samples: number;
+  samples: number; // Random draws or the complete enumerated population, per method.
   isClose: boolean;
   outcomes: ShowdownOutcomeRates;
   layers: PotLayerEstimate[];
