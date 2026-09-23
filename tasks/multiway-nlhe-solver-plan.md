@@ -1,10 +1,15 @@
 # Multiway no-limit hold'em solver — staged research and delivery plan
 
-**Status:** Stages 1–3 are implemented and audited; Stage 4 sampling is next
+**Status:** Stages 1–3 are implemented and audited; Stage 4 sampling is the next multiway research stage, not yet implemented
 
 **Written:** 2026-09-14
 
 **First build target:** a tightly bounded, three-player river game
+
+For the current project-wide priority (portable benchmarks and external-strategy grading),
+see the [solver roadmap](solver-lab-roadmap.md#where-we-are-now-and-what-comes-next).
+This document describes the separate multiway research sequence, not a promise that the
+next product milestone expands the number of players or streets.
 
 ## The plain answer
 
@@ -186,7 +191,7 @@ can win and how much of that pot it expects to receive.
 
 The accepted implementation and evidence are recorded in the
 [unequal-stack specification](multiway-side-pot-river-spec.md) and
-[six-perspective release audit](multiway-side-pot-river-audit.md). Stage 3 is next; it
+[six-perspective release audit](multiway-side-pot-river-audit.md). The completed Stage 3
 returns to the simplest betting tree so the fourth player is the only new source of
 complexity.
 

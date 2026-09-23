@@ -1,19 +1,183 @@
-# Hold'em Trainer
+# Poker Face
 
-A Texas Hold'em study tool that walks through every decision in a hand and explains the
-reasoning, the estimated share of the pot, and the price of continuing.
+Poker Face combines a plain-language hold'em trainer with audited solver labs. The trainer
+teaches poker fundamentals; the labs solve small, explicitly defined games and independently
+measure how much each player could gain by changing strategy.
 
-Live at **[pokerface.katswint.com](https://pokerface.katswint.com)**
+Live app: [pokerface.katswint.com](https://pokerface.katswint.com).
+For a solver-first tour, open `/solver/river` locally or on a deployment containing the River Lab.
 
-> **Reading this as an evaluator?** Jump to [Is this "GTO"?](#is-this-gto) and
-> [Conscious decisions & honest limits](#conscious-decisions--honest-limits). This README
-> is deliberately candid about what the engine is, what it isn't, and where the scope
-> lines are drawn — because the interesting part of a project like this is the judgment,
-> not the marketing.
+## Current state
+
+As of 2026-09-22, the configurable heads-up river solver v3 and its dedicated browser lab
+are implemented. They are separate from the heuristic four-player trainer.
+
+| Experience | What is implemented | Important boundary |
+|---|---|---|
+| `/` — hold'em trainer | Observe or practice four-player hands, with equity and price explanations | Heuristic decisions and sampled equity, not an equilibrium solver |
+| `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
+| `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
+| `/solver/river` — River Solver Lab | Saved example, bounded custom worker solves, and decision inspection | Two players, known final board, explicit ranges and finite bet menu |
+
+The repository also contains a Kuhn reference solver and offline three- and four-player
+river proofs, including separate raise, bet-size, and three-player side-pot experiments.
+Those proofs are not a general multiway solver or the strategy behind the trainer.
+See the [multiway plan and completed stages](tasks/multiway-nlhe-solver-plan.md).
+
+**Exact game evaluation does not mean an exact equilibrium strategy.** The river engine
+enumerates compatible hands and showdowns without Monte Carlo sampling. Saved-strategy
+values and legal best responses are evaluated across the complete finite game, subject
+to floating-point arithmetic. CFR+ produces an **approximate strategy for that specific
+game**, not universal or exact GTO. Its remaining error is measured, not inferred from
+training iterations or regret totals.
+
+## What the River Solver Lab can do
+
+- Accept a five-card board, two weighted ranges, pot, remaining stacks, opening bet sizes,
+  raise-to amounts, and a raise limit. “Position” means who acts first and who acts second.
+- Enforce whole-chip sizing, minimum raises, short all-ins, no raising into an all-in
+  opponent, and returned uncalled chips. V3 permits up to five opening sizes, five raise
+  targets, and two raises after the opening bet.
+- Count compatible private deals and public states before solving. The work estimate is
+  an approximate operation count, not a promised completion time.
+- Run a resumable CFR+ session in a Web Worker, with completed iterations, elapsed time,
+  independently measured exploitability, and cancellation. It does not restart training
+  to animate a progress bar.
+- Inspect a player's hand and decision history: action frequencies, action values and
+  differences, opponent responses, fold probability, conditional showdown equity, and
+  blocker-aware changes in the opponent's possible hands. Unreachable decisions are
+  marked off path instead of receiving invented values.
+- Use native keyboard controls, visible focus, associated field errors, and layouts
+  checked at phone and desktop widths and 200% text size.
+
+**Limits:** river only; two players; no rake; equal prior contributions to an even starting
+pot, though remaining stacks may differ. Only declared bet sizes are available. The
+browser permits at most **100,000 equivalent repeated states and 2,000 iterations**.
+The script/library defaults allow up to 15,000 compatible deals and 1,000,000 equivalent
+states, with at most 128 combinations per player's range. Bulk teaching data retains the
+100,000-state cap. These are safety limits, not claims that every device finishes quickly.
+
+“Equivalent repeated states” counts the full game as if the public betting tree were
+copied for every private deal. The factorized engine stores that public tree once.
+Cancellation yields between worker tasks; an individual preparation, grading, or teaching
+operation must finish first. See the [lab specification](tasks/river-solver-lab-spec.md)
+and [release audit, including known limits](tasks/river-solver-lab-audit.md).
+
+### Reproducible v3 example
+
+The [locked fixture](src/lib/solver/river/configurable-v3/fixture.ts) uses board
+`Ks 8s 4s 2c 9d`, ranges `AA AQs 76s` versus `JJ ATs 65s`, a 100-chip pot,
+200 chips behind each player, opening bets of 50/100/200, raise-to targets of 100/150/200,
+and at most two raises.
+
+| Measurement | Checked-in result |
+|---|---:|
+| Compatible private deals | 176 |
+| Public states / equivalent repeated states | 63 / 11,089 |
+| Information sets / terminal states | 308 / 7,216 |
+| CFR+ iterations / averaging delay | 1,000 / 20 |
+| First player's value, from the hand's start | +16.081056725 chips |
+| Best-response gains, first / second player | 0.014993444 / 0.003155818 chips |
+| Exploitability | 0.009074631 chips per hand |
+
+A best-response gain is how much one player could improve against the other player's
+fixed saved strategy. For **two-player zero-sum games only**, this project's
+`exploitability = (gain0 + gain1) / 2`. The multiway proofs instead report every player's
+gain and the largest gain; they do not reuse that two-player convention.
+
+Run `npm run audit:river:v3` to regenerate and compare the complete versioned, hashed
+artifact without overwriting it. It also checks the independent money/showdown oracle
+over all 7,216 terminal states. The [v3 audit](tasks/configurable-river-v3-audit.md)
+records the hashes and evidence. This is one accepted fixture, not a quality guarantee
+for arbitrary custom inputs.
+
+There is no direct external-solver match claimed for v3's full two-raise tree: the pinned
+reference uses different sizing semantics. Evidence includes exact reduction to the
+externally checked v2 game, readable-solver comparisons, independent grading, and
+hidden-card-cheating regressions. See the
+[reference compatibility finding](tasks/configurable-river-v3-audit.md#independent-open-source-referee-attempted-not-forced).
+
+## What this could contribute to a GPU or training project
+
+This repository currently has **no GPU backend, neural-network training, or learned
+value model**. A collaborator's implementation must be inspected before claiming anything
+here is missing there. Hardware alone does not tell us which of these pieces they have.
+
+| Existing contribution | Possible use in a collaboration |
+|---|---|
+| Explicit game rules, exact compatible deals, and independent money/showdown checks | Agree on the game being trained and catch card, betting, or payoff mismatches |
+| Independent, hidden-information-safe best-response grader | Evaluate an imported policy on the same bounded game, regardless of how it was trained |
+| Readable CPU reference, faster factorized CFR/CFR+, and reproducible artifacts | Check an accelerated implementation's values and quality before measuring speed |
+| Structured action values, opponent responses, and posterior ranges | Supply small reference cases for learning experiments or explain a validated policy to a person |
+| Worker-backed, keyboard-accessible teaching UI | A possible presentation layer after an adapter is built; not an existing plug-and-play integration |
+
+**Useful starting point now:** share this repo and reproduce the v3 example. We do not
+need a larger solver to start comparing rules and outputs. For a GPU CFR implementation,
+compare quality at matched work and elapsed time. For a learned policy, adapt its legal
+action probabilities and grade the complete policy on held-out bounded games. A value-only
+model needs separate prediction tests; value predictions alone are not a strategy and
+cannot receive an exploitability score.
+
+The first shared experiment should use exactly the same board, weighted ranges, action
+order, legal actions, stacks, payoff convention, and game fingerprint. Compare values
+and best-response gains, not mandatory equality of action frequencies: multiple good
+strategies can differ. A network or adapter must never condition decisions on an
+opponent's private cards. A good small-game result does not establish full-game strength.
+
+### Entry points for another engineer or agent
+
+1. [V3 game contract](tasks/configurable-river-v3-spec.md) and
+   [release evidence](tasks/configurable-river-v3-audit.md): rules, quality gates, and limits.
+2. [Request and solve API](src/lib/solver/river/configurable-v3/solve.ts):
+   `ConfigurableRiverV3Request`, `prepareConfigurableRiverV3`, `solveConfigurableRiverV3`.
+3. [Factorized CFR engine](src/lib/solver/river/factorized/cfr.ts):
+   synchronous solving and `createFactorizedRiverCfrSession` for chunked execution.
+4. [Independent scorekeeper](src/lib/solver/river/factorized/scorekeeper.ts):
+   `compileFactorizedRiverScorekeeper` and `gradeFactorizedRiverStrategy`.
+5. [Strategy serialization and validation](src/lib/solver/toy/artifact.ts):
+   action probabilities keyed by information set; missing hands/actions and invalid
+   distributions are rejected. Existing artifacts are game-specific, not a general
+   cross-project exchange standard.
+6. [Worker protocol](src/lib/solver/river/lab/model.ts),
+   [worker runtime](src/lib/solver/river/lab/runtime.ts), and
+   [teaching facts](src/lib/solver/river/lab/teaching.ts): math stays independent of React.
+
+There is not yet a general “export game / import external policy / grade” CLI or browser
+importer. That adapter is the next integration milestone, not something this README claims
+already works. No repository license has been selected; agree on reuse permission and
+third-party licensing before copying or combining implementation code.
+
+## Roadmap: what is left
+
+The bounded v3 engine and River Lab milestone are complete. The next work is about making
+them easier to exchange, verify, and teach—not completing an unrestricted poker solver.
+
+1. **Shareable benchmark and strategy exchange (recommended next).** Package a small
+   versioned set of games; export rules and legal decisions; import a complete policy;
+   reject mismatched games or invalid probabilities; independently report values and
+   best-response gains. Test a round trip with the existing CPU strategy first. Then
+   inspect a collaborator's repo and build only the adapter actually needed.
+2. **Verification and reliability.** Add dedicated river/multiway artifact reproduction
+   jobs to CI (currently only Kuhn and Leduc have explicit reproduction jobs). Make the
+   existing random-hand-dependent trainer keyboard test deterministic. Expand browser and
+   assistive-technology checks beyond the current Chromium coverage.
+3. **More useful teaching.** Add guided “change one thing” comparisons for price, position,
+   ranges, blockers, stacks, and bet size. An opponent-mistake lesson would compute a best
+   response to a stated opponent model, not rename it GTO.
+4. **Separate research track.** Sample larger multiway ranges only after agreement with
+   exact small games and uncertainty checks. Explore a tightly bounded turn game before
+   flop or learned leaf values. GPU/WASM/native acceleration needs profiling and parity
+   tests; larger teaching views need memory work. None of these is implemented or promised
+   by the current River Lab.
+
+There is no present full-range, all-streets, arbitrary-bet-size NLHE solver, and the
+four-player trainer does not inherit the heads-up solver's guarantees.
+The [detailed solver roadmap](tasks/solver-lab-roadmap.md) preserves completed milestones;
+the [multiway research plan](tasks/multiway-nlhe-solver-plan.md) defines its separate gates.
 
 ---
 
-## What it does
+## What the four-player trainer does
 
 Deals a 4-player NLHE hand and steps through every decision — preflop through river — with
 a full explanation at each stage.
@@ -37,24 +201,23 @@ afterward a recap panel reveals every opponent's full reasoning.
 
 ## Is this "GTO"?
 
-**No — and the UI no longer claims it is.** This is the single most important thing to be
-honest about, so it goes first.
+**The four-player trainer is not GTO.** The separate solver labs search for approximate
+equilibrium strategies in their declared finite games and report independently measured
+quality. Neither is a claim to have solved unrestricted hold'em.
 
-The engine plays **heuristic, equity-driven poker**, not
-[game-theory-optimal](https://en.wikipedia.org/wiki/Solved_game) poker. Concretely:
+The trainer plays **heuristic, equity-driven poker**. Its limits are:
 
-| Real GTO has… | This engine has… |
+| Equilibrium solving involves… | The trainer uses… |
 |---|---|
 | Range-vs-range equilibria | Hero equity vs a *static* opponent range |
 | Mixed strategies / indifference | Hard equity thresholds (bet ≥65%, thin value ≥52%) |
 | Solver-derived bet-to-bluff ratios | A fixed semi-bluff frequency (30%), gated on real equity |
-| Card-removal / blocker effects | None |
-| Bet/fold, check-raise, range construction | A single decision per spot |
+| Blocker-dependent strategy and range updates | Physical card removal in equity sampling, but no solved blocker-dependent strategy |
+| Future betting and responding ranges | A local decision rule, not a solved continuation game |
 
-So the model is better described as **a disciplined, exploitative baseline you can measure
-yourself against** — closer to "a solid regular's default line" than to a solver output.
-That's genuinely useful for learning fundamentals (pot odds, equity, position, sizing), and
-it's honest about its ceiling.
+The trainer is a heuristic teaching baseline for pot odds, equity, position, and sizing.
+Matching it is not proof of optimal play, and differing from it is not automatically a
+mistake. Its results should not be confused with the separate river solver's action values.
 
 Earlier versions labeled the model's move "GTO play" and the tight table style "GTO." Those
 were overclaims and have been renamed ("Trainer's choice" and "Tight"). The internal style key is
@@ -75,17 +238,17 @@ separate information-set-aware best-response evaluator. On Kuhn, that scalable e
 is checked against all 64 pure strategies for each player. The committed strategy is within
 `0.001` chip of the known game value and below `0.001` chip exploitability;
 `npm run audit:kuhn` regenerates and verifies it. This is a mathematical foundation for a
-future explainable river solver, not a new claim about the four-player trainer.
+river solver and its teaching UI, not a new claim about the four-player trainer.
 
 The same audited core now solves **Leduc poker**, which adds a public card, a second betting
 round, and one legal raise per round. Its complete 9,451-state tree matches the independently
 implemented pinned reference. The committed 12,800-iteration strategy measures `0.00527`
-chip exploitability and differs from the reference game value by `0.00027` chip. This remains
-a non-UI validation lab; it does not silently replace the trainer's four-player model.
+chip exploitability and differs from the reference strategy's value by `0.00027` chip.
+Its lessons are available at `/solver/lab`; it does not replace the trainer's four-player model.
 
 ---
 
-## How decisions are made
+## How trainer decisions are made
 
 **Preflop** — a 6-tier hand-strength chart (`src/lib/poker/ranges.ts`) crossed with
 position- and pressure-based thresholds. A hand is raised if its tier ≤ the position's
@@ -133,7 +296,10 @@ separate model of the opponent's calling hands.
 
 ```
 src/
-  app/                     Next.js App Router shell + SEO/OG metadata + /solver demo
+  app/                     Next.js App Router shell + SEO/OG metadata
+    solver/                 push/fold explorer
+      lab/                  Leduc lessons
+      river/                River Lab UI, Web Worker, and scoped CSS
   components/PokerSim.tsx   UI + rendering (one component, by design*)
   lib/poker/                pure, UI-free, unit-tested domain core
     cards.ts                deck, rank/suit constants, formatting helpers
@@ -145,8 +311,13 @@ src/
     engine.ts               one betting round, shared by preflop & postflop
     decide.ts               the full decision engine (board/holding analysis + choice)
     types.ts                shared domain types
-  lib/solver/               heads-up push/fold model + precomputed equity and strategy data
-    toy/                    exact Kuhn game + CFR + independent best-response audit
+  lib/solver/               solver code independent of React
+    toy/                    Kuhn/Leduc rules, readable CFR, independent grading, artifacts
+    river/                  bounded heads-up river rules, ranges, and teaching facts
+      configurable-v3/      current rules, preparation/solve API, fixture, hashed artifact
+      factorized/           shared public tree, resumable CPU CFR/CFR+, independent grader
+      lab/                  validated inputs, typed worker protocol, teaching view models
+    multiway/               separate bounded three-/four-player river proofs
 test/                       node:test suites that import the REAL lib/ (not copies)
 e2e/                        Playwright keyboard and training-flow smoke tests
 bench/                      equity throughput + memoization benchmark (npm run bench)
@@ -212,12 +383,23 @@ fixed). Coverage:
 - **invariants** (`fast-check` fuzzing) — **chip conservation** (Σ payouts = Σ contributions,
   no chips created/destroyed) across 1,000 random pots, side-pot eligibility, betting-round
   conservation, evaluator-ordering consistency, and call-profitability equivalence.
-- **solver** — push/fold model sanity checks, an explicit strategy-gap target at every shown
-  depth, and `score7` proven byte-identical to `handScore` over 100,000 hands.
+- **solver** — push/fold model sanity checks; Kuhn's known value and exhaustive best responses;
+  pinned Leduc and river reference comparisons; v3-to-v2 reduction; independent terminal
+  money/showdown checks; blocker-compatible ranges; deliberate hidden-card-cheating
+  regressions; readable/compact/factorized parity; chunked/synchronous strategy identity;
+  worker cancellation and stale-request handling; hashed artifacts and off-path teaching.
+  Multiway proofs use independent per-player deviation gains. `score7` also agrees with
+  `handScore` over 100,000 tested hands.
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 
-CI (`.github/workflows/ci.yml`) runs lint + type-check + domain tests + build + browser smoke tests on every push.
+CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc
+artifact reproduction, a production build, and Chromium browser tests on pushes to main
+and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
+operation, validation, decision inspection, and responsive layouts.
+The separate river and multiway reproduction commands below are not all CI jobs yet.
+[Release records](tasks/river-solver-lab-audit.md) distinguish working-tree test runs from
+committed artifacts; test totals are not a substitute for running the current checkout.
 See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, validation, and error bounds.
 
 **Money handling now has direct safeguards.** Showdown distribution used to award the entire pot to the
@@ -232,7 +414,7 @@ matters because stacks carry across hands.
 
 ## Conscious decisions & honest limits
 
-**Decisions made on purpose:**
+**Trainer decisions made on purpose:**
 
 | Decision | Why |
 |---|---|
@@ -241,13 +423,14 @@ matters because stacks carry across hands.
 | Range-filtered opponents in the sim | Equity-vs-random is a real modeling trap; filtering to plausible ranges is more honest |
 | Per-spot-seeded, memoized equity | Keeps the `useMemo`-recompute model consistent (the determinism seam) and makes re-simulated streets free |
 | Pure logic in `lib/`, UI + prose in one component | Isolate and test what benefits from it; don't over-split coupled UI/prose |
-| Inline styles, no CSS framework | A single self-contained terminal aesthetic; Tailwind would be dead weight here |
-| Heuristic 4-handed trainer + a measured HU push/fold model | The trainer teaches fundamentals; the smaller model can report how close its saved strategy is to stable play |
+| No CSS framework | Preserve the terminal aesthetic; River Lab styles are isolated in a CSS module |
+| Keep the trainer separate from solver labs | A bounded heads-up or toy-game result must not become an unsupported four-player recommendation |
 
 **Known limitations (honest scope):**
 
-- **The 4-handed trainer is heuristic, not a solver.** No range-vs-range, mixed strategies,
-  blockers, or bet/fold. (Real GTO for 4-max is a research problem — see "Is this GTO?".)
+- **The 4-handed trainer is heuristic, not a solver.** It does not solve range-vs-range
+  equilibrium play, blocker-dependent action frequencies, or future betting decisions.
+  The separate multiway proofs do not change that.
 - **Fixed 4-handed, 5/10 blinds, 20bb starting stacks.** No table-size/stake variation — the tier ranges
   are calibrated for 4-handed and would need re-tuning per table size, which is its own
   correctness project; kept scoped deliberately rather than shipped wrong.
@@ -261,21 +444,59 @@ matters because stacks carry across hands.
 ## Stack
 
 - Next.js 16 (App Router) · React 19 · TypeScript
-- Inline styles, JetBrains Mono, terminal aesthetic
+- Scoped CSS modules and existing trainer styling, JetBrains Mono, terminal aesthetic
 - `node:test` + `tsx` for the domain suite; `fast-check` for property/fuzz tests
 - GitHub Actions CI (lint + types + tests + build)
 - Deployed on Vercel
 
 ## Local development
 
+Use Node.js 20.9+ (CI uses Node 20; the recorded local River Lab audit used Node 24).
+Install the lockfile's dependencies, then open `http://localhost:3000/solver/river`:
+
 ```bash
-npm install
-npm run dev      # http://localhost:3000  (and /solver for the push/fold explorer)
+npm ci
+npm run dev
 npm test         # domain + property test suite
-npm run test:e2e # production-build browser smoke tests
+npm run typecheck
+npm run lint
+npx playwright install chromium
+npm run test:e2e # local configuration builds and starts the production app
 npm run bench    # equity throughput + memoization benchmark
 npm run build    # production build
 ```
+
+### Reproduce and audit solver results
+
+These checks regenerate or independently evaluate saved results and fail on mismatches;
+they do not overwrite accepted artifacts.
+
+```bash
+npm run audit:kuhn
+npm run audit:leduc
+npm run audit:river
+npm run audit:river:v2
+npm run audit:river:v3
+npm run audit:river:compact
+npm run audit:river:scorekeeper
+npm run audit:river:factorized
+npm run profile:river:factorized  # measured cost, not a correctness or speed guarantee
+```
+
+Offline multiway artifact checks are more expensive:
+
+```bash
+npm run audit:multiway-river
+npm run audit:multiway-raised-river
+npm run audit:multiway-two-size-river
+npm run audit:multiway-side-pot-river
+npm run audit:multiway-four-player-river
+```
+
+The corresponding `solve:*` commands write artifacts; use them only when intentionally
+regenerating results and review the diff. Custom library solves use
+`solveConfigurableRiverV3(request, options)`; the artifact script itself regenerates the
+locked example rather than accepting arbitrary input files.
 
 ## Accessibility
 
@@ -285,7 +506,7 @@ region announces each step; focus is visible; and step auto-advance respects
 `prefers-reduced-motion`. Plain language is the saved default; Poker terms mode adds
 keyboard-, touch-, and hover-accessible term explanations.
 
-## Navigation
+## Trainer navigation
 
 - `→` — next step when focus is outside an interactive control
 - `←` — previous step

@@ -7,6 +7,49 @@ This document is the source of truth for the next solver project. It records wha
 are building, what we are deliberately not building, how we will know the math is
 right, and what the learner should gain from it.
 
+## Where we are now and what comes next
+
+The bounded heads-up river engine and `/solver/river` teaching lab are implemented.
+Kuhn, Leduc, compact/factorized CPU engines, configurable river v3, and the separate
+multiway Stages 1–3 have accepted artifacts and audit records. Exact enumeration and
+grading do not make their finite-iteration strategies exact equilibria.
+
+The next recommended milestone is **portable benchmark games and external-strategy
+grading**, not a larger poker claim. It is not implemented yet:
+
+- [ ] Define a small, versioned collection of game configurations and reference grades.
+- [ ] Export the game fingerprint, information sets, legal actions, and payoff convention.
+- [ ] Import a complete strategy, rejecting mismatched games, hidden-information leaks,
+      missing actions, invalid probabilities, and incompatible sizing conventions.
+- [ ] Round-trip the existing CPU strategy without changing its independent grade.
+- [ ] Add a CLI report of values and both players' best-response gains in chips; do not
+      require identical action percentages when comparing independently trained strategies.
+- [ ] Inspect a collaborator's rules, algorithm, output format, and license before choosing
+      an adapter. No GPU, neural-policy, or learned-value integration exists today.
+
+Existing game-specific artifacts, serialization helpers, and scorekeeper APIs are the
+foundation, not a finished cross-project protocol. A value predictor alone is not a
+complete strategy and cannot be assigned an exploitability score.
+
+Other remaining work is deliberately separated:
+
+- **Verification:** explicit river/multiway artifact-reproduction CI jobs; deterministic
+  setup for the known random-hand-dependent trainer keyboard check; broader browser and
+  assistive-technology testing. Current CI explicitly reproduces Kuhn and Leduc only.
+- **Teaching:** guided one-variable comparisons and an explicitly modeled imperfect-opponent
+  lesson. The existing River Lab already supports custom inputs and decision inspection.
+- **Scale research:** sampled multiway ranges under the separate Stage 4 contract, then a
+  bounded earlier-street experiment. Profile any GPU/WASM/native candidate and prove parity
+  on exact small games before expanding limits. Larger teaching views and scorekeeper
+  memory remain engineering constraints, not reasons to relax mathematical quality gates.
+- **Reuse:** settle the repository license before copying or combining implementation code.
+  Sharing the repository for review does not decide its reuse terms.
+
+The [README collaboration guide](../README.md#what-this-could-contribute-to-a-gpu-or-training-project)
+maps these contributions to the current APIs. No claim is made about what another project
+lacks until its implementation is available to inspect. The historical milestones below
+remain as evidence of how this point was reached, not an unfinished to-do list.
+
 ## The decision
 
 Build a small solver we can understand and verify from end to end:
@@ -184,7 +227,8 @@ src/lib/solver/toy/
   explain.ts           structured teaching facts; no UI prose
 
 scripts/
-  solve-toy-games.ts   regenerates committed reference results
+  solve-kuhn.ts        regenerates the Kuhn reference result
+  solve-leduc.ts       regenerates the Leduc reference result
 
 test/
   solver-kuhn.test.ts
@@ -518,20 +562,19 @@ The exact contract is in
 The measurements and six-perspective review are in
 [Exact three-player river proof — release audit](multiway-river-proof-audit.md).
 
-## First teaching experience, after the core passes
+## Teaching experience: delivered and proposed
 
-The first page should let the learner select a Kuhn card and an action history, then show:
+The delivered teaching pages are Leduc at `/solver/lab` and heads-up river at
+`/solver/river`; Kuhn remains the non-UI mathematical reference. Leduc has four curated
+lessons. River lets the learner inspect a hand and action history, compare frequencies
+and chip values, see possible opponent responses and hands, and inspect the independently
+measured quality of the saved strategy. Neither replaces the four-player trainer.
 
-1. **The recommendation:** bet, check, call, or fold—and whether it mixes.
-2. **The chip values:** the average value of each legal action.
-3. **The reason:** value bet, bluff, bluff-catch, or protection against exploitation.
-4. **The opponent's possible cards:** only the range consistent with what the learner can
-   know.
-5. **The reliability:** the measured exploitability of the entire saved strategy.
-
-A later “imperfect opponent” lesson may let the user change how often the opponent calls
-or bluffs and then calculate a best response. That is an exploitative strategy against an
-explicit model, not a different version of the math and not automatically GTO.
+A proposed next teaching layer would guide the learner through changing one assumption
+at a time: price, action order, ranges, blockers, stacks, or bet sizes. A later “imperfect
+opponent” lesson could change how often the opponent calls or bluffs and then calculate a
+best response. That would be an exploitative strategy against an explicit model, not
+automatically GTO. Neither guided comparison nor opponent-locking is implemented yet.
 
 ## Stop conditions
 
