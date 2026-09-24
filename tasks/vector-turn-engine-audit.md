@@ -249,3 +249,25 @@ player, street resets and returned unmatched chips. Lock fixtures/resource gates
 reduce single-size/no-raise games to v1 and completed-turn continuations to river v3,
 then accept useful examples under independently measured quality. Do not treat this M2
 capacity result as permission to raise caps, add a flop engine or imply full-range GTO.
+
+## Known behavior: cross-engine CFR+ policies differ at near-indifferent spots (2026-09-24)
+
+An external audit found that under CFR+ the compact and vector engines can report average
+policies up to 0.5 apart at near-indifferent information sets. Cause: floating-point
+cancellation leaves a cumulative regret like 7.3e-18 in one engine where the other has
+exactly 0, so regret matching returns a pure action in one and uniform in the other.
+Exploitability, values and best responses agree; vanilla CFR policies agree to 1e-10.
+
+A shared zero floor on positive regret (`1e-14 · S · (t+1)`, S = committed + shortest stack)
+was prototyped and **not adopted**:
+
+- It removes the pure-vs-uniform flip only in the first iterations. CFR+ amplifies last-bit
+  differences about 10× per 10 iterations (≈1e-3 by iteration 85), so no threshold makes
+  two engines' policies bit-comparable at production iteration counts.
+- Re-solving under it moved `turn-v2-paired-short` at 256 iterations from 0.0975 to 0.144
+  chips. Floors from 1e-22 to 1e-12 scatter that number between 0.091 and 0.144, while every
+  setting lands at 0.038–0.040 by 512 iterations: the 256-iteration value is a noisy point on
+  the path, not a quality level.
+
+Cross-engine checks therefore compare values, best responses and exploitability, never
+CFR+ policy bits. The prototype patch is not in the repository.
