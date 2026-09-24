@@ -6,7 +6,7 @@ on:
 jobs:
   reproduce:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -14,5 +14,5 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Reproduce the complete wider flop solve within its original envelope
-        run: npm run audit:flop:vector
+      - name: Reproduce all six complete flop solves sequentially within each original envelope
+        run: npm run reproduce:flop:library

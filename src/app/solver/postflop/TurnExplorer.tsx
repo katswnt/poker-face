@@ -110,7 +110,7 @@ export default function TurnExplorer({ catalog, initial }: { catalog: ExplorerCa
     <a className={styles.skip} href="#turn-decision">Skip to the decision</a>
     <div className={styles.shell}>
       <header className={styles.header}>
-        <nav aria-label="Solver navigation" className={styles.nav}><Link href="/">← Poker Face</Link><Link href="/solver/river">River lab</Link><Link href="/solver/lab">Leduc lab</Link><Link href="/solver">Push/fold explorer</Link></nav>
+        <nav aria-label="Solver navigation" className={styles.nav}><Link href="/">← Poker Face</Link><Link href="/solver/flop">Flop to river library</Link><Link href="/solver/river">River lab</Link><Link href="/solver/lab">Leduc lab</Link><Link href="/solver">Push/fold explorer</Link></nav>
         <p className={styles.eyebrow}>Saved strategies · two players · turn and river</p>
         <h1>One card left. What changes?</h1>
         <p className={styles.intro}>Follow a turn choice into the river. See how the last card, the price, and the opponent’s possible hands shape the next decision.</p>

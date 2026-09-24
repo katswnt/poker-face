@@ -55,6 +55,12 @@ jobs:
       - name: Rebuild and independently grade complete wider flop policy
         run: npm run audit:flop:source
 
+      - name: Validate and independently grade the six saved flop sources
+        run: npm run audit:flop:library
+
+      - name: Reproduce every saved flop browser slice
+        run: npm run audit:flop:explorer
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

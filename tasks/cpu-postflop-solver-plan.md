@@ -4,10 +4,13 @@
 
 **Baseline:** `7d2ea37` — audited turn reference and worker-backed trainer equity
 
-**Status:** M0–M5 implemented and verified. M6 contract locked and implementation underway; M7 remains conditional.
+**Status:** M0–M6 implemented and verified. The bounded CPU-first delivery target is complete. M7 was evaluated and is not needed for this target.
 
-**Active work:** M6 saved flop library and explorer.
-See the [M5 audit](heads-up-flop-v1-audit.md) and [M6 contract](saved-flop-library-spec.md).
+**Delivery:** six saved three-street games at `/solver/flop`, including the accepted
+synthetic 64-by-64 case. Richer flop menus and more representative ranges remain future,
+separately benchmarked expansions—not hidden claims of this release.
+See the [M5 audit](heads-up-flop-v1-audit.md), [M6 contract](saved-flop-library-spec.md)
+and [M6 release audit](saved-flop-library-audit.md).
 See the [compact turn audit](compact-turn-engine-audit.md),
 [M2 vector turn audit](vector-turn-engine-audit.md),
 [M3 configurable turn audit](configurable-turn-v2-audit.md), and
@@ -792,8 +795,8 @@ on a different approximation. More compute remains an option, not a hidden requi
 - [x] M3: richer turn/river betting and accepted practical examples.
 - [x] M4: minimal saved-turn explorer.
 - [x] M5: joint flop/turn/river reference and scalable implementation.
-- [ ] M6: curated solution library and broader explorer.
-- [ ] M7: conditional acceleration, only if justified.
+- [x] M6: curated solution library and broader explorer.
+- [x] M7: conditional gate evaluated; native/GPU acceleration is not required for the accepted target.
 
 **M0/M1 execution, 2026-09-22:** See [locked contract](compact-turn-engine-spec.md)
 and [release audit](compact-turn-engine-audit.md) for request/rules/policy hashes, complete
@@ -858,12 +861,35 @@ close to the unchanged 600-second cap. Full binary checkpoints resume bit-identi
 One opening size per street, no raises: richer flop menus remain a later benchmark,
 not part of the earned range-capacity claim. All old source/artifact bytes are intact.
 
-**Next implementation work:** finish the [M6 library contract](saved-flop-library-spec.md)
-using its six frozen requests. Keep a sequential resumable offline queue, validate and
-independently regrade sources before slicing, and expose bounded lazy three-street
-navigation at `/solver/flop`. Preserve the earlier labs, old browser cap, and all dirty
-trainer work. No sampling, buckets, neural leaves, licensing change or paid compute is
-implied. M7 remains conditional: the accepted target fits without native/GPU work.
+**M6 execution, 2026-09-24:** See the [release audit](saved-flop-library-audit.md).
+All six frozen requests pass at 256 CFR+ iterations, below both the locked 0.25-chip
+gate and preferred 0.10-chip level. Five small board/range examples join the unchanged
+synthetic 64-by-64 source. A sequential, resumable, identity-bound job queue validates
+and independently regrades cached sources. Full policies and all 3,842 publication files
+reproduce on Node 20/24. The catalog totals 426,916,487 raw bytes / about 61.3 MiB gzip;
+the largest slice is 287,911 raw bytes. No full research policy is downloaded by the UI.
+
+`/solver/flop` follows actions and both public cards, with exact-hand values, responses,
+conditional ranges, weighted range groups, source-bound share links, downloadable inputs
+and explicit assumptions/quality. Flop/turn facts are streamed offline; a selected river
+is evaluated exactly in a cancellable worker within the 100,000-state teaching limit.
+This is evaluation of saved play, not a new solve or Monte Carlo. Independent repeated-
+state checks include blank, flush-completing and blocker rivers, plus off-path/tiny reach.
+The clean release passes 662 unit and 62 Chromium tests, type-check, lint and build;
+working-tree totals are 673/65 because unrelated trainer/session work remains intact.
+Chromium desktop/mobile emulation, keyboard, responsive and text-size checks pass;
+physical devices, other browser engines and manual screen-reader testing remain unclaimed.
+
+**M7 disposition:** no native/GPU implementation was added. The accepted three-street
+range target fits its CPU budget, and the library fits its publication/browser budgets.
+Node 20's wide reproduction takes about 574 seconds, close to the unchanged 600-second
+cap; this is not evidence of unlimited headroom. Profile a new target before optimizing.
+
+**After this completed target:** richer flop betting, realistic supplied range studies,
+compatible external numerical checks and broader accessibility/browser coverage are
+possible next projects. They need their own bounded contract; this plan does not silently
+authorize new abstractions, neural leaves, licensing changes or paid infrastructure.
+The standalone turn lesson and separate multiway roadmap remain separate work.
 
 At the end of each milestone add:
 

@@ -144,7 +144,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
       <a className={styles.skip} href="#river-result">Skip to the result</a>
       <header className={styles.header}>
         <nav className={styles.nav} aria-label="Solver navigation">
-          <Link href="/">← Poker Face</Link><Link href="/solver/lab">Leduc lab</Link><Link href="/solver">Push/fold explorer</Link><Link href="/solver/postflop">Turn &amp; river explorer</Link>
+          <Link href="/">← Poker Face</Link><Link href="/solver/lab">Leduc lab</Link><Link href="/solver">Push/fold explorer</Link><Link href="/solver/postflop">Turn &amp; river explorer</Link><Link href="/solver/flop">Flop to river library</Link>
         </nav>
         <p className={styles.eyebrow}>Two players · five board cards · one betting round</p>
         <h1>River Solver Lab</h1>

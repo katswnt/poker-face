@@ -5,14 +5,15 @@ teaches poker fundamentals; the labs solve small, explicitly defined games and i
 measure how much each player could gain by changing strategy.
 
 Live app: [pokerface.katswint.com](https://pokerface.katswint.com).
-For a solver-first tour, open `/solver/postflop` for saved turn-to-river navigation, or
+For a solver-first tour, open `/solver/flop` for six saved three-street games,
+`/solver/postflop` for turn-to-river examples with raises, or
 `/solver/river` for small custom river solves, locally or on a deployment containing those routes.
 
 ## Current state
 
-As of 2026-09-23, the configurable heads-up river solver v3, its dedicated browser lab,
+As of 2026-09-24, the configurable heads-up river solver v3, its dedicated browser lab,
 a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, a **saved turn-and-river explorer**, and a **bounded joint flop/turn/river CPU solver** are implemented. They are separate from
+**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, a **saved turn-and-river explorer**, and a **bounded joint flop/turn/river CPU solver with a six-scenario saved library** are implemented. They are separate from
 the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
@@ -22,8 +23,9 @@ the heuristic four-player trainer.
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
 | `/solver/postflop` — turn & river explorer | Two instant saved examples, legal action navigation, river previews, hand values and conditional ranges | Three handcrafted combinations/player in these UI examples; no custom browser turn solve |
+| `/solver/flop` — three-street explorer | Six saved games, both public-card transitions, exact-hand values, range groups, source-bound links and downloadable inputs | Five small teaching ranges plus one synthetic 64-by-64 example; one opening size/street, no raises or custom browser flop solve |
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
-| Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; accepted 64-by-64 example | One capped opening size per street, no raises; no flop browser explorer yet |
+| Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -354,10 +356,65 @@ target; 1 means invalid input, cancellation, timeout or another failure.
 The wider runner admits at most 64 combinations/player, 250,000 public nodes and
 12,000,000 action slots, within the smaller of 2 GiB or one quarter of reported physical
 RAM, and a ten-minute deadline. These are sampled/controller limits, not OS-enforced
-memory guarantees. Full float64 policies and checkpoints stay offline. The next milestone
-is a bounded saved flop library and explorer (M6); the browser river limit stays unchanged.
+memory guarantees. Full float64 policies and checkpoints stay offline. The saved library
+below exposes selected results; the custom browser river limit stays unchanged.
 See the [M5 audit](tasks/heads-up-flop-v1-audit.md), [binary format](tasks/flop-binary-v1-spec.md)
 and [library contract](tasks/saved-flop-library-spec.md).
+
+### Six saved three-street games (M6)
+
+Open `/solver/flop` to follow the same jointly solved strategy from flop through river.
+Choose a dry, two-tone, paired, connected or monotone board, or the synthetic 64-hand
+capacity example. The smaller ranges are handcrafted teaching assumptions; none is a
+solved preflop formation. “First” and “second” mean action order on every street.
+
+- Inspect exact physical hands, action frequencies, forced-action values, value gaps,
+  opponent responses, folds, and response-conditioned ranges. Range groups use joint
+  reach weights; an exact-combination table preserves suits and blockers.
+- Reveal either next public card, compare public-card previews, step back, or share a
+  source-version-bound link to a specific history and hand. Private hands remain unknown
+  during public navigation. Impossible, off-path and tiny-reach facts are not invented.
+- Inspect all assumptions, both original ranges, downloadable inputs, iterations,
+  independent best-response gains, exploitability and source/policy hashes.
+
+All six frozen games passed at 256 CFR+ iterations (delay 20), below the predeclared
+0.25-chip gate and preferred 0.10-chip target for their 100-chip starting pots:
+
+| Saved game | Exploitability, chips |
+|---|---:|
+| Two-tone king-high | 0.002712989 |
+| Dry ace-high | 0.020847684 |
+| Paired, unequal stacks | 0.025315640 |
+| Connected | 0.009255944 |
+| Monotone | 0.016788315 |
+| Synthetic 64-by-64 | 0.024089328 |
+
+The browser loads checked, hash-bound slices—not the full 87 MB wide policy. Flop and
+turn explanations are derived offline. A selected river is evaluated exactly in a
+cancellable worker, limited to 100,000 equivalent repeated states; it does not rerun CFR,
+sample cards, or fall back to a large main-thread calculation. The whole saved catalog
+is about 61.3 MiB gzip; the largest slice is 287,911 raw bytes. Only active board slices
+and necessary ancestry are retained, not every board visited.
+
+```sh
+npm run audit:flop:library       # validate and independently regrade all six sources
+npm run audit:flop:explorer      # rebuild and compare every browser slice without writing
+npm run reproduce:flop:library  # rerun all six solves sequentially; several minutes
+npm run generate:flop:library -- --resume # reuse validated sources or resume complete checkpoints
+npm run generate:flop:explorer   # validate all candidates before publishing derived files
+```
+
+Regular CI independently regrades all six sources and reproduces every browser slice.
+The optional [extended workflow](.github/workflows/flop-reproduction.yml) reruns all six
+full solves sequentially. The slower Node 20 wide solve runs close to its ten-minute
+per-job limit; performance on a different machine is not guaranteed.
+
+Quality is measured for each declared finite game, not for omitted sizes, raises, other
+boards, real-world ranges or rake. Whole-game exploitability is not an error bar on a
+particular decision. These are approximate strategies, not exact or universal GTO.
+See the [frozen inputs](src/lib/solver/postflop/flop-library/fixtures.ts),
+[library contract](tasks/saved-flop-library-spec.md) and
+[release evidence and limitations](tasks/saved-flop-library-audit.md).
 
 ### Share a game and grade a strategy
 
@@ -460,7 +517,10 @@ reference are implemented. The active path does not depend on a collaboration.
    calculations, scalable independent grading, disk restart checkpoints, and configurable
    turn/river betting with raises and five accepted examples, and the saved-result turn
    explorer are complete. M5 adds a joint flop/turn/river reference and accepted wider
-   CPU solve. Next is the curated three-street library and bounded explorer (M6). The standalone turn lesson
+   CPU solve. M6 adds six audited saved games and the three-street explorer. The next
+   capacity expansion would need a new benchmark contract for richer flop betting or
+   more representative ranges; neither is silently included. Native/GPU acceleration
+   (M7) is conditional and not needed for the accepted target. The standalone turn lesson
    is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
    the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
 2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
