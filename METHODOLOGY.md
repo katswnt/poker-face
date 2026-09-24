@@ -115,7 +115,9 @@ run the solver on the browser's main thread. Its status separates two questions:
 
 - **Did the solving method settle for this fixed matrix?** Measured by the strategy gap.
 - **Is the matrix itself exact?** No. Every non-self matchup uses 2,000 random boards, which
-  has a worst-case sampling error of about ±1.1 percentage points near a 50/50 matchup.
+  gives a standard error of about ±1.1 percentage points per cell near a 50/50 matchup. That
+  is a typical error, not a worst case: across the matrix's 14,196 cells, some are off by
+  3–4 points (for example, the stored AKs vs QQ cell is 49.0% against a true ≈46.0%).
   Self-matchups are exactly 50% by symmetry. Card removal between the two ranges is also not
   modeled.
 

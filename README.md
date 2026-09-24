@@ -626,9 +626,13 @@ is checked against all 64 pure strategies for each player. The committed strateg
 river solver and its teaching UI, not a new claim about the four-player trainer.
 
 The same audited core now solves **Leduc poker**, which adds a public card, a second betting
-round, and one legal raise per round. Its complete 9,451-state tree matches the independently
+round, and one legal raise per round. It uses Brown's 1-chip then 2-chip bet sizes, not the
+2-then-4 sizes of Southey et al., so its game value (≈ −0.0525) differs from the often-quoted
+−0.0856 (an independent solve with 2-then-4 sizes does reproduce −0.0856). Its complete 9,451-state tree matches the independently
 implemented pinned reference. The committed 12,800-iteration strategy measures `0.00527`
-chip exploitability and differs from the reference strategy's value by `0.00027` chip.
+chip exploitability and is gated against the converged game value `−0.05246` (certified by a
+20,000-iteration CFR+ strategy with `5.1e-6` exploitability), which it matches within `0.00082`
+chip. Brown's 1,600-iteration reference value is kept only as an informational comparison.
 Its lessons are available at `/solver/lab`; it does not replace the trainer's four-player model.
 
 ---
