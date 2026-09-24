@@ -57,7 +57,7 @@ test("the v1 adapter generates the same finite betting menu", () => {
   assert.deepEqual(actions(["bet-to-50", "raise-to-100"]), ["fold", "call"]);
 });
 
-test("unequal stacks permit short calls and return unmatched chips", () => {
+test("unequal stacks cap an overbet at the effective all-in so every chip is callable", () => {
   const scenario: ConfigurableRiverScenario = {
     ...CONFIGURABLE_RIVER_V1_ADAPTER_SCENARIO,
     id: "river-short-call",
@@ -66,10 +66,13 @@ test("unequal stacks permit short calls and return unmatched chips", () => {
     raiseToSizes: [60, 100],
   };
   const game = createConfigurableRiverGame(scenario);
-  const state = configurableRiverState(game, DEAL, ["bet-to-100", "call"]);
+  const root = game.node(configurableRiverState(game, DEAL));
+  assert.deepEqual(root.kind === "player" ? root.actions : [], ["check", "bet-to-50", "bet-to-60"]);
+  assert.throws(() => configurableRiverState(game, DEAL, ["bet-to-100"]), /Illegal river action/);
+  const state = configurableRiverState(game, DEAL, ["bet-to-60", "call"]);
   const result = game.settlement(state);
-  assert.deepEqual(result.contributions, [150, 110]);
-  assert.deepEqual(result.returnedUncalled, [40, 0]);
+  assert.deepEqual(result.contributions, [110, 110]);
+  assert.deepEqual(result.returnedUncalled, [0, 0]);
   assert.equal(result.contestablePot, 220);
   assert.equal(result.utility[0] + result.utility[1], 0);
 });

@@ -89,13 +89,14 @@ test("off-path decisions and zero-probability responses have no invented posteri
   assert.throws(() => inspectRiverLabDecision(context, "not-a-real-information-set"), /does not belong/);
 });
 
-test("teaching price caps a short all-in call and removes the uncalled overbet", () => {
+test("teaching price for an overbet uses the effective all-in the short stack can call", () => {
   const game = prepareConfigurableRiverV3(parseRiverLabInput({ ...SMALL_INPUT,
     stack0: "200", stack1: "30", bets: "100", raises: "200", maxRaises: "1" }).request).game;
   const context = createRiverLabContext(game, uniformStrategy(compileFactorizedRiverGame(game).index));
-  const facing = context.decisions.find(decision => decision.player === 1 && decision.history.join() === "bet-to-100")!;
+  const facing = context.decisions.find(decision => decision.player === 1 && decision.history.join() === "bet-to-30")!;
   const decision = inspectRiverLabDecision(context, facing.informationSet);
-  assert.equal(facing.toCall, 100);
+  assert.equal(facing.pot, 130);
+  assert.equal(facing.toCall, 30);
   assert.equal(decision.callCost, 30);
   assert.equal(decision.finalCallPot, 160);
   assert.equal(decision.callCost / decision.finalCallPot, 0.1875);

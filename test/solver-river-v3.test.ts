@@ -225,12 +225,14 @@ test("v3 enforces minimum raises but permits a short all-in without reopening ac
   assert.deepEqual(response.actions, ["fold", "call"]);
 });
 
-test("v3 returns unmatched chips when the shorter stack calls", () => {
+test("v3 caps the deeper stack's overbet at the shorter stack's all-in", () => {
   const game = shortAllInGame();
-  const state = at(game, ["check", "bet-to-200", "call"]);
+  const facing = game.node(at(game, ["check"]));
+  assert.deepEqual(facing.kind === "player" ? facing.actions : [], ["check", "bet-to-50", "bet-to-120"]);
+  const state = at(game, ["check", "bet-to-120", "call"]);
   const settlement = game.settlement(state);
-  assert.deepEqual(settlement.contributions, [170, 250]);
-  assert.deepEqual(settlement.returnedUncalled, [0, 80]);
+  assert.deepEqual(settlement.contributions, [170, 170]);
+  assert.deepEqual(settlement.returnedUncalled, [0, 0]);
   assert.equal(settlement.contestablePot, 340);
   assert.equal(settlement.utility[0] + settlement.utility[1], 0);
 });

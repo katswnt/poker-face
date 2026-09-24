@@ -103,37 +103,37 @@
     {
       "counts": {
         "compatibleDeals": 4,
-        "equivalentRepeatedStates": 133,
-        "informationSets": 24,
-        "publicStates": 33,
-        "terminalStates": 84
+        "equivalentRepeatedStates": 121,
+        "informationSets": 22,
+        "publicStates": 30,
+        "terminalStates": 76
       },
       "description": "Unequal stacks, a short all-in raise, and returned uncalled chips.",
       "id": "short-all-in",
       "maximumGradeDifference": 0,
       "report": {
         "bestResponseValue": [
-          25.00000119314535,
-          -24.99999648468171
+          25,
+          -25
         ],
         "evaluation": "full-enumeration-floating-point",
-        "exploitability": 0.00000235423182104455,
+        "exploitability": 0,
         "exploitabilityConvention": "half-nash-gap-two-player-zero-sum",
         "format": "poker-face-river-grade",
         "gains": [
-          0.0000015728958047134256,
-          0.0000031355678373756746
+          0,
+          0
         ],
-        "gameFingerprint": "57f6f17838d0040006af791e57216e494fed792e22f57b40db9e9647adb49266",
+        "gameFingerprint": "f61f9a26f107e525b5f5e603984bd78baf020d3e8acf2207b36f4d13d577d681",
         "method": "independent-factorized-information-set-best-response",
-        "nashGap": 0.0000047084636420891,
-        "policyHash": "6190aad4ada7a96091cfe64e794bde529c749c28e48aae068fcb60d130e90017",
+        "nashGap": 0,
+        "policyHash": "3b89885f43528a55546c75c5b362cb85c7c5aa32d0b4a833bb1a9f6183514412",
         "schemaVersion": 1,
         "units": "net-chips-per-hand",
         "utilityOrigin": "hand-start-including-prior-contributions",
         "value": [
-          24.999999620249547,
-          -24.999999620249547
+          25,
+          -25
         ]
       },
       "rulesAudit": {
@@ -141,8 +141,8 @@
         "maximumProbabilityDifference": 0,
         "maximumUtilityDifference": 0,
         "maximumZeroSumError": 0,
-        "publicTerminals": 21,
-        "terminalsChecked": 84
+        "publicTerminals": 19,
+        "terminalsChecked": 76
       },
       "solver": {
         "algorithm": "cfr-plus",
@@ -153,10 +153,10 @@
     {
       "counts": {
         "compatibleDeals": 3,
-        "equivalentRepeatedStates": 73,
-        "informationSets": 18,
-        "publicStates": 24,
-        "terminalStates": 45
+        "equivalentRepeatedStates": 64,
+        "informationSets": 16,
+        "publicStates": 21,
+        "terminalStates": 39
       },
       "description": "The board plays for everyone; blockers still affect compatible deals.",
       "id": "board-ties",
@@ -174,10 +174,10 @@
           0,
           0
         ],
-        "gameFingerprint": "17acedde7885d6ae5a42e80f4dfd3ebe17674460e756bbd472e8b26bc89e9ef8",
+        "gameFingerprint": "3363f6f7b81c3085d3866cb3f243e6796e03c799051aa343a0f3fa550e3287a7",
         "method": "independent-factorized-information-set-best-response",
         "nashGap": 0,
-        "policyHash": "33fc46ff0faba1d10c18e7b405ac6f71296437a254ae12a61e1c76998162af30",
+        "policyHash": "25720330b76a59272052f989f3ca9db1d5a4ea69cd1fb1bac735f0c04a65d19b",
         "schemaVersion": 1,
         "units": "net-chips-per-hand",
         "utilityOrigin": "hand-start-including-prior-contributions",
@@ -191,8 +191,8 @@
         "maximumProbabilityDifference": 0,
         "maximumUtilityDifference": 0,
         "maximumZeroSumError": 0,
-        "publicTerminals": 15,
-        "terminalsChecked": 45
+        "publicTerminals": 13,
+        "terminalsChecked": 39
       },
       "solver": {
         "algorithm": "cfr-plus",

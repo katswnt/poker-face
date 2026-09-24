@@ -242,25 +242,30 @@ function legalActionsFor(
 ): readonly ConfigurableRiverAction[] {
   const player = state.actingPlayer;
   if (player === null || state.terminal) return [];
+  const opponent = (1 - player) as SolverPlayer;
   const contribution = state.streetContributions[player];
   const stack = scenario.stackBehind[player];
+  // Chips above what the opponent can ever match are returned uncalled, so any legal
+  // target above the opponent's stack is payoff-identical to putting them all-in.
+  // Collapse those targets into one effective all-in instead of duplicate actions.
+  const opponentStack = scenario.stackBehind[opponent];
   if (state.currentBet === 0) {
-    return [
-      "check",
-      ...scenario.openingBetSizes
-        .filter(amount => amount > 0 && amount <= stack)
-        .map(amount => `bet-to-${amount}` as const),
-    ];
+    const bets = scenario.openingBetSizes
+      .filter(amount => amount > 0 && amount <= stack)
+      .map(amount => Math.min(amount, opponentStack));
+    return ["check", ...[...new Set(bets)].map(amount => `bet-to-${amount}` as const)];
   }
 
   const actions: ConfigurableRiverAction[] = ["fold", "call"];
-  if (state.raisesUsed === 0) {
+  const opponentCanAnswer = state.streetContributions[opponent] < opponentStack;
+  if (state.raisesUsed === 0 && opponentCanAnswer) {
     for (const target of scenario.raiseToSizes) {
       if (target <= state.currentBet || target > stack || target <= contribution) continue;
       const increase = target - state.currentBet;
       const fullRaise = increase >= state.lastFullRaise;
       const shortAllIn = target === stack;
-      if (fullRaise || shortAllIn) actions.push(`raise-to-${target}`);
+      const action = `raise-to-${Math.min(target, opponentStack)}` as const;
+      if ((fullRaise || shortAllIn) && !actions.includes(action)) actions.push(action);
     }
   }
   return actions;

@@ -63,39 +63,49 @@ export function oracleRiverDeals(scenario: RiverScenario): readonly RiverOracleD
   return compatible.map(deal => ({ hands: deal.hands, probability: deal.weight / total }));
 }
 
-/** Independent contribution table for every terminal history in river v1. */
+/**
+ * Independent contribution table for every terminal history in river v1. Sizes are
+ * derived from the v1 rules themselves (half-pot, pot, and the all-in stack) rather
+ * than read from `scenario.betSizes`, so a mis-sized game factory is still caught.
+ */
 export function oracleRiverContributions(
   scenario: RiverScenario,
   history: readonly RiverAction[],
 ): readonly [number, number] {
   const beforeRiver = scenario.committed;
+  const startingPot = beforeRiver[0] + beforeRiver[1];
+  const half = startingPot / 2;
+  const pot = startingPot;
+  const allIn: readonly [number, number] = [scenario.stackBehind[0], scenario.stackBehind[1]];
+  const put = (river0: number, river1: number): readonly [number, number] =>
+    [beforeRiver[0] + river0, beforeRiver[1] + river1];
   switch (label(history)) {
     case "check-check":
-      return [beforeRiver[0], beforeRiver[1]];
+      return put(0, 0);
     case "bet-half-fold":
-      return [beforeRiver[0] + 50, beforeRiver[1]];
+      return put(half, 0);
     case "bet-half-call":
-      return [beforeRiver[0] + 50, beforeRiver[1] + 50];
+      return put(half, half);
     case "bet-half-raise-all-in-fold":
-      return [beforeRiver[0] + 50, beforeRiver[1] + 100];
+      return put(half, allIn[1]);
     case "bet-half-raise-all-in-call":
-      return [beforeRiver[0] + 100, beforeRiver[1] + 100];
+      return put(Math.min(allIn[0], allIn[1]), allIn[1]);
     case "bet-pot-fold":
-      return [beforeRiver[0] + 100, beforeRiver[1]];
+      return put(pot, 0);
     case "bet-pot-call":
-      return [beforeRiver[0] + 100, beforeRiver[1] + 100];
+      return put(pot, Math.min(pot, allIn[1]));
     case "check-bet-half-fold":
-      return [beforeRiver[0], beforeRiver[1] + 50];
+      return put(0, half);
     case "check-bet-half-call":
-      return [beforeRiver[0] + 50, beforeRiver[1] + 50];
+      return put(half, half);
     case "check-bet-half-raise-all-in-fold":
-      return [beforeRiver[0] + 100, beforeRiver[1] + 50];
+      return put(allIn[0], half);
     case "check-bet-half-raise-all-in-call":
-      return [beforeRiver[0] + 100, beforeRiver[1] + 100];
+      return put(allIn[0], Math.min(allIn[0], allIn[1]));
     case "check-bet-pot-fold":
-      return [beforeRiver[0], beforeRiver[1] + 100];
+      return put(0, pot);
     case "check-bet-pot-call":
-      return [beforeRiver[0] + 100, beforeRiver[1] + 100];
+      return put(Math.min(pot, allIn[0]), pot);
     default:
       throw new Error(`Oracle does not recognize terminal river history ${label(history)}`);
   }
