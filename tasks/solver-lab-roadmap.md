@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Saved turn/river explorer, configurable two-street CPU solver with accepted examples and restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
+**Status:** Bounded joint flop/turn/river CPU solver, saved turn/river explorer, configurable two-street solver with restart checkpoints, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers and exact multiway proofs implemented
 **Last updated:** 2026-09-23
 
 This document is the source of truth for the next solver project. It records what we
@@ -10,7 +10,7 @@ right, and what the learner should gain from it.
 **Active implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
 The user has prioritized solver capacity over a standalone turn lesson. That plan now
 controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
-implemented through M4. A separate backend admits up to 64 combinations/player;
+implemented through M5. Separate turn and flop backends admit up to 64 combinations/player;
 existing reference-engine and browser limits remain unchanged.
 
 ## Where we are now and what comes next
@@ -57,9 +57,13 @@ policies. Native keyboard controls, load recovery, phone layouts and conditional
 are tested. See the [contract](saved-turn-explorer-spec.md) and
 [audit](saved-turn-explorer-audit.md). No solver rules, grades or capacity limits changed.
 
-**Active next step:** M5, starting with a tiny jointly solved flop/turn/river reference,
-then measured scaling. Lock its three-street contract before code; it must not peek at
-either future card or substitute independently solved turn games.
+**Completed CPU-first M5:** a tiny joint flop/turn/river reference plus the accepted
+64-by-64 numeric backend: 3,755 deals, 5,017,600 information sets and 0.024089328-chip
+exploitability at 256 CFR+ iterations. One opening size per street, no raises; no future
+card peeking or independently solved-turn averaging. The complete results reproduce on
+Node 20/24, with binary checkpoints and independent grading. **Active work:** build the
+M6 saved library and explorer. See the [M5 audit](heads-up-flop-v1-audit.md)
+and [M6 contract](saved-flop-library-spec.md).
 See the [implementation plan](cpu-postflop-solver-plan.md).
 The standalone turn lesson is deferred, not completed. This path does not depend on
 collaboration and does not replace the **three-player** turn contract in multiway Stage 5.

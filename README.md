@@ -12,7 +12,7 @@ For a solver-first tour, open `/solver/postflop` for saved turn-to-river navigat
 
 As of 2026-09-23, the configurable heads-up river solver v3, its dedicated browser lab,
 a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, plus a **saved turn-and-river explorer**, are implemented. They are separate from
+**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, a **saved turn-and-river explorer**, and a **bounded joint flop/turn/river CPU solver** are implemented. They are separate from
 the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
@@ -23,6 +23,7 @@ the heuristic four-player trainer.
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
 | `/solver/postflop` — turn & river explorer | Two instant saved examples, legal action navigation, river previews, hand values and conditional ranges | Three handcrafted combinations/player in these UI examples; no custom browser turn solve |
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
+| Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; accepted 64-by-64 example | One capped opening size per street, no raises; no flop browser explorer yet |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -134,8 +135,9 @@ hand, and all available river cards—not just a curated winning line.
 The examples retain their M3 grades: **0.052146088** and **0.097513312 chips** of
 exploitability, at 256 CFR+ iterations. Both have three handcrafted combinations/player;
 they are teaching assumptions, not recommended preflop ranges or a new capacity claim.
-The wider 64-hand policy remains offline. No flop engine, GPU, new strategy training,
-or custom wide browser solver is introduced by the explorer.
+The wider 64-hand turn policy remains offline. This turn explorer itself introduces no
+GPU, new strategy training, or custom wide browser solver; the separate flop engine below
+is offline as well.
 
 The full source policies stay out of the initial page and client bundle. The checked
 manifest is 17,406 bytes; the default turn slice is 98,046 bytes. All 98 chunks have
@@ -306,6 +308,57 @@ parent and worker memory, but cannot guarantee OS-enforced limits or currently f
 Jobs have a ten-minute maximum. A game fitting these caps is not a promise of convergence.
 No external turn-solver numerical match is claimed.
 
+### Joint flop, turn and river solving (M5)
+
+The new CPU engine starts with three board cards and solves all three betting rounds
+together. A fixed compatible private deal has **45 × 44 = 1,980 ordered runouts**.
+Both future cards stay hidden until dealt. This is not an average of separately solved
+turns, a neural model, or a Monte Carlo equity estimate.
+
+The tiny readable reference and the wider numeric backend have separate independent
+grading and reduction tests. The accepted synthetic **64-combination-per-player** example
+has 3,755 compatible deals, 191,844 public states and 5,017,600 information sets—equivalent
+to 606,823,021 repeated states. At 256 CFR+ iterations, delay 20:
+
+- First-player value: **+3.214052854 chips**.
+- Best-response gains: **0.040942376 / 0.007236279 chips**.
+- Exploitability: **0.024089328 chips**, or **0.0241% of the 100-chip pot**.
+
+That percent measures an incentive to deviate, not “99.98% accuracy.” The range is
+synthetic capacity-test data, not preflop advice. The first Node 24/M1 Pro acceptance
+took about four minutes with roughly 999 MiB sampled combined process memory. Runtime
+depends strongly on the machine and Node version; these are observations, not promises.
+
+The finite rules allow **one capped opening size per street and no raises**. Player 0
+acts first on every street. There is no rake. Short calls return uncalled excess; all-in
+hands reveal remaining cards without more betting. This is an approximate strategy for
+that game, not unrestricted no-limit hold'em or exact GTO. The earlier turn-v2 engine
+supports richer betting menus; those menus have not yet been added to flop solving.
+
+```sh
+npm run audit:flop:reference  # reproduce the tiny reference and its independent audit
+npm run audit:flop:source     # validate and independently regrade the complete saved wide policy
+npm run audit:flop:vector     # full wider solve reproduction (several minutes)
+npm run solve:flop -- --request game.json --preflight
+npm run solve:flop -- --request game.json --output fresh-result --checkpoint fresh-checkpoint.gz
+```
+
+Use the [request shape](src/lib/solver/postflop/flop/rules.ts) and
+[locked examples](src/lib/solver/postflop/flop/fixtures.ts). `--iterations` sets the work
+budget; `--target` is a chip-unit quality target (default: 0.25% of starting pot).
+`--resume saved-checkpoint.gz` restores the same game and run settings; checkpoint output
+must be a new path. Ctrl+C terminates the worker and retains its last complete checkpoint.
+Exit 0 means the requested grade passed; 2 means the iteration budget ended before that
+target; 1 means invalid input, cancellation, timeout or another failure.
+
+The wider runner admits at most 64 combinations/player, 250,000 public nodes and
+12,000,000 action slots, within the smaller of 2 GiB or one quarter of reported physical
+RAM, and a ten-minute deadline. These are sampled/controller limits, not OS-enforced
+memory guarantees. Full float64 policies and checkpoints stay offline. The next milestone
+is a bounded saved flop library and explorer (M6); the browser river limit stays unchanged.
+See the [M5 audit](tasks/heads-up-flop-v1-audit.md), [binary format](tasks/flop-binary-v1-spec.md)
+and [library contract](tasks/saved-flop-library-spec.md).
+
 ### Share a game and grade a strategy
 
 The CLI now exports four versioned benchmark games and independently grades imported
@@ -406,8 +459,8 @@ reference are implemented. The active path does not depend on a collaboration.
 1. **Grow the CPU solver first.** Baseline profiling, compact solving, wider-range vector
    calculations, scalable independent grading, disk restart checkpoints, and configurable
    turn/river betting with raises and five accepted examples, and the saved-result turn
-   explorer are complete through M4. Next: a tiny joint flop/turn/river reference with
-   its own locked contract and quality gates (M5), then bounded scaling and a curated library. The standalone turn lesson
+   explorer are complete. M5 adds a joint flop/turn/river reference and accepted wider
+   CPU solve. Next is the curated three-street library and bounded explorer (M6). The standalone turn lesson
    is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
    the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
 2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
@@ -419,7 +472,7 @@ reference are implemented. The active path does not depend on a collaboration.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
 4. **Separate multiway research.** Sampled multiway ranges retain their own Stage 4 gate; a three-player
    turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
-   exact-small-game parity. Flop play and learned leaf values are not implemented.
+   exact-small-game parity. General multiway flop play and learned leaf values are not implemented.
 5. **Optional integration.** The benchmark exchange is available now. Build an adapter only
    after inspecting another implementation's rules and license; add held-out games before
    claiming a learned model generalizes.

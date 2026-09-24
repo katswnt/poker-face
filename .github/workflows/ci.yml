@@ -49,6 +49,12 @@ jobs:
       - name: Reproduce saved turn explorer chunks
         run: npm run audit:turn:explorer
 
+      - name: Reproduce tiny joint flop reference
+        run: npm run audit:flop:reference
+
+      - name: Rebuild and independently grade complete wider flop policy
+        run: npm run audit:flop:source
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

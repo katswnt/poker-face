@@ -4,9 +4,10 @@
 
 **Baseline:** `7d2ea37` — audited turn reference and worker-backed trainer equity
 
-**Status:** M0–M4 implemented; the remaining stages are planned, not implemented.
+**Status:** M0–M5 implemented and verified. M6 contract locked and implementation underway; M7 remains conditional.
 
-**Active next milestone:** M5, starting with a tiny joint flop/turn/river reference.
+**Active work:** M6 saved flop library and explorer.
+See the [M5 audit](heads-up-flop-v1-audit.md) and [M6 contract](saved-flop-library-spec.md).
 See the [compact turn audit](compact-turn-engine-audit.md),
 [M2 vector turn audit](vector-turn-engine-audit.md),
 [M3 configurable turn audit](configurable-turn-v2-audit.md), and
@@ -483,8 +484,8 @@ an audit record. Update this table with the commit/evidence only after completio
 | M2 | Range-vector terminal/traversal engine and scalable scorekeeper | Naive/readable/exhaustive parity; wider-range profile within envelope | Complete; vector turn audit |
 | M3 | Configurable richer turn/river betting and accepted wider examples | Rule reductions, short-all-in audit, independent quality gate | Complete; configurable turn-v2 audit |
 | M4 | Minimal saved-turn explorer and artifact pipeline | Genuine engine result navigable; conditional semantics and accessibility tested | Complete; saved turn explorer audit |
-| M5 | Bounded joint flop/turn/river engine | No future-card cheating; exact runouts, reductions and accepted flop fixture | Not started |
-| M6 | Curated postflop library and broader explorer | Every published scenario reproducible, graded, documented and load-budgeted | Not started |
+| M5 | Bounded joint flop/turn/river engine | No future-card cheating; exact runouts, reductions and accepted flop fixture | Complete; heads-up flop-v1 audit |
+| M6 | Curated postflop library and broader explorer | Every published scenario reproducible, graded, documented and load-budgeted | Contract and six input fixtures locked |
 | M7 | Optional native/parallel/symmetry acceleration | Profile justifies it; numerical parity and resource gains demonstrated | Deferred/conditional |
 
 M4 is a thin usability checkpoint, not a detour into a separate curriculum. M5's engine
@@ -790,7 +791,7 @@ on a different approximation. More compute remains an option, not a hidden requi
 - [x] M2: wider-range vector engine and scalable independent grader.
 - [x] M3: richer turn/river betting and accepted practical examples.
 - [x] M4: minimal saved-turn explorer.
-- [ ] M5: joint flop/turn/river reference and scalable implementation.
+- [x] M5: joint flop/turn/river reference and scalable implementation.
 - [ ] M6: curated solution library and broader explorer.
 - [ ] M7: conditional acceleration, only if justified.
 
@@ -843,16 +844,26 @@ passed. This adds 11 unit and 12 browser tests; old source engines/artifacts are
 Native controls, explicit focus handling and route-only CSS preserve the existing labs.
 No browser turn solve, flop engine, GPU or external numerical parity claim was added.
 
-**Next implementation session:** lock the tiny M5 flop reference contract before code.
-Start with one opening size per street and no raises, exact enumeration of both future
-cards, complete public history, tiny explicit weighted ranges and independent settlement
-and legal best-response grading. Lock fixture hashes, quality gates and resource budgets
-before acceptance solves. Prove reductions to the existing turn rules, all-in runouts,
-folds before later cards, and cheating regressions for both hidden future cards. Solve
-all three streets jointly; averaging independently solved turns does not qualify.
-Keep the readable proof separate from M5's later wider-range scale target. Preserve all
-accepted engines/artifacts, browser limits and unrelated trainer work. No automatic
-sampling, card buckets, neural leaves, GPU, licensing change or paid compute is implied.
+**M5 execution, 2026-09-23:** See the [reference contract](heads-up-flop-v1-spec.md),
+[wider numeric contract](vector-flop-v1-spec.md), [binary format](flop-binary-v1-spec.md)
+and [audit](heads-up-flop-v1-audit.md). Tiny proof: 484,813 states, 149,936 information
+sets, 1,024 CFR+ iterations, exploitability 0.002031731 chips. Wider locked synthetic
+64-by-64 case: 3,755 deals, 191,844 public nodes, 5,017,600 information sets and
+606,823,021 equivalent states; accepted at 256 iterations with exploitability
+0.024089328 chips. No future-card/opponent-card leakage, exact 45×44 runouts, independent
+settlement/grading, turn reductions and ordinary/CFR+ differential checks are covered.
+Complete policies reproduce on Node 20/24. First wide Node 24 run took 232.07 seconds
+and roughly 999 MiB combined sampled RSS; Node 20 reproduction took 572.65 seconds,
+close to the unchanged 600-second cap. Full binary checkpoints resume bit-identically.
+One opening size per street, no raises: richer flop menus remain a later benchmark,
+not part of the earned range-capacity claim. All old source/artifact bytes are intact.
+
+**Next implementation work:** finish the [M6 library contract](saved-flop-library-spec.md)
+using its six frozen requests. Keep a sequential resumable offline queue, validate and
+independently regrade sources before slicing, and expose bounded lazy three-street
+navigation at `/solver/flop`. Preserve the earlier labs, old browser cap, and all dirty
+trainer work. No sampling, buckets, neural leaves, licensing change or paid compute is
+implied. M7 remains conditional: the accepted target fits without native/GPU work.
 
 At the end of each milestone add:
 
