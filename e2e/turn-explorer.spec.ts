@@ -36,12 +36,14 @@ test("saved turn opens instantly, teaches conditional values, and reveals a real
   expect(errors).toEqual([]);
 });
 
-test("unequal-stack example follows an all-in, refunds excess, and ends only after revealing the river", async ({ page }) => {
+test("unequal-stack example caps an overbet at the short stack, follows the all-in, and ends only after revealing the river", async ({ page }) => {
   await page.goto("/solver/postflop"); await page.getByLabel("Saved example").selectOption("turn-v2-paired-short");
   await page.getByRole("button", { name: "Open saved example" }).click();
   await expect(page.getByRole("heading", { name: "Loaded: Paired board, shorter stacks" })).toBeVisible();
-  await follow(page, "Bet 90"); await expect(result(page).getByRole("button", { name: /^Raise to / })).toHaveCount(0);
-  await follow(page, "Call"); await expect(result(page)).toContainText("Uncalled chips returned so far, first / second: 30 / 0");
+  // The shorter stack can match only 60, so no separate, payoff-identical 90-chip bet is offered.
+  await expect(result(page).getByRole("button", { name: /^Bet 90 / })).toHaveCount(0);
+  await follow(page, "Bet 60"); await expect(result(page).getByRole("button", { name: /^Raise to / })).toHaveCount(0);
+  await follow(page, "Call"); await expect(result(page)).not.toContainText(/Uncalled chips returned so far, first \/ second: [1-9]/);
   await expect(page.getByRole("heading", { name: "Choose a river card", exact: true })).toBeFocused();
   await page.getByRole("button", { name: /^Reveal / }).click();
   await expect(page.getByRole("heading", { name: "Showdown", exact: true })).toBeVisible();

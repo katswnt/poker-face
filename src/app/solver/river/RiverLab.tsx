@@ -192,7 +192,7 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
                 <select id="river-maxRaises" value={input.maxRaises} aria-describedby="river-raise-help" onChange={event => update("maxRaises", event.target.value)}>
                   <option value="0">0 — call or fold to a bet</option><option value="1">1 — allow a raise</option><option value="2">2 — allow a raise and re-raise</option>
                 </select>
-                <small id="river-raise-help">Minimum raises and short all-ins follow the v3 rules. A raise above the other player's stack is capped at their stack. Unlisted sizes are unavailable.</small>
+                <small id="river-raise-help">Minimum raises and short all-ins follow the v3 rules. A raise above the other player&apos;s stack is capped at their stack. Unlisted sizes are unavailable.</small>
               </div>
               {field("iterations", "Solver iterations", "21–2000 passes through the learning loop. More work can improve the strategy; quality need not improve at every checkpoint.", true)}
             </fieldset>
