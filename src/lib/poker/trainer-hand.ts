@@ -102,8 +102,11 @@ export function calculateTrainerHand(input: TrainerHandInput): Stage[] {
   } else {
     const w = folded.findIndex(f => !f);
     if (w >= 0) {
-      stacks[w] += pot;
-      all.push({ type: "showdown", board: all[all.length - 1]?.board || [], pot, folded: [...folded], results: [], rankedResults: [], winner: w, foldWin: true, stacks: [...stacks] });
+      // Same money ledger as a showdown: the survivor takes every layer it matched, and
+      // any chips above its contribution that nobody matched go back to their owner.
+      const { payouts, pots } = distributePots(contributions, folded, hands, board.slice(0, 5), [sbIdx, bbIdx, utgIdx, btnIdx]);
+      payouts.forEach((amt, i) => { stacks[i] += amt; });
+      all.push({ type: "showdown", board: all[all.length - 1]?.board || [], pot, folded: [...folded], results: [], rankedResults: [], pots, winner: w, payouts, foldWin: true, stacks: [...stacks], ...(includeMoneySnapshots ? { contributions: [...contributions] } : {}) });
     }
   }
   return all;

@@ -206,6 +206,12 @@ export function snapToBB(amount: number, max: number): number {
   return Math.min(Math.max(Math.round(amount / BB) * BB, BB), Math.max(max, 0));
 }
 
+// Raise targets snap to the BB grid for readable sizes, but never below the legal
+// minimum raise-to (which need not be a BB multiple) and never above the all-in cap.
+export function snapRaiseTo(target: number, minRaiseTo: number, cap: number): number {
+  return Math.min(Math.max(snapToBB(target, cap), minRaiseTo), Math.max(cap, 0));
+}
+
 export function potFractionLabel(bet: number, pot: number): string {
   const r = bet / pot;
   if (r < 0.28) return "¼-pot";
@@ -317,7 +323,7 @@ export function generateFullDecision(
     const [raiseThr, callThr] = preflopThresholds(posShort, numRaisesAhead, style);
     const maxCommit = playerStack + playerBet;
     const minimumTarget = minRaiseTo ?? (currentBet > 0 ? currentBet + BB : BB);
-    const raiseAmt = snapToBB(Math.max(currentBet * 2.5, BB * 2.5, minimumTarget), maxCommit);
+    const raiseAmt = snapRaiseTo(Math.max(currentBet * 2.5, BB * 2.5, minimumTarget), minimumTarget, maxCommit);
     const handLabel = pocket
       ? `pocket ${valNameL(highHole)}s`
       : `${valShort(highHole)}${valShort(lowHole)}${suited ? "s" : "o"}`;
@@ -469,8 +475,9 @@ export function generateFullDecision(
       const valueRaise = canRaise && playerStack + playerBet > currentBet && (uniqueRiverNuts || equity >= 0.72);
       if (valueRaise) {
         const minimumTarget = minRaiseTo ?? currentBet + BB;
-        const raiseTarget = snapToBB(
+        const raiseTarget = snapRaiseTo(
           Math.max(minimumTarget, currentBet + pot * (uniqueRiverNuts ? 0.75 : 0.5) * mwFactor),
+          minimumTarget,
           playerStack + playerBet,
         );
         if (raiseTarget > currentBet) {

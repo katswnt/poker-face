@@ -40,6 +40,15 @@ export function distributePots(
     const amount = layer * contributors.length;
     if (amount === 0) continue;
 
+    // A layer only one seat reached is an uncalled excess: nobody matched it, so it goes
+    // back to its owner even if that seat folded (e.g. a SB above a short all-in BB).
+    if (contributors.length === 1) {
+      const [owner] = contributors;
+      payouts[owner] += amount;
+      pots.push({ amount, contributors, eligible: folded[owner] ? [] : [owner], winners: [owner], awards: [{ idx: owner, amount }] });
+      continue;
+    }
+
     // Eligible = contributors still in the hand. Fallback to any non-folded seat so chips
     // are never lost (only reachable if every contributor at this layer folded).
     let eligible = contributors.filter(i => !folded[i]);

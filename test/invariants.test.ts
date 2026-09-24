@@ -94,8 +94,13 @@ test("distributePots conserves chips exactly: sum(payouts) === sum(contributions
       const { payouts } = distributePots(contributions, folded, hands, board);
       assert.equal(sum(payouts), sum(contributions), "chips created or destroyed");
       for (const p of payouts) assert.ok(p >= 0, `negative payout: ${p}`);
+      // A folded seat is paid only its uncalled excess: chips above every other seat's
+      // contribution, which nobody matched. It never wins chips from anyone else.
       folded.forEach((f, i) => {
-        if (f) assert.equal(payouts[i], 0, `folded seat ${i} was paid ${payouts[i]}`);
+        if (!f) return;
+        const others = Math.max(0, ...contributions.filter((_, j) => j !== i));
+        const uncalled = Math.max(0, contributions[i] - others);
+        assert.equal(payouts[i], uncalled, `folded seat ${i} was paid ${payouts[i]}, uncalled excess ${uncalled}`);
       });
     }),
     { numRuns: 1000 },
@@ -119,6 +124,11 @@ test("no seat wins a pot layer it didn't match (short stack can't scoop a side p
         // Players who actually matched this layer (contributed at least `level`).
         const matchers = contributions.map((c, i) => (c >= level ? i : -1)).filter(i => i >= 0);
         const anyMatcherLive = matchers.some(i => !folded[i]);
+        // A layer only one seat reached is that seat's uncalled excess, returned to it.
+        if (matchers.length === 1) {
+          assert.deepEqual(layer.awards, [{ idx: matchers[0], amount: layer.amount }], `uncalled layer ${li} not returned to its owner`);
+          return;
+        }
         for (const w of layer.winners) {
           if (anyMatcherLive) {
             // Normal contested layer: every winner must have matched it.
