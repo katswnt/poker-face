@@ -19,7 +19,7 @@ the heuristic four-player trainer.
 | Experience | What is implemented | Important boundary |
 |---|---|---|
 | `/` — hold'em trainer | Observe or practice four-player hands, with worker-backed equity and price explanations | Heuristic strategy; exact heads-up river equity, sampled equity elsewhere; not an equilibrium solver |
-| `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
+| `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts from an exact equity matrix, with card removal | Shove-or-fold abstraction only (chip EV, no antes); one frequency per hand class |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
 | `/solver/postflop` — turn & river explorer | Two instant saved examples, legal action navigation, river previews, hand values and conditional ranges | Three handcrafted combinations/player in these UI examples; no custom browser turn solve |
@@ -610,12 +610,13 @@ still `"gto"` for historical reasons; it's never shown to the user.
 
 **A smaller game can be measured more directly.** The standalone
 [`/solver`](https://pokerface.katswint.com/solver) explorer searches for stable play in a
-heads-up shove-or-fold model. It reports the remaining strategy gap, uses precomputed charts
-so the slider is instant, and shows its two important limits: an estimated equity matrix and
-no card-removal weighting between ranges. It is deliberately separate from the 4-handed
-trainer. Its 20,000-round solutions make the broad range widths useful, but noisy edge hands
-are labeled as such instead of being presented as exact recommendations. See
-[METHODOLOGY.md](METHODOLOGY.md).
+heads-up shove-or-fold model. It reports the remaining strategy gap and uses precomputed
+charts so the slider is instant. Its 169×169 equity matrix is exact: every board is
+enumerated for every card-disjoint combo pair. Ranges are weighted with card removal. At
+10bb it shoves 58.3% and calls 37.4%, against 58.4% and 37.3% in HoldemResources.net's
+published heads-up Nash tables. It is deliberately separate from the 4-handed trainer. The
+result is exact only for the shove-or-fold abstraction, and mixed edge hands are labeled as
+such. See [METHODOLOGY.md](METHODOLOGY.md).
 
 The repository also contains a **non-UI Kuhn poker reference lab**. It walks the complete
 small game tree without random sampling, learns with ordinary CFR, and is graded by a
@@ -901,6 +902,7 @@ npm run audit:multiway-four-player-river
 The corresponding `solve:*` commands and `generate:river:benchmarks` write artifacts;
 use them only when intentionally regenerating results and review the diff. Custom library solves use
 `solveConfigurableRiverV3(request, options)`; the artifact script itself regenerates the
+npm run audit:equity-matrix   # push/fold matrix hash + independent exact cell recompute (~10s)
 locked example rather than accepting arbitrary input files.
 
 ## Accessibility

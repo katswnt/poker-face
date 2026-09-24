@@ -1,12 +1,10 @@
-// Heads-up all-in equity by Monte Carlo, plus the machinery to build the full 169×169
-// canonical equity matrix.
+// Heads-up all-in equity by Monte Carlo for two canonical hands.
 //
-// Why the shared fast evaluator (`score7`) instead of eval.ts's reference `handScore`?
-// `handScore` allocates all C(7,5)=21 five-card subsets on every call (~30µs). The full
-// 169×169 matrix needs ~57M showdown evaluations; at 30µs that is ~29 minutes. `score7`
-// evaluates the best 5-of-7 directly with zero allocation (~1µs), turning the matrix build
-// into a ~30–60s job. It is NOT an unverified second ranking: test/pushfold.test.ts asserts
-// byte-identical scores over 100,000 deterministic random seven-card hands.
+// The committed 169×169 matrix (equity-matrix.json) is NOT built from this sampler any more:
+// scripts/build-equity-matrix.ts enumerates every board exactly. This sampler remains as an
+// independent, fast sanity cross-check (test/pushfold.test.ts compares it to the matrix).
+// It uses the shared zero-allocation evaluator `score7`; test/pushfold.test.ts asserts
+// byte-identical scores to eval.ts's reference `handScore` over 100,000 random hands.
 import type { CardObj } from "../poker/types";
 import { cv, valShort } from "../poker/cards";
 import { score7 } from "../poker/score7";

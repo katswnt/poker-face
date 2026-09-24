@@ -17,9 +17,13 @@
 //   SB shoves h  ⟺  EV_shove(h) > S − 0.5
 //   BB calls  k  ⟺  2S·avgEq(k) > S − 1.0     (avgEq over SB's actual shoving distribution)
 //
-// Card removal between the two specific hands is not modeled; ranges are weighted by
-// unconditional combo counts. The equity matrix is also estimated by random simulation.
-// Those are model limits, so the result is not presented as an exact real-poker answer.
+// Card removal: both hands come from one deck, so the joint probability of (SB class h,
+// BB class k) is D[h][k] / 1,624,350, where D counts ORDERED card-disjoint combo pairs
+// (comboCounts.ts). SB holding h therefore faces BB class k with probability
+// D[h][k] / (weight_h · 1,225), and BB holding k faces SB class h with probability ∝ D[h][k]·s_h.
+// eq(h,k) is the exact equity averaged over those same disjoint combo pairs
+// (scripts/build-equity-matrix.ts), so the matrix and the weights use one measure.
+// Remaining model limit: strategies are per canonical class, not per suited combo.
 //
 // Solved by fictitious play: each player best-responds to the running time-average of the
 // opponent's strategy. In a finite zero-sum game this is guaranteed to converge to the Nash
@@ -27,11 +31,15 @@
 // frequencies for threshold hands.
 import equityData from "./equity-matrix.json";
 import { HANDS, TOTAL_COMBOS } from "./hands";
+import { DISJOINT, ORDERED_DISJOINT_PAIRS } from "./comboCounts";
 
 // Row = SB hand's equity vs. Col = BB hand. eq[k][h] = 1 − eq[h][k] (zero-sum, by construction).
 const EQ: number[][] = equityData.equity;
 const N = HANDS.length; // 169
 const W: number[] = HANDS.map(h => h.weight);
+const D: number[][] = DISJOINT;
+// Σ_k D[h][k] = weight_h · 1,225: the number of BB combos compatible with each SB combo.
+const ROW_MASS: number[] = D.map(row => row.reduce((a, b) => a + b, 0));
 
 export interface PushFoldSolution {
   stack: number;                 // effective stack S in BB
@@ -47,7 +55,8 @@ export interface PushFoldSolution {
   bbImprovement: number;         // gain available to BB by changing alone, in BB
   tolerance: number;             // algorithmic convergence target for the fixed input matrix
   converged: boolean;
-  matrixSamples: number;         // simulations behind each matrix cell
+  matrixSamples: number;         // boards behind each matrix cell (all C(48,5) = 1,712,304: exact)
+  cardRemoval: boolean;          // ranges weighted by card-disjoint combo pairs
 }
 
 // Combo-weighted fraction (0..1) of the range that a per-hand frequency vector covers.
@@ -57,7 +66,19 @@ function rangeWidth(freq: number[]): number {
   return num / TOTAL_COMBOS;
 }
 
-function sbPayoff(
+// SB's expected final stack when shoving h against BB calling strategy c (card-removal weighted).
+function shoveValue(h: number, bbStrategy: number[], stack: number, bigBlind: number): number {
+  const row = D[h], eq = EQ[h];
+  let value = 0;
+  for (let k = 0; k < N; k++) {
+    if (row[k] === 0) continue;
+    value += row[k] * (bbStrategy[k] * 2 * stack * eq[k] + (1 - bbStrategy[k]) * (stack + bigBlind));
+  }
+  return value / ROW_MASS[h];
+}
+
+// SB's expected final stack for a full strategy profile, over the joint deal of both hands.
+export function sbPayoff(
   sbStrategy: number[],
   bbStrategy: number[],
   stack: number,
@@ -65,47 +86,28 @@ function sbPayoff(
   bigBlind: number,
 ): number {
   const foldValue = stack - smallBlind;
-  const calledPot = 2 * stack;
   let total = 0;
   for (let h = 0; h < N; h++) {
-    let shoveValue = 0;
-    for (let k = 0; k < N; k++) {
-      shoveValue += W[k] * (
-        bbStrategy[k] * calledPot * EQ[h][k]
-        + (1 - bbStrategy[k]) * (stack + bigBlind)
-      );
-    }
-    shoveValue /= TOTAL_COMBOS;
-    total += W[h] * ((1 - sbStrategy[h]) * foldValue + sbStrategy[h] * shoveValue);
+    const own = (1 - sbStrategy[h]) * foldValue + sbStrategy[h] * shoveValue(h, bbStrategy, stack, bigBlind);
+    total += ROW_MASS[h] * own; // P(SB = h) = ROW_MASS[h] / ORDERED_DISJOINT_PAIRS = weight_h / 1326
   }
-  return total / TOTAL_COMBOS;
+  return total / ORDERED_DISJOINT_PAIRS;
 }
 
-function sbBestResponse(bbStrategy: number[], stack: number, smallBlind: number, bigBlind: number): number[] {
-  const foldValue = stack - smallBlind;
-  const calledPot = 2 * stack;
-  return HANDS.map((_, h) => {
-    let shoveValue = 0;
-    for (let k = 0; k < N; k++) {
-      shoveValue += W[k] * (
-        bbStrategy[k] * calledPot * EQ[h][k]
-        + (1 - bbStrategy[k]) * (stack + bigBlind)
-      );
-    }
-    return shoveValue / TOTAL_COMBOS > foldValue ? 1 : 0;
-  });
+export function sbBestResponse(bbStrategy: number[], stack: number, smallBlind: number, bigBlind: number): number[] {
+  return HANDS.map((_, h) => (shoveValue(h, bbStrategy, stack, bigBlind) > stack - smallBlind ? 1 : 0));
 }
 
-function bbBestResponse(sbStrategy: number[], stack: number, bigBlind: number): number[] {
+export function bbBestResponse(sbStrategy: number[], stack: number, bigBlind: number): number[] {
   const calledPot = 2 * stack;
-  let shoveMass = 0;
-  for (let h = 0; h < N; h++) shoveMass += W[h] * sbStrategy[h];
   return HANDS.map((_, k) => {
-    if (shoveMass === 0) return 0;
-    let equityWhenCalled = 0;
+    let shoveMass = 0, equityWhenCalled = 0;
     for (let h = 0; h < N; h++) {
-      equityWhenCalled += W[h] * sbStrategy[h] * (1 - EQ[h][k]);
+      const m = D[h][k] * sbStrategy[h];
+      shoveMass += m;
+      equityWhenCalled += m * (1 - EQ[h][k]);
     }
+    if (shoveMass === 0) return 0;
     return calledPot * (equityWhenCalled / shoveMass) > stack - bigBlind ? 1 : 0;
   });
 }
@@ -128,33 +130,30 @@ export function solvePushFold(
 
   for (let t = 0; t < rounds; t++) {
     // ── SB best-responds to BB's average calling strategy ──
-    // EV_shove(h) = Σ_k W_k[ c_k·2S·eq(h,k) + (1−c_k)·(S+bb) ] / TOTAL_COMBOS
-    let wCalled = 0;              // Σ_k W_k·c_k
-    for (let k = 0; k < N; k++) wCalled += W[k] * bbAvg[k];
-    const wFolded = TOTAL_COMBOS - wCalled;
-    const foldTerm = (S + bb) * wFolded; // BB folds → SB wins the big blind
+    // EV_shove(h) = Σ_k D[h][k]·[ c_k·2S·eq(h,k) + (1−c_k)·(S+bb) ] / Σ_k D[h][k]
     for (let h = 0; h < N; h++) {
-      let calledTerm = 0;
-      const row = EQ[h];
-      for (let k = 0; k < N; k++) calledTerm += W[k] * bbAvg[k] * row[k];
-      const evShove = (foldTerm + potShare * calledTerm) / TOTAL_COMBOS;
+      const row = D[h], eq = EQ[h];
+      let calledTerm = 0, foldedMass = 0;
+      for (let k = 0; k < N; k++) {
+        const m = row[k] * bbAvg[k];
+        calledTerm += m * eq[k];
+        foldedMass += row[k] - m;
+      }
+      const evShove = (potShare * calledTerm + (S + bb) * foldedMass) / ROW_MASS[h];
       sbBR[h] = evShove > evFold_SB ? 1 : 0;
     }
 
     // ── BB best-responds to SB's average shoving strategy ──
-    // Given a shove, P(SB = h) ∝ W_h·s_h. EV_call(k) = 2S·Σ_h P(SB=h)·eq(k,h).
-    let shoveMass = 0;           // Σ_h W_h·s_h
-    for (let h = 0; h < N; h++) shoveMass += W[h] * sbAvg[h];
+    // Given a shove and BB holding k, P(SB = h) ∝ D[h][k]·s_h. EV_call(k) = 2S·Σ_h P(h|k)·eq(k,h).
     for (let k = 0; k < N; k++) {
-      if (shoveMass === 0) { bbBR[k] = 0; continue; } // nothing to call
-      let eqSum = 0;
+      let shoveMass = 0, eqSum = 0;
       for (let h = 0; h < N; h++) {
         if (sbAvg[h] === 0) continue;
-        eqSum += W[h] * sbAvg[h] * (1 - EQ[h][k]); // eq(k,h) = 1 − eq(h,k)
+        const m = D[h][k] * sbAvg[h];
+        shoveMass += m;
+        eqSum += m * (1 - EQ[h][k]); // eq(k,h) = 1 − eq(h,k)
       }
-      const avgEq = eqSum / shoveMass;
-      const evCall = potShare * avgEq;
-      bbBR[k] = evCall > evFold_BB ? 1 : 0;
+      bbBR[k] = shoveMass > 0 && potShare * (eqSum / shoveMass) > evFold_BB ? 1 : 0;
     }
 
     // Fold the pure best responses into the running time-averages.
@@ -186,6 +185,7 @@ export function solvePushFold(
     bbImprovement,
     tolerance,
     converged: nashGap <= tolerance,
-    matrixSamples: equityData.meta.sims,
+    matrixSamples: equityData.meta.boardsPerMatchup,
+    cardRemoval: true,
   };
 }

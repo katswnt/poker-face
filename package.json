@@ -59,6 +59,8 @@
     "bench": "node --import tsx bench/equity-bench.ts",
     "bench:trainer": "node --import tsx bench/trainer-equity-accuracy.ts",
     "generate:solver": "node --import tsx scripts/gen-pushfold-solutions.mjs",
+    "generate:equity-matrix": "node --import tsx scripts/build-equity-matrix.ts --write",
+    "audit:equity-matrix": "node --import tsx scripts/build-equity-matrix.ts --check",
     "solve:kuhn": "node --import tsx scripts/solve-kuhn.ts",
     "solve:leduc": "node --import tsx scripts/solve-leduc.ts",
     "solve:turn": "node --import tsx scripts/solve-heads-up-turn.ts",

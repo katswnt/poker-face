@@ -61,8 +61,9 @@ export default function SolverPage() {
           </h1>
           <p style={{ fontSize: 13, lineHeight: 1.6, color: T.inkSoft, margin: 0 }}>
             This tool searches for stable play in a small poker game: the small blind may shove or fold,
-            and the big blind may call or fold. It uses estimated hand strength and leaves out some card-removal
-            effects, so treat it as a clear model—not an exact answer for every real game.
+            and the big blind may call or fold. Hand matchups are exact and account for the cards each player
+            holds, but the game itself is simplified (no limps or smaller raises), so treat it as a clear
+            model—not an exact answer for every real game.
           </p>
         </header>
 
@@ -160,16 +161,16 @@ export default function SolverPage() {
           <div>
             Diagonal = pocket pairs · upper-right = suited · lower-left = offsuit.{" "}
             <span style={{ borderBottom: `1px dashed ${base}`, color: T.inkSoft }}>Dashed</span> cells sit near
-            the edge of the range. Their exact percentages are not reliable: a different set of random boards
-            can move a borderline hand.
+            the edge of the range: the choices there are nearly break-even, so a small change in stack depth
+            can flip a borderline hand.
           </div>
           <div style={{ marginTop: 4 }}>
             Blinds are 0.5 and 1 big blind. Each saved chart used {SOLUTION_META.rounds.toLocaleString()} rounds.
             Every displayed depth passed the stability check for the fixed input table. Each non-self hand
-            matchup in that table came from {SOLUTION_META.matrixSamples.toLocaleString()} random boards; near
-            a 50/50 result, that alone can add about ±{(50 / Math.sqrt(SOLUTION_META.matrixSamples)).toFixed(1)}
-            percentage points of sampling error. Self-matchups are exactly 50%. Card removal between the two
-            ranges is not modeled.
+            matchup in that table came from exact enumeration of all{" "}
+            {SOLUTION_META.matrixSamples.toLocaleString()} possible boards, so it has no sampling error.
+            Self-matchups are exactly 50%. Card removal is modeled: each hand is weighted by how many of the
+            opponent&apos;s combinations remain possible given the cards it holds.
           </div>
         </div>
       </div>

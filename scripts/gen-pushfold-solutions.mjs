@@ -2,8 +2,9 @@ import { writeFile } from "node:fs/promises";
 import { solvePushFold } from "../src/lib/solver/pushfold.ts";
 
 // The earlier 1,200-round charts had a small overall strategy gap, but individual
-// borderline-hand frequencies were still moving. Twenty thousand rounds makes the
-// solver's own settling error small relative to the noisier 2,000-board input matrix.
+// borderline-hand frequencies were still moving. Twenty thousand rounds keeps the
+// remaining strategy gap below 0.0005 bb at every depth. The input equity matrix is exact
+// (scripts/build-equity-matrix.ts) and ranges are weighted with card removal.
 const rounds = 20_000;
 const tolerance = 0.0005;
 const depths = Array.from({ length: 37 }, (_, index) => 2 + index * 0.5);
@@ -31,6 +32,8 @@ const output = {
     rounds,
     tolerance,
     matrixSamples: values[0]?.matrixSamples ?? 0,
+    matrixMethod: "exact",
+    cardRemoval: values.every(solution => solution.cardRemoval),
     maxNashGap: round(Math.max(...values.map(solution => solution.nashGap))),
     allConverged: values.every(solution => solution.converged),
   },
