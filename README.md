@@ -798,11 +798,11 @@ fixed). Coverage:
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 
-CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/turn/compact-turn/vector-turn/turn-v2/v3
-artifact, saved-turn browser chunk and exchange-manifest reproduction, a production build, and Chromium browser
-tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
+CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, every `audit:*` script (hand
+evaluator, exact equity matrix, Kuhn/Leduc, every turn, flop and river engine, and the five multiway river
+reproductions, the slow ones in a parallel job), a production build, and Chromium browser tests on pushes to
+main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, one-change comparisons, and responsive layouts.
-Older river and multiway reproduction commands below are not all CI jobs yet.
 [Release records](tasks/river-solver-lab-audit.md) distinguish working-tree test runs from
 committed artifacts; test totals are not a substitute for running the current checkout.
 See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, validation, and error bounds.
