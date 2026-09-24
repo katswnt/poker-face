@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** Configurable two-street CPU solver with accepted examples and restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
+**Status:** Saved turn/river explorer, configurable two-street CPU solver with accepted examples and restart checkpoints, compact/reference turn solvers, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers, exact multiway proofs, and factorized CPU engine implemented
 **Last updated:** 2026-09-23
 
 This document is the source of truth for the next solver project. It records what we
@@ -10,7 +10,7 @@ right, and what the learner should gain from it.
 **Active implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
 The user has prioritized solver capacity over a standalone turn lesson. That plan now
 controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
-implemented through M3. A separate backend admits up to 64 combinations/player;
+implemented through M4. A separate backend admits up to 64 combinations/player;
 existing reference-engine and browser limits remain unchanged.
 
 ## Where we are now and what comes next
@@ -48,7 +48,18 @@ at 256 CFR+ iterations; the wider 64-by-64 case has 147,840 information sets and
 river-v3 reductions, readable grading and explicit-pair kernels agree. See the
 [M3 contract](configurable-turn-v2-spec.md) and [audit](configurable-turn-v2-audit.md).
 
-**Active next step:** M4's thin saved-result turn explorer, then bounded flop solving.
+**Completed CPU-first M4:** `/solver/postflop` exposes two accepted turn/river strategies
+through every legal public history and compatible acting hand. It shows action values,
+responses, posterior ranges and river previews with explicit rare/off-path handling.
+Both examples retain three handcrafted combinations/player; the 64-hand probe remains
+offline. The 98 bounded browser chunks reproduce on Node 20/24 without shipping source
+policies. Native keyboard controls, load recovery, phone layouts and conditional math
+are tested. See the [contract](saved-turn-explorer-spec.md) and
+[audit](saved-turn-explorer-audit.md). No solver rules, grades or capacity limits changed.
+
+**Active next step:** M5, starting with a tiny jointly solved flop/turn/river reference,
+then measured scaling. Lock its three-street contract before code; it must not peek at
+either future card or substitute independently solved turn games.
 See the [implementation plan](cpu-postflop-solver-plan.md).
 The standalone turn lesson is deferred, not completed. This path does not depend on
 collaboration and does not replace the **three-player** turn contract in multiway Stage 5.
@@ -78,7 +89,8 @@ Other remaining work is deliberately separated:
 
 - **Verification:** extend explicit reproduction CI coverage to older river/multiway artifacts; deterministic
   setup for the known random-hand-dependent trainer keyboard check; broader browser and
-  assistive-technology testing. CI now reproduces Kuhn, Leduc, turn, v3, and the exchange manifest.
+  assistive-technology testing. CI now reproduces Kuhn, Leduc, reference/compact/vector/configurable
+  turn, saved explorer chunks, v3, and the exchange manifest.
 - **Teaching:** one-variable comparisons now cover opponent ranges, opening bet menus,
   and opponent stacks. Position, board/blocker, and pot/price comparisons need explicit
   matching semantics. An imperfect-opponent lesson needs a stated opponent model and

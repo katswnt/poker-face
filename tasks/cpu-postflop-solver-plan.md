@@ -4,12 +4,13 @@
 
 **Baseline:** `7d2ea37` — audited turn reference and worker-backed trainer equity
 
-**Status:** M0–M3 implemented; the remaining stages are planned, not implemented.
+**Status:** M0–M4 implemented; the remaining stages are planned, not implemented.
 
-**Active next milestone:** M4 minimal saved-turn explorer.
+**Active next milestone:** M5, starting with a tiny joint flop/turn/river reference.
 See the [compact turn audit](compact-turn-engine-audit.md),
-[M2 vector turn audit](vector-turn-engine-audit.md), and
-[M3 configurable turn audit](configurable-turn-v2-audit.md).
+[M2 vector turn audit](vector-turn-engine-audit.md),
+[M3 configurable turn audit](configurable-turn-v2-audit.md), and
+[M4 saved explorer audit](saved-turn-explorer-audit.md).
 
 **Purpose:** The working reference for subsequent solver-capacity work. Update the
 execution record at the end of this file after each milestone.
@@ -481,7 +482,7 @@ an audit record. Update this table with the commit/evidence only after completio
 | M1 | Compact resumable turn engine for unchanged v1 rules | Same transitions, information sets, ordinary-CFR updates and independent grade | Complete; compact turn audit |
 | M2 | Range-vector terminal/traversal engine and scalable scorekeeper | Naive/readable/exhaustive parity; wider-range profile within envelope | Complete; vector turn audit |
 | M3 | Configurable richer turn/river betting and accepted wider examples | Rule reductions, short-all-in audit, independent quality gate | Complete; configurable turn-v2 audit |
-| M4 | Minimal saved-turn explorer and artifact pipeline | Genuine engine result navigable; conditional semantics and accessibility tested | Not started |
+| M4 | Minimal saved-turn explorer and artifact pipeline | Genuine engine result navigable; conditional semantics and accessibility tested | Complete; saved turn explorer audit |
 | M5 | Bounded joint flop/turn/river engine | No future-card cheating; exact runouts, reductions and accepted flop fixture | Not started |
 | M6 | Curated postflop library and broader explorer | Every published scenario reproducible, graded, documented and load-budgeted | Not started |
 | M7 | Optional native/parallel/symmetry acceleration | Profile justifies it; numerical parity and resource gains demonstrated | Deferred/conditional |
@@ -788,7 +789,7 @@ on a different approximation. More compute remains an option, not a hidden requi
 - [x] M1: compact v1-equivalent turn engine.
 - [x] M2: wider-range vector engine and scalable independent grader.
 - [x] M3: richer turn/river betting and accepted practical examples.
-- [ ] M4: minimal saved-turn explorer.
+- [x] M4: minimal saved-turn explorer.
 - [ ] M5: joint flop/turn/river reference and scalable implementation.
 - [ ] M6: curated solution library and broader explorer.
 - [ ] M7: conditional acceleration, only if justified.
@@ -827,13 +828,31 @@ is action-generic without changing arithmetic; the complete M2 artifact still re
 The separate M3 budget is 2 GiB within this plan's envelope; M2 remains 1 GiB. No UI,
 flop solver, training dependency or external numerical validation claim was added.
 
-**Next implementation session:** lock M4's saved-turn explorer contract before UI work.
-Use compact derived data for a few accepted examples instead of shipping the full wide
-policy to the browser. Keep math independent of React. Show turn choices and reachable
-river-card consequences with plain explanations, measured whole-game quality, action EVs,
-conditional ranges and honest rare/off-path handling. Preserve Leduc/River Labs and the
-100,000-state custom browser cap. Reread baseline-ui, fixing-accessibility and installed
-Next.js guides. M4 does not authorize a flop engine, live wide browser solves or a GPU.
+**M4 execution, 2026-09-23:** See [locked contract](saved-turn-explorer-spec.md) and
+[release audit](saved-turn-explorer-audit.md). `/solver/postflop` navigates every public
+history and compatible acting hand in two accepted M3 examples, including river cards,
+raises, all-ins and refunds. Forced-action values, selected-showdown versus static equity,
+responses and conditional ranges have independent repeated-state checks. Public previews
+and range mixes use joint reaches; off-path and numerically tiny facts remain unavailable.
+The examples still have three handcrafted combinations/player, not new range capacity.
+Full source policies stay offline. The 98 derived chunks total 22,475,685 raw bytes;
+the default turn slice is 98,046 bytes and largest lazy chunk 286,249 bytes. Catalog and
+chunks reproduce on Node 20/24; gzip measurements stay outside canonical identity.
+Clean release: 623 unit tests, 47 Chromium tests, type-check, lint and production build
+passed. This adds 11 unit and 12 browser tests; old source engines/artifacts are unchanged.
+Native controls, explicit focus handling and route-only CSS preserve the existing labs.
+No browser turn solve, flop engine, GPU or external numerical parity claim was added.
+
+**Next implementation session:** lock the tiny M5 flop reference contract before code.
+Start with one opening size per street and no raises, exact enumeration of both future
+cards, complete public history, tiny explicit weighted ranges and independent settlement
+and legal best-response grading. Lock fixture hashes, quality gates and resource budgets
+before acceptance solves. Prove reductions to the existing turn rules, all-in runouts,
+folds before later cards, and cheating regressions for both hidden future cards. Solve
+all three streets jointly; averaging independently solved turns does not qualify.
+Keep the readable proof separate from M5's later wider-range scale target. Preserve all
+accepted engines/artifacts, browser limits and unrelated trainer work. No automatic
+sampling, card buckets, neural leaves, GPU, licensing change or paid compute is implied.
 
 At the end of each milestone add:
 

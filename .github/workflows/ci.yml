@@ -46,6 +46,9 @@ jobs:
       - name: Reproduce and independently grade configurable turn corpus
         run: npm run audit:turn:v2
 
+      - name: Reproduce saved turn explorer chunks
+        run: npm run audit:turn:explorer
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

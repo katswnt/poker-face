@@ -23,6 +23,8 @@
     "audit:turn:v2": "node --import tsx scripts/audit-turn-v2.ts --check",
     "generate:turn:v2": "node --import tsx scripts/audit-turn-v2.ts --write",
     "profile:turn:v2": "node --import tsx scripts/profile-turn-v2.ts",
+    "generate:turn:explorer": "node --import tsx scripts/build-turn-explorer.ts --write",
+    "audit:turn:explorer": "node --import tsx scripts/build-turn-explorer.ts --check",
     "profile:turn:baseline": "node --import tsx scripts/profile-turn-baseline.ts",
     "profile:turn:compact": "node --import tsx scripts/profile-compact-turn.ts",
     "solve:turn:compact": "node --import tsx scripts/solve-compact-turn.ts",

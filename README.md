@@ -5,13 +5,14 @@ teaches poker fundamentals; the labs solve small, explicitly defined games and i
 measure how much each player could gain by changing strategy.
 
 Live app: [pokerface.katswint.com](https://pokerface.katswint.com).
-For a solver-first tour, open `/solver/river` locally or on a deployment containing the River Lab.
+For a solver-first tour, open `/solver/postflop` for saved turn-to-river navigation, or
+`/solver/river` for small custom river solves, locally or on a deployment containing those routes.
 
 ## Current state
 
 As of 2026-09-23, the configurable heads-up river solver v3, its dedicated browser lab,
 a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints** are implemented. They are separate from
+**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, plus a **saved turn-and-river explorer**, are implemented. They are separate from
 the heuristic four-player trainer.
 
 | Experience | What is implemented | Important boundary |
@@ -20,7 +21,8 @@ the heuristic four-player trainer.
 | `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts | Estimated equity matrix; no blocker-compatible joint range weighting |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
-| Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; no turn UI yet |
+| `/solver/postflop` — turn & river explorer | Two instant saved examples, legal action navigation, river previews, hand values and conditional ranges | Three handcrafted combinations/player in these UI examples; no custom browser turn solve |
+| Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -108,6 +110,51 @@ reference uses different sizing semantics. Evidence includes exact reduction to 
 externally checked v2 game, readable-solver comparisons, independent grading, and
 hidden-card-cheating regressions. See the
 [reference compatibility finding](tasks/configurable-river-v3-audit.md#independent-open-source-referee-attempted-not-forced).
+
+### Saved turn & river explorer (M4)
+
+Open `/solver/postflop` to follow an accepted joint turn/river strategy without solving
+anything in the browser. Two small examples contrast an ace-high board with a paired board
+and unequal stacks. Each includes every legal public history, every compatible acting
+hand, and all available river cards—not just a curated winning line.
+
+- Inspect action frequencies, forced-action chip values, value gaps, opponent responses,
+  immediate folds, and how a response changes the opponent's possible hands.
+- Keep **equity if betting stopped** separate from **equity among later showdowns**.
+  Neither substitutes for action EV, which includes folds and later payments.
+- Follow legal bets, raises, short all-ins, refunds, and the next card. River previews
+  condition on public history with both hands unknown; inspecting one hand does not
+  secretly fix a private deal for later navigation.
+- Range summaries use joint reach weights, not equal-hand averages. Unreached or
+  numerically unsupported decisions withhold conditional values; rare ones carry a
+  separate caution. Global exploitability does not bound each local action-value error.
+- Use native keyboard controls, visible focus, cancellation/retry for data loads, and
+  phone layouts. This is saved-result loading, not solver progress.
+
+The examples retain their M3 grades: **0.052146088** and **0.097513312 chips** of
+exploitability, at 256 CFR+ iterations. Both have three handcrafted combinations/player;
+they are teaching assumptions, not recommended preflop ranges or a new capacity claim.
+The wider 64-hand policy remains offline. No flop engine, GPU, new strategy training,
+or custom wide browser solver is introduced by the explorer.
+
+The full source policies stay out of the initial page and client bundle. The checked
+manifest is 17,406 bytes; the default turn slice is 98,046 bytes. All 98 chunks have
+reproducible sizes and SHA-256 hashes. Fetched chunks are checked in the browser; the
+embedded first view is checked during artifact reproduction. The largest chunk is
+286,249 bytes uncompressed. Together
+they total 22,475,685 raw bytes, or 2,957,666 gzip bytes on Node 24 (compression varies by
+runtime). The browser retains one active lazy
+chunk plus the initial hydration slice, not the whole catalog. Size limits are not a
+device-memory guarantee.
+
+```sh
+npm run audit:turn:explorer     # reproduce all derived chunks, without overwriting
+npm run generate:turn:explorer # intentionally regenerate checked browser data
+```
+
+See the [explanation/data contract](tasks/saved-turn-explorer-spec.md) and
+[release audit](tasks/saved-turn-explorer-audit.md) for conditional definitions,
+independent evidence, accessibility checks and remaining limitations.
 
 ### Offline turn-and-river solving
 
@@ -358,14 +405,14 @@ reference are implemented. The active path does not depend on a collaboration.
 
 1. **Grow the CPU solver first.** Baseline profiling, compact solving, wider-range vector
    calculations, scalable independent grading, disk restart checkpoints, and configurable
-   turn/river betting with raises and five accepted examples are complete through M3.
-   Next: a small saved-result turn explorer (M4), then bounded joint flop solving and a
-   curated library. The standalone turn lesson
+   turn/river betting with raises and five accepted examples, and the saved-result turn
+   explorer are complete through M4. Next: a tiny joint flop/turn/river reference with
+   its own locked contract and quality gates (M5), then bounded scaling and a curated library. The standalone turn lesson
    is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
    the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
 2. **Verification and reliability.** Seek an independently compatible turn-solver reference;
    no external turn parity is claimed yet. Extend reproduction CI to older river/multiway
-   artifacts; Kuhn, Leduc, turn, compact/vector turn, v3, and exchange already have checks. Expand browser and
+   artifacts; Kuhn, Leduc, turn, compact/vector/configurable turn, the saved explorer, v3, and exchange already have checks. Expand browser and
    assistive-technology coverage beyond Chromium and make random trainer setups deterministic.
 3. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
@@ -634,7 +681,7 @@ fixed). Coverage:
   run against a production build in Chromium.
 
 CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, Kuhn/Leduc/turn/compact-turn/vector-turn/turn-v2/v3
-artifact and exchange-manifest reproduction, a production build, and Chromium browser
+artifact, saved-turn browser chunk and exchange-manifest reproduction, a production build, and Chromium browser
 tests on pushes to main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, one-change comparisons, and responsive layouts.
 Older river and multiway reproduction commands below are not all CI jobs yet.
