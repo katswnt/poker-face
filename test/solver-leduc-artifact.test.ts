@@ -34,7 +34,7 @@ test("committed Leduc artifact has a valid hash and canonical formatting", () =>
   );
   assert.equal(stringifyLeducArtifact(artifact), disk);
   assert.equal(artifact.acceptance.passed, true);
-  assert.equal(artifact.schemaVersion, 2);
+  assert.equal(artifact.schemaVersion, 3);
   assert.equal(artifact.rulesFingerprint, fingerprintLeducGame());
   assert.equal(artifact.iterations, 12_800);
   assert.deepEqual(artifact.tree, {
@@ -181,7 +181,7 @@ test("our Leduc result agrees with the independently generated pinned reference"
   assert.equal(reference.source, "noambrown/poker_solver");
   assert.equal(reference.commit, "6a10442877ffc8fd28af93e16e279b9bbdd97b2a");
   assert.deepEqual(artifact.reference, reference);
-  assert.ok(artifact.acceptance.referenceValueDifference <= 0.001);
+  assert.ok(artifact.acceptance.brownReferenceValueDifference <= 0.002, "Brown comparison is informational");
   assert.ok(artifact.exploitability <= 0.01);
   assert.ok(reference.exploitability <= 0.01);
 });

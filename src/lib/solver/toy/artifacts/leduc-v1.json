@@ -1,9 +1,16 @@
 {
   "acceptance": {
+    "brownReferenceValueDifference": 0.00026569544700568576,
+    "certificateContainsConvergedReference": true,
+    "certifiedValueInterval": [
+      -0.058387922825569906,
+      -0.04785043726673516
+    ],
+    "convergedReferenceValue": -0.05245578203316426,
+    "convergedReferenceValueDifference": 0.0008184940998244086,
     "maximumExploitability": 0.01,
     "passed": true,
-    "player0ValueTolerance": 0.001,
-    "referenceValueDifference": 0.00026569544700568576
+    "player0ValueTolerance": 0.001
   },
   "algorithm": "full-tree-cfr",
   "algorithmVersion": 1,
@@ -22600,7 +22607,7 @@
   "game": "leduc-v1",
   "iterations": 12800,
   "nashGap": 0.010537485558834749,
-  "payloadHash": "ad2d1eb32c62a1d6a4ed1bb0e2806a52a5c7c6d288e0425883e37bcdb57eb798",
+  "payloadHash": "324807df863ed09afef0476f3aff5d552a6e3b93ee76d153913c3268d1bcc98c",
   "reference": {
     "algorithm": "cfr",
     "commit": "6a10442877ffc8fd28af93e16e279b9bbdd97b2a",
@@ -22620,7 +22627,7 @@
     ]
   },
   "rulesFingerprint": "6c0c521822c66d57eae65784d8a84e1a49253b9c336fbdbb9bd5a3a761e73ff2",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "strategy": {
     "leduc-v1:p0:card=J:board=-:r0=bet-raise:r1=start": {
       "call": 0.9994358099428388,

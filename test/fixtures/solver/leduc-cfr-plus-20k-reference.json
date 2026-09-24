@@ -1,0 +1,1258 @@
+{
+  "game": "leduc-v1",
+  "algorithm": "cfr-plus",
+  "averaging": "linear (iteration t weighted by t)",
+  "updates": "alternating (player 0 then player 1 each iteration)",
+  "iterations": 20000,
+  "provenance": "Produced by a from-scratch Leduc tree builder and CFR+ solver written independently of src/lib/solver/toy (audit scratch script indep.ts, buildLeduc(1, 2)). Trust does not rest on that script: test/audit-regressions-toy.test.ts re-grades this strategy with the repo exact best-response code and checks the certified value interval.",
+  "strategy": {
+    "leduc-v1:p0:card=J:board=-:r0=bet-raise:r1=start": {
+      "call": 0.9999997094544869,
+      "fold": 2.905455131344441e-7
+    },
+    "leduc-v1:p0:card=J:board=-:r0=check-bet:r1=start": {
+      "call": 0.9702173022069936,
+      "fold": 3.131384988871211e-7,
+      "raise": 0.029782384654507506
+    },
+    "leduc-v1:p0:card=J:board=-:r0=start:r1=start": {
+      "bet": 0.07157434175223763,
+      "check": 0.9284256582477624
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-call:r1=bet-raise": {
+      "call": 0.9957347979585184,
+      "fold": 0.004265202041481615
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-call:r1=check-bet": {
+      "call": 5.821173861135815e-9,
+      "fold": 5.821173861135815e-9,
+      "raise": 0.9999999883576524
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-call:r1=start": {
+      "bet": 0.0000020472049931229666,
+      "check": 0.9999979527950069
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999956341236,
+      "fold": 4.365876490318057e-9
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-raise-call:r1=check-bet": {
+      "call": 0.003376143062605627,
+      "fold": 0.003376143062605627,
+      "raise": 0.9932477138747887
+    },
+    "leduc-v1:p0:card=J:board=J:r0=bet-raise-call:r1=start": {
+      "bet": 0.9999991378973687,
+      "check": 8.621026312226176e-7
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-call:r1=bet-raise": {
+      "call": 0.9999999997687292,
+      "fold": 2.312708670548504e-10
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-call:r1=check-bet": {
+      "call": 0.002256296939484715,
+      "fold": 0.002256296939484715,
+      "raise": 0.9954874061210306
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-call:r1=start": {
+      "bet": 0.999999931666544,
+      "check": 6.833345593957436e-8
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999924658971,
+      "fold": 7.534102839887903e-9
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.0019861978277880368,
+      "fold": 0.0019861978277880368,
+      "raise": 0.996027604344424
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.9999974711871825,
+      "check": 0.0000025288128175169527
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-check:r1=bet-raise": {
+      "call": 0.9952659476415517,
+      "fold": 0.004734052358448312
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-check:r1=check-bet": {
+      "call": 0.31627233720243036,
+      "fold": 4.487660265716959e-10,
+      "raise": 0.6837276623488037
+    },
+    "leduc-v1:p0:card=J:board=J:r0=check-check:r1=start": {
+      "bet": 1.4219296559726836e-7,
+      "check": 0.9999998578070344
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-call:r1=bet-raise": {
+      "call": 1.587673509298116e-7,
+      "fold": 0.9999998412326491
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-call:r1=check-bet": {
+      "call": 3.755782705550652e-7,
+      "fold": 0.9999974102247691,
+      "raise": 0.0000022141969603750894
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-call:r1=start": {
+      "bet": 0.921936210793881,
+      "check": 0.07806378920611895
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-raise-call:r1=bet-raise": {
+      "call": 1.7820621605544704e-8,
+      "fold": 0.9999999821793784
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-raise-call:r1=check-bet": {
+      "call": 5.620484546301066e-8,
+      "fold": 0.9999565888696313,
+      "raise": 0.000043354925523263794
+    },
+    "leduc-v1:p0:card=J:board=K:r0=bet-raise-call:r1=start": {
+      "bet": 0.24498992364700983,
+      "check": 0.7550100763529902
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-call:r1=bet-raise": {
+      "call": 1.1021565410875327e-7,
+      "fold": 0.9999998897843458
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-call:r1=check-bet": {
+      "call": 1.3416400580755606e-9,
+      "fold": 0.9999999854797252,
+      "raise": 1.3178634786980651e-8
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-call:r1=start": {
+      "bet": 0.023303643600304753,
+      "check": 0.9766963563996952
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 7.53408898941363e-9,
+      "fold": 0.999999992465911
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.03688307441008201,
+      "fold": 0.6912337885722635,
+      "raise": 0.27188313701765454
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.999999309556602,
+      "check": 6.904433981432284e-7
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-check:r1=bet-raise": {
+      "call": 9.743639944952732e-9,
+      "fold": 0.9999999902563601
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-check:r1=check-bet": {
+      "call": 3.4528233538605304e-9,
+      "fold": 0.9999999883149011,
+      "raise": 8.232275656468655e-9
+    },
+    "leduc-v1:p0:card=J:board=K:r0=check-check:r1=start": {
+      "bet": 0.06908598305597412,
+      "check": 0.9309140169440258
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-call:r1=bet-raise": {
+      "call": 1.0498186388832885e-8,
+      "fold": 0.9999999895018136
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-call:r1=check-bet": {
+      "call": 9.240417877779349e-8,
+      "fold": 0.000027484240539255665,
+      "raise": 0.9999724233552819
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-call:r1=start": {
+      "bet": 0.8317382253078602,
+      "check": 0.1682617746921397
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.0071764393836218935,
+      "fold": 0.9928235606163781
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-raise-call:r1=check-bet": {
+      "call": 2.7917745327662354e-8,
+      "fold": 0.9999998055000476,
+      "raise": 1.6658220710646777e-7
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=bet-raise-call:r1=start": {
+      "bet": 6.083619596158599e-7,
+      "check": 0.9999993916380404
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-call:r1=bet-raise": {
+      "call": 2.0174824555957808e-8,
+      "fold": 0.9999999798251755
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-call:r1=check-bet": {
+      "call": 1.229603495095185e-9,
+      "fold": 0.9999999920957781,
+      "raise": 6.674618528139724e-9
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-call:r1=start": {
+      "bet": 0.0883985609672526,
+      "check": 0.9116014390327474
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.000011917642118837161,
+      "fold": 0.9999880823578812
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 2.1844846141816578e-8,
+      "fold": 0.9999997757462504,
+      "raise": 2.0240890337176325e-7
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.007432957676565722,
+      "check": 0.9925670423234343
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-check:r1=bet-raise": {
+      "call": 1.9954585652642336e-8,
+      "fold": 0.9999999800454143
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-check:r1=check-bet": {
+      "call": 4.272470952932544e-9,
+      "fold": 0.9999999923419682,
+      "raise": 3.385560789690713e-9
+    },
+    "leduc-v1:p0:card=J:board=Q:r0=check-check:r1=start": {
+      "bet": 0.41753816356816487,
+      "check": 0.582461836431835
+    },
+    "leduc-v1:p0:card=K:board=-:r0=bet-raise:r1=start": {
+      "call": 0.9999999979556304,
+      "fold": 2.044369549351256e-9
+    },
+    "leduc-v1:p0:card=K:board=-:r0=check-bet:r1=start": {
+      "call": 0.4215645086872987,
+      "fold": 2.1443698317715305e-9,
+      "raise": 0.5784354891683315
+    },
+    "leduc-v1:p0:card=K:board=-:r0=start:r1=start": {
+      "bet": 0.6114048722362879,
+      "check": 0.388595127763712
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-call:r1=bet-raise": {
+      "call": 0.9128032078574364,
+      "fold": 0.0871967921425636
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-call:r1=check-bet": {
+      "call": 0.7830156463905201,
+      "fold": 0.2169842508552762,
+      "raise": 1.027542036609033e-7
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-call:r1=start": {
+      "bet": 6.876601483138376e-8,
+      "check": 0.9999999312339852
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.41667324806673955,
+      "fold": 0.5833267519332604
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-raise-call:r1=check-bet": {
+      "call": 0.9999992616364103,
+      "fold": 3.496258266462523e-8,
+      "raise": 7.03401007086501e-7
+    },
+    "leduc-v1:p0:card=K:board=J:r0=bet-raise-call:r1=start": {
+      "bet": 0.07804432981204085,
+      "check": 0.9219556701879592
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-call:r1=bet-raise": {
+      "call": 0.0047031769397042475,
+      "fold": 0.9952968230602958
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-call:r1=check-bet": {
+      "call": 0.9999995956305345,
+      "fold": 8.477882293413357e-10,
+      "raise": 4.0352167732142237e-7
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-call:r1=start": {
+      "bet": 0.000006873052337648408,
+      "check": 0.9999931269476623
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.00001576372177111702,
+      "fold": 0.9999842362782287
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.9999999504877708,
+      "fold": 6.340008234258718e-10,
+      "raise": 4.887822831955989e-8
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.025450987649674323,
+      "check": 0.9745490123503258
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-check:r1=bet-raise": {
+      "call": 0.1297539624412561,
+      "fold": 0.870246037558744
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-check:r1=check-bet": {
+      "call": 0.05715186591826242,
+      "fold": 0.9428481092546512,
+      "raise": 2.4827086245484077e-8
+    },
+    "leduc-v1:p0:card=K:board=J:r0=check-check:r1=start": {
+      "bet": 9.827100066163915e-8,
+      "check": 0.9999999017289992
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-call:r1=bet-raise": {
+      "call": 0.9999999988519935,
+      "fold": 1.1480065147059662e-9
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-call:r1=check-bet": {
+      "call": 5.8105141623322095e-8,
+      "fold": 6.217657776669545e-9,
+      "raise": 0.9999999356772006
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-call:r1=start": {
+      "bet": 0.8903998031208114,
+      "check": 0.10960019687918868
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999984633058,
+      "fold": 1.5366941764109527e-9
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-raise-call:r1=check-bet": {
+      "call": 5.105247839225785e-10,
+      "fold": 5.105247839225785e-10,
+      "raise": 0.9999999989789505
+    },
+    "leduc-v1:p0:card=K:board=K:r0=bet-raise-call:r1=start": {
+      "bet": 0.3325921294088347,
+      "check": 0.6674078705911654
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-call:r1=bet-raise": {
+      "call": 0.9999999987283249,
+      "fold": 1.2716750683502562e-9
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-call:r1=check-bet": {
+      "call": 0.0007360689860536941,
+      "fold": 0.0007360689860536941,
+      "raise": 0.9985278620278926
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-call:r1=start": {
+      "bet": 0.9999988482296924,
+      "check": 0.0000011517703075545754
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999990732023,
+      "fold": 9.267977855277027e-10
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.002340272253607213,
+      "fold": 0.0012155827282067113,
+      "raise": 0.9964441450181861
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.999999491713018,
+      "check": 5.082869820061315e-7
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-check:r1=bet-raise": {
+      "call": 0.9999999983917222,
+      "fold": 1.6082778720127008e-9
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-check:r1=check-bet": {
+      "call": 0.0034613133495662233,
+      "fold": 0.0034613133495662233,
+      "raise": 0.9930773733008675
+    },
+    "leduc-v1:p0:card=K:board=K:r0=check-check:r1=start": {
+      "bet": 0.9999996902375464,
+      "check": 3.097624536131933e-7
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-call:r1=bet-raise": {
+      "call": 0.7968162122883269,
+      "fold": 0.20318378771167311
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-call:r1=check-bet": {
+      "call": 0.61575873652949,
+      "fold": 0.38424120529660116,
+      "raise": 5.817390885981192e-8
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-call:r1=start": {
+      "bet": 9.675400164195113e-8,
+      "check": 0.9999999032459984
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.41666919161069316,
+      "fold": 0.583330808389307
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-raise-call:r1=check-bet": {
+      "call": 0.9999993925837427,
+      "fold": 2.942765676081897e-9,
+      "raise": 6.044734915592186e-7
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=bet-raise-call:r1=start": {
+      "bet": 0.5668417209914135,
+      "check": 0.4331582790085865
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-call:r1=bet-raise": {
+      "call": 0.7682264741378448,
+      "fold": 0.23177352586215524
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-call:r1=check-bet": {
+      "call": 0.9999999641888005,
+      "fold": 6.538897362722327e-9,
+      "raise": 2.927230215831276e-8
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-call:r1=start": {
+      "bet": 2.3716199144207206e-8,
+      "check": 0.9999999762838009
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.00007957481628406737,
+      "fold": 0.9999204251837159
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.9999990437006232,
+      "fold": 8.930038481807633e-7,
+      "raise": 6.329552856593986e-8
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.0021945931984239165,
+      "check": 0.9978054068015761
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-check:r1=bet-raise": {
+      "call": 0.6764717370315909,
+      "fold": 0.3235282629684091
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-check:r1=check-bet": {
+      "call": 0.6144460871565578,
+      "fold": 0.38555387403833424,
+      "raise": 3.8805107950302364e-8
+    },
+    "leduc-v1:p0:card=K:board=Q:r0=check-check:r1=start": {
+      "bet": 2.0162177157893955e-7,
+      "check": 0.9999997983782284
+    },
+    "leduc-v1:p0:card=Q:board=-:r0=bet-raise:r1=start": {
+      "call": 0.9999999880763394,
+      "fold": 1.1923660618285245e-8
+    },
+    "leduc-v1:p0:card=Q:board=-:r0=check-bet:r1=start": {
+      "call": 0.995033831465224,
+      "fold": 1.1067172132756847e-7,
+      "raise": 0.004966057863054693
+    },
+    "leduc-v1:p0:card=Q:board=-:r0=start:r1=start": {
+      "bet": 0.5198528482844177,
+      "check": 0.4801471517155823
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-call:r1=bet-raise": {
+      "call": 0.047783546444011435,
+      "fold": 0.9522164535559886
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-call:r1=check-bet": {
+      "call": 8.014688912283883e-10,
+      "fold": 0.9862347514419938,
+      "raise": 0.01376524775653735
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-call:r1=start": {
+      "bet": 1.237057380297883e-7,
+      "check": 0.9999998762942619
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.043829257311158436,
+      "fold": 0.9561707426888416
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-raise-call:r1=check-bet": {
+      "call": 2.2597419730085893e-9,
+      "fold": 0.9999999632573253,
+      "raise": 3.448293267864264e-8
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=bet-raise-call:r1=start": {
+      "bet": 2.8264765646612197e-8,
+      "check": 0.9999999717352344
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-call:r1=bet-raise": {
+      "call": 1.0410220734994974e-8,
+      "fold": 0.9999999895897793
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-call:r1=check-bet": {
+      "call": 1.300657294796294e-8,
+      "fold": 0.9999999082727757,
+      "raise": 7.872065131136668e-8
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-call:r1=start": {
+      "bet": 0.3142334018387663,
+      "check": 0.6857665981612338
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 9.763461510892457e-8,
+      "fold": 0.9999999023653848
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.001985693370762144,
+      "fold": 0.9857604186787294,
+      "raise": 0.012253887950508448
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.9997321279870169,
+      "check": 0.000267872012982978
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-check:r1=bet-raise": {
+      "call": 0.034806970419907504,
+      "fold": 0.9651930295800925
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-check:r1=check-bet": {
+      "call": 4.977466634720496e-9,
+      "fold": 0.9999999940406282,
+      "raise": 9.819050677845015e-10
+    },
+    "leduc-v1:p0:card=Q:board=J:r0=check-check:r1=start": {
+      "bet": 3.73953603094711e-8,
+      "check": 0.9999999626046397
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-call:r1=bet-raise": {
+      "call": 0.000003990611909941123,
+      "fold": 0.9999960093880901
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-call:r1=check-bet": {
+      "call": 0.5488819694788705,
+      "fold": 0.3608916692936243,
+      "raise": 0.09022636122750527
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-call:r1=start": {
+      "bet": 0.28560313188787195,
+      "check": 0.714396868112128
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-raise-call:r1=bet-raise": {
+      "call": 5.227992829413326e-7,
+      "fold": 0.9999994772007169
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-raise-call:r1=check-bet": {
+      "call": 0.43060455412366727,
+      "fold": 0.5693953773502322,
+      "raise": 6.852610061557112e-8
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=bet-raise-call:r1=start": {
+      "bet": 0.08091994847320669,
+      "check": 0.9190800515267933
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-call:r1=bet-raise": {
+      "call": 4.008191996577021e-7,
+      "fold": 0.9999995991808003
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-call:r1=check-bet": {
+      "call": 0.9999997668006475,
+      "fold": 1.8785257219151745e-7,
+      "raise": 4.534678025155717e-8
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-call:r1=start": {
+      "bet": 0.07926669901949032,
+      "check": 0.9207333009805097
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.000006380197309327109,
+      "fold": 0.9999936198026906
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.5560087669204722,
+      "fold": 0.3514440947112144,
+      "raise": 0.09254713836831337
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.9999503010537111,
+      "check": 0.00004969894628885618
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-check:r1=bet-raise": {
+      "call": 0.31538554715769396,
+      "fold": 0.684614452842306
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-check:r1=check-bet": {
+      "call": 0.9999951935751437,
+      "fold": 0.0000017747395901928922,
+      "raise": 0.000003031685266203299
+    },
+    "leduc-v1:p0:card=Q:board=K:r0=check-check:r1=start": {
+      "bet": 0.549981181387992,
+      "check": 0.45001881861200793
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-call:r1=bet-raise": {
+      "call": 0.9999999982502932,
+      "fold": 1.7497068249350824e-9
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-call:r1=check-bet": {
+      "call": 2.5613262108070398e-9,
+      "fold": 2.5613262108070398e-9,
+      "raise": 0.9999999948773476
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-call:r1=start": {
+      "bet": 0.6870883573125278,
+      "check": 0.3129116426874722
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999993988983,
+      "fold": 6.011016912710792e-10
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-raise-call:r1=check-bet": {
+      "call": 0.0026752142217789693,
+      "fold": 0.0026752142217789693,
+      "raise": 0.9946495715564421
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=bet-raise-call:r1=start": {
+      "bet": 0.9999998502047435,
+      "check": 1.4979525660295858e-7
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-call:r1=bet-raise": {
+      "call": 0.9999999995639615,
+      "fold": 4.360385229826703e-10
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-call:r1=check-bet": {
+      "call": 0.008148203667613544,
+      "fold": 0.008148203667613544,
+      "raise": 0.9837035926647729
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-call:r1=start": {
+      "bet": 0.9999999643243652,
+      "check": 3.567563479541962e-8
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-raise-call:r1=bet-raise": {
+      "call": 0.9999999126254516,
+      "fold": 8.737454834939166e-8
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-raise-call:r1=check-bet": {
+      "call": 0.0007434069855973717,
+      "fold": 0.0007434069855973717,
+      "raise": 0.9985131860288052
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-bet-raise-call:r1=start": {
+      "bet": 0.9999216510791168,
+      "check": 0.00007834892088314244
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-check:r1=bet-raise": {
+      "call": 0.9999999983878158,
+      "fold": 1.612184159077238e-9
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-check:r1=check-bet": {
+      "call": 0.3166897437187011,
+      "fold": 4.5045860137022915e-9,
+      "raise": 0.6833102517767129
+    },
+    "leduc-v1:p0:card=Q:board=Q:r0=check-check:r1=start": {
+      "bet": 0.8073638441395589,
+      "check": 0.19263615586044106
+    },
+    "leduc-v1:p1:card=J:board=-:r0=bet:r1=start": {
+      "call": 0.9546098319103411,
+      "fold": 8.126880607229279e-8,
+      "raise": 0.04539008682085289
+    },
+    "leduc-v1:p1:card=J:board=-:r0=check-bet-raise:r1=start": {
+      "call": 0.9999999636171629,
+      "fold": 3.638283698247727e-8
+    },
+    "leduc-v1:p1:card=J:board=-:r0=check:r1=start": {
+      "bet": 0.44678727826011166,
+      "check": 0.5532127217398882
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-call:r1=bet": {
+      "call": 0.1298353500809803,
+      "fold": 5.819422350332079e-10,
+      "raise": 0.8701646493370775
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-call:r1=check": {
+      "bet": 0.9999999964276585,
+      "check": 3.5723415095548383e-9
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-call:r1=check-bet-raise": {
+      "call": 0.9999999995635432,
+      "fold": 4.364566778340958e-10
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-raise-call:r1=bet": {
+      "call": 1.3173341652627328e-8,
+      "fold": 1.2238967097797454e-8,
+      "raise": 0.9999999745876913
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-raise-call:r1=check": {
+      "bet": 0.9999999816006667,
+      "check": 1.8399333252467863e-8
+    },
+    "leduc-v1:p1:card=J:board=J:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999908207744,
+      "fold": 9.179225492239716e-9
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-call:r1=bet": {
+      "call": 0.20772870409602362,
+      "fold": 1.865074744283003e-9,
+      "raise": 0.7922712940389016
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-call:r1=check": {
+      "bet": 0.9999999567495347,
+      "check": 4.325046526622587e-8
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.9999999986011939,
+      "fold": 1.39880611871132e-9
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-raise-call:r1=bet": {
+      "call": 5.527791026644579e-8,
+      "fold": 9.325374060698927e-10,
+      "raise": 0.9999999437895524
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.999999990424068,
+      "check": 9.575932098526827e-9
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999993005969,
+      "fold": 6.994030612498558e-10
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-check:r1=bet": {
+      "call": 0.4327413947198765,
+      "fold": 7.531385631635285e-9,
+      "raise": 0.5672585977487379
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-check:r1=check": {
+      "bet": 0.9999999977405843,
+      "check": 2.2594156894905036e-9
+    },
+    "leduc-v1:p1:card=J:board=J:r0=check-check:r1=check-bet-raise": {
+      "call": 0.9999999988702921,
+      "fold": 1.1297078472977316e-9
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-call:r1=bet": {
+      "call": 5.819422350332249e-10,
+      "fold": 0.970516582962485,
+      "raise": 0.029483416455572772
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-call:r1=check": {
+      "bet": 0.008951160199634376,
+      "check": 0.9910488398003656
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-call:r1=check-bet-raise": {
+      "call": 5.925018360836201e-7,
+      "fold": 0.999999407498164
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-raise-call:r1=bet": {
+      "call": 1.2238967097797234e-8,
+      "fold": 0.7804323806429737,
+      "raise": 0.21956760711805928
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-raise-call:r1=check": {
+      "bet": 0.9999987782157747,
+      "check": 0.0000012217842254737122
+    },
+    "leduc-v1:p1:card=J:board=K:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 2.207212520610966e-7,
+      "fold": 0.999999779278748
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-call:r1=bet": {
+      "call": 1.0957302174084043e-7,
+      "fold": 0.9999992396789408,
+      "raise": 6.507480375017011e-7
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-call:r1=check": {
+      "bet": 0.354920468110003,
+      "check": 0.645079531889997
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 3.94118171223289e-9,
+      "fold": 0.9999999960588183
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-raise-call:r1=bet": {
+      "call": 9.325374060698436e-10,
+      "fold": 0.9999998680039832,
+      "raise": 1.3106347953084116e-7
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.2898159510998856,
+      "check": 0.7101840489001143
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 2.4132662536278817e-9,
+      "fold": 0.9999999975867337
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-check:r1=bet": {
+      "call": 9.68325260640139e-9,
+      "fold": 0.9999999656555343,
+      "raise": 2.466121310794362e-8
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-check:r1=check": {
+      "bet": 0.023567569419362527,
+      "check": 0.9764324305806376
+    },
+    "leduc-v1:p1:card=J:board=K:r0=check-check:r1=check-bet-raise": {
+      "call": 2.715098685719009e-7,
+      "fold": 0.9999997284901314
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-call:r1=bet": {
+      "call": 5.819422350332396e-10,
+      "fold": 0.9999999876224103,
+      "raise": 1.1795647488512674e-8
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-call:r1=check": {
+      "bet": 0.08915955611937362,
+      "check": 0.9108404438806263
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-call:r1=check-bet-raise": {
+      "call": 4.239744548780524e-8,
+      "fold": 0.9999999576025546
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-raise-call:r1=bet": {
+      "call": 7.632482024206546e-8,
+      "fold": 0.5534966683889807,
+      "raise": 0.4465032552861991
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-raise-call:r1=check": {
+      "bet": 1.8358450646695238e-8,
+      "check": 0.9999999816415495
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-call:r1=bet": {
+      "call": 1.8650747442829738e-9,
+      "fold": 0.999999987979666,
+      "raise": 1.0155259133993221e-8
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-call:r1=check": {
+      "bet": 0.9999998831225091,
+      "check": 1.1687749096938036e-7
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.13691346243521244,
+      "fold": 0.8630865375647875
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-raise-call:r1=bet": {
+      "call": 1.478625035378952e-8,
+      "fold": 0.8793730871618646,
+      "raise": 0.12062689805188498
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-raise-call:r1=check": {
+      "bet": 7.978414534924575e-9,
+      "check": 0.9999999920215855
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.27625509552206157,
+      "fold": 0.7237449044779384
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-check:r1=bet": {
+      "call": 7.531385631635005e-9,
+      "fold": 0.9444462950977559,
+      "raise": 0.05555369737085855
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-check:r1=check": {
+      "bet": 0.11111057644697427,
+      "check": 0.8888894235530257
+    },
+    "leduc-v1:p1:card=J:board=Q:r0=check-check:r1=check-bet-raise": {
+      "call": 1.0311887465158721e-8,
+      "fold": 0.9999999896881125
+    },
+    "leduc-v1:p1:card=K:board=-:r0=bet:r1=start": {
+      "call": 0.4807407916120027,
+      "fold": 1.666583337499805e-9,
+      "raise": 0.5192592067214139
+    },
+    "leduc-v1:p1:card=K:board=-:r0=check-bet-raise:r1=start": {
+      "call": 0.99999999875006,
+      "fold": 1.249940010020586e-9
+    },
+    "leduc-v1:p1:card=K:board=-:r0=check:r1=start": {
+      "bet": 0.9999979943871535,
+      "check": 0.0000020056128465229735
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-call:r1=bet": {
+      "call": 0.7874153432083161,
+      "fold": 0.21258463519290424,
+      "raise": 2.159877979073928e-8
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-call:r1=check": {
+      "bet": 0.9999921365054475,
+      "check": 0.00000786349455245553
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-call:r1=check-bet-raise": {
+      "call": 0.25215637026114585,
+      "fold": 0.7478436297388541
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-raise-call:r1=bet": {
+      "call": 0.9611447712036868,
+      "fold": 0.03885223523868874,
+      "raise": 0.000002993557624432778
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-raise-call:r1=check": {
+      "bet": 0.30543763472106256,
+      "check": 0.6945623652789374
+    },
+    "leduc-v1:p1:card=K:board=J:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999148194169,
+      "fold": 8.518058312621076e-8
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-call:r1=bet": {
+      "call": 0.7402779135132075,
+      "fold": 0.25972203958764906,
+      "raise": 4.6899143471746336e-8
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-call:r1=check": {
+      "bet": 0.18604341271564603,
+      "check": 0.8139565872843539
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.9891406578729913,
+      "fold": 0.010859342127008549
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-raise-call:r1=bet": {
+      "call": 0.8086320647268356,
+      "fold": 0.1913667601412406,
+      "raise": 0.0000011751319238078065
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.3907817539345167,
+      "check": 0.6092182460654834
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.7530970018273937,
+      "fold": 0.24690299817260625
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-check:r1=bet": {
+      "call": 0.20534614858637965,
+      "fold": 0.7924793681769449,
+      "raise": 0.002174483236675517
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-check:r1=check": {
+      "bet": 0.0007889367137943621,
+      "check": 0.9992110632862057
+    },
+    "leduc-v1:p1:card=K:board=J:r0=check-check:r1=check-bet-raise": {
+      "call": 0.605025522130422,
+      "fold": 0.39497447786957796
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-call:r1=bet": {
+      "call": 5.626719778380962e-8,
+      "fold": 1.1555661363867969e-9,
+      "raise": 0.999999942577236
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-call:r1=check": {
+      "bet": 0.9999999889408813,
+      "check": 1.105911871785027e-8
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-call:r1=check-bet-raise": {
+      "call": 0.9999999991333255,
+      "fold": 8.666746118747548e-10
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-raise-call:r1=bet": {
+      "call": 0.3933996330417787,
+      "fold": 1.0698467585662038e-9,
+      "raise": 0.6066003658883745
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-raise-call:r1=check": {
+      "bet": 0.9999999648107198,
+      "check": 3.518928019519949e-8
+    },
+    "leduc-v1:p1:card=K:board=K:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999959997882,
+      "fold": 4.000211834746703e-9
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-call:r1=bet": {
+      "call": 1.6889998237747177e-8,
+      "fold": 5.584218439533752e-9,
+      "raise": 0.9999999775257833
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-call:r1=check": {
+      "bet": 0.9999999744135845,
+      "check": 2.558641548094225e-8
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.999999995811836,
+      "fold": 4.188163936810416e-9
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-raise-call:r1=bet": {
+      "call": 0.40957479668498653,
+      "fold": 4.1664667052764983e-10,
+      "raise": 0.5904252028983669
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.9999999729366573,
+      "check": 2.7063342728965285e-8
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.999999996124321,
+      "fold": 3.87567893687836e-9
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-check:r1=bet": {
+      "call": 0.0028173964201562017,
+      "fold": 0.002077399110687129,
+      "raise": 0.9951052044691566
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-check:r1=check": {
+      "bet": 0.9966977977881675,
+      "check": 0.0033022022118325326
+    },
+    "leduc-v1:p1:card=K:board=K:r0=check-check:r1=check-bet-raise": {
+      "call": 0.998436788626931,
+      "fold": 0.001563211373069057
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-call:r1=bet": {
+      "call": 0.6890090783134003,
+      "fold": 0.3109908526684587,
+      "raise": 6.901814092856054e-8
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-call:r1=check": {
+      "bet": 0.5119609096097446,
+      "check": 0.4880390903902554
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-call:r1=check-bet-raise": {
+      "call": 9.605310737325784e-7,
+      "fold": 0.9999990394689262
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-raise-call:r1=bet": {
+      "call": 0.7918329592004576,
+      "fold": 0.2081659140739142,
+      "raise": 0.000001126725628221397
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-raise-call:r1=check": {
+      "bet": 0.3422867972973837,
+      "check": 0.6577132027026162
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.8203696492866069,
+      "fold": 0.17963035071339306
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-call:r1=bet": {
+      "call": 0.6899077192255404,
+      "fold": 0.310092265161829,
+      "raise": 1.5612630555485034e-8
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-call:r1=check": {
+      "bet": 4.8202166449662644e-8,
+      "check": 0.9999999517978336
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.9117966643318723,
+      "fold": 0.08820333566812763
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-raise-call:r1=bet": {
+      "call": 0.7125603694426091,
+      "fold": 0.28743794000696815,
+      "raise": 0.0000016905504227121975
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.5418786040740502,
+      "check": 0.4581213959259497
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.4574611189341464,
+      "fold": 0.5425388810658536
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-check:r1=bet": {
+      "call": 0.9892973778995363,
+      "fold": 0.006998058495329048,
+      "raise": 0.0037045636051345992
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-check:r1=check": {
+      "bet": 0.0840037441262115,
+      "check": 0.9159962558737885
+    },
+    "leduc-v1:p1:card=K:board=Q:r0=check-check:r1=check-bet-raise": {
+      "call": 0.005637333557797354,
+      "fold": 0.9943626664422026
+    },
+    "leduc-v1:p1:card=Q:board=-:r0=bet:r1=start": {
+      "call": 0.7567953010633652,
+      "fold": 3.554145651081043e-8,
+      "raise": 0.2432046633951783
+    },
+    "leduc-v1:p1:card=Q:board=-:r0=check-bet-raise:r1=start": {
+      "call": 0.9999999983425413,
+      "fold": 1.657458673003749e-9
+    },
+    "leduc-v1:p1:card=Q:board=-:r0=check:r1=start": {
+      "bet": 0.7541289104117822,
+      "check": 0.2458710895882178
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-call:r1=bet": {
+      "call": 8.298676284595721e-9,
+      "fold": 0.9999999405696316,
+      "raise": 5.1131692235184957e-8
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-call:r1=check": {
+      "bet": 0.10436025725655529,
+      "check": 0.8956397427434447
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-call:r1=check-bet-raise": {
+      "call": 5.275376692659031e-9,
+      "fold": 0.9999999947246233
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-raise-call:r1=bet": {
+      "call": 3.519809190916061e-9,
+      "fold": 0.98444926557904,
+      "raise": 0.015550730901150842
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-raise-call:r1=check": {
+      "bet": 1.0620134277092128e-7,
+      "check": 0.9999998937986573
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.09743210302927581,
+      "fold": 0.9025678969707243
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-call:r1=bet": {
+      "call": 4.9864985892168116e-9,
+      "fold": 0.9999999465689013,
+      "raise": 4.8444600040752085e-8
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-call:r1=check": {
+      "bet": 0.1781190469091935,
+      "check": 0.8218809530908064
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 5.106203966445474e-7,
+      "fold": 0.9999994893796034
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-raise-call:r1=bet": {
+      "call": 2.6317391687948568e-8,
+      "fold": 0.9524200026619002,
+      "raise": 0.047579971020708205
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-raise-call:r1=check": {
+      "bet": 1.6452852930985663e-7,
+      "check": 0.9999998354714708
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.14320123587153208,
+      "fold": 0.8567987641284679
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-check:r1=bet": {
+      "call": 1.6945702525365008e-8,
+      "fold": 0.9999998984293328,
+      "raise": 8.462496460943757e-8
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-check:r1=check": {
+      "bet": 0.5625000640422657,
+      "check": 0.43749993595773423
+    },
+    "leduc-v1:p1:card=Q:board=J:r0=check-check:r1=check-bet-raise": {
+      "call": 4.588289774824466e-9,
+      "fold": 0.9999999954117103
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-call:r1=bet": {
+      "call": 0.7543040119114284,
+      "fold": 0.24569597708377236,
+      "raise": 1.1004799267736608e-8
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-call:r1=check": {
+      "bet": 0.5674941173593787,
+      "check": 0.4325058826406214
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-call:r1=check-bet-raise": {
+      "call": 0.4403433827226082,
+      "fold": 0.5596566172773917
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-raise-call:r1=bet": {
+      "call": 0.532617463888249,
+      "fold": 0.46738232125835655,
+      "raise": 2.1485339447920839e-7
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-raise-call:r1=check": {
+      "bet": 0.4279927051138437,
+      "check": 0.5720072948861563
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 7.676998776161857e-8,
+      "fold": 0.9999999232300122
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-call:r1=bet": {
+      "call": 0.579449358816562,
+      "fold": 0.420549712738634,
+      "raise": 9.284448039382322e-7
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-call:r1=check": {
+      "bet": 0.22608089127058859,
+      "check": 0.7739191087294114
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.49251072657866435,
+      "fold": 0.5074892734213357
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-raise-call:r1=bet": {
+      "call": 0.5281433580228454,
+      "fold": 0.471855503075832,
+      "raise": 0.000001138901322582375
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.2263264140054179,
+      "check": 0.773673585994582
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.5261152368426156,
+      "fold": 0.4738847631573845
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-check:r1=bet": {
+      "call": 0.7878778489560656,
+      "fold": 0.21212151105129415,
+      "raise": 6.399926403231277e-7
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-check:r1=check": {
+      "bet": 0.32167209189898066,
+      "check": 0.6783279081010193
+    },
+    "leduc-v1:p1:card=Q:board=K:r0=check-check:r1=check-bet-raise": {
+      "call": 0.9999969655619295,
+      "fold": 0.0000030344380704213798
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-call:r1=bet": {
+      "call": 2.2968855215813032e-8,
+      "fold": 1.4387436677218575e-9,
+      "raise": 0.9999999755924011
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-call:r1=check": {
+      "bet": 0.9999999868081373,
+      "check": 1.3191862844803038e-8
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-call:r1=check-bet-raise": {
+      "call": 0.9999999994494603,
+      "fold": 5.505396760337626e-10
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-raise-call:r1=bet": {
+      "call": 6.927195601591846e-8,
+      "fold": 2.2841987131798732e-9,
+      "raise": 0.9999999284438452
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-raise-call:r1=check": {
+      "bet": 0.9999999748799848,
+      "check": 2.5120015176848317e-8
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999896525796,
+      "fold": 1.034742043063218e-8
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-call:r1=bet": {
+      "call": 0.24225533514324638,
+      "fold": 1.104972448669092e-9,
+      "raise": 0.7577446637517812
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-call:r1=check": {
+      "bet": 0.9999999551642575,
+      "check": 4.483574248003765e-8
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-call:r1=check-bet-raise": {
+      "call": 0.9999999991712706,
+      "fold": 8.287293736585696e-10
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-raise-call:r1=bet": {
+      "call": 0.11655183955214622,
+      "fold": 5.524862252502891e-10,
+      "raise": 0.8834481598953675
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-raise-call:r1=check": {
+      "bet": 0.9999999894512468,
+      "check": 1.0548753128968419e-8
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-bet-raise-call:r1=check-bet-raise": {
+      "call": 0.9999999995856353,
+      "fold": 4.1436467330875934e-10
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-check:r1=bet": {
+      "call": 3.1091448753751916e-7,
+      "fold": 1.6945702525366206e-8,
+      "raise": 0.9999996721398099
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-check:r1=check": {
+      "bet": 0.9999999949162892,
+      "check": 5.083710757609861e-9
+    },
+    "leduc-v1:p1:card=Q:board=Q:r0=check-check:r1=check-bet-raise": {
+      "call": 0.9999999974581446,
+      "fold": 2.541855391726988e-9
+    }
+  }
+}

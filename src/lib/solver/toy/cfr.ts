@@ -59,6 +59,13 @@ type CfrTreeNode<Action extends string> =
 export interface CfrOptions {
   readonly iterations: number;
   readonly checkpointIterations?: readonly number[];
+  /**
+   * Order in which the two players' precomputed regret deltas are added each iteration.
+   * Updates are simultaneous: both players' deltas come from one traversal of the same
+   * current strategy and touch disjoint tables, so this option cannot change results.
+   * It is kept (and validated) so callers and tests can assert that order independence;
+   * it does not select alternating updates.
+   */
   readonly updateOrder?: readonly [SolverPlayer, SolverPlayer];
 }
 
@@ -294,6 +301,7 @@ export function solveCfr<State, Action extends string, ChanceOutcome>(
     const iterationData = collectIterationData(game.id, tree, currentStrategy, tables);
     accumulateAverageStrategy(tables, currentStrategy, iterationData.ownReach);
 
+    // Deltas were all computed above from currentStrategy; order only affects application.
     for (const player of updateOrder) {
       const deltas = iterationData.deltas[player];
       for (const [key, values] of deltas) {

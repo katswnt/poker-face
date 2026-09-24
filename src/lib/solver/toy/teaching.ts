@@ -4,7 +4,7 @@ import type {
   LeducDecisionFacts,
   LeducOpponentRankWeight,
 } from "./leduc-explain";
-import type { LeducAction, LeducRank } from "./leduc";
+import { LEDUC_RANKS, type LeducAction, type LeducRank } from "./leduc";
 
 export type LeducLessonId = "mix" | "value" | "bluff" | "bluff-catch";
 
@@ -100,6 +100,41 @@ function chips(value: number, digits = 4): string {
   return `${value.toFixed(digits)} chip${Math.abs(value) === 1 ? "" : "s"}`;
 }
 
+/** A gap this small (in chips) is described as close; wider gaps are stated plainly. */
+const CLOSE_GAP_CHIPS = 0.01;
+
+const RANK_NAMES: Readonly<Record<LeducRank, string>> = { J: "jack", Q: "queen", K: "king" };
+
+/** Chip gap between two reached actions, with the leader named from the computed values. */
+function compareActions(first: LeducActionFact, second: LeducActionFact) {
+  const gap = Math.abs(first.expectedValue! - second.expectedValue!);
+  const [leader, trailer] = first.expectedValue! >= second.expectedValue!
+    ? [first, second]
+    : [second, first];
+  return { leader, trailer, gap, close: gap < CLOSE_GAP_CHIPS };
+}
+
+function showdownResult(
+  privateRank: LeducRank,
+  opponentRank: LeducRank,
+  boardRank: LeducRank,
+): "beats" | "splits with" | "loses to" {
+  if (privateRank === boardRank && opponentRank !== boardRank) return "beats";
+  if (opponentRank === boardRank && privateRank !== boardRank) return "loses to";
+  const difference = LEDUC_RANKS.indexOf(privateRank) - LEDUC_RANKS.indexOf(opponentRank);
+  return difference === 0 ? "splits with" : difference > 0 ? "beats" : "loses to";
+}
+
+function listPhrase(items: readonly string[]): string {
+  if (items.length <= 1) return items.join("");
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+}
+
+function article(noun: string): string {
+  return /^[aeiou]/.test(noun) ? "an" : "a";
+}
+
 function situation(
   decision: LeducDecisionFacts,
   actor: string,
@@ -126,7 +161,7 @@ function buildMixLesson(decision: LeducDecisionFacts): LeducLabLesson {
     answer: "Checking and betting finish almost even, so this strategy keeps both choices available.",
     teachingPoints: [
       "Before anyone acts, the opponent has a jack 40% of the time, a queen 20%, and a king 40%.",
-      `Across every possible public card and later choice, the two plans are only ${chips(bet.differenceFromBest!)} apart.`,
+      `Across every possible public card and later choice, the two plans are only ${chips(compareActions(check, bet).gap)} apart.`,
       `The saved strategy checks ${percent(check.frequency)} of the time and bets ${percent(bet.frequency)}. These percentages are approximate, but the near-tie is the useful lesson.`,
     ],
     featuredAction: "check",
@@ -169,16 +204,22 @@ function buildBluffLesson(decision: LeducDecisionFacts): LeducLabLesson {
   if (immediateFold === null || bet.showdownEquity === null) {
     throw new Error("Bluff lesson is missing fold or showdown evidence");
   }
+  if (immediateFold <= 0) throw new Error("Bluff lesson needs a bet that gets folds");
+  const { leader, trailer, gap, close } = compareActions(bet, check);
+  const leaderName = leader.action === "bet" ? "Betting" : "Checking";
+  const trailerName = trailer.action === "bet" ? "betting" : "checking";
   return {
     id: "bluff",
     label: "Bluffing",
-    title: "A weak hand can win by making better hands fold",
+    title: "A hand that almost never wins at showdown can still win the pot by betting",
     question: "How can betting help when your cards are almost never best?",
     answer: "The bet can win before showdown. Its value comes from folds, not from card strength.",
     teachingPoints: [
       `The opponent folds immediately ${percent(immediateFold)} of the time after this bet.`,
       `When the hand does reach showdown after betting, your share is about ${percent(bet.showdownEquity, 2)}.`,
-      `Betting leads checking by only ${chips(check.differenceFromBest!)} here. It is a close result in this saved strategy, not a universal rule.`,
+      close
+        ? `${leaderName} leads ${trailerName} by only ${chips(gap)} here. It is a close result in this saved strategy, not a universal rule.`
+        : `${leaderName} leads ${trailerName} by ${chips(gap)} here in this saved strategy.`,
     ],
     featuredAction: "bet",
     situation: situation(decision, "You act first after the public card", "You checked, then called a bet"),
@@ -190,11 +231,27 @@ function buildBluffLesson(decision: LeducDecisionFacts): LeducLabLesson {
 
 function buildBluffCatchLesson(decision: LeducDecisionFacts): LeducLabLesson {
   const call = requireAction(decision, "call");
-  if (call.showdownEquity === null || decision.toCall <= 0) {
+  const fold = requireAction(decision, "fold");
+  if (call.showdownEquity === null || decision.toCall <= 0 || decision.boardRank === null) {
     throw new Error("Bluff-catch lesson is missing its terminal call price");
   }
   const finalPot = decision.pot + decision.toCall;
   const minimumShare = decision.toCall / finalPot;
+  const boardRank = decision.boardRank;
+  const holdings = decision.opponentRanks.filter(rank => (rank.probability ?? 0) > 0);
+  const likelihoods = holdings.map(({ rank, probability }) => {
+    const name = RANK_NAMES[rank];
+    const shown = probability! < 0.001 ? "under 0.1%" : percent(probability!, 1);
+    return `${article(name)} ${name} about ${shown}`;
+  });
+  const results = holdings.map(({ rank }) => {
+    const name = RANK_NAMES[rank];
+    const paired = rank === boardRank ? `the paired ${name}` : `the ${name}`;
+    return `${showdownResult(decision.privateRank, rank, boardRank)} ${paired}`;
+  });
+  const { leader, gap } = compareActions(call, fold);
+  const leaderName = leader.action === "call" ? "Calling" : "Folding";
+  const equityGap = Math.abs(call.showdownEquity - minimumShare);
   return {
     id: "bluff-catch",
     label: "Bluff-catching",
@@ -203,8 +260,8 @@ function buildBluffCatchLesson(decision: LeducDecisionFacts): LeducLabLesson {
     answer: "Your king beats queen-high bluffs. The call is worthwhile only if those bluffs appear often enough for the price.",
     teachingPoints: [
       `Calling ${decision.toCall} chips makes a ${finalPot}-chip final pot, so you need ${percent(minimumShare, 1)} of it to break even.`,
-      `The opponent's actions make a jack about ${percent(decision.opponentRanks[0].probability ?? 0, 1)} likely and a queen about ${percent(decision.opponentRanks[1].probability ?? 0, 1)} likely. Your king beats the queen and loses to the paired jack.`,
-      `The estimate is ${percent(call.showdownEquity, 1)}—only ${percent(Math.abs(call.showdownEquity - minimumShare), 1)} away. Folding is ahead by ${chips(call.differenceFromBest!)} in this approximate solution, so the honest label is “close.”`,
+      `Given the opponent's actions, they hold ${listPhrase(likelihoods)}. Your ${RANK_NAMES[decision.privateRank]} ${listPhrase(results)}.`,
+      `The estimate is ${percent(call.showdownEquity, 1)}—${equityGap < 0.02 ? "only " : ""}${percent(equityGap, 1)} away. ${leaderName} is ahead by ${chips(gap)} in this approximate solution, so the honest label is ${gap < CLOSE_GAP_CHIPS ? "“close.”" : "“clear.”"}`,
     ],
     featuredAction: "call",
     situation: situation(decision, "You act second", "You checked; opponent bet"),

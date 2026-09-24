@@ -39,8 +39,22 @@ export interface LeducConvergenceCheckpoint {
   readonly exploitability: number;
 }
 
+export interface LeducAcceptance {
+  readonly player0ValueTolerance: number;
+  readonly maximumExploitability: number;
+  /** Certified converged game value used as the correctness gate. */
+  readonly convergedReferenceValue: number;
+  readonly convergedReferenceValueDifference: number;
+  /** [v0 - gain1, v0 + gain0]: the true game value must lie here for this strategy. */
+  readonly certifiedValueInterval: readonly [number, number];
+  readonly certificateContainsConvergedReference: boolean;
+  /** Informational only: Brown's reference is an unconverged 1,600-iteration CFR run. */
+  readonly brownReferenceValueDifference: number;
+  readonly passed: boolean;
+}
+
 export interface LeducSolveArtifactPayload {
-  readonly schemaVersion: 2;
+  readonly schemaVersion: 3;
   readonly game: "leduc-v1";
   readonly algorithm: "full-tree-cfr";
   readonly algorithmVersion: 1;
@@ -64,12 +78,7 @@ export interface LeducSolveArtifactPayload {
   readonly exploitabilityUnits: "net-chips-per-hand";
   readonly convergence: readonly LeducConvergenceCheckpoint[];
   readonly reference: LeducReferenceResult;
-  readonly acceptance: {
-    readonly player0ValueTolerance: number;
-    readonly maximumExploitability: number;
-    readonly referenceValueDifference: number;
-    readonly passed: boolean;
-  };
+  readonly acceptance: LeducAcceptance;
   readonly decisions: readonly LeducDecisionFacts[];
 }
 
@@ -80,6 +89,69 @@ export interface LeducSolveArtifact extends LeducSolveArtifactPayload {
 const PINNED_REFERENCE_COMMIT = "6a10442877ffc8fd28af93e16e279b9bbdd97b2a";
 const VALUE_TOLERANCE = 0.001;
 const MAXIMUM_EXPLOITABILITY = 0.01;
+
+/**
+ * Converged value of this Leduc variant (1-chip then 2-chip bets, one raise per round),
+ * player 0's net chips per hand.
+ *
+ * Provenance: CFR+ (alternating updates, linearly weighted average) run for 20,000
+ * iterations by a Leduc tree builder and solver written independently of this
+ * directory. The resulting strategy is checked in at
+ * test/fixtures/solver/leduc-cfr-plus-20k-reference.json, and
+ * test/audit-regressions-toy.test.ts re-grades it with this repo's exact best response:
+ * gains [7.0e-6, 3.1e-6], exploitability 5.1e-6 chips, so the true game value lies in
+ * `certifiedInterval` (width 1.0e-5, 100x tighter than VALUE_TOLERANCE). Brown's
+ * pinned 1,600-iteration value (-0.053540) sits 0.00108 outside that interval, which is
+ * why it is kept only as an informational comparison.
+ */
+export const LEDUC_CONVERGED_REFERENCE = {
+  value: -0.05245578203316426,
+  certifiedInterval: [-0.052458894979468526, -0.052448778404938515],
+  exploitability: 0.000005058287265005679,
+  iterations: 20_000,
+  algorithm: "cfr-plus-linear-average",
+  strategyFixture: "test/fixtures/solver/leduc-cfr-plus-20k-reference.json",
+} as const;
+
+export interface LeducMeasuredResult {
+  readonly value: Utility;
+  readonly gains: Utility;
+  readonly exploitability: number;
+}
+
+/**
+ * Gate a measured strategy against the converged reference. Passing requires (a) the
+ * player-0 value within VALUE_TOLERANCE of the converged value, (b) the strategy's own
+ * best-response certificate [v0 - gain1, v0 + gain0] to contain that value, and
+ * (c) exploitability within MAXIMUM_EXPLOITABILITY. Brown's value is reported only.
+ */
+export function evaluateLeducAcceptance(
+  measured: LeducMeasuredResult,
+  brownReference: LeducReferenceResult,
+): LeducAcceptance {
+  const convergedReferenceValue = LEDUC_CONVERGED_REFERENCE.value;
+  const convergedReferenceValueDifference = Math.abs(measured.value[0] - convergedReferenceValue);
+  const certifiedValueInterval: readonly [number, number] = [
+    measured.value[0] - measured.gains[1],
+    measured.value[0] + measured.gains[0],
+  ];
+  const certificateContainsConvergedReference =
+    certifiedValueInterval[0] <= convergedReferenceValue &&
+    convergedReferenceValue <= certifiedValueInterval[1];
+  return {
+    player0ValueTolerance: VALUE_TOLERANCE,
+    maximumExploitability: MAXIMUM_EXPLOITABILITY,
+    convergedReferenceValue,
+    convergedReferenceValueDifference,
+    certifiedValueInterval,
+    certificateContainsConvergedReference,
+    brownReferenceValueDifference: Math.abs(measured.value[0] - brownReference.value[0]),
+    passed:
+      convergedReferenceValueDifference <= VALUE_TOLERANCE &&
+      certificateContainsConvergedReference &&
+      measured.exploitability <= MAXIMUM_EXPLOITABILITY,
+  };
+}
 
 function validateReference(reference: LeducReferenceResult): void {
   if (
@@ -139,14 +211,9 @@ export function createLeducSolveArtifactPayload(
       exploitability: checkpointGrade.exploitability,
     };
   });
-  const referenceValueDifference = Math.abs(grade.value[0] - reference.value[0]);
-  const passed =
-    referenceValueDifference <= VALUE_TOLERANCE &&
-    grade.exploitability <= MAXIMUM_EXPLOITABILITY &&
-    reference.exploitability <= MAXIMUM_EXPLOITABILITY;
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     game: "leduc-v1",
     algorithm: result.algorithm,
     algorithmVersion: result.algorithmVersion,
@@ -169,12 +236,7 @@ export function createLeducSolveArtifactPayload(
     exploitabilityUnits: "net-chips-per-hand",
     convergence,
     reference,
-    acceptance: {
-      player0ValueTolerance: VALUE_TOLERANCE,
-      maximumExploitability: MAXIMUM_EXPLOITABILITY,
-      referenceValueDifference,
-      passed,
-    },
+    acceptance: evaluateLeducAcceptance(grade, reference),
     decisions: leducDecisionFacts(result.averageStrategy),
   };
 }
@@ -187,4 +249,5 @@ export const LEDUC_ACCEPTANCE = {
   pinnedReferenceCommit: PINNED_REFERENCE_COMMIT,
   player0ValueTolerance: VALUE_TOLERANCE,
   maximumExploitability: MAXIMUM_EXPLOITABILITY,
+  convergedReferenceValue: LEDUC_CONVERGED_REFERENCE.value,
 } as const;
