@@ -28,6 +28,20 @@ jobs:
       - name: Test (domain suite)
         run: npm test
 
+      - name: Audit hand evaluator category counts
+        run: npm run audit:math
+
+      - name: Audit exact push/fold equity matrix
+        run: npm run audit:equity-matrix
+
+      - name: Audit heads-up river v1, v2, compact, scorekeeper and factorized engines
+        run: |
+          npm run audit:river
+          npm run audit:river:v2
+          npm run audit:river:compact
+          npm run audit:river:scorekeeper
+          npm run audit:river:factorized
+
       - name: Audit Kuhn solver artifact
         run: npm run audit:kuhn
 
@@ -75,3 +89,30 @@ jobs:
 
       - name: Test (browser smoke suite)
         run: npm run test:e2e
+
+  # Slow reproducibility audits run in parallel with the main job.
+  slow-audits:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        audit:
+          - audit:flop:vector
+          - audit:multiway-river
+          - audit:multiway-raised-river
+          - audit:multiway-two-size-river
+          - audit:multiway-side-pot-river
+          - audit:multiway-four-player-river
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Run ${{ matrix.audit }}
+        run: npm run ${{ matrix.audit }}
