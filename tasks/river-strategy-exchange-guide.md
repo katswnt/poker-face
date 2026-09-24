@@ -33,25 +33,31 @@ change the reference manifest. Keep training method, seed, work counts, hardware
 timings in a separate experiment record. The minimal policy envelope does not accept
 arbitrary metadata, and the grader cannot verify claims about how a policy was trained.
 
-## Version-one benchmark set
+## Benchmark set (suite version 2)
 
 | ID | Purpose | Deals | Equivalent states |
 |---|---|---:|---:|
 | `v3-two-raise` | Accepted multi-size, two-raise v3 example | 176 | 11,089 |
 | `weighted-blockers` | Unequal weights and shared private cards | 8 | 169 |
-| `short-all-in` | Unequal stacks, short raise, and returned chips | 4 | 133 |
-| `board-ties` | Everyone plays the board; private cards still block deals | 3 | 73 |
+| `short-all-in` | Unequal stacks, short raise, and returned chips | 4 | 121 |
+| `board-ties` | Everyone plays the board; private cards still block deals | 3 | 64 |
 
 These are correctness examples, not a representative poker strength benchmark or a
 held-out training set. If used for training or tuning, they are not independent test
 data. A future learned-policy comparison needs separately declared held-out games.
 No iteration budget guarantees a particular exploitability on arbitrary inputs.
 
-The checked-in [reference manifest](../src/lib/solver/river/exchange/artifacts/benchmarks-v1.json)
+The checked-in [reference manifest](../src/lib/solver/river/exchange/artifacts/benchmarks-v2.json)
 records exact counts, solver settings, game and policy hashes, independently measured
 grades, and separate rules checks. `audit:river:exchange` regenerates and compares it
 without writing. `generate:river:benchmarks` deliberately rewrites it; review that diff.
 Old v3 artifact hashes remain unchanged: the exchange uses a new format-specific hash.
+
+Suite version 2 (2026-09-24) follows the v2/v3 rule that collapses bet or raise targets
+above the opponent's stack into one bet-to-their-stack action. That shrank `short-all-in`
+(133 to 121 states) and `board-ties` (73 to 64); policies saved for the version-1 trees are
+rejected by fingerprint. Any future change to a benchmark tree or solver setting bumps
+`RIVER_BENCHMARK_SUITE_VERSION`, which renames the manifest file.
 
 ## Reading the exported game
 

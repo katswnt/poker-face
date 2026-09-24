@@ -260,19 +260,23 @@ nine possible endings.
 
 ### Implemented Leduc solve audit
 
-The committed deterministic solve uses 12,800 ordinary-CFR iterations. Its exact
+The committed deterministic solve uses 102,400 ordinary-CFR iterations (raised from
+12,800 on 2026-09-24 to widen the margin against the converged-value gate). Its exact
 information-set best-response grade is:
 
 | Measurement | TypeScript result | Pinned Brown result |
 |---|---:|---:|
-| Player 0 value | `-0.053274276` | `-0.053539972` |
-| Exploitability | `0.005268743` | `0.008071216` |
-| Iterations | 12,800 | 1,600 |
+| Player 0 value | `-0.052792174` | `-0.053539972` |
+| Exploitability | `0.001859813` | `0.008071216` |
+| Iterations | 102,400 | 1,600 |
 
-The player-0 values differ by `0.000265695` chip, inside the locked `0.001` tolerance.
-Both independently graded strategies are below the `0.01` exploitability gate.
+The gate is the certified converged game value `-0.052455782` (from a CFR+ strategy whose
+best-response interval is recorded in `LEDUC_CONVERGED_REFERENCE`): our value is within
+`0.000336392` chip of it, inside the locked `0.001` tolerance (about 66% margin). Brown's
+1,600-iteration run is unconverged and is compared for information only (`0.000747797`
+chip apart). Both independently graded strategies are below the `0.01` exploitability gate.
 
-The local 2026-09-03 audit took about 12 seconds and ended at roughly 247 MiB RSS. Those
+The local 2026-09-24 audit took about 112 seconds and ended at roughly 250–335 MiB RSS. Those
 numbers describe one machine and are printed for engineering visibility; CI does not use
 runtime or memory as a correctness test. The reproducible artifact hash, exact value,
 reference difference, and exploitability are the release gates.

@@ -156,3 +156,14 @@ Do not ship or describe v3 as successful if:
 > against readable rules and an independent information-set scorekeeper.
 
 Do not shorten this to “complete no-limit hold'em solver.”
+
+## Changelog
+
+**2026-09-24 — uncallable overbets collapse (rules version unchanged).** Any bet or raise
+target above the opponent's remaining stack is replaced by a single bet-to-their-stack
+action, since every such target has the same payoff once the excess is returned. This
+removes payoff-identical duplicate actions. v3 already refused raises against an all-in
+player. The committed v3 artifact reproduces byte for byte, so the v3 rules version is not
+bumped; affected scenarios build smaller trees. The river exchange benchmark suite, whose
+trees did change, moved to suite version 2 (see the
+[exchange spec](river-strategy-exchange-spec.md#changelog)).

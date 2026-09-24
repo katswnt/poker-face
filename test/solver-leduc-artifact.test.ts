@@ -36,7 +36,7 @@ test("committed Leduc artifact has a valid hash and canonical formatting", () =>
   assert.equal(artifact.acceptance.passed, true);
   assert.equal(artifact.schemaVersion, 3);
   assert.equal(artifact.rulesFingerprint, fingerprintLeducGame());
-  assert.equal(artifact.iterations, 12_800);
+  assert.equal(artifact.iterations, 102_400);
   assert.deepEqual(artifact.tree, {
     totalStates: 9_451,
     chanceNodes: 151,
@@ -189,7 +189,7 @@ test("our Leduc result agrees with the independently generated pinned reference"
 test("the Leduc convergence record improves without claiming every checkpoint is monotone", () => {
   assert.deepEqual(
     artifact.convergence.map(checkpoint => checkpoint.iteration),
-    [100, 400, 1_600, 6_400, 12_800],
+    [100, 400, 1_600, 6_400, 25_600, 102_400],
   );
   assert.ok(
     artifact.convergence.at(-1)!.exploitability < artifact.convergence[0].exploitability,

@@ -239,8 +239,12 @@ export default function LeducLab({ data }: Readonly<{ data: LeducLabData }>) {
                   </div>
                 </div>
                 <p className={styles.priceResult}>
-                  The estimate is {percent(Math.abs(lesson.price.cushion))} {lesson.price.cushion >= 0 ? "above" : "below"}
-                  {" "}the minimum. That is close enough to treat as a boundary, not a command.
+                  {Math.abs(lesson.price.cushion) < 0.0005
+                    ? "The estimate is within 0.1% of the minimum."
+                    : `The estimate is ${percent(Math.abs(lesson.price.cushion))} ${lesson.price.cushion >= 0 ? "above" : "below"} the minimum.`}
+                  {Math.abs(lesson.price.cushion) < 0.02
+                    ? " That is close enough to treat as a boundary, not a command."
+                    : " That gap is large enough to decide the call."}
                 </p>
               </section>
             )}

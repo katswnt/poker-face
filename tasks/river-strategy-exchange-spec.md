@@ -86,3 +86,16 @@ until its actual rules, output, and licensing are inspected.
   type-checking, lint, production build, and existing browser checks pass.
 - CLI tests cover round trips, machine-readable output, rejected input, resource bounds,
   and refusal to overwrite files. No UI changes or new dependencies are required.
+
+## Changelog
+
+**2026-09-24 — benchmark suite version 2.** The v2/v3 overbet-collapse rule (bet or raise
+targets above the opponent's stack become one bet-to-their-stack action) shrank two
+benchmark trees: `short-all-in` from 133 to 121 equivalent states and `board-ties` from 73
+to 64. `RIVER_BENCHMARK_SUITE_VERSION` is now 2 and the manifest moved from
+`benchmarks-v1.json` to `benchmarks-v2.json`; the manifest's file name follows the
+constant. Exchange schema, game-fingerprint format, and the other two benchmarks are
+unchanged. Policies exported for the old `short-all-in`/`board-ties` games no longer match
+their game fingerprints and are rejected before grading, as intended. A test pins each
+benchmark's state count per suite version, so a future tree change fails until the suite
+version is bumped.

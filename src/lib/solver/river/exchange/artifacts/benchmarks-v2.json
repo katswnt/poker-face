@@ -204,5 +204,5 @@
   "format": "poker-face-river-benchmark-manifest",
   "schemaVersion": 1,
   "scope": "reference-approximations-for-four-declared-finite-games-not-full-holdem-strength",
-  "suiteVersion": 1
+  "suiteVersion": 2
 }

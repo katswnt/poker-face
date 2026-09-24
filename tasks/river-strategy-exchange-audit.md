@@ -35,6 +35,12 @@ All four CPU reference policies use 1,000 CFR+ iterations and averaging delay 20
 They are measured reference approximations, not universal strategies or a claim that
 all possible inputs meet any fixed convergence gate.
 
+Measured on benchmark suite version 1. Suite version 2 (2026-09-24, see the
+[spec changelog](river-strategy-exchange-spec.md#changelog)) shrank two trees:
+`short-all-in` is now 30 / 121 states with 22 information sets and exploitability 0, and
+`board-ties` is 21 / 64 states with 16 information sets and exploitability 0. The other
+rows are unchanged.
+
 | Benchmark | Deals | Public / equivalent states | Information sets | Exploitability, chips/hand |
 |---|---:|---:|---:|---:|
 | v3-two-raise | 176 | 63 / 11,089 | 308 | 0.009074631 |
@@ -42,7 +48,7 @@ all possible inputs meet any fixed convergence gate.
 | short-all-in | 4 | 33 / 133 | 24 | 0.000002354 |
 | board-ties | 3 | 24 / 73 | 18 | 0 |
 
-The [checked-in manifest](../src/lib/solver/river/exchange/artifacts/benchmarks-v1.json)
+The [checked-in manifest](../src/lib/solver/river/exchange/artifacts/benchmarks-v2.json)
 records full-precision values, both deviation gains, game fingerprints, policy hashes,
 settings, and independent checks. It reproduces byte for byte, with no timing fields.
 All four saved-policy grades had zero measured difference from the readable grader;

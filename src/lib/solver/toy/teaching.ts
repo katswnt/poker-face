@@ -241,8 +241,8 @@ function buildBluffCatchLesson(decision: LeducDecisionFacts): LeducLabLesson {
   const holdings = decision.opponentRanks.filter(rank => (rank.probability ?? 0) > 0);
   const likelihoods = holdings.map(({ rank, probability }) => {
     const name = RANK_NAMES[rank];
-    const shown = probability! < 0.001 ? "under 0.1%" : percent(probability!, 1);
-    return `${article(name)} ${name} about ${shown}`;
+    const shown = probability! < 0.0005 ? "under 0.1%" : `about ${percent(probability!, 1)}`;
+    return `${article(name)} ${name} ${shown}`;
   });
   const results = holdings.map(({ rank }) => {
     const name = RANK_NAMES[rank];
@@ -261,7 +261,7 @@ function buildBluffCatchLesson(decision: LeducDecisionFacts): LeducLabLesson {
     teachingPoints: [
       `Calling ${decision.toCall} chips makes a ${finalPot}-chip final pot, so you need ${percent(minimumShare, 1)} of it to break even.`,
       `Given the opponent's actions, they hold ${listPhrase(likelihoods)}. Your ${RANK_NAMES[decision.privateRank]} ${listPhrase(results)}.`,
-      `The estimate is ${percent(call.showdownEquity, 1)}—${equityGap < 0.02 ? "only " : ""}${percent(equityGap, 1)} away. ${leaderName} is ahead by ${chips(gap)} in this approximate solution, so the honest label is ${gap < CLOSE_GAP_CHIPS ? "“close.”" : "“clear.”"}`,
+      `The estimate is ${percent(call.showdownEquity, 1)}—${equityGap < 0.0005 ? "under 0.1%" : `${equityGap < 0.02 ? "only " : ""}${percent(equityGap, 1)}`} away. ${leaderName} is ahead by ${chips(gap)} in this approximate solution, so the honest label is ${gap < CLOSE_GAP_CHIPS ? "“close.”" : "“clear.”"}`,
     ],
     featuredAction: "call",
     situation: situation(decision, "You act second", "You checked; opponent bet"),

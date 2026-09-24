@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import fc from "fast-check";
 import { canonicalSolverJson, deserializeBehavioralStrategy, serializeBehavioralStrategy } from "../src/lib/solver/toy/artifact";
 import { gradeStrategy } from "../src/lib/solver/toy/best-response";
@@ -11,7 +11,7 @@ import acceptedV3 from "../src/lib/solver/river/configurable-v3/artifacts/config
 import { oracleConfigurableRiverV3Utility } from "../src/lib/solver/river/configurable-v3/oracle";
 import { FACTORIZED_RIVER_WIDE_REQUEST } from "../src/lib/solver/river/factorized/fixture";
 import { solveCompiledFactorizedRiverCfr } from "../src/lib/solver/river/factorized/cfr";
-import { RIVER_BENCHMARKS, riverBenchmark } from "../src/lib/solver/river/exchange/catalog";
+import { RIVER_BENCHMARKS, RIVER_BENCHMARK_SUITE_VERSION, riverBenchmark } from "../src/lib/solver/river/exchange/catalog";
 import { createRiverBenchmarkManifest } from "../src/lib/solver/river/exchange/benchmarks-node";
 import {
   exportRiverPolicy, gradeRiverPolicy, hashRiverExchange, importRiverPolicy, prepareRiverExchange,
@@ -135,8 +135,24 @@ test("accepted v3 CPU policy survives JSON round trip with identical bytes and g
   assert.equal(grade.exploitability, acceptedV3.exploitability);
 });
 
+test("benchmark manifest file name, suite version, and pinned tree sizes move together", () => {
+  // A tree or solver change must bump RIVER_BENCHMARK_SUITE_VERSION, which renames the manifest.
+  assert.deepEqual(readdirSync("src/lib/solver/river/exchange/artifacts"), [`benchmarks-v${RIVER_BENCHMARK_SUITE_VERSION}.json`]);
+  const manifest = JSON.parse(readFileSync(`src/lib/solver/river/exchange/artifacts/benchmarks-v${RIVER_BENCHMARK_SUITE_VERSION}.json`, "utf8"));
+  assert.equal(manifest.suiteVersion, RIVER_BENCHMARK_SUITE_VERSION);
+  const statesBySuite: Record<number, Record<string, number>> = {
+    // v2 (2026-09-24): uncallable overbets collapse to one bet-to-their-stack action.
+    2: { "v3-two-raise": 11_089, "weighted-blockers": 169, "short-all-in": 121, "board-ties": 64 },
+  };
+  assert.deepEqual(
+    Object.fromEntries(manifest.benchmarks.map((item: { id: string; counts: { equivalentRepeatedStates: number } }) =>
+      [item.id, item.counts.equivalentRepeatedStates])),
+    statesBySuite[RIVER_BENCHMARK_SUITE_VERSION],
+  );
+});
+
 test("benchmark manifest reproduces twice, with fixed settings and no elapsed-time fields", () => {
-  const expected = readFileSync("src/lib/solver/river/exchange/artifacts/benchmarks-v1.json", "utf8");
+  const expected = readFileSync(`src/lib/solver/river/exchange/artifacts/benchmarks-v${RIVER_BENCHMARK_SUITE_VERSION}.json`, "utf8");
   const first = stringifyRiverExchange(createRiverBenchmarkManifest());
   assert.equal(first, expected);
   assert.equal(stringifyRiverExchange(createRiverBenchmarkManifest()), first);

@@ -1,13 +1,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createRiverBenchmarkManifest } from "../src/lib/solver/river/exchange/benchmarks-node";
+import { RIVER_BENCHMARK_SUITE_VERSION } from "../src/lib/solver/river/exchange/catalog";
 import { stringifyRiverExchange } from "../src/lib/solver/river/exchange/exchange-node";
 
 const args = process.argv.slice(2);
 if (args.length !== 1 || !["--check", "--write"].includes(args[0])) {
   throw new Error("Use --check to reproduce the manifest or --write to intentionally regenerate it");
 }
-const path = join(process.cwd(), "src/lib/solver/river/exchange/artifacts/benchmarks-v1.json");
+const path = join(process.cwd(), "src/lib/solver/river/exchange/artifacts", `benchmarks-v${RIVER_BENCHMARK_SUITE_VERSION}.json`);
 const manifest = createRiverBenchmarkManifest();
 const serialized = stringifyRiverExchange(manifest);
 if (args[0] === "--check") {

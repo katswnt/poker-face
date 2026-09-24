@@ -1,6 +1,7 @@
 import type { ConfigurableRiverV3Request } from "../configurable-v3/solve";
 
-export const RIVER_BENCHMARK_SUITE_VERSION = 1;
+/** Bump whenever a benchmark's game tree or solver settings change; the manifest file name follows it. */
+export const RIVER_BENCHMARK_SUITE_VERSION = 2;
 
 export interface RiverBenchmark {
   readonly id: string;

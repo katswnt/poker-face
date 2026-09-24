@@ -4,7 +4,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import manifest from "../src/lib/solver/river/exchange/artifacts/benchmarks-v1.json";
+import manifest from "../src/lib/solver/river/exchange/artifacts/benchmarks-v2.json";
 import { RIVER_EXCHANGE_MAX_FILE_BYTES } from "../src/lib/solver/river/exchange/types";
 
 function cli(...args: string[]) {

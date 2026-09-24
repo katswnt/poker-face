@@ -27,7 +27,9 @@ test.describe("explainable solver lab", () => {
 
     await page.getByRole("button", { name: /Bluff-catching/ }).click();
     await expect(page.getByText("2 ÷ 8 = 25.0%")).toBeVisible();
-    await expect(page.getByText("24.9%", { exact: true })).toBeVisible();
+    // Scope to the equation: the opponent-range rows can show the same rounded percentage.
+    await expect(page.getByText("Estimated share", { exact: true }).locator("..")
+      .getByText("25.0%", { exact: true })).toBeVisible();
     await expect(page.getByText(/boundary, not a command/)).toBeVisible();
 
     const pageWidth = await page.evaluate(() => ({

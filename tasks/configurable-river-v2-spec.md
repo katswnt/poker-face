@@ -239,3 +239,17 @@ A reviewer can enter a bounded river spot, see exactly what game will be solved,
 the result on a CPU, inspect an independent quality measurement, and trace a recommendation
 from price and opponent range to expected chips—without believing the software solved
 earlier streets, arbitrary ranges, or continuous no-limit poker.
+
+## Changelog
+
+**2026-09-24 — tree edge-case fixes (rules version unchanged).**
+
+- *No raise against an all-in player.* A raise is offered only when the opponent still has
+  chips behind to respond, matching v3. Previously v2 could offer a raise whose only answer
+  was a forced call.
+- *Uncallable overbets collapse.* Any bet or raise target above the opponent's remaining
+  stack is replaced by a single bet-to-their-stack action, since every such target has the
+  same payoff once the excess is returned. This removes payoff-identical duplicate actions.
+
+Neither fix changes a committed v2 artifact (they reproduce byte for byte), so the v2 rules
+version is not bumped. Scenarios that did reach these branches now build smaller trees.

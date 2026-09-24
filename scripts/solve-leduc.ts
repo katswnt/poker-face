@@ -15,8 +15,8 @@ import { gradeStrategy } from "../src/lib/solver/toy/best-response";
 import { solveCfr } from "../src/lib/solver/toy/cfr";
 import { leducGame } from "../src/lib/solver/toy/leduc";
 
-const ITERATIONS = 12_800;
-const CHECKPOINTS = [100, 400, 1_600, 6_400, ITERATIONS] as const;
+const ITERATIONS = 102_400;
+const CHECKPOINTS = [100, 400, 1_600, 6_400, 25_600, ITERATIONS] as const;
 const projectRoot = process.cwd();
 const artifactPath = join(projectRoot, "src/lib/solver/toy/artifacts/leduc-v1.json");
 const referencePath = join(projectRoot, "test/fixtures/solver/leduc-brown-6a104428.json");

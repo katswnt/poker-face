@@ -10,13 +10,17 @@ The lab must keep the limits below visible. It must not replace the current hold
 ## The plain answer
 
 The solver is close enough to perfect play for a teaching demo, and we can measure how
-far away it is. A perfect response could improve player 0's result by about `0.0054`
-chip per hand or player 1's result by about `0.0051` chip per hand. We report the larger
+far away it is. A perfect response could improve player 0's result by about `0.0018`
+chip per hand or player 1's result by about `0.0019` chip per hand. We report the larger
 number instead of saying “perfect.”
 
 The rules match the version of Leduc we wrote down. The complete game has 9,451 states,
 and our code walks every one. A separate open-source solver produces a player-0 value
-within `0.00027` chip of ours.
+within `0.00075` chip of ours; that reference is an unconverged 1,600-iteration run, so the
+gate is instead a certified converged value, which ours matches within `0.00034` chip.
+
+*Updated 2026-09-24:* numbers in this audit now describe the 102,400-iteration artifact
+(previously 12,800 iterations, gains `0.0054` / `0.0051`).
 
 The saved result now contains the evidence a teacher needs at all 288 situations a player
 can recognize:
@@ -85,10 +89,10 @@ precision.
 
 | Idea | Example | What the numbers teach |
 |---|---|---|
-| Value bet | You hold K and the board is K after bet–call. | Betting is used about 93% of the time. If the hand reaches showdown after betting, it wins 100% of the time. The opponent continues immediately about 36% of the time, so worse hands sometimes put in more chips. |
+| Value bet | You hold K and the board is K after bet–call. | Betting is used about 90% of the time. If the hand reaches showdown after betting, it wins 100% of the time. The opponent continues immediately about 35% of the time, so worse hands sometimes put in more chips. |
 | Bluff | You hold Q on a J board after check–bet–call. | A bet makes the opponent fold immediately about 40% of the time. If the hand reaches showdown after that bet, Q has essentially no share of the pot. The bet works through folds, not card strength. |
-| Bluff-catch | You hold K on a J board and face a two-chip bet into six. | Calling needs 25% of the final eight-chip pot. The saved range gives the hand about 24.9% showdown equity, so this is a genuine boundary: folding is ahead by about 0.0065 chip in this approximate solution. The page must say “close,” not present the 74% call frequency as exact law. |
-| Mix | You open the first round with Q. | The saved strategy checks about 46% and bets about 54%. Their measured values differ by about 0.0012 chip. The defensible lesson is that both choices are very close here; the exact percentages are approximate. |
+| Bluff-catch | You hold K on a J board and face a two-chip bet into six. | Calling needs 25% of the final eight-chip pot. The saved range gives the hand about 25.0% showdown equity (just under the price), so this is a genuine boundary: folding is ahead by about 0.0007 chip in this approximate solution. The page must say “close,” not present the 74% call frequency as exact law. |
+| Mix | You open the first round with Q. | The saved strategy checks about 48% and bets about 52%. Their measured values differ by about 0.0015 chip. The defensible lesson is that both choices are very close here; the exact percentages are approximate. |
 
 The lab should teach one of these ideas at a time. It should first name the recommendation,
 then show the chip difference, then let the learner open the range and outcome details.
@@ -107,7 +111,7 @@ Required hierarchy:
 4. Two action bars with percentages and the chip difference.
 5. One plain sentence: “These choices are almost tied, so this strategy uses both.”
 6. Optional details for opponent ranks, ways the hand can end, and method.
-7. A reliability note: “A perfect response can gain at most about 0.0054 chip per hand
+7. A reliability note: “A perfect response can gain at most about 0.0019 chip per hand
    against this saved strategy.”
 
 Do not use a “GTO” badge. Do not call the higher-frequency action the only correct action.
@@ -139,7 +143,7 @@ must use `call cost / final pot` only where calling ends the betting.
 - “Given the cards and actions seen, the opponent's possible ranks are…”
 - “After choosing this action and then following the saved strategy, the hand ends this
   way…”
-- “A perfect response can improve by at most about 0.0054 chip per hand.”
+- “A perfect response can improve by at most about 0.0019 chip per hand.”
 
 ## What it must not claim
 
