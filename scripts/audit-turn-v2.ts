@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { TURN_V2_CORPUS, TURN_V2_HELD_OUT } from "../src/lib/solver/postflop/configurable-turn/fixtures";
+import { TURN_V2_CORPUS, TURN_V2_HELD_OUT, TURN_V2_MINIMUM_ITERATIONS } from "../src/lib/solver/postflop/configurable-turn/fixtures";
 import { compileTurnV2 } from "../src/lib/solver/postflop/configurable-turn/game";
 import type { TurnV2Artifact } from "../src/lib/solver/postflop/configurable-turn/artifact-node";
 import { vectorDigest } from "../src/lib/solver/postflop/vector/artifact-node";
@@ -15,7 +15,8 @@ async function main() {
   const hashes = JSON.parse(readFileSync("tasks/configurable-turn-v2-input-hashes.json", "utf8"));
   for (const request of [...TURN_V2_CORPUS, ...TURN_V2_HELD_OUT]) assert.equal(vectorDigest(request), hashes[request.id], "Locked input changed");
   for (const request of TURN_V2_CORPUS) {
-    const result = await runTurnV2Job({ request, options: { iterations: 100000, algorithm: "cfr-plus", averagingDelay: 20 }, maximumExploitability: 0.25 }, {
+    const result = await runTurnV2Job({ request, options: { iterations: 100000, algorithm: "cfr-plus", averagingDelay: 20 }, maximumExploitability: 0.25,
+      minimumIterations: TURN_V2_MINIMUM_ITERATIONS[request.id] }, {
       onProgress: p => { if (p.stage !== "solving" || p.iterations % 256 === 0) console.error(JSON.stringify({ fixture: request.id, ...p })); },
     });
     const artifact = JSON.parse(result.json) as TurnV2Artifact, { payloadHash, ...payload } = artifact;

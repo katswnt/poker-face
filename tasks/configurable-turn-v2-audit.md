@@ -14,7 +14,9 @@ Player 0 acts first on both streets. There is no new browser route or change to 
 Leduc, River Lab or its 100,000-state browser teaching limit.
 
 Amounts are current-street contribution targets, not percentages or cumulative two-street
-amounts. Unavailable normal targets are skipped, never silently capped. Short all-ins,
+amounts. Targets beyond the actor's own stack are skipped, never silently capped; since
+2026-09-24 a legal target above what the opponent can match is offered once, as a target
+equal to the opponent's reachable street total (see amendment below). Short all-ins,
 minimum raises and no raising into an all-in opponent are explicit. Street closure
 immediately returns uncalled excess; the next street carries only matched payments.
 
@@ -29,15 +31,16 @@ All requests and quality/resource gates were fixed before their first acceptance
 Each has a 100-chip pot and handcrafted ranges. The wider case is a synthetic capacity
 probe; the four smaller cases are teaching/test assumptions, not solved preflop ranges.
 Required exploitability <=0.25 chip; preferred <=0.10 chip. CFR+, delay 20, scheduled grades
-256/1,024/4,096/16,384/65,536/100,000. All five passed at the **first** scheduled grade, 256.
+256/1,024/4,096/16,384/65,536/100,000. All five passed at the **first** scheduled grade, 256;
+after the 2026-09-24 amendment `paired-short` has a 512-iteration floor (below).
 
 | Fixture | Deals | Public states | Information sets | Value, player 0 | Gain 0 / gain 1 | Exploitability |
 |---|---:|---:|---:|---:|---:|---:|
 | wide-64 | 3,773 | 6,699 | 147,840 | −3.442169475 | 0.038243089 / 0.028931261 | 0.033587175 |
 | dry-value | 8 | 6,699 | 6,930 | +12.192367232 | 0.057198796 / 0.047093381 | 0.052146088 |
-| paired-short | 9 | 8,868 | 8,871 | +8.603877095 | 0.164287458 / 0.030739166 | 0.097513312 |
+| paired-short (512 it.) | 9 | 7,665 | 7,764 | +8.681020255 | 0.057256341 / 0.020106397 | 0.038681369 |
 | two-tone | 8 | 5,547 | 5,826 | +49.984715002 | 0.015284998 / 0.001993063 | 0.008639031 |
-| connected | 9 | 10,647 | 10,530 | +15.067314566 | 0.046993238 / 0.004249685 | 0.025621461 |
+| connected | 9 | 9,969 | 9,972 | +15.068076308 | 0.034682233 / 0.023416377 | 0.029049305 |
 
 The wide case has 166,012 deal–river pairs, 23,177,540 equivalent repeated states,
 14,805,252 terminals, and 384,384 action slots. Both streets contain legal raise branches.
@@ -46,7 +49,7 @@ Its full exploitability is `0.033587175026543514`; explicit-pair grading gives
 No fixture, tolerance or threshold was adjusted to make an observed solve pass.
 
 All five complete policies are in `src/lib/solver/postflop/configurable-turn/artifacts/`.
-Total JSON size is 28,420,225 bytes; the wide file is 23,337,429 bytes. They are offline
+Total JSON size is 28,138,118 bytes; the wide file is 23,337,429 bytes. They are offline
 artifacts, not imported by the browser. Hashes bind the canonical request, rules identity,
 complete policy and payload; wall-clock timing is deliberately excluded.
 
@@ -55,10 +58,37 @@ Wide request: bd1345838e1cef200f8e876e566e5db5956e6efa0d4f44d7bbdb75fe9b30e934
 Wide policy:  07fab42b7a695b38712c1977cd0947569cb0e46042a2593ede1a4e1b7635e953
 Wide payload: 381113385e5e2d93b38cd140f93934702b58679c76a98193afb74985945b6a18
 Dry payload:  1221202fbbe66be69e07f7284bf58b971bffb90851ea5a8d26ae5cc874090689
-Pair payload: ab9efa138a13adc67f8286bcebeb20d66f9b3f8dcf53b857b0a148df8aad7444
+Pair payload: 346c03d08188efcf88aff4f9b6e021af11ed8d3d5d162a3a64e4ee5e30553462
 Tone payload: 44724e28d15fe1c305327f4e6f1cfea562afd9fa21f3fe4edc0ed611bdb59527
-Conn payload: 4be9800d7dae316f1a059f83790f7e82fb0c6d1c306914650988a8a879f3b60e
+Conn payload: b60c386cbd5285140b6e34609e45dd0105d284879d1e2248d944952d5a3840a4
 ```
+
+### Amendment 2026-09-24: one bet/raise to the opponent's stack
+
+An audit found payoff-identical duplicate actions. With stacks 250/60 the turn root
+offered bet-to-33, bet-to-75 and bet-to-250 (75 and 250 both put the 60-chip player
+all-in); facing 33, both raise-to-100 and raise-to-250; on the river, bet-to-100 and
+bet-to-217 against 27 chips behind. The uncalled excess was already returned, so payoffs
+were right, but CFR split frequency across identical branches. Following the river rule
+of commit `401ed22`, `turnV2Actions` now replaces any legal target above the opponent's
+reachable street total (`stackBehind[opponent] - carried`; targets are street-relative)
+with that total, and drops duplicates. Legality (own stack, full raise, short all-in) is
+still judged on the declared target. The audit-only ledger oracle was changed
+independently (reach = opponent cash + street payment) and still must match production
+at every public state; `test/audit-regressions-turn.test.ts` failed before the change.
+
+Trees changed only where a legal target exceeded the opponent: `paired-short` public
+states 8,868→7,665 (equivalent states 73,189→63,262; information sets 8,871→7,764) and
+`connected` 10,647→9,969 (87,868→82,270; 10,530→9,972); held-out `held-short` preflight
+5,643→4,101. `wide-64`, `dry-value` and `two-tone` are byte-identical. `connected` still
+passes at 256 iterations (0.025621461→0.029049305). `paired-short` graded 0.125175722
+at 256 — inside the locked 0.25 gate but outside the 0.10 preferred bar that the artifact
+test enforces, and 256 is rounding-sensitive for this spot (0.09–0.14 across last-bit
+changes) while 512 lands near 0.039. Rather than loosen the bar, the spot has a declared
+512-iteration floor (`TURN_V2_MINIMUM_ITERATIONS`; a new optional `minimumIterations` job
+field adds a grade there and blocks earlier acceptance). Its convergence record keeps
+both grades: 256 → 0.125175722, 512 → 0.038681369. The 0.25 gate and other schedules
+are unchanged. The saved-turn explorer was regenerated for `paired-short`.
 
 ## Independent evidence and preservation
 

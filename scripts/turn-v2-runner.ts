@@ -20,6 +20,8 @@ export async function runTurnV2Job(job: TurnV2Job, options: TurnV2RunOptions = {
   if (options.signal?.aborted) throw new Error("Turn v2 solve cancelled");
   const checked = validateVectorOptions(job.options);
   if (!Number.isFinite(job.maximumExploitability) || job.maximumExploitability < 0) throw new Error("Invalid exploitability target");
+  if (job.minimumIterations !== undefined && (!Number.isSafeInteger(job.minimumIterations) || job.minimumIterations < 1
+    || job.minimumIterations > checked.iterations)) throw new Error("Minimum iterations must be 1..requested iterations");
   if (job.resume && JSON.stringify(validateVectorOptions(job.resume.options)) !== JSON.stringify(checked)) throw new Error("Resume options differ");
   if (job.checkpointEvery !== undefined && (!Number.isSafeInteger(job.checkpointEvery) || job.checkpointEvery < 1 || job.checkpointEvery > 100000)) throw new Error("Invalid checkpoint interval");
   const memoryLimitBytes = Math.min(TURN_V2_MEMORY_LIMIT, Math.floor(totalmem() / 8));

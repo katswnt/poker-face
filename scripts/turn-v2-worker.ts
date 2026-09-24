@@ -20,13 +20,14 @@ process.once("message", async (job: TurnV2Job) => {
     const game = compileTurnV2(job.request), session = job.resume ? restoreVectorTurnSession(game, job.resume) : createVectorTurnSession(game, job.options);
     const grades = new Set<number>([...VECTOR_GRADE_ITERATIONS, job.options.iterations]);
     if (job.resume && iterations > 0) grades.add(iterations);
+    if (job.minimumIterations) grades.add(job.minimumIterations);
     let passed = false, lastSaved = -1;
     while (true) {
       if (grades.has(iterations) && iterations > 0) {
         await progress("grading");
         const grade = gradeVectorTurn(game, session.snapshot().averageStrategy);
         convergence.push({ iteration: iterations, value: grade.value, gains: grade.gains, exploitability: grade.exploitability });
-        await progress("grading"); passed = grade.exploitability <= job.maximumExploitability;
+        await progress("grading"); passed = grade.exploitability <= job.maximumExploitability && iterations >= (job.minimumIterations ?? 0);
       }
       if (job.checkpointEvery && iterations > 0 && lastSaved !== iterations
         && (iterations % job.checkpointEvery === 0 || passed || session.done)) {

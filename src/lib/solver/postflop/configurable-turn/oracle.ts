@@ -23,12 +23,16 @@ export function replayTurnV2Money(request: TurnV2Request, histories: TurnV2State
       if (cash[1 - actor] === 0 || cash[actor] === 0 || (owe > 0 && raises === settings.raiseLimit)) return menu;
       const targets = [...(owe > 0 ? settings.raiseTargets : settings.openingTargets)];
       if (settings.includeAllIn) targets.push(cash[actor] + paid[actor]);
+      // The opponent can match at most what they hold plus what they already put in this
+      // street; any larger target only adds a refund, so it becomes that one target.
+      const reach = cash[1 - actor] + paid[1 - actor];
       for (const target of [...new Set(targets)].sort((a, b) => a - b)) {
         const payment = target - paid[actor];
         const increase = payment - Math.max(0, owe);
         if (payment <= 0 || payment > cash[actor] || increase <= 0) continue;
         if (owe > 0 && increase < full && payment !== cash[actor]) continue;
-        menu.push(owe > 0 ? `raise-to-${target}` : `bet-to-${target}`);
+        const label: TurnV2Action = `${owe > 0 ? "raise" : "bet"}-to-${target > reach ? reach : target}`;
+        if (menu.indexOf(label) < 0) menu.push(label);
       }
       return menu;
     };

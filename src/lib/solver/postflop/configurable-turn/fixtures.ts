@@ -18,6 +18,14 @@ export const TURN_V2_CORPUS: readonly TurnV2Request[] = Object.freeze([
     stackBehind: [80, 130], streets: [street([20, 40], [80], true), street([10, 20], [40], true)] },
 ].map(validateTurnV2Request));
 
+/**
+ * Per-spot solve floor (iterations before a policy may be accepted); others accept at the
+ * first qualifying grade. 2026-09-24: after the uncallable-target collapse, paired-short
+ * graded 0.125 chip at 256 iterations (inside the 0.25 gate, outside the 0.10 preferred
+ * bar the artifact test enforces; 256 is rounding-noisy there), so it runs to 512.
+ */
+export const TURN_V2_MINIMUM_ITERATIONS: Readonly<Record<string, number>> = Object.freeze({ "turn-v2-paired-short": 512 });
+
 /** Held-out rule cases fixed before acceptance tuning. */
 export const TURN_V2_HELD_OUT: readonly TurnV2Request[] = Object.freeze([
   { ...TURN_V2_CORPUS[1], id: "turn-v2-held-short", rangeText: ["AcAd:0.2 AhKd", "AcAd 6s5s:0.7"],

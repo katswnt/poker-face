@@ -19,9 +19,12 @@ Labs remain, with one navigation link added to each. Dirty trainer files are out
 | Example | Compatible deals | Public states | Information sets | Exploitability, chips |
 |---|---:|---:|---:|---:|
 | An ace on the board | 8 | 6,699 | 6,930 | 0.05214608826282152 |
-| Paired board, shorter stacks | 9 | 8,868 | 8,871 | 0.09751331204562774 |
+| Paired board, shorter stacks | 9 | 7,665 | 7,764 | 0.03868136901252228 |
 
-Both use the unchanged 256-iteration CFR+ strategy, averaging delay 20. Exact enumeration
+Both use CFR+, averaging delay 20: the ace board at 256 iterations, the paired board at
+512 since the 2026-09-24 uncallable-target collapse removed duplicate all-in branches
+([amendment](configurable-turn-v2-audit.md)); before it the paired board was 8,868 public
+states at 0.09751331204562774. Exact enumeration
 and independent grading are floating-point calculations; these strategies are approximate
 for their declared finite games, not exact or universal GTO.
 

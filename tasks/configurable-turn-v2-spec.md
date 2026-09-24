@@ -154,3 +154,15 @@ work. Document any existing browser flake; do not stage or overwrite unrelated c
 Update README, roadmap and parent execution record only with verified results. Ship M3
 only after the 64-combination, two-size, both-streets-raise fixture and corpus pass their
 quality gates. Next is M4's thin saved-turn explorer, not an implicit flop/GPU expansion.
+
+## Changelog
+
+- **2026-09-24** — Uncallable-target collapse (matches river v2/v3, commit `401ed22`): a
+  legal opening or raise target above the opponent's reachable street total
+  (`stackBehind[opponent] - carried`) is offered as one target equal to that total;
+  duplicates are removed. This amends "never clipped" above only for the opponent side:
+  targets beyond the actor's own stack are still skipped. Payoffs are unchanged (the
+  excess was always returned). `turn-v2-paired-short` gains a declared 512-iteration
+  floor because its regenerated 256-iteration grade (0.125) missed the 0.10 preferred
+  bar; the 0.25 gate, grade schedule and locked inputs are unchanged. Details and new
+  hashes: [audit amendment](configurable-turn-v2-audit.md).

@@ -121,20 +121,25 @@ test("turn v2 street-relative targets reset, call returns excess, and all-in pla
   assert.deepEqual(turnV2Actions(request, bet), ["fold", "call", "raise-to-60"]); // Short all-in: +20, less than 40.
   const raised = nextTurnV2Action(request, bet, "raise-to-60");
   assert.deepEqual(turnV2Actions(request, { ...raised, raisesUsed: 0 }), ["fold", "call"]); // Not merely the cap.
-  const called = nextTurnV2Action(request, nextTurnV2Action(request, root, "bet-to-90"), "call");
-  assert.equal(called.carried, 60); assert.deepEqual(called.returned, [30, 0]);
+  // The 90-chip all-in exceeds what the 60-chip opponent can match, so it is offered as bet-to-60.
+  assert.deepEqual(turnV2Actions(request, root), ["check", "bet-to-40", "bet-to-60"]);
+  const called = nextTurnV2Action(request, nextTurnV2Action(request, root, "bet-to-60"), "call");
+  assert.equal(called.carried, 60); assert.deepEqual(called.returned, [0, 0]);
+  assert.deepEqual(nextTurnV2Action(request, bet, "fold").returned, [40, 0]); // Uncalled bet returns at closure.
   assert.equal(nextTurnV2River(request, called, "3c").phase, "terminal");
   const matched = nextTurnV2Action(request, bet, "call"), river = nextTurnV2River(request, matched, "3c");
   assert.equal(river.carried, 40); assert.deepEqual(river.streetPaid, [0, 0]);
-  assert.deepEqual(turnV2Actions(request, river), ["check", "bet-to-10", "bet-to-25"]);
-  const riverBet = nextTurnV2Action(request, river, "bet-to-25");
-  assert.deepEqual(riverBet.streetPaid, [25, 0]);
+  // Street-relative: the opponent has 60 - 40 = 20 left, so river target 25 becomes bet-to-20.
+  assert.deepEqual(turnV2Actions(request, river), ["check", "bet-to-10", "bet-to-20"]);
+  const riverBet = nextTurnV2Action(request, river, "bet-to-20");
+  assert.deepEqual(riverBet.streetPaid, [20, 0]);
 });
 test("turn v2 skips out-of-stack normal targets instead of silently clipping them", () => {
   const request = validateTurnV2Request({ ...TURN_V2_CORPUS[1], stackBehind: [17, 5] });
   assert.deepEqual(turnV2Actions(request, initialTurnV2State(request)), ["check"]);
   const explicit = validateTurnV2Request({ ...request, streets: request.streets.map(menu => ({ ...menu, includeAllIn: true })) });
-  assert.deepEqual(turnV2Actions(explicit, initialTurnV2State(explicit)), ["check", "bet-to-17"]);
+  // The explicit 17-chip all-in is legal for its owner but only 5 can be matched: one bet-to-5.
+  assert.deepEqual(turnV2Actions(explicit, initialTurnV2State(explicit)), ["check", "bet-to-5"]);
 });
 test("turn v2 preflight admits the locked wide case and refuses malformed or excessive games", () => {
   const counts = preflightTurnV2(TURN_V2_CORPUS[0]);

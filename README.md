@@ -134,8 +134,9 @@ hand, and all available river cards—not just a curated winning line.
 - Use native keyboard controls, visible focus, cancellation/retry for data loads, and
   phone layouts. This is saved-result loading, not solver progress.
 
-The examples retain their M3 grades: **0.052146088** and **0.097513312 chips** of
-exploitability, at 256 CFR+ iterations. Both have three handcrafted combinations/player;
+The examples are graded at **0.052146088 chips** of exploitability (256 CFR+ iterations) and
+**0.038681369 chips** (512 iterations; this spot was re-solved after bets above the
+opponent's stack were collapsed into one action, which changed its tree). Both have three handcrafted combinations/player;
 they are teaching assumptions, not recommended preflop ranges or a new capacity claim.
 The wider 64-hand turn policy remains offline. This turn explorer itself introduces no
 GPU, new strategy training, or custom wide browser solver; the separate flop engine below
@@ -266,8 +267,10 @@ The new [turn-v2 contract](tasks/configurable-turn-v2-spec.md) adds **up to thre
 sizes, three raise targets, an optional all-in action, and one raise per street**, while
 keeping the older engines and their results unchanged. Turn and river have separate menus.
 An amount means the player's total contribution on the **current street**. A 50-chip
-river target does not include chips paid on the turn. Normal targets beyond a stack are
-unavailable, not clipped; the explicit all-in option adds that player's actual maximum.
+river target does not include chips paid on the turn. Normal targets beyond the player's own
+stack are unavailable, not clipped; the explicit all-in option adds that player's actual
+maximum. A target above what the opponent can match is offered once, as exactly that amount,
+so payoff-identical overbets do not appear as separate choices.
 Minimum raises, short all-ins, no raising into an all-in player, and returned unmatched
 chips are checked independently. Player 0 acts first on both streets.
 

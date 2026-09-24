@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
-import { TURN_V2_CORPUS, TURN_V2_HELD_OUT } from "../src/lib/solver/postflop/configurable-turn/fixtures";
+import { TURN_V2_CORPUS, TURN_V2_HELD_OUT, TURN_V2_MINIMUM_ITERATIONS } from "../src/lib/solver/postflop/configurable-turn/fixtures";
 import { compileTurnV2 } from "../src/lib/solver/postflop/configurable-turn/game";
 import type { TurnV2Artifact } from "../src/lib/solver/postflop/configurable-turn/artifact-node";
 import { decodeVectorCheckpoint, encodeVectorCheckpoint, vectorDigest } from "../src/lib/solver/postflop/vector/artifact-node";
@@ -14,9 +14,9 @@ import { createReadableTurnV2 } from "../src/lib/solver/postflop/configurable-tu
 const expectedHashes = [
   "381113385e5e2d93b38cd140f93934702b58679c76a98193afb74985945b6a18",
   "1221202fbbe66be69e07f7284bf58b971bffb90851ea5a8d26ae5cc874090689",
-  "ab9efa138a13adc67f8286bcebeb20d66f9b3f8dcf53b857b0a148df8aad7444",
+  "346c03d08188efcf88aff4f9b6e021af11ed8d3d5d162a3a64e4ee5e30553462",
   "44724e28d15fe1c305327f4e6f1cfea562afd9fa21f3fe4edc0ed611bdb59527",
-  "4be9800d7dae316f1a059f83790f7e82fb0c6d1c306914650988a8a879f3b60e",
+  "b60c386cbd5285140b6e34609e45dd0105d284879d1e2248d944952d5a3840a4",
 ];
 test("turn v2 acceptance and held-out request hashes remain locked", () => {
   const expected = JSON.parse(readFileSync("tasks/configurable-turn-v2-input-hashes.json", "utf8"));
@@ -28,7 +28,7 @@ for (const [i, request] of TURN_V2_CORPUS.entries()) test(`turn v2 full artifact
   assert.equal(payloadHash, vectorDigest(payload)); assert.equal(payloadHash, expectedHashes[i]);
   assert.equal(artifact.policyHash, vectorDigest(artifact.strategy)); assert.equal(artifact.requestHash, vectorDigest(request));
   assert.equal(artifact.rules, "turn-v2"); assert.equal(artifact.rulesVersion, 2); assert.equal(artifact.backendVersion, 1);
-  assert.equal(artifact.iterations, 256); assert.equal(artifact.algorithm, "cfr-plus"); assert.equal(artifact.averagingDelay, 20);
+  assert.equal(artifact.iterations, TURN_V2_MINIMUM_ITERATIONS[request.id] ?? 256); assert.equal(artifact.algorithm, "cfr-plus"); assert.equal(artifact.averagingDelay, 20);
   assert.equal(artifact.acceptance.maximumExploitability, 0.25); assert.equal(artifact.acceptance.passed, true);
   assert.ok(artifact.exploitability <= 0.1);
   const game = compileTurnV2(request), policy = deserializeBehavioralStrategy(game.index, artifact.strategy);

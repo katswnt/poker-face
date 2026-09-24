@@ -63,6 +63,17 @@ test("turn v2 retains only completed saved iterations and resumes without changi
     await assert.rejects(runTurnV2Job(job, { checkpointPath: path }), /already exists/);
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });
+test("turn v2 minimum iterations adds a grade and blocks earlier acceptance", async () => {
+  const loose = { ...job, maximumExploitability: 1e9 }; // Any grade qualifies, so only the floor decides when to stop.
+  assert.deepEqual(JSON.parse((await runTurnV2Job({ ...loose, minimumIterations: 48 })).json).convergence.map((c: { iteration: number }) => c.iteration), [48]);
+  // A resume grades at its start (16) and would accept there; the floor keeps it solving to 48.
+  const session = createVectorTurnSession(compileTurnV2(job.request), job.options); session.advance(16);
+  const floored = JSON.parse((await runTurnV2Job({ ...loose, resume: session.checkpoint(), minimumIterations: 48 })).json);
+  assert.deepEqual(floored.convergence.map((c: { iteration: number }) => c.iteration), [16, 48]);
+  assert.equal(floored.iterations, 48); assert.equal(floored.acceptance.passed, true);
+  await assert.rejects(runTurnV2Job({ ...job, minimumIterations: 65 }), /Minimum iterations/);
+  await assert.rejects(runTurnV2Job({ ...job, minimumIterations: 0 }), /Minimum iterations/);
+});
 test("turn v2 rejects timeout, pre-abort, bad options, corrupt resume and foreign rules", async () => {
   await assert.rejects(runTurnV2Job(job, { timeoutMs: 1 }), /timed out/);
   await assert.rejects(runTurnV2Job(job, { signal: AbortSignal.abort() }), /cancelled/);

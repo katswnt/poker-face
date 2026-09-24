@@ -102,10 +102,15 @@ export function turnV2Actions(request: TurnV2Request, state: TurnV2State): reado
     || (facing && state.raisesUsed >= settings.raiseLimit)) return result;
   const candidates = new Set(facing ? settings.raiseTargets : settings.openingTargets);
   if (settings.includeAllIn) candidates.add(maximum);
+  // Targets are street-relative. Chips above the opponent's reachable street total are
+  // returned uncalled, so every larger legal target is payoff-identical to putting them
+  // all-in: collapse those into one target at the opponent's reach (river v2/v3 rule).
+  const opponentReach = request.stackBehind[other] - state.carried;
   for (const target of [...candidates].sort((a, b) => a - b)) {
     if (target > maximum || target <= state.currentBet || target <= state.streetPaid[actor]) continue;
     if (facing && target - state.currentBet < state.lastFullRaise && target !== maximum) continue;
-    result.push(facing ? `raise-to-${target}` : `bet-to-${target}`);
+    const action: TurnV2Action = facing ? `raise-to-${Math.min(target, opponentReach)}` : `bet-to-${Math.min(target, opponentReach)}`;
+    if (!result.includes(action)) result.push(action);
   }
   return result;
 }
