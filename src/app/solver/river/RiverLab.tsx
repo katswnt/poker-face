@@ -185,14 +185,14 @@ export default function RiverLab({ example }: { example: RiverLabResult }) {
                 {field("stack0", "First player's stack", "Chips left to bet.", true)}
                 {field("stack1", "Second player's stack", "Chips left to bet.", true)}
               </div>
-              {field("bets", "Opening bet sizes", "1–5 whole-chip amounts, such as 50 100 200. Shared by both players.")}
+              {field("bets", "Opening bet sizes", "1–5 whole-chip amounts, such as 50 100 200. Shared by both players. A size above the other player's stack becomes a bet of exactly their stack, because they cannot call more.")}
               {field("raises", "Raise-to amounts", "Total chips committed on this river, not chips added. Only legal sizes are offered.")}
               <div className={styles.field}>
                 <label htmlFor="river-maxRaises">Raises after the opening bet</label>
                 <select id="river-maxRaises" value={input.maxRaises} aria-describedby="river-raise-help" onChange={event => update("maxRaises", event.target.value)}>
                   <option value="0">0 — call or fold to a bet</option><option value="1">1 — allow a raise</option><option value="2">2 — allow a raise and re-raise</option>
                 </select>
-                <small id="river-raise-help">Minimum raises, short all-ins, and returned uncalled chips follow the v3 rules. Unlisted sizes are unavailable.</small>
+                <small id="river-raise-help">Minimum raises and short all-ins follow the v3 rules. A raise above the other player's stack is capped at their stack. Unlisted sizes are unavailable.</small>
               </div>
               {field("iterations", "Solver iterations", "21–2000 passes through the learning loop. More work can improve the strategy; quality need not improve at every checkpoint.", true)}
             </fieldset>

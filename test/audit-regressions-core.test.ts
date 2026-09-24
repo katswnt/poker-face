@@ -82,3 +82,26 @@ test("engine keeps a legal AI raise as a raise after a short all-in bet", () => 
   assert.equal(p1.decision!.action, "raise", `expected raise, got ${p1.decision!.action}: ${p1.decision!.reasoning}`);
   assert.ok(p1.decision!.amount! >= p1.minRaiseTo!);
 });
+
+// The fold-win display must use the same ledger: the survivor won only what it matched,
+// and the SB's unmatched blind chips are shown as returned, not as part of the pot won.
+test("fold-win settlement display separates the SB's returned blind from the pot won", async () => {
+  const { showdownSeatSettlements } = await import("../src/components/PokerSim");
+  const start = [200, 200, 3, 200];
+  const stages = calculateTrainerHand({
+    gs: {
+      hands: [cards("7c", "2d"), cards("7h", "2s"), cards("3c", "8d"), cards("7d", "2c")],
+      board: cards("Ks", "Qs", "Js", "4h", "9d"),
+      seed: 1,
+      style: "gto",
+    },
+    dealerIdx: 0, startingStacks: start, players, heroIdx: null, heroChoices: [],
+  });
+  const last = stages[stages.length - 1];
+  assert.deepEqual(showdownSeatSettlements(last, 4), [
+    { won: 0, returned: 0 },
+    { won: 0, returned: 2 },
+    { won: 6, returned: 0 },
+    { won: 0, returned: 0 },
+  ]);
+});

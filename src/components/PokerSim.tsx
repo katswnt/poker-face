@@ -139,7 +139,9 @@ function isUncalledReturn(layer: NonNullable<Stage["pots"]>[number]): boolean {
 // the UI and hand review from treating a refund as a poker win.
 export function showdownSeatSettlements(showdown: Stage, seatCount = showdown.folded.length): SeatSettlement[] {
   const settlements = Array.from({ length: seatCount }, () => ({ won: 0, returned: 0 }));
-  if (showdown.foldWin && showdown.winner !== undefined) {
+  // Fold wins carry pot layers too, so an unmatched blind or bet above the survivor's
+  // stake shows as returned. Only records saved without layers fall back to the pot.
+  if (showdown.foldWin && showdown.winner !== undefined && !showdown.pots?.length) {
     settlements[showdown.winner].won = showdown.pot;
     return settlements;
   }
@@ -356,7 +358,7 @@ function FeedEntry({ s, isFocused, compact, players, heroIdx }: { s: Stage; isFo
           {s.foldWin ? `${winnerName} wins — everyone else folded.` : soleWinner ? `${players[soleWinner.idx].name} wins with ${soleHand}.` : `Contested pots paid to ${potWinners.map(({ idx }) => players[idx].name).join(" and ")}.`}
         </div>
         <div style={{ fontFamily: T.mono, fontSize: 11, color: T.inkSoft, marginBottom: s.rankedResults && s.rankedResults.length > 1 ? 10 : 0 }}>
-          {s.foldWin ? `Takes the ${s.pot}-chip pot.` : soleWinner ? `Wins ${soleWinner.won} contested chips.${returnedSummary}` : `${potWinners.reduce((sum, seat) => sum + seat.won, 0)} contested chips awarded.${returnedSummary}`}
+          {s.foldWin ? `Takes the ${settlements[s.winner!].won}-chip pot.${returnedSummary}` : soleWinner ? `Wins ${soleWinner.won} contested chips.${returnedSummary}` : `${potWinners.reduce((sum, seat) => sum + seat.won, 0)} contested chips awarded.${returnedSummary}`}
         </div>
         {!s.foldWin && s.pots && s.pots.length > 0 && (
           <div style={{ padding: "8px 0", borderTop: `1px solid ${T.hairSoft}` }}>
