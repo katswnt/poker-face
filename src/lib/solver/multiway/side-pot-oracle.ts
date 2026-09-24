@@ -246,11 +246,23 @@ export function oracleSidePotSettlement(
     const slice = Math.min(...contributingPlayers.map(player => remaining[player]));
     const amount = slice * contributingPlayers.length;
     const eligiblePlayers = contributingPlayers.filter(player => state.active[player]);
+    for (const player of contributingPlayers) remaining[player] -= slice;
+    // Same contenders as the pot below means dead money, not a new side pot.
+    const previous = potLayers[potLayers.length - 1];
+    if (previous && samePlayers(previous.eligiblePlayers, eligiblePlayers)) {
+      const merged = previous.amount + amount;
+      potLayers[potLayers.length - 1] = {
+        ...previous,
+        amount: merged,
+        awards: asThree([0, 1, 2].map(player =>
+          previous.winners.includes(player) ? merged / previous.winners.length : 0)),
+      };
+      continue;
+    }
     const winners = slowWinners(scenario, hands, eligiblePlayers);
     const awards = [0, 0, 0] as [number, number, number];
     for (const winner of winners) awards[winner] = amount / winners.length;
     potLayers.push({ amount, contributingPlayers, eligiblePlayers, winners, awards });
-    for (const player of contributingPlayers) remaining[player] -= slice;
   }
   const contestablePot = potLayers.reduce((sum, layer) => sum + layer.amount, 0);
   const awards = [0, 1, 2].map(player =>

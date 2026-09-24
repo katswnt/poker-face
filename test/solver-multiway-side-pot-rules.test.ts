@@ -145,7 +145,9 @@ test("an unmatched part of a raise is returned before pots are built", () => {
   assert.deepEqual(settlement.contributions, [60, 90, 30]);
   assert.deepEqual(settlement.returnedUncalled, [0, 30, 0]);
   assert.equal(settlement.contestablePot, 150);
-  assert.deepEqual(settlement.potLayers.map(layer => layer.amount), [90, 60]);
+  // The folder's 30 is dead money in the same pot, not a side pot both survivors contest.
+  assert.deepEqual(settlement.potLayers.map(layer => layer.amount), [150]);
+  assert.deepEqual(settlement.potLayers[0].eligiblePlayers, [0, 1]);
 });
 
 test("a board tie splits each pot only among players eligible for it", () => {

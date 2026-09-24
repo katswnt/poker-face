@@ -128,6 +128,28 @@ order, legal choices, call costs, all-in status, pot layers, awards, and utiliti
 second full generation produced identical bytes in 68.12 seconds and ended at 156.7 MiB
 RSS.
 
+## Fix: dead money is not a side pot (2026-09-24)
+
+`settlement()` used to open a pot layer at every distinct contribution level, including
+a folder's lower level. Payouts were right, but the teaching summary labelled the upper
+layer `side-1`. In 15 of 21 two-layer endings both layers had the same eligible players
+(for example check, bet-30, call, fold: totals 30/60/60), so 268 saved explanations said
+"a side pot forms" where none did.
+
+Both `settlement()` and the independent oracle now merge adjacent levels with identical
+eligible players. A layer after the first is therefore a real side pot: fewer players can
+win it than the layer below. Only the 6 endings with totals 60/90/90 keep two layers, and
+106 explanations mention a side pot. Merging cannot change awards (same winners, shares
+add), and the regenerated artifact confirms it: strategy, values, best responses,
+unilateral gains, convergence, and the rules audit are byte-identical. Only
+`expectedPotLayers` in 216 action facts changed, plus the hashes:
+
+- rules SHA-256 `605e619254ebafc18eca04ba404491de63898e0c6ddaf9ce7ef78efb2883f293`;
+- payload SHA-256 `12981a83188339bfc2bf1f489662261f288ecc5af5dee403c2ed603c50ceb558`.
+
+Regression tests: `test/audit-regressions-multiway.test.ts`. The four-player game uses
+equal stacks and a single pot, so it cannot hit this bug.
+
 ## Verification record
 
 The release candidate passed all 289 repository tests. The checks also included:

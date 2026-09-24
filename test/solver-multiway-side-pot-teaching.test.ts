@@ -108,10 +108,12 @@ test("the short stack's teaching data ties side-pot eligibility to chips paid", 
   assert.ok(bet);
   const side = bet.expectedPotLayers.find(layer => layer.layer === "side-1");
   assert.ok(side);
+  // Betting 30 puts the short stack all in, so a real side pot (deep stacks raising and
+  // calling above it) exists sometimes but is never theirs to win. Dead money a folder
+  // leaves behind stays in the main pot and is not counted as a side pot.
   assert.ok((side.existsProbability ?? 0) > 0);
-  assert.ok((side.playerEligibilityProbability ?? 0) > 0);
-  assert.ok((side.playerEligibilityProbability ?? 1) < (side.existsProbability ?? 0));
-  assert.match(explainSidePotRiverAction(root, bet), /only on endings where they paid enough/);
+  assert.equal(side.playerEligibilityProbability, 0);
+  assert.match(explainSidePotRiverAction(root, bet), /cannot win that side pot because they did not pay enough/);
 });
 
 test("a short all-in call records its real 30-chip price", () => {

@@ -426,29 +426,36 @@ export function createSidePotRiverGame(input: SidePotRiverScenario): SidePotRive
         "Matched contributions",
       );
       const levels = [...new Set(matched)].filter(value => value > 0).sort((left, right) => left - right);
+      // One pot per distinct set of players who can win it. Chips a folder left at a lower
+      // level join the pot above rather than forming a side pot with the same contenders;
+      // merging such levels leaves every award unchanged.
+      const slices: Omit<SidePotLayer, "index" | "winners" | "awards">[] = [];
       let floor = 0;
-      const potLayers: SidePotLayer[] = [];
       for (const ceiling of levels) {
         const contributingPlayers = [0, 1, 2].filter(player => matched[player] >= ceiling);
         const amount = (ceiling - floor) * contributingPlayers.length;
         const eligiblePlayers = contributingPlayers.filter(player => state.public.active[player]);
-        if (amount <= 0) throw new Error(`Side-pot layer ${potLayers.length} is empty`);
-        const winners = winnersForLayer(state, eligiblePlayers, scenario.board);
-        const awards = [0, 0, 0] as [number, number, number];
-        const share = amount / winners.length;
-        for (const winner of winners) awards[winner] = share;
-        potLayers.push({
-          index: potLayers.length,
-          contributionFloor: floor,
-          contributionCeiling: ceiling,
-          amount,
-          contributingPlayers,
-          eligiblePlayers,
-          winners,
-          awards,
-        });
+        if (amount <= 0) throw new Error(`Side-pot layer ${slices.length} is empty`);
+        const below = slices.at(-1);
+        if (below && below.eligiblePlayers.join() === eligiblePlayers.join()) {
+          slices[slices.length - 1] = { ...below, contributionCeiling: ceiling, amount: below.amount + amount };
+        } else {
+          slices.push({
+            contributionFloor: floor,
+            contributionCeiling: ceiling,
+            amount,
+            contributingPlayers,
+            eligiblePlayers,
+          });
+        }
         floor = ceiling;
       }
+      const potLayers: SidePotLayer[] = slices.map((slice, index) => {
+        const winners = winnersForLayer(state, slice.eligiblePlayers, scenario.board);
+        const awards = [0, 0, 0] as [number, number, number];
+        for (const winner of winners) awards[winner] = slice.amount / winners.length;
+        return { index, ...slice, winners, awards };
+      });
       const totalAwards = asThree([0, 1, 2].map(player =>
         potLayers.reduce((sum, layer) => sum + layer.awards[player], 0)), "Total awards");
       const contestablePot = potLayers.reduce((sum, layer) => sum + layer.amount, 0);
