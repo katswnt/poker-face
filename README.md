@@ -507,9 +507,9 @@ opponent's private cards. A good small-game result does not establish full-game 
 
 The CLI exchange is implemented; a browser importer and collaborator-specific adapters
 are not. The import format constrains the submitted policy's observations but cannot
-certify its author's training process or absence of data leakage. No repository license
-has been selected; agree on reuse permission and third-party licensing before copying or
-combining implementation code.
+certify its author's training process or absence of data leakage. The repository is licensed
+under AGPL-3.0-or-later (see [License](#license)); third-party code is combined only under
+compatible licenses and is credited where it is used.
 
 ## Roadmap: what is left
 
@@ -884,6 +884,7 @@ they do not overwrite accepted artifacts.
 ```bash
 npm run audit:kuhn
 npm run audit:leduc
+npm run audit:equity-matrix   # push/fold matrix hash + independent exact cell recompute (~10s)
 npm run audit:river
 npm run audit:river:v2
 npm run audit:river:v3
@@ -907,7 +908,6 @@ npm run audit:multiway-four-player-river
 The corresponding `solve:*` commands and `generate:river:benchmarks` write artifacts;
 use them only when intentionally regenerating results and review the diff. Custom library solves use
 `solveConfigurableRiverV3(request, options)`; the artifact script itself regenerates the
-npm run audit:equity-matrix   # push/fold matrix hash + independent exact cell recompute (~10s)
 locked example rather than accepting arbitrary input files.
 
 ## Accessibility
@@ -924,3 +924,13 @@ keyboard-, touch-, and hover-accessible term explanations.
 - `←` — previous step
 - `Enter` / `Space` — activate the focused native control
 - Click any history entry — jump to the full log at that step
+
+## License
+
+Copyright (C) 2026 Kat Swint.
+
+This program is free software: you can redistribute it and/or modify it under the terms of
+the GNU Affero General Public License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version. It is distributed in the
+hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See [LICENSE](LICENSE) for the full text.
