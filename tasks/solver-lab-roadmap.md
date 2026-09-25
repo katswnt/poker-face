@@ -120,7 +120,8 @@ Other remaining work is deliberately separated:
   implemented; wider bounded ranges, raises and more sizes now exist in turn-v2, not in the old reference. Profile any GPU/WASM/native candidate and prove parity
   on exact small games before expanding limits. Larger teaching views and scorekeeper
   memory remain engineering constraints, not reasons to relax mathematical quality gates.
-- **Reuse:** settle the repository license before copying or combining implementation code.
+- **Reuse:** the repository is AGPL-3.0-or-later (2026-09-25), compatible with
+  postflop-solver (AGPL-3.0). Keep any AGPL dependency isolated behind a swappable interface.
   Sharing the repository for review does not decide its reuse terms.
 
 The [README collaboration guide](../README.md#what-this-could-contribute-to-a-gpu-or-training-project)
@@ -425,8 +426,8 @@ the result **off path** instead of presenting a confident recommendation.
 - [x] Add the generic game, action, strategy, and result types.
 - [x] Encode the locked Kuhn rules in code comments and tests.
 - [x] Implement the documented Nash-gap and exploitability formulas and chip units.
-- [ ] Add a repository license before borrowing any implementation code. No third-party
-      implementation code has been copied into the current solver.
+- [x] Add a repository license before borrowing any implementation code: AGPL-3.0-or-later
+      (2026-09-25). No third-party implementation code has been copied into the current solver.
 
 ### Milestone 1 — Kuhn rule engine
 
