@@ -1,6 +1,6 @@
 # Heads-up play vs a solver-backed AI with live subgame re-solving — spec (draft, 2026-09-25)
 
-Status: research + design only; nothing built. Depends on the postflop-solver bridge
+Status: P0 (contract, no solving) built in `src/lib/hu-play/`, tests `test/hu-play-*.test.ts`; P1+ not started. Depends on the postflop-solver bridge
 (`tasks/postflop-solver-bridge-plan.md`, `-spec.md`, `src/lib/solver/bridge/*`) and the lean
 BTN-vs-BB SRP flop library being generated from `leanSrpSpot` / `LEAN_SRP_TREE`
 (`src/lib/solver/bridge/fixtures.ts`). The WASM bridge (plan B5) has no spec file yet.
@@ -198,12 +198,16 @@ B = bet, C = call):
 ## 3. Milestones
 
 ### P0 — contract (no solving)
-- [ ] `HeadsUpHandState` + `AiDecisionRecord` + hand-history schema (versioned, hashed like other artifacts).
-- [ ] Policy interface and provenance union; the no-leak invariant test (human cards ∉ any spot/cache key).
-- [ ] Reach-vector bookkeeping (AI exact, human modelled) as a pure module with unit tests on the
+- [x] `HeadsUpHandState` + `AiDecisionRecord` + hand-history schema (versioned, hashed like other artifacts).
+- [x] Policy interface and provenance union; the no-leak invariant test (human cards ∉ any spot/cache key).
+- [x] Reach-vector bookkeeping (AI exact, human modelled) as a pure module with unit tests on the
       referee river game: reach at a node equals the product of σ along the path.
-- [ ] Pseudo-harmonic `f(A, B, x)` with property tests (monotone, f(A)=1, f(B)=0, scale-invariant).
-- [ ] Seeded deal/draw helpers; replay harness skeleton.
+- [x] Pseudo-harmonic `f(A, B, x)` with property tests (monotone, f(A)=1, f(B)=0, scale-invariant).
+- [x] Seeded deal/draw helpers; replay harness skeleton.
+- Note (P0): contract v1 spots start at a street root, so `buildResolveSpot` builds street-root
+      re-solves and refuses mid-street roots; nested (P2) roots need an explicit-tree builder with the
+      actual prefix. The leak test is serialization + non-interference: outside the range lists no human
+      card appears, and swapping the human's hand on the same public line leaves every spot byte-identical.
 
 ### P1 — on-tree play from the library (human limited to tree sizes)
 - [ ] Scripted preflop + joint deal from library ranges; honest-label copy (test in `copy.test.ts` style).
