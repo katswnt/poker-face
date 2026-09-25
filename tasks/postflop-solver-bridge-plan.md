@@ -55,20 +55,24 @@ result ──► scripts/*.ts (Node) ──► referee grade (our independent be
 ## Milestones
 
 ### B0 — contract before engine
-- [ ] Spot contract v1 types, JSON Schema, hashing, validation (reject overlapping cards,
+- [x] Spot contract v1 types, JSON Schema, hashing, validation (reject overlapping cards,
       zero-weight ranges, non-integer chips, trees that do not close).
-- [ ] Unit mapping documented: chips, pot, "bet-to" vs postflop-solver's bet/raise amounts,
+- [x] Unit mapping documented: chips, pot, "bet-to" vs postflop-solver's bet/raise amounts,
       rounding rules, rake = 0.
-- [ ] Lock 3 referee games (small enough for our engines): one river v3 game, one turn v2
+- [x] Lock 3 referee games (small enough for our engines): one river v3 game, one turn v2
       game, one tiny flop game, each with committed hashes.
-- [ ] Lock 1 Griffin-scale benchmark game: 100bb single-raised pot flop, 2–3 sizes per street
+- [x] Lock 1 Griffin-scale benchmark game: 100bb single-raised pot flop, 2–3 sizes per street
       and 1 raise, published-style ranges. Pass bar: exploitability ≤ 0.3% of the pot.
 
 ### B1 — build and smoke test
-- [ ] `native/solver-bridge/` crate, pinned dependency, `cargo build --release` on native
+- [x] `native/solver-bridge/` crate, pinned dependency, `cargo build --release` on native
       arm64; `rust-toolchain.toml` pins the Rust version (not the host triple).
-- [ ] Bridge CLI solves the upstream `basic` example; record time/memory on the M1 Pro.
-- [ ] CI job builds the crate and runs its tests on Linux.
+- [x] Bridge CLI solves the upstream `basic` example; record time/memory on the M1 Pro.
+- [x] CI job builds the crate and runs its tests on Linux (added; first run pending push).
+
+B0/B1 done 2026-09-25: see `tasks/postflop-solver-bridge-spec.md` for the contract, unit
+mapping, locked hashes, timings and deviations (no separate JSON Schema file: `validateBridgeSpot`
+is the strict schema; the benchmark raise menu was trimmed to fit 32 GB).
 
 ### B2 — referee: prove the two engines agree
 - [ ] Explicit-tree mode reproduces our three referee games node for node (action sets and

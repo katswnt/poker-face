@@ -1,0 +1,32 @@
+[package]
+name = "solver-bridge"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-or-later"
+publish = false
+description = "poker-face spot-contract bridge to b-inary/postflop-solver"
+
+[lib]
+name = "solver_bridge"
+path = "src/lib.rs"
+
+[[bin]]
+name = "solver-bridge"
+path = "src/main.rs"
+
+[dependencies]
+# Pinned: upstream makes breaking changes without version bumps. Keep in sync with
+# POSTFLOP_SOLVER_COMMIT in src/lib/solver/bridge/contract.ts and src/lib.rs.
+# The default `bincode` feature (save/load files) is off: its `2.0.0-rc.3` requirement now
+# resolves to bincode 2.0.1, which the pinned source does not compile against, and the
+# bridge never uses postflop-solver's file format.
+postflop-solver = { git = "https://github.com/b-inary/postflop-solver", rev = "9d1509fe5077d019825f833eed04b16d342dfda1", default-features = false, features = ["rayon"] }
+libc = "0.2"
+rayon = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
