@@ -90,14 +90,16 @@ jobs:
       - name: Test (browser smoke suite)
         run: npm run test:e2e
 
-  # Slow reproducibility audits run in parallel with the main job.
+  # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
+  # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the
+  # flop job's documented 10-minute limit. CI still re-grades that saved policy
+  # independently (audit:flop:source above).
   slow-audits:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         audit:
-          - audit:flop:vector
           - audit:multiway-river
           - audit:multiway-raised-river
           - audit:multiway-two-size-river

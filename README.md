@@ -804,7 +804,9 @@ fixed). Coverage:
 CI ([workflow](.github/workflows/ci.yml)) runs lint, type-checking, domain tests, every `audit:*` script (hand
 evaluator, exact equity matrix, Kuhn/Leduc, every turn, flop and river engine, and the five multiway river
 reproductions, the slow ones in a parallel job), a production build, and Chromium browser tests on pushes to
-main and pull requests. River Lab checks cover real-worker solves, cancellation, keyboard
+main and pull requests. The one exception is `audit:flop:vector`: its bit-identical wide-flop re-solve needs
+about 14 minutes on a CI runner, past the flop job's 10-minute limit, so it runs locally; CI still re-grades
+that saved policy independently. River Lab checks cover real-worker solves, cancellation, keyboard
 operation, validation, decision inspection, one-change comparisons, and responsive layouts.
 [Release records](tasks/river-solver-lab-audit.md) distinguish working-tree test runs from
 committed artifacts; test totals are not a substitute for running the current checkout.
