@@ -75,15 +75,20 @@ mapping, locked hashes, timings and deviations (no separate JSON Schema file: `v
 is the strict schema; the benchmark raise menu was trimmed to fit 32 GB).
 
 ### B2 — referee: prove the two engines agree
-- [ ] Explicit-tree mode reproduces our three referee games node for node (action sets and
+- [x] Explicit-tree mode reproduces our three referee games node for node (action sets and
       chip amounts identical at every public node; test fails on any mismatch).
-- [ ] Export postflop-solver's full average strategy for each game; our independent grader
+- [x] Export postflop-solver's full average strategy for each game; our independent grader
       computes both players' best-response gains and the game value.
-- [ ] Gates: postflop-solver's self-reported exploitability and ours agree within the float32
+- [x] Gates: postflop-solver's self-reported exploitability and ours agree within the float32
       noise floor (tolerance fixed in B0 from measured f32 error, not tuned to pass); game
       values agree within the same bound; our grade of their strategy passes each game's
       existing quality gate.
-- [ ] Wire `npm run audit:bridge` into CI (fast: small games only).
+- [x] Wire `npm run audit:bridge` into CI (fast: small games only).
+
+B2 done 2026-09-25 (CI run pending push): all gates pass with ≥ 20× margin, no disagreement.
+The tolerance was measured in B2, not B0 (80 solves: float32 max discrepancy 1.21e-5 chips →
+locked τ = 2e-4 chips; int16 not covered). A suit-isomorphism probe game was added because none
+of the three locked games has a suit symmetry. Numbers and derivation: spec, "B2 referee results".
 
 ### B3 — Griffin-scale benchmark
 - [ ] Solve the locked 100bb flop game; record iterations, time, peak memory, compressed vs

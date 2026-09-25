@@ -14,7 +14,7 @@ import { parseConfigurableRiverRange } from "../river/configurable/range";
 import { configurableRiverV3DemoGame } from "../river/configurable-v3/fixture";
 import type { ConfigurableRiverAction } from "../river/configurable/game";
 import { TURN_V2_CORPUS } from "../postflop/configurable-turn/fixtures";
-import { initialTurnV2State, nextTurnV2Action, nextTurnV2River, turnV2Actions, type TurnV2Action, type TurnV2State } from "../postflop/configurable-turn/rules";
+import { initialTurnV2State, nextTurnV2Action, nextTurnV2River, turnV2Actions, type TurnV2Action, type TurnV2Request, type TurnV2State } from "../postflop/configurable-turn/rules";
 import { FLOP_REFERENCE_REQUEST } from "../postflop/flop/fixtures";
 import { flopActions, initialFlopState, nextFlopAction, nextFlopCard, type FlopAction, type FlopState } from "../postflop/flop/rules";
 import {
@@ -26,7 +26,7 @@ import {
 const GIB = 1024 ** 3;
 
 /** Referee solves: tight target, full export (every real turn/river card). */
-const REFEREE_SOLVE: BridgeSolveOptions = Object.freeze({
+export const BRIDGE_REFEREE_SOLVE: BridgeSolveOptions = Object.freeze({
   targetExploitabilityPctPot: 0.01, maxIterations: 20_000, memoryCapBytes: GIB, timeoutMs: 300_000,
   compression: "off", exportScope: "full",
 });
@@ -79,7 +79,7 @@ function riverV3Spot(): BridgeSpotV1 {
       rangeFromEntries(scenario.ranges[0], "configurable river v3 demo fixture (handcrafted teaching range, not preflop advice)"),
       rangeFromEntries(scenario.ranges[1], "configurable river v3 demo fixture (handcrafted teaching range, not preflop advice)"),
     ],
-    startingPot: scenario.committed[0] * 2, effectiveStack: scenario.stackBehind[0], rake: 0, tree, solve: REFEREE_SOLVE,
+    startingPot: scenario.committed[0] * 2, effectiveStack: scenario.stackBehind[0], rake: 0, tree, solve: BRIDGE_REFEREE_SOLVE,
   };
 }
 
@@ -87,7 +87,15 @@ function riverV3Spot(): BridgeSpotV1 {
 
 function turnV2Spot(): BridgeSpotV1 {
   const request = TURN_V2_CORPUS.find(r => r.id === "turn-v2-dry-value");
-  if (!request || request.stackBehind[0] !== request.stackBehind[1]) throw new Error("Turn referee request missing or unequal stacks");
+  if (!request) throw new Error("Turn referee request missing");
+  return bridgeSpotFromTurnV2(request, "referee-turn-v2-dry-value",
+    "configurable turn v2 corpus 'turn-v2-dry-value' (handcrafted, not preflop advice)");
+}
+
+/** Any equal-stack turn v2 request as a bridge spot whose explicit tree is the v2 engine's public tree. */
+export function bridgeSpotFromTurnV2(request: TurnV2Request, id: string, source: string,
+  solve: BridgeSolveOptions = BRIDGE_REFEREE_SOLVE): BridgeSpotV1 {
+  if (request.stackBehind[0] !== request.stackBehind[1]) throw new Error("Bridge turn spots need equal stacks");
   const river = RIVER_DECK.find(c => !request.board.includes(c))!; // Betting never depends on the river card.
   const board: BridgeBoard = { flop: [request.board[0], request.board[1], request.board[2]], turn: request.board[3], river: null };
   const tree = buildExplicitTree(board, request.stackBehind[0], history => {
@@ -97,12 +105,11 @@ function turnV2Spot(): BridgeSpotV1 {
     settle();
     return turnV2Actions(request, state).map(fromEngineAction);
   });
-  const source = "configurable turn v2 corpus 'turn-v2-dry-value' (handcrafted, not preflop advice)";
-  return {
-    format: BRIDGE_SPOT_FORMAT, version: 1, id: "referee-turn-v2-dry-value", board,
+  return validateBridgeSpot({
+    format: BRIDGE_SPOT_FORMAT, version: 1, id, board,
     ranges: [rangeFromText(request.rangeText[0], request.board, source), rangeFromText(request.rangeText[1], request.board, source)],
-    startingPot: request.committedPerPlayer * 2, effectiveStack: request.stackBehind[0], rake: 0, tree, solve: REFEREE_SOLVE,
-  };
+    startingPot: request.committedPerPlayer * 2, effectiveStack: request.stackBehind[0], rake: 0, tree, solve,
+  });
 }
 
 // --- Referee 3: tiny joint flop reference ----------------------------------------------
@@ -130,7 +137,7 @@ function flopReferenceSpot(): BridgeSpotV1 {
   return {
     format: BRIDGE_SPOT_FORMAT, version: 1, id: "referee-flop-reference", board,
     ranges: [rangeFromText(request.rangeText[0], request.board, source), rangeFromText(request.rangeText[1], request.board, source)],
-    startingPot: request.committedPerPlayer * 2, effectiveStack: request.stackBehind[0], rake: 0, tree, solve: REFEREE_SOLVE,
+    startingPot: request.committedPerPlayer * 2, effectiveStack: request.stackBehind[0], rake: 0, tree, solve: BRIDGE_REFEREE_SOLVE,
   };
 }
 

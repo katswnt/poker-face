@@ -16,6 +16,10 @@ field it relies on. Engine: postflop-solver `9d1509fe5077d019825f833eed04b16d342
 | `scripts/solve-bridge.ts` | `npm run solve:bridge -- --fixture <id> [--out result.json]` |
 | `test/bridge-contract.test.ts`, `test/bridge-runner.test.ts` | Validation/hash/fixture tests; runner end-to-end (skips without the binary) |
 | `native/solver-bridge/tests/bridge.rs` | Empirical engine-semantics tests (`npm run test:bridge`) |
+| `src/lib/solver/bridge/referee.ts` | B2: lockstep tree-identity walk + policy adapter, self-reported value, gates, locked float32 tolerance |
+| `src/lib/solver/bridge/referee-node.ts` | B2: referee engines (river v3, turn v2, flop reference) with their own graders and saved-artifact bounds; suit-isomorphism probe |
+| `scripts/audit-bridge.ts` | `npm run audit:bridge` (gates) and `npm run audit:bridge -- --measure` (tolerance measurement) |
+| `test/bridge-referee.test.ts` | Tree identity per referee game; corrupted trees/chance nodes/strategies/self-reports must fail (skips without the binary) |
 
 ## Spot identity
 
@@ -154,11 +158,86 @@ float32 — Kat to decide (a hash re-lock).
   installs Rust 1.98.1, caches cargo, builds, runs `cargo fmt --check`, `clippy -D warnings`,
   `cargo test`, then `test/bridge-runner.test.ts` against the real binary.
 
-## Left for B2
+## B2 referee results (2026-09-25)
 
-- Referee adapters: grade the exported strategy with our independent best-response code on
-  each engine's own game representation; compare values and gains; fix the float32 tolerance
-  from measured error.
-- Turn the node-for-node tree comparison (done ad hoc here) into a failing test and
-  `npm run audit:bridge` in CI.
-- Referee spots currently target 0.01% pot with a 20,000-iteration cap; confirm those settle.
+`npm run audit:bridge` solves the three locked referee spots (hashes checked against
+`BRIDGE_FIXTURE_HASHES`) plus a suit-isomorphism probe, then for each result:
+
+1. **Tree identity** (`refereeWalk`). The exported tree is walked in lockstep with our engine's
+   own public state (not the spot's explicit tree): node kind, actor, street, board, committed
+   chips, action list with chip amounts, terminal outcome/folder and chance cards must be equal,
+   or the audit fails with a path such as `root/bet50: actions [fold, call, raise151] ≠ ours [...]`.
+   At every chance node each card our engine deals must be an exported child (isomorphic cards
+   included) or in `impossibleCards`, and for every impossible card our engine must also find no
+   compatible private pair. Our engines' all-in-before-the-river chance node (then settlement) is
+   compared as postflop-solver's single showdown terminal; both average the same runouts.
+2. **Policy adapter.** Each exported float32 strategy column is renormalized in float64 (largest
+   observed |sum − 1| 1.3e-7; > 1e-5 fails) and written to our information-set key for that
+   (public state, hand), in our action order. Every information set of our engine must be filled
+   exactly once; a hand our engine plays but the export leaves null fails. Exported hands our
+   engine has no information set for (zero reach: e.g. 6,144 flop (node, hand) pairs after a
+   runout that kills the opponent's whole range) are counted, not graded.
+3. **Our grade**, with each engine's own acceptance grader: river v3 `gradeFactorizedRiverStrategy`,
+   turn v2 `gradeVectorTurn`, flop `gradeVectorFlop` cross-checked by the generic exact
+   `gradeStrategy` (agree ≤ 1e-9). postflop-solver's exploitability is never used in our number.
+4. **Gates** (`refereeGates`, tolerance τ = `BRIDGE_FLOAT32_TOLERANCE_CHIPS` = 2e-4 chips):
+   (a) |self-reported exploitability − our exploitability| ≤ τ; (b) |self-reported value −
+   our value| ≤ τ, the self-report is zero-sum within τ, our value of their strategy lies inside
+   the saved artifact's certified interval [v0 − gain1, v0 + gain0] (self-report: ± τ), and the two
+   certified intervals intersect; (c) our exploitability ≤ the game's existing quality gate
+   (0.25 chips for all three, read from the artifacts' `acceptance`).
+
+Results (M1 Pro, 10 threads, float32; the locked runs reproduce B1's numbers bit for bit):
+
+| Spot (iterations) | Their exploitability | Ours | Their value P0 | Ours | Artifact interval (payload hash) | Our interval for their strategy |
+| --- | --- | --- | --- | --- | --- | --- |
+| river v3 demo (600) | 0.009005547 | 0.009005300 | 16.0896236 | 16.0896219 | [16.0779009, 16.0960502] (`320759e7…`) | [16.0785970, 16.0966076] |
+| turn v2 dry value (520) | 0.00971508 | 0.00971560 | 12.1883645 | 12.1883584 | [12.1452739, 12.2495660] (`1221202f…`) | [12.1782790, 12.1977102] |
+| flop reference (100) | 0.009672165 | 0.009672742 | 48.0142840 | 48.0142830 | [48.0129039, 48.0169673] (`00e520f9…`) | [48.0113278, 48.0306733] |
+| isomorphism probe (620) | 0.009411812 | 0.009411622 | 27.1259588 | 27.1259592 | none (not a saved game) | [27.1217077, 27.1405309] |
+
+Largest locked-run discrepancies: exploitability 5.8e-7, value 6.1e-6, self-report zero-sum
+8.9e-6 chips — all ≤ τ/20. No disagreement was found. Walk sizes: river 22/0/41
+player/chance/terminal nodes, 308 information sets; turn 2,410/5/4,092, 6,930; flop
+84,400/444/105,056, 149,936 (216 impossible cards, all confirmed dead by our engine); probe
+1,642/5/2,556, 9,444 with **65 non-representative (suit-swapped) river children**. The three
+locked games have no suit symmetry, so the probe (turn v2, board Ks8h4s2h, clubs↔diamonds-
+symmetric ranges `AcKd AdKc AcAd QcJd QdJc 9c9d` vs `KcQc KdQd AcQd AdQc JcJd TcTd`, not a
+locked hash) is what proves swapped cards reach the real hands: exporting the swapped subtrees
+without the card permutation raises our grade from 0.0094 to 0.115 chips and moves the value by
+0.011, failing gates (a) and (b) (test `suit-isomorphic cards …`).
+
+**Tolerance derivation** (`npm run audit:bridge -- --measure`, 80 solves, ~2 min): each of the
+four games solved at 10/30/100/300/1000 iterations (target 1e-9 % pot so the cap binds), with
+1 thread and 10 threads, uncompressed and int16-compressed, each graded by us. (The locked
+referee spots, target 0.01 % pot, settle at 600/520/100 iterations, far below their 20,000 cap.)
+
+| Precision | Solves | max \|Δ exploitability\| | max \|Δ value P0\| | max self-report zero-sum error |
+| --- | --- | --- | --- | --- |
+| float32 | 40 | 4.33e-6 | 1.21e-5 | 8.0e-6 |
+| int16 compressed | 40 | 3.09e-6 | 6.36e-4 | 8.74e-4 |
+
+- 1 and 10 threads gave bit-identical results in every case, so the measured spread is
+  float32 rounding, not scheduling. It does not sample other CPUs/compilers (CI is x86_64 Linux,
+  where SIMD width and FMA contraction can differ).
+- τ = 10 × the float32 maximum (1.21e-5, probe value at 100 iterations), rounded up to the next
+  1-2-5 step = **2e-4 chips**. The 10× margin is for unsampled hardware/reduction orders; τ is
+  still 2e-4 % of the 100-chip referee pots and 50× below their 0.01-chip solve target, so any
+  disagreement at the level of the solve's own accuracy fails. It was fixed from this measurement
+  before being applied, and the gates pass with margin ≥ 20×; nothing was tuned to pass.
+- int16 compression leaves the self-reported **exploitability** as accurate as float32 (it
+  grades the same decompressed strategy) but its **root EVs** are off by up to 8.7e-4 chips, so
+  τ does not cover compressed results. B3 (compressed benchmark) must measure its own bound at its
+  scale (pot 550, stack 9,750) before comparing values.
+- Scope: τ is absolute chips for games at the referee scale (pots ~100, stacks ≤ 200). A larger
+  game needs a re-measurement, not a scaled guess.
+
+Runtime: `npm run audit:bridge` 6.6 s wall after the build (flop 5.9 s of it: 1.0 s solve, the
+rest parsing the 189,900-node export and the two graders). CI's `bridge` job runs it after the
+referee tests (`test/bridge-referee.test.ts`); first CI run pending push.
+
+## Left for B3
+
+- The Griffin-scale benchmark (compressed): measure an int16 tolerance at its own scale first.
+- Referee spot-checks of river/turn subgames of the big solve need a subgame-extraction path
+  (export a subtree as a spot); not built in B2.

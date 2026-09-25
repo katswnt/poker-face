@@ -92,7 +92,8 @@ jobs:
 
   # Native postflop-solver bridge (AGPL-3.0 dependency pinned in Cargo.lock): build with the
   # pinned toolchain, lint, run the crate's semantic tests, then drive the real binary through
-  # the Node runner (the main job's npm test skips that file when the binary is absent).
+  # the Node runner and the B2 referee (the main job's npm test skips those binary-dependent
+  # tests when the binary is absent).
   bridge:
     runs-on: ubuntu-latest
     defaults:
@@ -130,8 +131,11 @@ jobs:
       - name: Test solver-bridge
         run: npm run test:bridge
 
-      - name: Drive solver-bridge through the Node runner
-        run: node --import tsx --test test/bridge-runner.test.ts
+      - name: Drive solver-bridge through the Node runner and the referee tests
+        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts
+
+      - name: Referee audit (postflop-solver vs our engines on the locked referee games)
+        run: npm run audit:bridge
 
   # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
   # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the

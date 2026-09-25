@@ -76,7 +76,8 @@
     "solve:toy": "npm run solve:kuhn && npm run solve:leduc",
     "build:bridge": "cargo build --release --locked --manifest-path native/solver-bridge/Cargo.toml",
     "test:bridge": "cargo test --release --locked --manifest-path native/solver-bridge/Cargo.toml",
-    "solve:bridge": "node --import tsx scripts/solve-bridge.ts"
+    "solve:bridge": "node --import tsx scripts/solve-bridge.ts",
+    "audit:bridge": "node --import tsx scripts/audit-bridge.ts"
   },
   "dependencies": {
     "next": "16.3.3",
