@@ -1,4 +1,4 @@
-# Preflop solver v1: spec (draft for review, 2026-09-25)
+# Preflop solver v1: spec (2026-09-25; PF0–PF3 implemented, results in §12)
 
 Goal: replace the hand-written BTN-open / BB-call ranges behind the B4 flop library
 (`LIBRARY_PROVENANCE.ranges`, `fixtures.ts`) with ranges from **our own simplified preflop
@@ -198,24 +198,24 @@ ranges_1 → library_1 (regenerate 12 flops) → R_2 → solve → ranges_2 ...
 ## 9. Milestones
 
 ### PF0 — contract
-- [ ] `PreflopSpotV1` (structure, blinds, dead money, stack, rake, menu, R table ref, solver
+- [x] `PreflopSpotV1` (structure, blinds, dead money, stack, rake, menu, R table ref, solver
       options) + `PreflopResultV1` (per-node per-class strategy, EV, exploitability curve,
       grader output, measured-vs-default R cells, provenance); strict validation, sha256 hash.
-- [ ] Tree builder with pot/stack closure checks; terminal rules module + hand-computed tests.
+- [x] Tree builder with pot/stack closure checks; terminal rules module + hand-computed tests.
 
 ### PF1 — all-in-only sanity (push/fold as a special case)
-- [ ] `hu` structure, menu {fold, jam} / {fold, call}, every depth in `pushfold-solutions.json`.
-- [ ] Game value within 1e-4 bb of pushfold's; pushfold's own BR functions give nash gap ≤ 5e-4;
+- [x] `hu` structure, menu {fold, jam} / {fold, call}, every depth in `pushfold-solutions.json`.
+- [x] Game value within 1e-4 bb of pushfold's; pushfold's own BR functions give nash gap ≤ 5e-4;
       shove % and call % within 0.5 points; per-class freq equal except documented threshold hands.
-- [ ] Changing any R leaves PF1 output bit-identical (no flop terminals).
+- [x] Changing any R leaves PF1 output bit-identical (no flop terminals).
 
 ### PF2 — full action abstraction with default R
-- [ ] 6-max menu of §2, default R; exploitability ≤ 1 mbb/hand; both grader cross-checks pass.
-- [ ] Validation table + sensitivity table generated and checked in.
+- [x] 6-max menu of §2, default R; exploitability ≤ 1 mbb/hand; both grader cross-checks pass.
+- [x] Validation table + sensitivity table generated and checked in.
 
 ### PF3 — R from the library
-- [ ] `RealizationSample` adapter over B4 output; texture classifier + flop weights (sum to 1).
-- [ ] Estimator, shrinkage, fit step; re-solve; diff vs PF2 ranges reported.
+- [x] `RealizationSample` adapter over B4 output; texture classifier + flop weights (sum to 1).
+- [x] Estimator, shrinkage, fit step; re-solve; diff vs PF2 ranges reported.
 
 ### PF4 — feed ranges to the next library
 - [ ] Emit library ranges + provenance; run the §7 loop to its stop rule; update
@@ -246,3 +246,96 @@ ranges_1 → library_1 (regenerate 12 flops) → R_2 → solve → ranges_2 ...
 - **Loop may oscillate** (range ↔ R feedback): damping + 3-round cap + honest labelling.
 - **Class-level strategies** hide suit-specific play (e.g. which A5s combos to 3-bet).
 - **Temptation to tune R to published aggregates:** forbidden; targets only flag, never fit.
+
+## 12. Results: PF0–PF3 (2026-09-25)
+
+> **Simplified preflop model; not GTO preflop; realization factors from 12 flops with hand-written
+> ranges.** Every number below is a property of this model (BTN vs BB only, SB always folds, no
+> rake, flop play = equity × R), not of real 6-max poker. PF4 (feeding ranges back to the library)
+> is not done, so the README and `LIBRARY_PROVENANCE` still carry the hand-written label.
+
+**Files.** `src/lib/solver/preflop/`: `contract.ts` (PF0 types + strict validation), `hash.ts`
+(sha256 of canonical JSON), `tree.ts`, `terminal.ts` (rules + dealt-hands model), `cfr.ts`,
+`grader.ts` (independent; does not import `cfr.ts`), `solve.ts`, `stats.ts`, `report.ts`,
+`realization.ts` + `realization-defaults.json`, `texture.ts`, `realization-fit.ts`,
+`library-inputs.ts`, `pushfold-oracle.ts`, `published.ts`; artifacts in `artifacts/`
+(`pf1-pushfold-equivalence.json`, `pf2-default-r.json`, `pf2-sensitivity.json`,
+`pf3-realization-fit.json`, `pf3-measured-r.json` (the locked result), `pf3-sensitivity.json`,
+`lock.json`). `scripts/solve-preflop.ts` (`npm run solve:preflop` regenerates, ~85 s;
+`npm run audit:preflop`, ~3 s, CI main job). Tests: `test/preflop-{terminal-rules,
+pushfold-equivalence,grader-crosscheck,convergence,realization,validation}.test.ts` (35 tests).
+
+**PF1 (push/fold as a special case), all 37 saved depths (2–20bb).** Game value within
+1.8e-5 bb of pushfold.ts's; our strategies graded by pushfold.ts's own `sbBestResponse` /
+`bbBestResponse` / `sbPayoff` have a Nash gap ≤ 2.0e-6; shove % within 0.17 points, call % within
+0.12. 29 (class, depth) cells differ by > 0.05, all threshold hands: the EV gap between their two
+actions is ≤ 0.017 bb (largest: Q8s calling at 13bb, which pushfold.ts's fictitious play leaves at
+0.93 vs our 0.98). CFR+ to 1e-6 bb/hand takes ≤ 1,300 iterations. Output is bit-identical under any R.
+
+**PF2 (spec §2 menu, default R).** CFR+ (alternating, regret floor, linear averaging with delay
+d = 100) stops at 800 iterations, ~1.0 s, exploitability **0.18 mbb/hand** by the independent
+grader (published solves run to 0.2 mbb; the gate is 1 mbb). Grader cross-check 1: on a 20-class
+reduced game (13 pairs + 7 suited aces, DISJOINT chance weights) built as a `toy/game.ts` game,
+`toy/best-response.ts` values and gains equal `grader.ts`'s within 1e-9 (early and converging
+iterates). Cross-check 2 is PF1. DCFR (α 1.5, β 0, γ 2) is behind `solver.algorithm` and tested.
+
+**PF3 (R from the library).** Inputs: the 12 `root.json` files (bytes and sha256 checked against
+the manifest). Texture strata weights (22,100 flops): Td7d3c 32.8%, Ks7h2d 12.8%, AhTh5c 10.8%,
+8s8d3h 10.6%, JcJd4s 6.6%, Ad8c3s 6.5%, 9h8h6c 5.9%, Qs9s4s 5.2%, 7c6c5d 2.6%, Tc9d7s 2.4%,
+KhQdTc 2.2%, 5h4c2d 1.7%. Per-combo weights use only the flops disjoint from the combo. Kish size
+per class is 5–7 flop-equivalents, so κ = 4 shrinkage is substantial. Measured cells: SRP IP 87
+classes, SRP OOP 101 classes; the other 82 / 68 classes (never dealt by the hand-written ranges)
+take their bucket's value; 3BP/4BP are §3.1 defaults for both positions. Fit: 9 steps, max share
+error 0.0046 (< 0.005). 28 cells pinned at the 1.6 clamp (AA–33 and some suited connectors):
+their measured flop share exceeds what a bounded share can give (AA IP realizes 1.32 × the
+starting pot through implied odds). Solve: 500 iterations, 0.6 s, **0.19 mbb/hand**.
+
+R table highlights (fitted, SRP): bucket ratios R̂ IP/OOP: pairs 1.37/1.15, suited connectors
+1.36/1.00, suited broadway 1.16/0.94, offsuit Ax 0.87/0.67, offsuit other 1.03/0.86. Examples
+IP/OOP: AKo 0.81/0.76, KQs 1.32/0.94, T9s 1.34/0.86, Q6s 1.00/0.67, K9o 0.76/0.62,
+A5o 0.59/0.46, 72o (bucket) 0.91/0.90. Diagnostic: flop-sample equity Ē vs exact matrix
+equity differs by 0.045 on average (max 0.16), which is the flop luck the ratio estimator removes.
+
+| Stat (model comparison) | PF2 default R | PF3 fitted R | Published band (research §3) |
+|---|---|---|---|
+| BTN open % | 60.9 | 51.9 | ~43% raked with SB live; flag outside 38–65: **inside** |
+| BB defend % (call + 3-bet) | 95.1 | 99.7 | 55–70 no rake: **outside (flagged)** |
+| BB defend ≥ 37.5% (MDF) | pass | pass | hard check |
+| BB 3-bet % | 16.1 | 15.7 | no citable figure |
+| BTN 4-bet+jam % of opens | 10.3 | 10.0 | no citable figure |
+
+PF3 vs PF2 range change (combo-weighted L1 out of 1,326): BTN open 191, BB fold 62, BB call 185,
+BB 3-bet 123. Monotonicity report: PF2 open 0 violations, PF3 open 2 (A5o > A6o, A3o > A4o:
+offsuit Ax R is low and wheel cards add equity). AA/KK never fold at any node (checked).
+
+**Sensitivity** (`pf2-sensitivity.json`, 47 rows; `pf3-sensitivity.json`, 44 rows). PF2:
+R_OOP(SRP) 0.70 → 1.00 moves BB defend 78.5% → 100% and BTN open 68.4% → 52.8%; R_IP 0.95 → 1.15
+moves open 55.5% → 64.2%; the largest bucket levers are OOP offsuit-other (±0.1: defend
+84.6% / 99.8%) and the 3BP defaults (±0.1: open 57–65%); 4BP ±0.1 changes nothing measurable.
+The rake stub (5%, cap 3bb) tightens open to 55.1% and defend to 86.2% (direction test passes).
+PF3, R ±10%: R_IP(SRP) −10% / +10% gives open 48.0% / 57.2%; R_OOP(SRP) ±10% gives open
+58.0% / 48.4% and defend 97.3% / 100%. Scaling every R by the same factor is exactly a no-op
+(shares depend only on R_IP / R_OOP), and the table confirms it (L1 = 0).
+
+**Why BB defends ~95–100% in this model.** No rake; the dead SB 0.5 gives BB 27% pot odds; and
+the trash hands that decide the defend % mostly have R extrapolated from their bucket, which the
+library measured on the better hands of that bucket (for example, offsuit "other" is measured on
+T9o/98o-type calls). The fit's conservation shift δ (below) adds about 1 point (98.6% without it).
+Wider library ranges (PF4) are the fix; R is not tuned to the band.
+
+**Deviations from this spec, and choices it left open.**
+- Averaging delay d = 100 (the spec said d = 0). With d = 0, the first uniform iterations leave
+  dust in the average strategy of rarely reached classes (KK folded 3% to a 5-bet jam it almost
+  never faces, and unreached classes showed 1/3 each). d = 100 also converges faster.
+- Stopping is judged on the rounded (1e-6) strategy that is saved.
+- r_x = postflop-solver's `normalizedWeight` (range weight × blocker-compatible opponent weight).
+- Target share T(c) = R̃(c) × exact matrix equity vs the library's opponent range. This applies
+  the luck-cancelling ratio to all boards.
+- The fit needs two additions to reach a fixed point. (1) A scale anchor: a/(a+b) is unchanged
+  when every R is multiplied by the same constant, so each step is rescaled to keep the
+  range-weighted mean R at the shrunk estimates' mean (0.963). (2) Pinning plus pot
+  conservation: cells at a clamp that still want to move past it keep their achieved share, and
+  every other target is shifted by one δ (+0.024) so that the targets conserve the pot. Without
+  (2) the fit stalls at a 0.04 error.
+- The texture classifier is a stated rule list in `texture.ts`, a modelling input; every library
+  flop maps to its own stratum.

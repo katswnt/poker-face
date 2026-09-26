@@ -78,6 +78,9 @@ jobs:
       - name: Validate the bridge spot library (hashes, schema, reach/EV invariants, river re-grade)
         run: npm run audit:bridge:library
 
+      - name: Reproduce and independently grade the simplified preflop model (PF1-PF3)
+        run: npm run audit:preflop
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

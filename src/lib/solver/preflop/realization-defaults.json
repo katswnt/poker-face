@@ -1,0 +1,7 @@
+{
+  "format": "poker-face-preflop-realization-defaults",
+  "version": 1,
+  "source": "literature ballpark defaults, flat across hand classes (tasks/preflop-solver-v1-spec.md §3.1); not measured",
+  "ip": { "srp": 1.05, "3bp": 1.0, "4bp": 1.0 },
+  "oop": { "srp": 0.85, "3bp": 0.9, "4bp": 1.0 }
+}
