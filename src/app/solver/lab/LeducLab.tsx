@@ -74,6 +74,7 @@ export default function LeducLab({ data }: Readonly<{ data: LeducLabData }>) {
             <Link href="/solver/river">River solver lab</Link>
             <Link href="/solver/postflop">Turn &amp; river explorer</Link>
             <Link href="/solver/flop">Flop to river library</Link>
+            <Link href="/drills">Math drills</Link>
           </nav>
           <p className={styles.eyebrow}>Explainable solver lab</p>
           <h1>Why can two poker choices both make sense?</h1>

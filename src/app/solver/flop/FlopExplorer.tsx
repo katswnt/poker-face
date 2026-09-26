@@ -133,7 +133,7 @@ export default function FlopExplorer({ catalog, initial }: { catalog: FlopCatalo
   const pending = view.status === "loading" || view.status === "inspecting";
   return <main className={styles.page}>
     <a className={styles.skip} href="#flop-decision">Skip to the decision</a><div className={styles.shell}>
-      <header className={styles.header}><nav className={styles.nav} aria-label="Solver labs"><Link href="/">Poker Face</Link><Link href="/solver/postflop">Turn &amp; river</Link><Link href="/solver/river">River lab</Link><Link href="/solver/lab">Leduc lessons</Link></nav>
+      <header className={styles.header}><nav className={styles.nav} aria-label="Solver labs"><Link href="/">Poker Face</Link><Link href="/solver/postflop">Turn &amp; river</Link><Link href="/solver/river">River lab</Link><Link href="/solver/lab">Leduc lessons</Link><Link href="/drills">Math drills</Link></nav>
         <p className={styles.eyebrow}>SAVED SOLVER LIBRARY</p><h1>From flop to river.</h1><p className={styles.intro}>Follow a decision through the next two cards. See what changes—and which hands make the difference.</p>
         <p className={styles.scope}>Six saved, jointly solved heads-up games. Approximate strategies for these finite games—not exact or universal GTO. One opening size per street, no raises, no rake. Large solves run offline on a CPU; this page loads saved results.</p>
       </header>

@@ -54,6 +54,10 @@ export default function SolverPage() {
               style={{ fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none" }}>
               explainable solver lab <span aria-hidden="true">→</span>
             </Link>
+            <Link href="/drills"
+              style={{ fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none" }}>
+              math drills <span aria-hidden="true">→</span>
+            </Link>
           </nav>
           <div style={{ fontSize: 12, color: T.dim, textTransform: "uppercase" }}>Heads-Up · Push / Fold</div>
           <h1 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, margin: "6px 0 10px", color: T.ink }}>
