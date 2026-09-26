@@ -8,7 +8,7 @@ const NUMBER = /^[+]?(\d+(\.\d*)?|\.\d+)$/;
 export const GRADE_EPSILON = 1e-9;
 
 /** Percent: `25`, `25.0`, `25 %`, or a fraction `1/4` (→ 25). Integer: `12` or `12.0`. */
-export function parseAnswer(kind: Exclude<AnswerKind, "choice">, raw: string): Parsed {
+export function parseAnswer(kind: Exclude<AnswerKind, "choice" | "decision">, raw: string): Parsed {
   const text = raw.trim().replace(/,/g, "");
   if (kind === "percent") {
     const fraction = /^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/.exec(text);
@@ -35,7 +35,14 @@ export function grade(question: Question, input: string, elapsedMs: number): Gra
   let correct: boolean;
   let given: number | string;
   let error: number | undefined;
-  if (answer.kind === "choice") {
+  let band: GradeResult["band"];
+  if (answer.kind === "decision") {
+    const verdict = Object.prototype.hasOwnProperty.call(answer.grades, input) ? answer.grades[input] : undefined;
+    if (!verdict || !answer.options.some(o => o.id === input)) return null;
+    given = input;
+    correct = verdict.correct;
+    band = verdict.band;
+  } else if (answer.kind === "choice") {
     if (!answer.options.some(o => o.id === input)) return null;
     given = input;
     correct = input === answer.value;
@@ -52,5 +59,5 @@ export function grade(question: Question, input: string, elapsedMs: number): Gra
   }
   const fast = correct && elapsedMs <= question.speedTargetMs;
   const slow = elapsedMs > 2 * question.speedTargetMs;
-  return { status: correct ? "correct" : "wrong", correct, given, error, elapsedMs, fast, slow };
+  return { status: correct ? "correct" : "wrong", correct, given, error, elapsedMs, fast, slow, ...(band ? { band } : {}) };
 }

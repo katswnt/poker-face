@@ -20,8 +20,8 @@ rules of thumb are always labelled as approximations.
 5. No time pressure that fails you: the timer measures, it never auto-submits or auto-fails
    (WCAG 2.2.1). Speed only affects the "fast" badge and the difficulty ramp.
 
-Non-goals (now): multiway pot odds, implied odds, rake, ICM, solver-backed decisions (specced
-below as a later pluggable source, not implemented).
+Non-goals (now): multiway pot odds, implied odds, rake, ICM. Solver-backed decisions were
+specced here as a later pluggable source and are now implemented (see "Solver-backed decisions").
 
 ## Conventions (used identically in the code, the copy and the tests)
 
@@ -188,7 +188,107 @@ does the equilibrium strategy take most often here, and roughly how often?" It w
 async variant — `load(): Promise<boolean>` (false when the library is absent → the type is
 hidden) and `generate(seed, level)` choosing a spot by `seed mod spotCount` — so the scheduler,
 grader (choice + percent with a wider tolerance, labelled as a solved-model frequency, not "the
-right play") and review queue are unchanged. It is **not implemented** in this change.
+right play") and review queue are unchanged. Superseded by "Solver-backed decisions" below, which
+grades by EV loss rather than by guessing a frequency.
+
+## Solver-backed decisions (`solver`, 2026-09-25)
+
+North-star tie-in: the math drills make pot odds, MDF and bluff share instant; this drill asks
+for a decision in a real solved spot and shows the same numbers for the price in front of you,
+then grades the action by what it costs in the solve.
+
+**Data.** The B4 bridge library (`public/solver-data/bridge-v1/`, see
+tasks/postflop-solver-bridge-spec.md "B4 spot library"): 12 BTN vs BB single-raised flops,
+100bb, postflop-solver (AGPL-3.0) behind the audited bridge, the lean tree, hand-written
+approximate ranges. Slices: every flop decision, turn decisions for 8 turn cards, river
+decisions for 2 boards, on unraised lines. Chunk numbers are quantized: reach relative to the
+node's largest reach in 1e-4, strategy per mille, EV in 0.1 chip, equity per mille.
+
+**Question.** Seeded by `(seed, level)` via `questionRng("solver", seed, level)`:
+1. spot uniform over the manifest's spots;
+2. a chunk: a street by the level's mix (level 1 flop; 2 flop 40% / turn 60%; 3 "all streets": flop 25% /
+   turn 40% / river 35%), then a uniform chunk of that street; if the chunk has no eligible
+   node, draw again (up to 6 attempts; then the flop chunk, which always has one);
+3. a node uniform among the chunk's eligible nodes;
+4. a hand for the acting player with probability proportional to its reach at the node.
+
+Eligibility thresholds:
+- node: line frequency ≥ **2%**, where line frequency = (share of BB's range that reaches the
+  node) × (share of BTN's), each share = Σ absolute reach ÷ Σ input weight of combos not
+  blocked by the board. Conditional on the runout, card removal between the players ignored.
+  This drops off-path lines (thin OOP leads, rare raises): 59 flop, 842 turn and 382 river
+  nodes qualify of 96 / 1,920 / 2,016 (~388k spot + node + hand questions); 39 of 204 chunks
+  (all river chunks on flop lines that start with a BB lead) have none;
+- hand: reach ≥ **1%** of the node's largest reach (100 reach units; so never a zero or
+  omitted hand), an EV for every action, and at least one action graded wrong (a hand for
+  which every action is fine has nothing to grade);
+- nodes are drawn uniformly, not by frequency, because frequency weighting makes the flop
+  root most questions; the frequency floor already removes rare lines.
+
+Shown: board, pot, stacks behind, the action so far street by street, the hero's hand, and
+the legal actions with chip sizes (bet in bb and % of pot, raise-to amount, call amount,
+all-in marked). Two optional toggles before answering: **the price** (facing a bet: the
+equity needed to call `C ÷ (pot incl. bet + C)` and MDF `P ÷ (P + B)` with `P` the pot before
+the bet and `B` = the call; not facing a bet: the same two numbers for each bet you could
+make, i.e. what the opponent needs and the bluff share of a polar bet) and **the opponent's
+range composition** (reach-weighted, hero's cards removed: straight or better; two pair /
+trips / set; one pair; no pair with a flush draw or 8-out straight draw; no pair, no big draw.
+Categories count the board). Keys `1`–`9` pick an action.
+
+**Grading.** Per action for this hand, from the stored integers:
+`loss = EV(best) − EV(action)` in chips, as % of the pot at the node (pot includes any bet not
+yet called). Quantization noise floor: stored EVs round to 0.1 chip, so two EVs within one
+unit (≤ 0.1 chip = `1 / EV_SCALE`) are ties (loss 0). Bands:
+
+| band | rule | counts as |
+| --- | --- | --- |
+| best | loss ≤ 0.3% pot (the library's own exploitability gate) | correct |
+| solver mix | loss > 0.3% but the solver plays the action ≥ 20% with this hand | correct |
+| close | 0.3% < loss ≤ 2% | miss |
+| mistake | 2% < loss ≤ 8% | miss |
+| big mistake | loss > 8% | miss |
+
+A mixed action (≥ 20%) is never graded wrong. The "best" action shown is the highest stored
+EV (ties: the one the solver plays most). Speed target 20 s. Misses and slow answers enter
+the review queue like every drill.
+
+**Explanation.** A table of the solver's frequency, from-now EV (bb) and EV loss for every
+action; the price math with the numbers plugged in; the hand's all-in equity against the
+opponent's reach at the node (saved per hand in the chunk), compared with the price when
+facing a bet; the range composition; and the provenance line: "postflop-solver (AGPL) via
+the audited bridge; 12 BTN vs BB flops; ranges are hand-written approximations; not exact or
+universal GTO."
+
+**Loading.** `src/lib/drills/solver/` is imported with `import()` only when a solver question
+is needed, so the drills page's initial JS does not grow. It uses the library loader
+(`loadLibraryManifest`, `loadLibraryRanges`, `loadLibraryChunk`): every file is checked
+against its manifest byte count and sha256 and schema-validated; nothing is substituted.
+Loaded files are memoised per source (a failed load is not cached, so Retry refetches); spot
+and chunk files are fetched `force-cache` first (hash-verified, so a stale copy is refused and
+refetched from the network), which keeps answered spots working offline. Errors show "Couldn't
+load the solver spot" with Retry; a review item whose data is gone offers "Remove it and continue".
+
+**Session and review.** `advance` returns `pending: { type: "solver", seed, level, key? }` with
+`question: null`; the page builds it asynchronously and calls `resolvePending`, which starts
+the timer (a stale result, after a mode change, is ignored). Mixed mode stays the synchronous
+math drills; Review serves solver items too. Review items for solver questions carry
+`key = spotId|path|combo` and id `solver:<key>`; the question is rebuilt from the key
+(`fromKey`), not re-sampled, so review is exact even if sampling changes. Storage validates
+the key's shape and drops malformed items. URL: `?drill=solver&level=2&seed=42`.
+
+**Tests.** `test/drills-solver.test.ts`: weighted pick exactness and zero weights; seeded
+hand picks follow reach at a high-variance node (and a uniform pick fails the test);
+determinism by seed; every sampled node/hand re-checked from the raw chunk JSON (frequency ≥
+2%, reach ≥ 1%); explanation numbers (pot, call, pot odds, MDF, EV loss, frequencies, equity)
+recomputed from raw chunk integers; band edges, the mixed guard and the quantization tie;
+review-key round trips and refused keys; corrupted, truncated, 404 and offline loads fail and
+a retry succeeds, loaded chunks keep working offline; session pending/resolve and review by
+key through storage. `e2e/drills-solver.spec.ts`: keyboard answer and explanation, toggles,
+320/390 px without horizontal overflow, load failure → Retry recovers.
+
+**Files.** `src/lib/drills/solver/` (`build.ts` thresholds/sampling/grading/question,
+`source.ts` async loading, `tree.ts` path replay and labels, `composition.ts` range groups),
+`src/app/drills/SolverPanels.tsx`.
 
 ## Tests (`test/drills*.test.ts`)
 

@@ -7,14 +7,38 @@ import Link from "next/link";
 import { RN, SUIT_NAMES } from "@/lib/poker/cards";
 import type { CardObj } from "@/lib/poker/types";
 import {
-  BOX_GAPS, DRILL_SOURCES, DRILL_TYPES, browserStorage, dueCount, fmtPct, fmtPts, initialState,
+  ALL_DRILL_TYPES, BOX_GAPS, DRILL_LABELS, DRILL_TYPES, browserStorage, dueCount, fmtPct, fmtPts, initialState,
   isDrillType, levelFor, loadState, median, nextDueIn, saveState,
   type DrillMode, type DrillType, type LevelPin, type Question, type Session, type TypeStats,
 } from "@/lib/drills";
-import { advance, changeLevel, changeMode, replaceState, startSession, submit } from "@/lib/drills/session";
+import {
+  advance, changeLevel, changeMode, dropPending, replaceState, resolvePending, startSession, submit, type PendingQuestion,
+} from "@/lib/drills/session";
+import type { SolverSource } from "@/lib/drills/solver";
+import { PricePanel, RangePanel, SolverExplanation, SolverHistory, decisionVerdict } from "./SolverPanels";
 import styles from "./drills.module.css";
 
 const LEVEL_NAMES = { 1: "round numbers", 2: "realistic sizes", 3: "awkward sizes" } as const;
+const SOLVER_LEVEL_NAMES = { 1: "flop", 2: "flop and turn", 3: "all streets" } as const;
+
+// The solver source (bridge library loader, evaluator) is loaded only when a solver question is
+// needed, so the drills page's initial JS stays small. One instance caches loaded chunks.
+let solverSource: Promise<SolverSource> | null = null;
+function loadSolverSource(): Promise<SolverSource> {
+  solverSource ??= import("@/lib/drills/solver").then(m => m.createSolverSource()).catch(error => {
+    solverSource = null;
+    throw error;
+  });
+  return solverSource;
+}
+
+function buildPending(pending: PendingQuestion): Promise<Question> {
+  return loadSolverSource().then(source => pending.key
+    ? source.fromKey(pending.key, pending.seed, pending.level)
+    : source.generate(pending.seed, pending.level));
+}
+
+interface LoadError { readonly pending: PendingQuestion; readonly message: string; readonly retryable: boolean; }
 const RED_SUITS = new Set(["♥", "♦"]);
 
 const clock = () => performance.now();
@@ -49,6 +73,7 @@ function modeKey(mode: DrillMode): string {
 }
 
 function answerHint(q: Question): string {
+  if (q.answer.kind === "decision") return `Pick an action (keys 1–${q.answer.options.length}). Within 0.3% of the pot of the best EV, or an action the solver plays at least 20% with this hand, counts as correct.`;
   if (q.answer.kind === "percent") return `A percent such as 25, 25% or 1/4. Within ±${q.answer.tolerance} pt${q.answer.tolerance === 1 ? "" : "s"} counts as correct.`;
   if (q.answer.kind === "integer") return "A whole number. Must be exact.";
   return "";
@@ -59,6 +84,10 @@ function exactText(q: Question): string {
   if (q.answer.kind === "integer") return String(q.answer.value);
   const value = q.answer.value;
   return q.answer.options.find(o => o.id === value)?.label ?? value;
+}
+
+function isOptionAnswer(q: Question): boolean {
+  return q.answer.kind === "choice" || q.answer.kind === "decision";
 }
 
 function combineStats(list: readonly (TypeStats | undefined)[]): TypeStats {
@@ -73,6 +102,10 @@ export default function Drills() {
   const [draft, setDraft] = useState("");
   const [now, setNow] = useState(0);
   const [saved, setSaved] = useState(true);
+  const [loadError, setLoadError] = useState<LoadError | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  const [showPrice, setShowPrice] = useState(false);
+  const [showRange, setShowRange] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const firstChoiceRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -91,7 +124,25 @@ export default function Drills() {
 
   const question = session?.question ?? null;
   const graded = session?.result ?? null;
+  const pending = session?.pending ?? null;
   const running = question !== null && graded === null;
+
+  // Solver questions load asynchronously; the timer starts once the question is shown. A stale
+  // result (the mode changed meanwhile) is dropped by resolvePending.
+  useEffect(() => {
+    if (!pending) return;
+    let live = true;
+    buildPending(pending).then(
+      q => { if (live) { const t = clock(); setSession(cur => cur ? resolvePending(cur, pending, q, t) : cur); setNow(t); } },
+      (error: unknown) => {
+        if (!live) return;
+        const e = error instanceof Error ? error : new Error(String(error));
+        const retryable = e.name !== "SolverKeyError";
+        setLoadError({ pending, retryable, message: retryable && /loading chunk|dynamically imported|import/i.test(e.message) ? "Could not load the solver drill. Check your connection and retry." : e.message });
+      },
+    );
+    return () => { live = false; };
+  }, [pending, attempt]);
 
   // Visible timer: tick while a question is unanswered.
   useEffect(() => {
@@ -104,7 +155,7 @@ export default function Drills() {
   useEffect(() => {
     if (!question) return;
     if (graded) nextRef.current?.focus();
-    else if (question.answer.kind === "choice") firstChoiceRef.current?.focus();
+    else if (isOptionAnswer(question)) firstChoiceRef.current?.focus();
     else inputRef.current?.focus();
   }, [question, graded]);
 
@@ -121,15 +172,29 @@ export default function Drills() {
     commit(advance(session, clock()), false);
   };
 
-  // N moves on after grading (ignored while typing in a text field).
+  // N moves on after grading; digits 1–9 pick an option (both ignored while typing in a field).
+  const pickOption = (index: number): boolean => {
+    if (!session?.question || session.result || !isOptionAnswer(session.question)) return false;
+    const answer = session.question.answer;
+    const option = answer.kind === "choice" || answer.kind === "decision" ? answer.options[index] : undefined;
+    if (!option) return false;
+    commit(submit(session, option.id, clock()), true);
+    return true;
+  };
   const goNextRef = useRef(goNext);
-  useEffect(() => { goNextRef.current = goNext; });
+  const pickRef = useRef(pickOption);
+  useEffect(() => { goNextRef.current = goNext; pickRef.current = pickOption; });
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
-      if (event.key !== "n" && event.key !== "N") return;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === "INPUT" && !(target as HTMLInputElement).readOnly || target.tagName === "TEXTAREA" || target.tagName === "SELECT")) return;
+      const typing = target?.tagName === "INPUT" && !(target as HTMLInputElement).readOnly && !["checkbox", "radio", "button", "submit"].includes((target as HTMLInputElement).type);
+      if (target && (typing || target.tagName === "TEXTAREA" || target.tagName === "SELECT")) return;
+      if (/^[1-9]$/.test(event.key)) {
+        if (pickRef.current(Number(event.key) - 1)) event.preventDefault();
+        return;
+      }
+      if (event.key !== "n" && event.key !== "N") return;
       event.preventDefault();
       goNextRef.current();
     };
@@ -155,11 +220,15 @@ export default function Drills() {
   const elapsed = graded ? graded.elapsedMs : Math.max(0, now - session.shownAt);
   const overTarget = question !== null && elapsed > question.speedTargetMs;
   const due = dueCount(state);
-  const statsTypes = mode.kind === "type" ? [mode.type] : DRILL_TYPES;
+  const statsTypes: readonly DrillType[] = mode.kind === "type" ? [mode.type] : mode.kind === "mixed" ? DRILL_TYPES : ALL_DRILL_TYPES;
   const stats = combineStats(statsTypes.map(t => state.stats[t]));
   const med = median(stats.recentMs);
   const autoLevelType: DrillType | null = mode.kind === "type" ? mode.type : null;
-  const queueByType = DRILL_TYPES.map(t => [t, state.review.filter(i => i.type === t).length] as const).filter(([, n]) => n > 0);
+  const queueByType = ALL_DRILL_TYPES.map(t => [t, state.review.filter(i => i.type === t).length] as const).filter(([, n]) => n > 0);
+  const levelNames = mode.kind === "type" && mode.type === "solver" ? SOLVER_LEVEL_NAMES : LEVEL_NAMES;
+  const shownError = loadError && loadError.pending === pending ? loadError : null;
+  const retry = (): void => { setLoadError(null); setAttempt(n => n + 1); };
+  const skipSaved = (): void => { setLoadError(null); commit(dropPending(session, clock()), true); };
 
   const clearProgress = (): void => {
     if (!window.confirm("Clear saved drill progress, stats and the review queue?")) return;
@@ -176,10 +245,10 @@ export default function Drills() {
           <fieldset className={styles.modes}>
             <legend>Drill</legend>
             <div className={styles.modeButtons}>
-              {([{ kind: "mixed" }, ...DRILL_TYPES.map(type => ({ kind: "type", type }) as const), { kind: "review" }] as DrillMode[]).map(m => {
+              {([{ kind: "mixed" }, ...ALL_DRILL_TYPES.map(type => ({ kind: "type", type }) as const), { kind: "review" }] as DrillMode[]).map(m => {
                 const key = modeKey(m);
                 const pressed = modeKey(mode) === key;
-                const label = m.kind === "mixed" ? "Mixed" : m.kind === "review" ? `Review (${state.review.length})` : DRILL_SOURCES[m.type].label;
+                const label = m.kind === "mixed" ? "Mixed math" : m.kind === "review" ? `Review (${state.review.length})` : DRILL_LABELS[m.type];
                 return (
                   <button key={key} type="button" aria-pressed={pressed}
                     onClick={() => { setDraft(""); commit(changeMode(session, m, clock()), false); }}>
@@ -201,16 +270,35 @@ export default function Drills() {
               <option value="auto">
                 {autoLevelType ? `Auto (now level ${levelFor(state, autoLevelType, "auto")})` : "Auto (per drill)"}
               </option>
-              <option value="1">Level 1: {LEVEL_NAMES[1]}</option>
-              <option value="2">Level 2: {LEVEL_NAMES[2]}</option>
-              <option value="3">Level 3: {LEVEL_NAMES[3]}</option>
+              <option value="1">Level 1: {levelNames[1]}</option>
+              <option value="2">Level 2: {levelNames[2]}</option>
+              <option value="3">Level 3: {levelNames[3]}</option>
             </select>
           </label>
         </div>
 
         <div className={styles.layout}>
           <section className={styles.questionCard} aria-labelledby="drill-question">
-            {question === null ? (
+            {question === null && pending ? (
+              <div className={styles.empty}>
+                {shownError ? (
+                  <>
+                    <h2 id="drill-question">Couldn&apos;t load the solver spot</h2>
+                    <p role="alert">{shownError.message}</p>
+                    <div className={styles.retryRow}>
+                      {shownError.retryable
+                        ? <button type="button" className={styles.next} onClick={retry}>Retry</button>
+                        : <button type="button" className={styles.next} onClick={skipSaved}>Remove it and continue</button>}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h2 id="drill-question">Loading a solver spot…</h2>
+                    <p role="status">Fetching and verifying the saved solver data for this question (a few hundred KB the first time).</p>
+                  </>
+                )}
+              </div>
+            ) : question === null ? (
               <div className={styles.empty}>
                 <h2 id="drill-question">{state.review.length === 0 ? "Nothing to review yet" : "Nothing due right now"}</h2>
                 <p>
@@ -224,7 +312,7 @@ export default function Drills() {
               <>
                 <div className={styles.questionMeta}>
                   <span className={styles.eyebrow}>
-                    {DRILL_SOURCES[question.type].label} · level {question.level}{session.fromReview ? " · review" : ""}
+                    {DRILL_LABELS[question.type]} · level {question.level}{session.fromReview ? " · review" : ""}
                   </span>
                   <span role="timer" aria-live="off" className={overTarget ? styles.timerOver : styles.timer}>
                     <span className={styles.srOnly}>Time </span>{seconds(elapsed)} s
@@ -233,7 +321,7 @@ export default function Drills() {
                 </div>
                 <h2 id="drill-question" className={styles.prompt}>{question.prompt}</h2>
                 <dl className={styles.facts}>
-                  {question.facts.map(fact => {
+                  {question.facts.filter(fact => !(question.solver && fact.label === "Action")).map(fact => {
                     const cards = factCards(question, fact.label);
                     return (
                       <div key={fact.label}>
@@ -243,15 +331,26 @@ export default function Drills() {
                     );
                   })}
                 </dl>
+                {question.solver && <SolverHistory detail={question.solver} />}
+                {question.solver && !graded && (
+                  <div className={styles.toggles}>
+                    <label><input type="checkbox" checked={showPrice} onChange={e => setShowPrice(e.target.checked)} /> Show the price (pot odds, MDF)</label>
+                    <label><input type="checkbox" checked={showRange} onChange={e => setShowRange(e.target.checked)} /> Show {question.solver.villainName}&apos;s range composition</label>
+                  </div>
+                )}
+                {question.solver && !graded && showPrice && <PricePanel detail={question.solver} />}
+                {question.solver && !graded && showRange && <RangePanel detail={question.solver} />}
 
-                {question.answer.kind === "choice" ? (
+                {question.answer.kind === "choice" || question.answer.kind === "decision" ? (
                   <div className={styles.choices} role="group" aria-label="Your answer">
                     {question.answer.options.map((option, i) => {
                       const chosen = graded !== null && session.given === option.id;
                       return (
                         <button key={option.id} type="button" ref={i === 0 ? firstChoiceRef : undefined}
                           disabled={graded !== null} aria-pressed={chosen}
+                          aria-keyshortcuts={question.answer.kind === "decision" ? String(i + 1) : undefined}
                           onClick={() => onSubmit(option.id)}>
+                          {question.answer.kind === "decision" && <kbd aria-hidden="true">{i + 1}</kbd>}
                           {option.label}
                         </button>
                       );
@@ -286,16 +385,19 @@ export default function Drills() {
                     <div className={styles.verdictBox}>
                       <p className={graded.correct ? styles.verdictRight : styles.verdictWrong}>
                         <strong>{graded.correct ? "Correct" : "Not quite"}</strong>
+                        {question.answer.kind === "decision" && <>{" · "}{decisionVerdict(question, graded).headline}</>}
                         {" · "}{seconds(graded.elapsedMs)} s
                         {graded.fast ? " · within target" : graded.correct ? " · slower than target" : ""}
                       </p>
-                      <p className={styles.compare}>
+                      {question.answer.kind === "decision" ? (
+                        <p className={styles.compare}>{decisionVerdict(question, graded).detail}</p>
+                      ) : <p className={styles.compare}>
                         Exact: <strong>{exactText(question)}</strong>
                         {question.answer.kind !== "choice" && <> · You: {session.given}</>}
                         {question.answer.kind === "percent" && graded.error !== undefined && (
                           <> ({fmtPts(graded.error)} off; ±{question.answer.tolerance} accepted)</>
                         )}
-                      </p>
+                      </p>}
                       {session.event && session.event !== "none" && (
                         <p className={styles.reviewNote}>{reviewMessage(session)}</p>
                       )}
@@ -304,7 +406,7 @@ export default function Drills() {
                 </div>
                 {graded && (
                   <div className={graded.correct ? styles.feedbackRight : styles.feedbackWrong}>
-                    <dl className={styles.explanation}>
+                    {question.solver ? <SolverExplanation q={question} given={session.given} /> : <dl className={styles.explanation}>
                       <div><dt>Formula</dt><dd>{question.explanation.formula}</dd></div>
                       <div><dt>Your numbers</dt><dd>{question.explanation.plugged}</dd></div>
                       <div><dt>Result</dt><dd>{question.explanation.result}</dd></div>
@@ -313,7 +415,7 @@ export default function Drills() {
                         <dd>{question.explanation.shortcut}</dd>
                       </div>
                       {question.explanation.note && <div><dt>Note</dt><dd>{question.explanation.note}</dd></div>}
-                    </dl>
+                    </dl>}
                     <button type="button" ref={nextRef} className={styles.next} onClick={goNext}>
                       Next question <kbd>N</kbd>
                     </button>
@@ -324,7 +426,7 @@ export default function Drills() {
           </section>
 
           <aside className={styles.sidebar} aria-label="Practice stats">
-            <h2 className={styles.sectionLabel}>Stats · {mode.kind === "type" ? DRILL_SOURCES[mode.type].label : "all drills"}</h2>
+            <h2 className={styles.sectionLabel}>Stats · {mode.kind === "type" ? DRILL_LABELS[mode.type] : mode.kind === "mixed" ? "math drills" : "all drills"}</h2>
             <dl className={styles.stats}>
               <div><dt>Streak</dt><dd>{state.streak}</dd></div>
               <div><dt>Best streak</dt><dd>{state.bestStreak}</dd></div>
@@ -342,7 +444,7 @@ export default function Drills() {
             </p>
             {queueByType.length > 0 && (
               <ul className={styles.queue}>
-                {queueByType.map(([t, n]) => <li key={t}><span>{DRILL_SOURCES[t].label}</span><span>{n}</span></li>)}
+                {queueByType.map(([t, n]) => <li key={t}><span>{DRILL_LABELS[t]}</span><span>{n}</span></li>)}
               </ul>
             )}
             <details className={styles.details}>
@@ -409,8 +511,9 @@ function Header() {
       <p className={styles.intro}>
         One question at a time: pot odds, minimum defence, bluff share, outs, and combo counting. Every
         answer is computed exactly; the explanation shows the formula with your numbers and the at-table
-        shortcut, and says when a shortcut is only an approximation. The timer measures you and never
-        cuts you off. Keys: <kbd>Enter</kbd> checks, <kbd>N</kbd> moves on.
+        shortcut, and says when a shortcut is only an approximation. Solver decisions put the same math
+        in a real spot and grade your action by its EV loss in a saved solve. The timer measures you and
+        never cuts you off. Keys: <kbd>Enter</kbd> checks, <kbd>1</kbd>–<kbd>9</kbd> pick an action, <kbd>N</kbd> moves on.
       </p>
     </header>
   );

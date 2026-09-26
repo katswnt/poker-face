@@ -21,10 +21,17 @@ const isNat = (v: unknown): v is number => typeof v === "number" && Number.isInt
 const isLevel = (v: unknown): v is Level => v === 1 || v === 2 || v === 3;
 const isBox = (v: unknown): v is Box => v === 1 || v === 2 || v === 3 || v === 4;
 
+/** Solver review key: `spotId|path|combo` (see src/lib/drills/solver/key.ts). */
+export const SOLVER_KEY = /^[a-z0-9][a-z0-9-]{0,79}\|(?:(?:x|c|f|[br][1-9][0-9]*|[2-9TJQKA][cdhs])(?: (?:x|c|f|[br][1-9][0-9]*|[2-9TJQKA][cdhs])){0,30})?\|[2-9TJQKA][cdhs][2-9TJQKA][cdhs]$/;
+
 function readItem(v: unknown): ReviewItem | null {
   if (!isObj(v)) return null;
-  const { type, seed, level, box, dueAt, lapses } = v;
+  const { type, seed, level, box, dueAt, lapses, key } = v;
   if (!isDrillType(type) || !isNat(seed) || seed > 0xffffffff || !isLevel(level) || !isBox(box) || !isNat(dueAt) || !isNat(lapses)) return null;
+  if (type === "solver") {
+    if (typeof key !== "string" || !SOLVER_KEY.test(key)) return null;
+    return { id: `solver:${key}`, type, seed, level, box, dueAt, lapses, key };
+  }
   return { id: `${type}:${level}:${seed}`, type, seed, level, box, dueAt, lapses };
 }
 

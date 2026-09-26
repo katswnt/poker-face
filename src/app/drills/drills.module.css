@@ -546,6 +546,169 @@
   border-color: #4b535d;
 }
 
+/* Solver decisions */
+
+.facts dd {
+  overflow-wrap: anywhere;
+}
+
+.history {
+  margin: -8px 0 18px;
+}
+
+.history ol {
+  margin: 6px 0 0;
+  padding-left: 1.4em;
+  color: #d4d4cf;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.history h3,
+.solverPanel h3 {
+  margin: 0;
+}
+
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0 0 16px;
+  font-size: 0.78rem;
+}
+
+.toggles label {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.toggles input {
+  width: 18px;
+  height: 18px;
+  accent-color: #7dd3a0;
+}
+
+.solverPanel {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #2a2e34;
+  background: #0f1216;
+}
+
+.priceList,
+.rangeBars {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.priceList li {
+  display: grid;
+  gap: 2px;
+}
+
+.priceList strong {
+  color: #eeeeea;
+}
+
+.plugged {
+  color: #8f918a;
+  overflow-wrap: anywhere;
+}
+
+.rangeBars li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(60px, 32%) 3.6em;
+  gap: 10px;
+  align-items: center;
+}
+
+.bar {
+  height: 8px;
+  background: #1c2128;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  background: #7dd3a0;
+}
+
+.barValue {
+  text-align: right;
+}
+
+.choices kbd {
+  margin-right: 8px;
+}
+
+.solverExplain {
+  margin: 0 0 16px;
+}
+
+.tableWrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.actionTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.actionTable caption {
+  padding-bottom: 6px;
+  text-align: left;
+}
+
+.actionTable th,
+.actionTable td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #2a2e34;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.actionTable th:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.actionTable thead th {
+  color: #8f918a;
+  font-size: 0.66rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.actionTable tbody th {
+  color: #eeeeea;
+  font-weight: 700;
+}
+
+.actionTable tr[aria-current="true"] {
+  background: #18231e;
+}
+
+.provenance {
+  margin: 12px 0 0;
+  color: #8f918a;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.retryRow {
+  margin-top: 14px;
+}
+
 @media (max-width: 820px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
@@ -564,5 +727,10 @@
   .choices button,
   .next {
     max-width: none;
+  }
+
+  .actionTable th,
+  .actionTable td {
+    padding: 6px 4px;
   }
 }

@@ -8,7 +8,7 @@ import type { Question } from "../src/lib/drills/types";
 const rightAnswer = (q: Question): string =>
   q.answer.kind === "choice" ? q.answer.value : String(q.answer.value);
 const wrongAnswer = (q: Question): string =>
-  q.answer.kind === "choice" ? (q.answer.value === "call" ? "fold" : "call") : String(q.answer.value + 50);
+  q.answer.kind === "choice" || q.answer.kind === "decision" ? (q.answer.value === "call" ? "fold" : "call") : String(q.answer.value + 50);
 
 test("the same session seed replays the same questions", () => {
   const run = () => {

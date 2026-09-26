@@ -6,14 +6,14 @@ import {
   updateProgress, START_PROGRESS, type DrillState, type ReviewItem,
 } from "../src/lib/drills/scheduler";
 import { STORAGE_KEY, loadState, parseState, saveState } from "../src/lib/drills/storage";
-import type { GradeResult, Question } from "../src/lib/drills/types";
+import type { GradeResult, MathDrillType, Question } from "../src/lib/drills/types";
 
 const ok = (fast = true, elapsedMs = 1000): GradeResult =>
   ({ status: "correct", correct: true, given: 0, elapsedMs, fast, slow: false });
 const bad = (): GradeResult => ({ status: "wrong", correct: false, given: 0, elapsedMs: 1000, fast: false, slow: false });
 const slowRight = (): GradeResult => ({ status: "correct", correct: true, given: 0, elapsedMs: 99_000, fast: false, slow: true });
 
-const q = (seed: number, type: Question["type"] = "pot-odds"): Question => generateQuestion(type, seed, 1);
+const q = (seed: number, type: MathDrillType = "pot-odds"): Question => generateQuestion(type, seed, 1);
 
 /** Answer `n` unrelated fresh questions correctly (advances the tick). */
 function filler(state: DrillState, n: number): DrillState {

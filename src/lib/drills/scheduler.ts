@@ -19,6 +19,8 @@ export interface ReviewItem {
   readonly box: Box;
   readonly dueAt: number;
   readonly lapses: number;
+  /** Solver items: `spotId|path|combo`; the question is rebuilt from it, not from the seed. */
+  readonly key?: string;
 }
 
 export interface TypeStats {
@@ -78,7 +80,10 @@ export function updateReview(review: readonly ReviewItem[], tick: number, questi
       event = "promoted";
     }
   } else if (miss) {
-    next.push({ id: question.id, type: question.type, seed: question.seed, level: question.level, box: 1, dueAt: tick + BOX_GAPS[1], lapses: 1 });
+    next.push({
+      id: question.id, type: question.type, seed: question.seed, level: question.level, box: 1, dueAt: tick + BOX_GAPS[1], lapses: 1,
+      ...(question.reviewKey ? { key: question.reviewKey } : {}),
+    });
     event = "added";
   }
   return { review: capReview(next), event };

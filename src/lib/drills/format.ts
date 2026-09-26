@@ -7,6 +7,18 @@ export function fmtBb(value: number): string {
   return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
 }
 
+/** Chips → big blinds with up to two decimals ("3.63", "12", "0.5"); solver drills use chips. */
+export function fmtChipsBb(chips: number, chipsPerBb = 100): string {
+  const v = Math.round((chips / chipsPerBb) * 100) / 100;
+  return Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, "");
+}
+
+/** Signed big blinds from chips ("+2.31", "−0.4", "0"). */
+export function fmtSignedChipsBb(chips: number, chipsPerBb = 100): string {
+  const text = fmtChipsBb(Math.abs(chips), chipsPerBb);
+  return text === "0" ? "0" : chips > 0 ? `+${text}` : `−${text}`;
+}
+
 /** A percent value (already in points) with one decimal, e.g. `25.0%`. */
 export function fmtPct(points: number, digits = 1): string {
   return `${points.toFixed(digits)}%`;

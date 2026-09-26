@@ -5,7 +5,7 @@ import { makeDeck, shuffle, cv } from "@/lib/poker/cards";
 import type { CardObj } from "@/lib/poker/types";
 import { cardLabel, choose2, fmtBb, fmtPct, fmtPts, rankLetter, rankWord } from "./format";
 import { pick, questionRng, randHalf, randInt, type Rng } from "./rng";
-import type { DrillSource, DrillType, Explanation, Fact, Level, Question } from "./types";
+import type { DrillSource, DrillType, Explanation, Fact, Level, MathDrillType, Question } from "./types";
 
 export const PERCENT_TOLERANCE: Readonly<Record<"pot-odds" | "mdf" | "bluff-share" | "outs-equity", number>> = {
   "pot-odds": 1,
@@ -22,6 +22,7 @@ export const SPEED_TARGET_MS: Readonly<Record<DrillType, number>> = {
   "outs-count": 15000,
   combos: 12000,
   "call-or-fold": 8000,
+  solver: 20000,
 };
 /** Inclusion–exclusion combo questions get a longer target. */
 export const EITHER_COMBOS_TARGET_MS = 20000;
@@ -446,7 +447,7 @@ function comboQuestion(seed: number, level: Level): Question {
 // ---------------------------------------------------------------------------------------------
 // Registry
 
-export const DRILL_SOURCES: Readonly<Record<DrillType, DrillSource>> = {
+export const DRILL_SOURCES: Readonly<Record<MathDrillType, DrillSource>> = {
   "pot-odds": { type: "pot-odds", label: "Pot odds", short: "Equity needed to call", answerKind: "percent", generate: potOdds },
   mdf: { type: "mdf", label: "Minimum defence", short: "MDF against a bet", answerKind: "percent", generate: mdf },
   "bluff-share": { type: "bluff-share", label: "Bluff share", short: "Bluffs in a polar bet", answerKind: "percent", generate: bluffShare },
@@ -456,12 +457,24 @@ export const DRILL_SOURCES: Readonly<Record<DrillType, DrillSource>> = {
   "call-or-fold": { type: "call-or-fold", label: "Call or fold", short: "Price vs equity", answerKind: "choice", generate: callOrFold },
 };
 
-export const DRILL_TYPES = Object.keys(DRILL_SOURCES) as DrillType[];
+/** The synchronous math drills (mixed mode draws from these only). */
+export const DRILL_TYPES = Object.keys(DRILL_SOURCES) as MathDrillType[];
+/** Every drill type, including the lazy-loaded solver decisions. */
+export const ALL_DRILL_TYPES: readonly DrillType[] = [...DRILL_TYPES, "solver"];
 
-export function isDrillType(value: unknown): value is DrillType {
+export const DRILL_LABELS: Readonly<Record<DrillType, string>> = {
+  ...Object.fromEntries(DRILL_TYPES.map(t => [t, DRILL_SOURCES[t].label])) as Record<MathDrillType, string>,
+  solver: "Solver decisions",
+};
+
+export function isMathDrillType(value: unknown): value is MathDrillType {
   return typeof value === "string" && Object.prototype.hasOwnProperty.call(DRILL_SOURCES, value);
 }
 
-export function generateQuestion(type: DrillType, seed: number, level: Level): Question {
+export function isDrillType(value: unknown): value is DrillType {
+  return value === "solver" || isMathDrillType(value);
+}
+
+export function generateQuestion(type: MathDrillType, seed: number, level: Level): Question {
   return DRILL_SOURCES[type].generate(seed >>> 0, level);
 }
