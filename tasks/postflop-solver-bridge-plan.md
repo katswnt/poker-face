@@ -91,17 +91,35 @@ locked τ = 2e-4 chips; int16 not covered). A suit-isomorphism probe game was ad
 of the three locked games has a suit symmetry. Numbers and derivation: spec, "B2 referee results".
 
 ### B3 — Griffin-scale benchmark
-- [ ] Solve the locked 100bb flop game; record iterations, time, peak memory, compressed vs
+- [x] Solve the locked 100bb flop game; record iterations, time, peak memory, compressed vs
       uncompressed, exploitability curve.
-- [ ] Where our 64-hand vector flop engine can play the same game, compare values and grades.
-- [ ] Referee spot-check the river and turn subgames of the big solve with our engines.
+- [x] ~~Where our 64-hand vector flop engine can play the same game, compare values and grades.~~
+      Not possible: that engine plays flop-v1 (one bet size per street, no raises, ≤ 64 hands),
+      not the Fold tree with 609 × 502 hands. Engine agreement on a whole flop game is B2's tiny
+      flop referee; B3 checks the big solve through its river subgames instead.
+- [x] Referee spot-check the river subgames of the big solve with our engines (6 sampled
+      subgames, float32 and int16). Turn subgames: not feasible with our engines (turn v2 has one
+      street-relative chip menu shared by both players; the Fold river sizes differ by player and
+      pot), so none were graded.
+
+B3 done 2026-09-25: the lead re-locked the benchmark to Griffin's lean Fold tree before its
+first solve (the B1 menu estimated 2–4 h). 170 iterations, 224 s, 6.0 GB peak, 0.283% pot
+(float32); int16 160 iterations, 202 s, 3.1 GB. Numbers: spec, "B3 benchmark results".
 
 ### B4 — spot library for drills
-- [ ] Generator: formations × flops → bridge solves → saved slices (existing hash-bound
+- [x] Generator: formations × flops → bridge solves → saved slices (existing hash-bound
       chunk pattern), with per-spot exploitability recorded and gated.
-- [ ] Size budget for the shipped library; lazy loading as in `/solver/flop`.
+- [x] Size budget for the shipped library; lazy loading as in `/solver/flop` (loader and
+      types only; no UI in B4).
+
+B4 done 2026-09-25: 12 BTN vs BB SRP flops, all ≤ 0.3% pot, 17.3 MB gzip (40 MB budget);
+`npm run audit:bridge:library` in CI. Spec, "B4 spot library".
 
 ## Decisions needed from Kat (before B4, not before B0)
+
+Resolved for B4 by the lead (2026-09-25): ranges stay the hand-written approximations, labelled
+"hand-written approximations, not solved" everywhere (a preflop solve may replace them later);
+formation BTN vs BB SRP only; bet menu = Griffin's lean Fold tree. The original questions:
 
 1. **Range source for library spots.** Our current ranges are synthetic; Griffin's are
    self-described placeholders. Options: licensed published charts, or a simplified

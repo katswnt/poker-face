@@ -1,0 +1,1049 @@
+{
+  "format": "poker-face-bridge-b3-benchmark",
+  "version": 1,
+  "measuredOn": "Apple M1 Pro, 10 cores, 32 GB; Rust 1.98.1 release; 10 rayon threads",
+  "note": "Measured wall times include the bridge's own exploitability pass every 10 iterations. Values are chips (1 bb = 100); pot 550.",
+  "spot": {
+    "id": "benchmark-lean-srp-btn-bb-100bb-ks7h2d",
+    "hash": "b9e032fcbe228fbe306e9c515562b524cc5a1a48cc9c75f082bad2a8cf24a101",
+    "tree": {
+      "mode": "menu",
+      "flop": {
+        "oop": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 33
+            },
+            {
+              "kind": "pot",
+              "pct": 66
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        },
+        "ip": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 66
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        }
+      },
+      "turn": {
+        "oop": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 66
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        },
+        "ip": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 66
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        }
+      },
+      "river": {
+        "oop": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 50
+            },
+            {
+              "kind": "pot",
+              "pct": 100
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        },
+        "ip": {
+          "bet": [
+            {
+              "kind": "pot",
+              "pct": 66
+            }
+          ],
+          "raise": [
+            {
+              "kind": "pot",
+              "pct": 60
+            }
+          ]
+        }
+      },
+      "turnDonk": null,
+      "riverDonk": null,
+      "addAllInThreshold": 0,
+      "forceAllInThreshold": 0.2,
+      "mergingThreshold": 0,
+      "maxRaisesPerStreet": 1
+    },
+    "ranges": [
+      {
+        "source": "BB (OOP): hand-written approximations, not solved: rough 100bb BTN 2.5bb open / BB flat-call ranges for benchmarking only",
+        "combos": 609
+      },
+      {
+        "source": "BTN (IP): hand-written approximations, not solved: rough 100bb BTN 2.5bb open / BB flat-call ranges for benchmarking only",
+        "combos": 502
+      }
+    ]
+  },
+  "slicePlanHash": "36f18bd11c7403ba51d900124d6f466f01d48c2e79e4a1302d2363d8210e5781",
+  "float32": {
+    "spotId": "benchmark-lean-srp-btn-bb-100bb-ks7h2d",
+    "spotHash": "b9e032fcbe228fbe306e9c515562b524cc5a1a48cc9c75f082bad2a8cf24a101",
+    "precision": "float32",
+    "threads": 10,
+    "iterations": 170,
+    "exploitability": {
+      "chips": 1.55373,
+      "pctPot": 0.2825,
+      "reached": true
+    },
+    "wallMs": 259695,
+    "timings": {
+      "buildMs": 83,
+      "allocateMs": 2,
+      "solveMs": 259154,
+      "exportMs": 10,
+      "totalMs": 259252
+    },
+    "memory": {
+      "estimatedBytes": 5995858864,
+      "estimatedCompressedBytes": 3045718494,
+      "allocatedEstimateBytes": 5995858864,
+      "peakRssBytes": 6014664704,
+      "sampledPeakRssBytes": 6014124032
+    },
+    "selfReportedValue": [
+      -64.974,
+      64.974
+    ],
+    "curve": [
+      [
+        0,
+        1358.7,
+        0
+      ],
+      [
+        10,
+        491.6,
+        16160
+      ],
+      [
+        20,
+        172.03,
+        32591
+      ],
+      [
+        30,
+        43.074,
+        47969
+      ],
+      [
+        40,
+        18.722,
+        62892
+      ],
+      [
+        50,
+        11.39,
+        77851
+      ],
+      [
+        60,
+        7.9229,
+        92957
+      ],
+      [
+        70,
+        8.6605,
+        107713
+      ],
+      [
+        80,
+        4.9002,
+        122455
+      ],
+      [
+        90,
+        3.7688,
+        137193
+      ],
+      [
+        100,
+        3.6292,
+        152046
+      ],
+      [
+        110,
+        6.1506,
+        167207
+      ],
+      [
+        120,
+        4.1084,
+        182095
+      ],
+      [
+        130,
+        2.9929,
+        197078
+      ],
+      [
+        140,
+        2.4693,
+        212038
+      ],
+      [
+        150,
+        2.0905,
+        226860
+      ],
+      [
+        160,
+        1.784,
+        242033
+      ],
+      [
+        170,
+        1.5537,
+        256865
+      ]
+    ],
+    "referee": [
+      {
+        "probability": 0.0001136,
+        "weightedLocalExploitability": 0.00005301,
+        "path": "x x 9c x x 3s",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          569,
+          417
+        ],
+        "deals": 213797,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value0": -10.3068395,
+          "gains": [
+            0.656784,
+            0.276389
+          ],
+          "exploitability": 0.466586
+        },
+        "theirs": {
+          "value0": -10.3068408,
+          "value1": 10.3068422
+        },
+        "valueDelta": 0.00000123,
+        "zeroSumError": 0.0000014,
+        "localExploitabilityPctPot": 0.08483,
+        "maxColumnSumError": 1.2e-7,
+        "gradeMs": 658
+      },
+      {
+        "probability": 4.651e-7,
+        "weightedLocalExploitability": 0.00001325,
+        "path": "b182 c Ad x x 5h",
+        "board": "Ks7h2dAd5h",
+        "handsInPlay": [
+          540,
+          432
+        ],
+        "deals": 209863,
+        "publicNodes": 21,
+        "pot": 914,
+        "ours": {
+          "value0": -62.1046485,
+          "gains": [
+            1.15144,
+            55.8387
+          ],
+          "exploitability": 28.495
+        },
+        "theirs": {
+          "value0": -62.1046547,
+          "value1": 62.1046511
+        },
+        "valueDelta": 0.00000619,
+        "zeroSumError": 0.00000357,
+        "localExploitabilityPctPot": 3.118,
+        "maxColumnSumError": 1e-7,
+        "gradeMs": 702
+      },
+      {
+        "probability": 0.00001394,
+        "weightedLocalExploitability": 0.00003775,
+        "path": "x b363 c 7c x b842 c Jd",
+        "board": "Ks7h2d7cJd",
+        "handsInPlay": [
+          277,
+          302
+        ],
+        "deals": 74654,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value0": -227.140968,
+          "gains": [
+            4.7304,
+            0.685987
+          ],
+          "exploitability": 2.70819
+        },
+        "theirs": {
+          "value0": -227.140974,
+          "value1": 227.140977
+        },
+        "valueDelta": 0.00000541,
+        "zeroSumError": 0.00000369,
+        "localExploitabilityPctPot": 0.09149,
+        "maxColumnSumError": 1e-7,
+        "gradeMs": 280
+      },
+      {
+        "probability": 0.0000283,
+        "weightedLocalExploitability": 0.00002985,
+        "path": "x x Th b363 c 2s",
+        "board": "Ks7h2dTh2s",
+        "handsInPlay": [
+          438,
+          329
+        ],
+        "deals": 129593,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value0": 79.1745849,
+          "gains": [
+            0.936799,
+            1.17316
+          ],
+          "exploitability": 1.05498
+        },
+        "theirs": {
+          "value0": 79.1745918,
+          "value1": -79.1745881
+        },
+        "valueDelta": 0.00000696,
+        "zeroSumError": 0.00000376,
+        "localExploitabilityPctPot": 0.08268,
+        "maxColumnSumError": 1e-7,
+        "gradeMs": 430
+      },
+      {
+        "probability": 0.00006928,
+        "weightedLocalExploitability": 0.00001043,
+        "path": "x x 9c x x 3s x",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          551,
+          417
+        ],
+        "deals": 207022,
+        "publicNodes": 8,
+        "pot": 550,
+        "ours": {
+          "value0": -89.0260388,
+          "gains": [
+            0.203055,
+            0.0979406
+          ],
+          "exploitability": 0.150498
+        },
+        "theirs": {
+          "value0": -89.026043,
+          "value1": 89.0260419
+        },
+        "valueDelta": 0.00000417,
+        "zeroSumError": 0.00000112,
+        "localExploitabilityPctPot": 0.02736,
+        "maxColumnSumError": 1e-7,
+        "gradeMs": 352
+      },
+      {
+        "probability": 0.00002467,
+        "weightedLocalExploitability": 0.00001021,
+        "path": "x x 9c x x 3s b275",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          522,
+          417
+        ],
+        "deals": 196608,
+        "publicNodes": 6,
+        "pot": 825,
+        "ours": {
+          "value0": 85.5936476,
+          "gains": [
+            0.224696,
+            0.603212
+          ],
+          "exploitability": 0.413954
+        },
+        "theirs": {
+          "value0": 85.5936519,
+          "value1": -85.5936474
+        },
+        "valueDelta": 0.0000043,
+        "zeroSumError": 0.00000453,
+        "localExploitabilityPctPot": 0.05018,
+        "maxColumnSumError": 1e-7,
+        "gradeMs": 319
+      }
+    ]
+  },
+  "int16": {
+    "spotId": "benchmark-lean-srp-btn-bb-100bb-ks7h2d",
+    "spotHash": "989e0be7e131df5b6a3b69722a45aee8c7d442c76ecc7300838d63eb9960934d",
+    "precision": "int16-compressed",
+    "threads": 10,
+    "iterations": 160,
+    "exploitability": {
+      "chips": 1.59579,
+      "pctPot": 0.2901,
+      "reached": true
+    },
+    "wallMs": 209722,
+    "timings": {
+      "buildMs": 70,
+      "allocateMs": 1,
+      "solveMs": 209574,
+      "exportMs": 10,
+      "totalMs": 209657
+    },
+    "memory": {
+      "estimatedBytes": 5995858864,
+      "estimatedCompressedBytes": 3045718494,
+      "allocatedEstimateBytes": 3045718494,
+      "peakRssBytes": 3062824960,
+      "sampledPeakRssBytes": 3062153216
+    },
+    "selfReportedValue": [
+      -64.9955,
+      64.9967
+    ],
+    "curve": [
+      [
+        0,
+        1358.7,
+        0
+      ],
+      [
+        10,
+        502.15,
+        13244
+      ],
+      [
+        20,
+        157.14,
+        26452
+      ],
+      [
+        30,
+        38.473,
+        39620
+      ],
+      [
+        40,
+        17.923,
+        52708
+      ],
+      [
+        50,
+        10.863,
+        66106
+      ],
+      [
+        60,
+        7.6439,
+        79228
+      ],
+      [
+        70,
+        9.0764,
+        92015
+      ],
+      [
+        80,
+        8.3376,
+        104849
+      ],
+      [
+        90,
+        10.375,
+        117732
+      ],
+      [
+        100,
+        5.8083,
+        130657
+      ],
+      [
+        110,
+        3.7353,
+        143594
+      ],
+      [
+        120,
+        2.9402,
+        156361
+      ],
+      [
+        130,
+        2.4363,
+        169155
+      ],
+      [
+        140,
+        2.0753,
+        182000
+      ],
+      [
+        150,
+        1.8035,
+        194753
+      ],
+      [
+        160,
+        1.5958,
+        207558
+      ]
+    ],
+    "referee": [
+      {
+        "probability": 0.0001139,
+        "weightedLocalExploitability": 0.00006369,
+        "path": "x x 9c x x 3s",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          569,
+          402
+        ],
+        "deals": 206291,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value0": -10.0369131,
+          "gains": [
+            0.75812,
+            0.360028
+          ],
+          "exploitability": 0.559074
+        },
+        "theirs": {
+          "value0": -10.0370985,
+          "value1": 10.0366896
+        },
+        "valueDelta": 0.000185,
+        "zeroSumError": 0.000409,
+        "localExploitabilityPctPot": 0.1016,
+        "maxColumnSumError": 6.4e-8,
+        "gradeMs": 654
+      },
+      {
+        "probability": 3.633e-7,
+        "weightedLocalExploitability": 0.000008603,
+        "path": "b182 c Ad x x 5h",
+        "board": "Ks7h2dAd5h",
+        "handsInPlay": [
+          522,
+          422
+        ],
+        "deals": 198230,
+        "publicNodes": 21,
+        "pot": 914,
+        "ours": {
+          "value0": -53.8534447,
+          "gains": [
+            0.870252,
+            46.4846
+          ],
+          "exploitability": 23.6774
+        },
+        "theirs": {
+          "value0": -53.8538283,
+          "value1": 53.8533107
+        },
+        "valueDelta": 0.000384,
+        "zeroSumError": 0.000518,
+        "localExploitabilityPctPot": 2.591,
+        "maxColumnSumError": 6.8e-8,
+        "gradeMs": 586
+      },
+      {
+        "probability": 0.00001395,
+        "weightedLocalExploitability": 0.00003138,
+        "path": "x b363 c 7c x b842 c Jd",
+        "board": "Ks7h2d7cJd",
+        "handsInPlay": [
+          283,
+          311
+        ],
+        "deals": 78543,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value0": -215.899584,
+          "gains": [
+            3.6371,
+            0.859778
+          ],
+          "exploitability": 2.24844
+        },
+        "theirs": {
+          "value0": -215.900852,
+          "value1": 215.90014
+        },
+        "valueDelta": 0.00127,
+        "zeroSumError": 0.000712,
+        "localExploitabilityPctPot": 0.07596,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 220
+      },
+      {
+        "probability": 0.00002842,
+        "weightedLocalExploitability": 0.00002931,
+        "path": "x x Th b363 c 2s",
+        "board": "Ks7h2dTh2s",
+        "handsInPlay": [
+          466,
+          340
+        ],
+        "deals": 142566,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value0": 79.7996257,
+          "gains": [
+            0.86162,
+            1.20127
+          ],
+          "exploitability": 1.03144
+        },
+        "theirs": {
+          "value0": 79.7983553,
+          "value1": -79.8010712
+        },
+        "valueDelta": 0.00127,
+        "zeroSumError": 0.00272,
+        "localExploitabilityPctPot": 0.08083,
+        "maxColumnSumError": 6.3e-8,
+        "gradeMs": 448
+      },
+      {
+        "probability": 0.00006934,
+        "weightedLocalExploitability": 0.00001543,
+        "path": "x x 9c x x 3s x",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          569,
+          402
+        ],
+        "deals": 206291,
+        "publicNodes": 8,
+        "pot": 550,
+        "ours": {
+          "value0": -89.0577977,
+          "gains": [
+            0.278783,
+            0.166274
+          ],
+          "exploitability": 0.222528
+        },
+        "theirs": {
+          "value0": -89.0579627,
+          "value1": 89.0579579
+        },
+        "valueDelta": 0.000165,
+        "zeroSumError": 0.00000482,
+        "localExploitabilityPctPot": 0.04046,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 337
+      },
+      {
+        "probability": 0.00002512,
+        "weightedLocalExploitability": 0.000009942,
+        "path": "x x 9c x x 3s b275",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          537,
+          402
+        ],
+        "deals": 194822,
+        "publicNodes": 6,
+        "pot": 825,
+        "ours": {
+          "value0": 86.6306532,
+          "gains": [
+            0.195262,
+            0.596386
+          ],
+          "exploitability": 0.395824
+        },
+        "theirs": {
+          "value0": 86.6307605,
+          "value1": -86.6304829
+        },
+        "valueDelta": 0.000107,
+        "zeroSumError": 0.000278,
+        "localExploitabilityPctPot": 0.04798,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 313
+      }
+    ]
+  },
+  "int16AtFloat32Iterations": {
+    "spotId": "benchmark-lean-srp-btn-bb-100bb-ks7h2d",
+    "spotHash": "015c63666a23a58c33f5627f013a36b783664221137198e7d7504ceaf8d09110",
+    "precision": "int16-compressed",
+    "threads": 10,
+    "iterations": 170,
+    "exploitability": {
+      "chips": 1.43345,
+      "pctPot": 0.2606,
+      "reached": false
+    },
+    "wallMs": 248369,
+    "timings": {
+      "buildMs": 68,
+      "allocateMs": 1,
+      "solveMs": 248218,
+      "exportMs": 10,
+      "totalMs": 248300
+    },
+    "memory": {
+      "estimatedBytes": 5995858864,
+      "estimatedCompressedBytes": 3045718494,
+      "allocatedEstimateBytes": 3045718494,
+      "peakRssBytes": 3063316480,
+      "sampledPeakRssBytes": 3062710272
+    },
+    "selfReportedValue": [
+      -64.961,
+      64.9601
+    ],
+    "curve": [
+      [
+        0,
+        1358.7,
+        0
+      ],
+      [
+        10,
+        502.15,
+        15893
+      ],
+      [
+        20,
+        157.14,
+        30611
+      ],
+      [
+        30,
+        38.473,
+        45276
+      ],
+      [
+        40,
+        17.923,
+        59991
+      ],
+      [
+        50,
+        10.863,
+        74414
+      ],
+      [
+        60,
+        7.6439,
+        88730
+      ],
+      [
+        70,
+        9.0764,
+        102810
+      ],
+      [
+        80,
+        8.3376,
+        116976
+      ],
+      [
+        90,
+        10.375,
+        131365
+      ],
+      [
+        100,
+        5.8083,
+        145839
+      ],
+      [
+        110,
+        3.7353,
+        160286
+      ],
+      [
+        120,
+        2.9402,
+        174418
+      ],
+      [
+        130,
+        2.4363,
+        188690
+      ],
+      [
+        140,
+        2.0753,
+        203397
+      ],
+      [
+        150,
+        1.8035,
+        217628
+      ],
+      [
+        160,
+        1.5958,
+        231864
+      ],
+      [
+        170,
+        1.4335,
+        246036
+      ]
+    ],
+    "referee": [
+      {
+        "probability": 0.0001142,
+        "weightedLocalExploitability": 0.00005967,
+        "path": "x x 9c x x 3s",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          569,
+          402
+        ],
+        "deals": 206291,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value0": -10.0714832,
+          "gains": [
+            0.701351,
+            0.343705
+          ],
+          "exploitability": 0.522528
+        },
+        "theirs": {
+          "value0": -10.0712781,
+          "value1": 10.0715607
+        },
+        "valueDelta": 0.000205,
+        "zeroSumError": 0.000283,
+        "localExploitabilityPctPot": 0.09501,
+        "maxColumnSumError": 6.4e-8,
+        "gradeMs": 639
+      },
+      {
+        "probability": 2.556e-7,
+        "weightedLocalExploitability": 0.000005458,
+        "path": "b182 c Ad x x 5h",
+        "board": "Ks7h2dAd5h",
+        "handsInPlay": [
+          522,
+          428
+        ],
+        "deals": 200956,
+        "publicNodes": 21,
+        "pot": 914,
+        "ours": {
+          "value0": -57.3762264,
+          "gains": [
+            0.970125,
+            41.7454
+          ],
+          "exploitability": 21.3577
+        },
+        "theirs": {
+          "value0": -57.3777614,
+          "value1": 57.3770701
+        },
+        "valueDelta": 0.00153,
+        "zeroSumError": 0.000691,
+        "localExploitabilityPctPot": 2.337,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 605
+      },
+      {
+        "probability": 0.00001391,
+        "weightedLocalExploitability": 0.00003133,
+        "path": "x b363 c 7c x b842 c Jd",
+        "board": "Ks7h2d7cJd",
+        "handsInPlay": [
+          283,
+          311
+        ],
+        "deals": 78543,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value0": -217.585412,
+          "gains": [
+            3.57598,
+            0.92814
+          ],
+          "exploitability": 2.25206
+        },
+        "theirs": {
+          "value0": -217.58818,
+          "value1": 217.583219
+        },
+        "valueDelta": 0.00277,
+        "zeroSumError": 0.00496,
+        "localExploitabilityPctPot": 0.07608,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 221
+      },
+      {
+        "probability": 0.00002869,
+        "weightedLocalExploitability": 0.0000267,
+        "path": "x x Th b363 c 2s",
+        "board": "Ks7h2dTh2s",
+        "handsInPlay": [
+          466,
+          340
+        ],
+        "deals": 142566,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value0": 77.542797,
+          "gains": [
+            0.836189,
+            1.02486
+          ],
+          "exploitability": 0.930525
+        },
+        "theirs": {
+          "value0": 77.5419737,
+          "value1": -77.5442196
+        },
+        "valueDelta": 0.000823,
+        "zeroSumError": 0.00225,
+        "localExploitabilityPctPot": 0.07293,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 426
+      },
+      {
+        "probability": 0.00006921,
+        "weightedLocalExploitability": 0.00001446,
+        "path": "x x 9c x x 3s x",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          569,
+          402
+        ],
+        "deals": 206291,
+        "publicNodes": 8,
+        "pot": 550,
+        "ours": {
+          "value0": -89.4451661,
+          "gains": [
+            0.258757,
+            0.158989
+          ],
+          "exploitability": 0.208873
+        },
+        "theirs": {
+          "value0": -89.444981,
+          "value1": 89.4452425
+        },
+        "valueDelta": 0.000185,
+        "zeroSumError": 0.000262,
+        "localExploitabilityPctPot": 0.03798,
+        "maxColumnSumError": 6e-8,
+        "gradeMs": 332
+      },
+      {
+        "probability": 0.00002547,
+        "weightedLocalExploitability": 0.00001038,
+        "path": "x x 9c x x 3s b275",
+        "board": "Ks7h2d9c3s",
+        "handsInPlay": [
+          537,
+          402
+        ],
+        "deals": 194822,
+        "publicNodes": 6,
+        "pot": 825,
+        "ours": {
+          "value0": 85.5376199,
+          "gains": [
+            0.20409,
+            0.611161
+          ],
+          "exploitability": 0.407625
+        },
+        "theirs": {
+          "value0": 85.5377382,
+          "value1": -85.5375447
+        },
+        "valueDelta": 0.000118,
+        "zeroSumError": 0.000193,
+        "localExploitabilityPctPot": 0.04941,
+        "maxColumnSumError": 6.4e-8,
+        "gradeMs": 307
+      }
+    ]
+  },
+  "compression": {
+    "selfReportedValueDelta0": 0.01309,
+    "exploitabilityDeltaChips": 0.1203,
+    "flopStrategy": {
+      "nodes": 8,
+      "meanReachWeightedTv": 0.01019,
+      "worstNodeTv": 0.02578
+    },
+    "maxRiverValueDeltaFloat32": 0.00000696,
+    "maxRiverValueDeltaInt16": 0.00277
+  }
+}

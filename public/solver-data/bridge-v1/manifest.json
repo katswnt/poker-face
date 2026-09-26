@@ -1,0 +1,2180 @@
+{
+ "format": "poker-face-bridge-library",
+ "version": 1,
+ "title": "BTN vs BB single-raised pot flops (postflop-solver, lean tree)",
+ "formation": {
+  "name": "BTN vs BB single-raised pot, 100bb (BTN opens 2.5bb, SB folds, BB calls)",
+  "players": [
+   "BB (out of position, acts first)",
+   "BTN (in position)"
+  ],
+  "startingPot": 550,
+  "effectiveStack": 9750,
+  "chipsPerBigBlind": 100
+ },
+ "provenance": {
+  "ranges": "BB (OOP) flat-call and BTN (IP) 2.5bb open ranges at 100bb: hand-written approximations, not solved (no preflop solve behind them).",
+  "tree": "Griffin's lean Fold tree: OOP bets flop 33%/66%, turn 66%, river 50%/100%; IP bets 66% every street; raises to call + 60% pot; one raise per street; all-in when ≤ 0.2 × the pot would be left behind.",
+  "label": "Approximate equilibrium of this finite game (exploitability ≤ 0.3% of the pot), not exact or universal GTO.",
+  "engine": {
+   "name": "postflop-solver",
+   "repository": "https://github.com/b-inary/postflop-solver",
+   "commit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+   "license": "AGPL-3.0"
+  }
+ },
+ "slicePolicy": {
+  "summary": "Saved slices of each full-tree solve: all flop decisions; turn and river decisions near each street's start on unraised lines for sampled cards.",
+  "flop": "Every flop decision node (all flop betting lines).",
+  "turn": "8 turn cards per flop; turn decisions with ≤ 2 turn actions before them, on flop lines without a raise.",
+  "river": "2 turn+river boards per flop; river decisions with ≤ 2 river actions before them, on flop and turn lines without a raise.",
+  "omittedReach": "Hands whose reach rounds to 0 at 1e-4 are omitted from a node; their total reach is recorded per node."
+ },
+ "quantization": {
+  "reach": 10000,
+  "strategy": 1000,
+  "ev": 10,
+  "equity": 1000
+ },
+ "gatePctPot": 0.3,
+ "spots": [
+  {
+   "id": "srp-btn-bb-ks7h2d",
+   "flop": [
+    "Ks",
+    "7h",
+    "2d"
+   ],
+   "texture": "dry high (K-high rainbow)",
+   "spotHash": "e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3",
+   "slicePlanHash": "40feddb9e2c3a19de28ececf45ab42a083ec44acd80bd127f39a3d871daee5eb",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/spot.json",
+    "bytes": 32597,
+    "sha256": "e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/root.json",
+    "bytes": 40008,
+    "sha256": "ee653104aa97177ed954a55dcc99249f1b1e613616254c35c3d307cfaa3e298d"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "unpaired",
+    "ranks": [
+     "K",
+     "7",
+     "2"
+    ],
+    "highRank": "K",
+    "broadwayCards": 1,
+    "gaps": [
+     6,
+     5
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 170,
+   "exploitability": {
+    "chips": 1.55373,
+    "pctPot": 0.2825
+   },
+   "value": [
+    -64.974,
+    64.974
+   ],
+   "solveMs": 210533,
+   "peakRssBytes": 6029901824,
+   "turnCards": [
+    "Ac",
+    "Kd",
+    "7c",
+    "Qh",
+    "Th",
+    "9s",
+    "5d",
+    "3c"
+   ],
+   "riverBoards": [
+    [
+     "Qh",
+     "2c"
+    ],
+    [
+     "5d",
+     "Js"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/flop.json",
+     "bytes": 219035,
+     "sha256": "111e45a7e673e3a7e02ea85008f9798a93ddd2f9a6a7a4da4b5cf49fc66942fc",
+     "nodes": 8
+    },
+    "turn-Ac": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Ac.json",
+     "bytes": 432603,
+     "sha256": "7d45fc7972b30e2421ffb7999596b558f46488b632547818e873ae34c0743d93",
+     "nodes": 20
+    },
+    "turn-Kd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Kd.json",
+     "bytes": 460384,
+     "sha256": "56453eb410d116486f9b9fcc3dd5a5ff6758b73dccc024d7ac8ecb5ea19bf5a2",
+     "nodes": 20
+    },
+    "turn-7c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-7c.json",
+     "bytes": 470322,
+     "sha256": "b0277dc061871d0bcc1eda9b14e690ce8a241ae74e71c0c5d5a0cd4c2435aa2a",
+     "nodes": 20
+    },
+    "turn-Qh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Qh.json",
+     "bytes": 458176,
+     "sha256": "485fde63862886b7afd5aae3a38b08d23f97d910a4f8cce8e85d7db2d53aa904",
+     "nodes": 20
+    },
+    "turn-Th": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Th.json",
+     "bytes": 451358,
+     "sha256": "b6aaa99598ca7ca1971378fff55097d6760b5e7dee58ce6f314d70366015d766",
+     "nodes": 20
+    },
+    "turn-9s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-9s.json",
+     "bytes": 444827,
+     "sha256": "680e4c443d21c8eaea1db953bd34905de8c274eca8b445f1d6b6b31ae549599b",
+     "nodes": 20
+    },
+    "turn-5d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-5d.json",
+     "bytes": 453139,
+     "sha256": "bfc3a70afe411e120e015d17d875564c01110d66288583b4cfa11e0db2a362f8",
+     "nodes": 20
+    },
+    "turn-3c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-3c.json",
+     "bytes": 470420,
+     "sha256": "19e59d422e1ef060b4b24b1419fffa063aad335bdc87336f932856f54781d282",
+     "nodes": 20
+    },
+    "river-5dJs-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-5dJs-b182.c.json",
+     "bytes": 378778,
+     "sha256": "db61681e694f3f55be136abf141da3bf97b5c926a8162af6053c8f0be72a576b",
+     "nodes": 21
+    },
+    "river-5dJs-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-5dJs-b363.c.json",
+     "bytes": 307256,
+     "sha256": "50f567a9d867641c2029b9b87b93ccc7fa83bc8925b6642f5c8e5620f18effb0",
+     "nodes": 21
+    },
+    "river-5dJs-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-5dJs-x.b363.c.json",
+     "bytes": 292461,
+     "sha256": "fd537ad95cbca2c68cec5a9f0aa549d44767e7dbd37665da8f7fe7f927174160",
+     "nodes": 21
+    },
+    "river-5dJs-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-5dJs-x.x.json",
+     "bytes": 355666,
+     "sha256": "89e34fb5b0f49676fb2d00185802c0fff357c194c51b595d6f8b7ec5e03b1b65",
+     "nodes": 21
+    },
+    "river-Qh2c-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-Qh2c-b182.c.json",
+     "bytes": 386009,
+     "sha256": "ee50608f078b008b9fae9d77d82183153fd22cb05d07d53c518bd994734ad919",
+     "nodes": 21
+    },
+    "river-Qh2c-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-Qh2c-b363.c.json",
+     "bytes": 325999,
+     "sha256": "c3f1be6dda9f507725f165beeeaf2e4d55a18eb7a2f14a086869c11be82239e5",
+     "nodes": 21
+    },
+    "river-Qh2c-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-Qh2c-x.b363.c.json",
+     "bytes": 304793,
+     "sha256": "1e04b10e99dbb04e764d57a8eaa54da2db04f27411c556c2ee268e754e59433b",
+     "nodes": 21
+    },
+    "river-Qh2c-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/river-Qh2c-x.x.json",
+     "bytes": 374048,
+     "sha256": "211126d2099dbeca6332ec1088f527efb72363f1d3f88e46b9a62fe64f9efcee",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-ad8c3s",
+   "flop": [
+    "Ad",
+    "8c",
+    "3s"
+   ],
+   "texture": "ace-high dry rainbow",
+   "spotHash": "76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807",
+   "slicePlanHash": "ae6bcbb863894bb719ffa01b7863c904396d79b363a13c4dd7d49bc7224be90b",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/spot.json",
+    "bytes": 31351,
+    "sha256": "76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/root.json",
+    "bytes": 38243,
+    "sha256": "3c2b74158e2e09938ba7b3376304e73cf2926a0945be29c569e190f27d4ccda5"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "unpaired",
+    "ranks": [
+     "A",
+     "8",
+     "3"
+    ],
+    "highRank": "A",
+    "broadwayCards": 1,
+    "gaps": [
+     6,
+     5
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 150,
+   "exploitability": {
+    "chips": 1.53122,
+    "pctPot": 0.2784
+   },
+   "value": [
+    -60.479,
+    60.479
+   ],
+   "solveMs": 196275,
+   "peakRssBytes": 5793808384,
+   "turnCards": [
+    "Kh",
+    "Ac",
+    "8d",
+    "Qs",
+    "Js",
+    "9h",
+    "5c",
+    "2d"
+   ],
+   "riverBoards": [
+    [
+     "Kh",
+     "4c"
+    ],
+    [
+     "9h",
+     "Ts"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/flop.json",
+     "bytes": 182383,
+     "sha256": "542ebc34c9eb0630990f8de62c492c51ede9fdae84ba9de24eaf8fc5b8ba57c1",
+     "nodes": 8
+    },
+    "turn-Kh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Kh.json",
+     "bytes": 348487,
+     "sha256": "aa4d2b0435fcf16b0b2e458e4ba1462ec617fa6e99206e22cee0fe8830effd34",
+     "nodes": 20
+    },
+    "turn-Ac": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Ac.json",
+     "bytes": 333987,
+     "sha256": "14718c3feb701b46d7542f2ddf20716a2d45ecc7c327c74bf3c4d2e46e39ccdd",
+     "nodes": 20
+    },
+    "turn-8d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-8d.json",
+     "bytes": 333835,
+     "sha256": "b4be24225cf8c162c5756e389eb02ebeb4e742859e322438ec924114f6f57c76",
+     "nodes": 20
+    },
+    "turn-Qs": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Qs.json",
+     "bytes": 355021,
+     "sha256": "cabb58ecc27d21bd0a29b8dac670d96ec5e90cd153b074cf2b1b27285771a42d",
+     "nodes": 20
+    },
+    "turn-Js": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Js.json",
+     "bytes": 353593,
+     "sha256": "ac677b1aee57c77b3f5500b8592050135d60ee0410e46d864581ef40d4aeef31",
+     "nodes": 20
+    },
+    "turn-9h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-9h.json",
+     "bytes": 361936,
+     "sha256": "54a8a5d8d8000f92bf5eaa179e9d2789f16d0c0010a8b247b3417f2243f7128c",
+     "nodes": 20
+    },
+    "turn-5c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-5c.json",
+     "bytes": 346149,
+     "sha256": "5b146ca61bc20e3d8b0c11a42a110c55f134ad983b0bd379cb09225f1c0212e6",
+     "nodes": 20
+    },
+    "turn-2d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-2d.json",
+     "bytes": 353336,
+     "sha256": "358165ae9d67e8b2ac5f45c2f689a0b6998eeb4cab4819c91cbf756d8b73035b",
+     "nodes": 20
+    },
+    "river-9hTs-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-9hTs-b182.c.json",
+     "bytes": 272800,
+     "sha256": "ef22508f1df5b3c20eb1a7516dd8f7b77b9b0eb95b551ee22cdb4fa54bf4feac",
+     "nodes": 21
+    },
+    "river-9hTs-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-9hTs-b363.c.json",
+     "bytes": 249953,
+     "sha256": "2e46fae317ab521b4778173297c355c7cf2e92253d13e53f93e3d193925104d1",
+     "nodes": 21
+    },
+    "river-9hTs-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-9hTs-x.b363.c.json",
+     "bytes": 251458,
+     "sha256": "89416d8f8ae5ce736a80100fe79e6363ba6205b3f466f6906ef3092e6a77ae02",
+     "nodes": 21
+    },
+    "river-9hTs-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-9hTs-x.x.json",
+     "bytes": 296514,
+     "sha256": "10a606e7d71f5a84e1d97b03f410942c3e98adf129028ce34a3be7e685f30aae",
+     "nodes": 21
+    },
+    "river-Kh4c-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-Kh4c-b182.c.json",
+     "bytes": 262442,
+     "sha256": "a2afc8c4afcf8c200e02ac4c134a14eb899f92afa494cd9342e0672c133bb4f6",
+     "nodes": 21
+    },
+    "river-Kh4c-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-Kh4c-b363.c.json",
+     "bytes": 244971,
+     "sha256": "8ca65341414254b457d33daf32eba81904d0ee526684031f63876e803891b055",
+     "nodes": 21
+    },
+    "river-Kh4c-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-Kh4c-x.b363.c.json",
+     "bytes": 241575,
+     "sha256": "b781f71ed29619b1b82f294ac9e86ac27fdd5ae20e2a21c7aab41ec935e82d02",
+     "nodes": 21
+    },
+    "river-Kh4c-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/river-Kh4c-x.x.json",
+     "bytes": 298611,
+     "sha256": "d9eca652d3cd64c3e599da48f4f8bacf2528c525ecf075e6d94898079981a59f",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-khqdtc",
+   "flop": [
+    "Kh",
+    "Qd",
+    "Tc"
+   ],
+   "texture": "broadway rainbow",
+   "spotHash": "8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320",
+   "slicePlanHash": "bd1648ac3fd004d882d606a6941975171425ad0328766895aa8a7fdb41c39e99",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/spot.json",
+    "bytes": 31050,
+    "sha256": "8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/root.json",
+    "bytes": 37979,
+    "sha256": "decdb5f66366f10bfa7df4b17a011a8191bb6ec9cc632ee468c1cdb0f1b1e3b1"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "unpaired",
+    "ranks": [
+     "K",
+     "Q",
+     "T"
+    ],
+    "highRank": "K",
+    "broadwayCards": 3,
+    "gaps": [
+     1,
+     2
+    ],
+    "straightPossible": true
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 180,
+   "exploitability": {
+    "chips": 1.55121,
+    "pctPot": 0.28204
+   },
+   "value": [
+    -71.4704,
+    71.4704
+   ],
+   "solveMs": 249536,
+   "peakRssBytes": 5740822528,
+   "turnCards": [
+    "As",
+    "Kc",
+    "Js",
+    "9d",
+    "8h",
+    "5s",
+    "2c",
+    "Qc"
+   ],
+   "riverBoards": [
+    [
+     "Js",
+     "3d"
+    ],
+    [
+     "2c",
+     "Ah"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/flop.json",
+     "bytes": 213591,
+     "sha256": "75415f5477a6b5d9475fb3489962f2fce168598171860e7ebf7979ee3f8695d5",
+     "nodes": 8
+    },
+    "turn-As": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-As.json",
+     "bytes": 428682,
+     "sha256": "33c582e9c94e112f179e8203407f38359fc8e765f63910606f97cb349accea32",
+     "nodes": 20
+    },
+    "turn-Kc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Kc.json",
+     "bytes": 446467,
+     "sha256": "96add71df8e5c9ebfbca8a4f9ad478d979a665dc1f3f269a714c9f1856ad1d4b",
+     "nodes": 20
+    },
+    "turn-Js": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Js.json",
+     "bytes": 433652,
+     "sha256": "5ac496651b53de399e5ecda8c1e2b0f4615d67d9a198c86f64997048c7912ec3",
+     "nodes": 20
+    },
+    "turn-9d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-9d.json",
+     "bytes": 463097,
+     "sha256": "935e8af1cb51d47275dd2521f2eb5a772ccf73c0dd486af97f895a21714c1fa0",
+     "nodes": 20
+    },
+    "turn-8h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-8h.json",
+     "bytes": 464410,
+     "sha256": "6ceb2a0ba5e181683b09abdefc3cfa8dcf95b488328ebdd68d3cedbbfbd7009a",
+     "nodes": 20
+    },
+    "turn-5s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-5s.json",
+     "bytes": 472796,
+     "sha256": "1afbe6941da7de8bd3b0e2d781d367fc1389ac742f48cb1a9ef3084a77b1cafa",
+     "nodes": 20
+    },
+    "turn-2c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-2c.json",
+     "bytes": 476160,
+     "sha256": "3977ff50f60defc2afb0a7b635bcd4102b522eed8595a9f32e465e420af96283",
+     "nodes": 20
+    },
+    "turn-Qc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Qc.json",
+     "bytes": 443440,
+     "sha256": "837d5e8e277dc0a6d6891c5162fa3ee83f668d23b1c02dfdb33824875461a322",
+     "nodes": 20
+    },
+    "river-2cAh-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-2cAh-b182.c.json",
+     "bytes": 360202,
+     "sha256": "17a72d380fe08f5cec493e1c01fd0a9a9ed03441a4e05ad022f0ef897549cdeb",
+     "nodes": 21
+    },
+    "river-2cAh-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-2cAh-b363.c.json",
+     "bytes": 322732,
+     "sha256": "de81014298c339c5007ed34d5acb497487132ebf88602d17aa92e2d0f8588028",
+     "nodes": 21
+    },
+    "river-2cAh-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-2cAh-x.b363.c.json",
+     "bytes": 340942,
+     "sha256": "53f69193f9683cb3c79b10b9d4eadb2a7b67bbdf19838cb46ed52178a792f629",
+     "nodes": 21
+    },
+    "river-2cAh-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-2cAh-x.x.json",
+     "bytes": 371890,
+     "sha256": "909f4d9dc3f655267fea9dce2715c3902cee3bee333c65c632d273d2433ecce7",
+     "nodes": 21
+    },
+    "river-Js3d-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-Js3d-b182.c.json",
+     "bytes": 353066,
+     "sha256": "22ef8cc76280b07d91c861d933f34ef818557cac193787e3fc9e19d3a491cb4f",
+     "nodes": 21
+    },
+    "river-Js3d-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-Js3d-b363.c.json",
+     "bytes": 362604,
+     "sha256": "026914a5e1708a603f76b125b9e87c24f9022d8a5b40a247e46f7ba66b996b87",
+     "nodes": 21
+    },
+    "river-Js3d-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-Js3d-x.b363.c.json",
+     "bytes": 284828,
+     "sha256": "030a6542c2dac95d826db202528fb3705ae4cd28b6f28b4b6ac6b01a84e2b8f4",
+     "nodes": 21
+    },
+    "river-Js3d-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/river-Js3d-x.x.json",
+     "bytes": 341441,
+     "sha256": "c112756f7e2d929b8805f6b1bcb62adbff98212b7629cd39c09a5641b0087457",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-9h8h6c",
+   "flop": [
+    "9h",
+    "8h",
+    "6c"
+   ],
+   "texture": "wet connected two-tone",
+   "spotHash": "240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee",
+   "slicePlanHash": "eefe2896a55eee07a6a4a02f05de2eef2e2c7f394843453ec9e129aa9a29bb8a",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/spot.json",
+    "bytes": 31959,
+    "sha256": "240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/root.json",
+    "bytes": 39039,
+    "sha256": "4d4107297ca60806ea3a648031a52ad185b23cc9560af275512778000276e1d8"
+   },
+   "descriptor": {
+    "suitPattern": "two-tone",
+    "pairing": "unpaired",
+    "ranks": [
+     "9",
+     "8",
+     "6"
+    ],
+    "highRank": "9",
+    "broadwayCards": 0,
+    "gaps": [
+     1,
+     2
+    ],
+    "straightPossible": true
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 150,
+   "exploitability": {
+    "chips": 1.52852,
+    "pctPot": 0.27791
+   },
+   "value": [
+    -35.0826,
+    35.0826
+   ],
+   "solveMs": 126199,
+   "peakRssBytes": 3608510464,
+   "turnCards": [
+    "Ah",
+    "Ts",
+    "7d",
+    "2h",
+    "9s",
+    "5c",
+    "Kd",
+    "3s"
+   ],
+   "riverBoards": [
+    [
+     "Ts",
+     "Qh"
+    ],
+    [
+     "Kd",
+     "4h"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/flop.json",
+     "bytes": 193230,
+     "sha256": "7d05e3c4e91b928010b17097ca70144b638cff8cf8afdb81acd831858da52e59",
+     "nodes": 8
+    },
+    "turn-Ah": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Ah.json",
+     "bytes": 340849,
+     "sha256": "3ab77262007e59c9326a5fc5423f8352094531a2b67f1740376c793ccf1c9b03",
+     "nodes": 20
+    },
+    "turn-Ts": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Ts.json",
+     "bytes": 352907,
+     "sha256": "6818f6451a2208ad0d12c1a177068ea885e7e665b699f4e624d85a886649e323",
+     "nodes": 20
+    },
+    "turn-7d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-7d.json",
+     "bytes": 356721,
+     "sha256": "256a92870b71ed6096749921304b876ffcc0a81f97c20b2dd6a4377253f12695",
+     "nodes": 20
+    },
+    "turn-2h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-2h.json",
+     "bytes": 377226,
+     "sha256": "38504d9163e96dd6393c08b1d54afb47384067a769ff541d1596980c5458868b",
+     "nodes": 20
+    },
+    "turn-9s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-9s.json",
+     "bytes": 369316,
+     "sha256": "c1a0bdea7d7594af174e11fb1b696c31fec9fca105b7252905e390201685cfc2",
+     "nodes": 20
+    },
+    "turn-5c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-5c.json",
+     "bytes": 358448,
+     "sha256": "aea8c773ded6e7bd6023ce43c2d636600272374036dde1761b606d8c498b7890",
+     "nodes": 20
+    },
+    "turn-Kd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Kd.json",
+     "bytes": 359208,
+     "sha256": "ca186a6d114e0f0586b008cc83a48b601abf4fe5ce4a68f4c9764e1a219d005c",
+     "nodes": 20
+    },
+    "turn-3s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-3s.json",
+     "bytes": 375895,
+     "sha256": "8cf817b56048a738968d873aba7b807cc7d07d2db832bc662908c026ffdaab29",
+     "nodes": 20
+    },
+    "river-Kd4h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-Kd4h-b182.c.json",
+     "bytes": 253393,
+     "sha256": "e503cbc6cf2f2bffc59154115f06f4e13378830252c530bfb35f733ba59a32fc",
+     "nodes": 21
+    },
+    "river-Kd4h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-Kd4h-b363.c.json",
+     "bytes": 218642,
+     "sha256": "c188441d0c5dfa4fc7ac132373fc5b4b99fc59bcfa428979920fc6f249f4e1ee",
+     "nodes": 21
+    },
+    "river-Kd4h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-Kd4h-x.b363.c.json",
+     "bytes": 255211,
+     "sha256": "c5678b04d52e610e56db2ded775ce0ddcad72c8c49bce61b46969b14e30f3541",
+     "nodes": 21
+    },
+    "river-Kd4h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-Kd4h-x.x.json",
+     "bytes": 286537,
+     "sha256": "6e525a028611df40ad5a59c7a25ea0c1be96e43ad1e90d09df570d916670d69d",
+     "nodes": 21
+    },
+    "river-TsQh-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-TsQh-b182.c.json",
+     "bytes": 228642,
+     "sha256": "363e14277db380f4565b3d063ae5b1c0a7966e2d090587181bd6c9183bf708ec",
+     "nodes": 21
+    },
+    "river-TsQh-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-TsQh-b363.c.json",
+     "bytes": 182008,
+     "sha256": "35057e60c4b1589015bb0c3f3f220e8ebff9572829810539293494b21cbac21b",
+     "nodes": 21
+    },
+    "river-TsQh-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-TsQh-x.b363.c.json",
+     "bytes": 192975,
+     "sha256": "bf1b0849f95663a8cd7de30ac254a0c401e9426db887808734e89eca1c1ab12a",
+     "nodes": 21
+    },
+    "river-TsQh-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/river-TsQh-x.x.json",
+     "bytes": 312614,
+     "sha256": "d7df234d8938fbde3b7a9d74b604596e36e833d06182c38105015458069eee2e",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-qs9s4s",
+   "flop": [
+    "Qs",
+    "9s",
+    "4s"
+   ],
+   "texture": "monotone",
+   "spotHash": "7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18",
+   "slicePlanHash": "1628fbc62bffd51a85c0b603f88856f5b0ad83bde982f9b08f012bb12a7f468e",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/spot.json",
+    "bytes": 32110,
+    "sha256": "7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/root.json",
+    "bytes": 39411,
+    "sha256": "d51b99ff53e2b0ced24146fd14e4ca80f053473ce88b540a6dd691f9fcfeb613"
+   },
+   "descriptor": {
+    "suitPattern": "monotone",
+    "pairing": "unpaired",
+    "ranks": [
+     "Q",
+     "9",
+     "4"
+    ],
+    "highRank": "Q",
+    "broadwayCards": 1,
+    "gaps": [
+     3,
+     5
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 160,
+   "exploitability": {
+    "chips": 1.63331,
+    "pctPot": 0.29696
+   },
+   "value": [
+    -51.0067,
+    51.0067
+   ],
+   "solveMs": 63159,
+   "peakRssBytes": 1736622080,
+   "turnCards": [
+    "As",
+    "Ah",
+    "2s",
+    "Qd",
+    "Jc",
+    "9d",
+    "7h",
+    "3c"
+   ],
+   "riverBoards": [
+    [
+     "Ah",
+     "5s"
+    ],
+    [
+     "7h",
+     "Kd"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/flop.json",
+     "bytes": 185773,
+     "sha256": "1df58ce5dc5043f7f42a82777db58519a2a7b3af0befb7c607a48702e32da328",
+     "nodes": 8
+    },
+    "turn-As": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-As.json",
+     "bytes": 321916,
+     "sha256": "d8fe8b25a8ecafb852feada2a72ea269e61a8f047c20b4ed690a7b6b54615f2b",
+     "nodes": 20
+    },
+    "turn-Ah": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Ah.json",
+     "bytes": 339613,
+     "sha256": "fe7e6b0e2f2c9449ac06402c189b2c313a5d72664e5109b3201084462b058d90",
+     "nodes": 20
+    },
+    "turn-2s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-2s.json",
+     "bytes": 340563,
+     "sha256": "1463ecdc115c265705bb0b13f44fc289a73d384b9c04de59e77a5682d74bf5b2",
+     "nodes": 20
+    },
+    "turn-Qd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Qd.json",
+     "bytes": 349644,
+     "sha256": "4b5b5fb59e107c838db0fa10125713682324d8f8b3ea44336dd2a370a6287b15",
+     "nodes": 20
+    },
+    "turn-Jc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Jc.json",
+     "bytes": 353394,
+     "sha256": "50a898bde40220d4a9b49917beea22ddd2f20537dc8c4cefbc31a238f4f29616",
+     "nodes": 20
+    },
+    "turn-9d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-9d.json",
+     "bytes": 355237,
+     "sha256": "eb7df106015d8f17d767dc4c53fb68973ac60c8b25013183a094598293e5d219",
+     "nodes": 20
+    },
+    "turn-7h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-7h.json",
+     "bytes": 363073,
+     "sha256": "ac49623dbdceeb38b03d237c91707dfa4f22f0ee32816cfa8cc5d38aafdbeb89",
+     "nodes": 20
+    },
+    "turn-3c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-3c.json",
+     "bytes": 366980,
+     "sha256": "e9e7b1bd57d5c1ad127cca9753fcc9534222ddf66ec9ede07892d0213257910e",
+     "nodes": 20
+    },
+    "river-7hKd-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-7hKd-b182.c.json",
+     "bytes": 274366,
+     "sha256": "0d51555db091508f83934d5206f037729bbeda21245aa1ba4acfb13423e0768d",
+     "nodes": 21
+    },
+    "river-7hKd-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-7hKd-b363.c.json",
+     "bytes": 207063,
+     "sha256": "d81873586d3c669ecad16756422ed522cd678ae128792011b4e6c7205bb567c6",
+     "nodes": 21
+    },
+    "river-7hKd-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-7hKd-x.b363.c.json",
+     "bytes": 233416,
+     "sha256": "20499ff7bf5e4785ea5f75c689de5a5b537b2d46971979f01c17e37ba04c7568",
+     "nodes": 21
+    },
+    "river-7hKd-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-7hKd-x.x.json",
+     "bytes": 301960,
+     "sha256": "f8f7a067a2792ac82341d59d8e49849181e8e6b9ab35267e3577fb9b635de6a3",
+     "nodes": 21
+    },
+    "river-Ah5s-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-Ah5s-b182.c.json",
+     "bytes": 265678,
+     "sha256": "d786a54a79304c56e5bea2a4952e0f639a530db3b94336153fe9602a50b75f56",
+     "nodes": 21
+    },
+    "river-Ah5s-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-Ah5s-b363.c.json",
+     "bytes": 194870,
+     "sha256": "e9202e5ab1881fda097c6628950fafc179f34302248ee779f08f6898189ba3e6",
+     "nodes": 21
+    },
+    "river-Ah5s-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-Ah5s-x.b363.c.json",
+     "bytes": 252029,
+     "sha256": "ef18ad852c15eee7669d17856d92483f78335d8fbdcba4b903a2a319899895c9",
+     "nodes": 21
+    },
+    "river-Ah5s-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/river-Ah5s-x.x.json",
+     "bytes": 310089,
+     "sha256": "576e1cea7722d801a483e79c1095b8eb8f69b6afd3b348f79a70d3f1c477b3f1",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-td7d3c",
+   "flop": [
+    "Td",
+    "7d",
+    "3c"
+   ],
+   "texture": "two-tone middle",
+   "spotHash": "3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397",
+   "slicePlanHash": "937d8561c675239f5e209184aa67504fcc59efbb0d0c86ce44fa905024cfdb48",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/spot.json",
+    "bytes": 32821,
+    "sha256": "3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/root.json",
+    "bytes": 40197,
+    "sha256": "13dec7295a6a9f0f6d8b43d8c3f6f65bdfbcfcdbab64ea5aae757a5dbfae5a24"
+   },
+   "descriptor": {
+    "suitPattern": "two-tone",
+    "pairing": "unpaired",
+    "ranks": [
+     "T",
+     "7",
+     "3"
+    ],
+    "highRank": "T",
+    "broadwayCards": 1,
+    "gaps": [
+     3,
+     4
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 140,
+   "exploitability": {
+    "chips": 1.57914,
+    "pctPot": 0.28712
+   },
+   "value": [
+    -50.0793,
+    50.0793
+   ],
+   "solveMs": 114605,
+   "peakRssBytes": 3707158528,
+   "turnCards": [
+    "Ad",
+    "Kh",
+    "2d",
+    "Ts",
+    "8s",
+    "6h",
+    "4c",
+    "Jc"
+   ],
+   "riverBoards": [
+    [
+     "Kh",
+     "9d"
+    ],
+    [
+     "4c",
+     "3s"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/flop.json",
+     "bytes": 197405,
+     "sha256": "b4dc1f56e310bfb3e3eaf95d3e764d5952345f5b98ceab7396a55a0052bafd4c",
+     "nodes": 8
+    },
+    "turn-Ad": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Ad.json",
+     "bytes": 348219,
+     "sha256": "d1e3bf014291b034977052d78f6b413b9cb9819daff270f4e41308c4f8a14f8c",
+     "nodes": 20
+    },
+    "turn-Kh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Kh.json",
+     "bytes": 364589,
+     "sha256": "33ac258358bdfb564857d9070c0d5d2aee6fb4edc54b361af18f009557f942d4",
+     "nodes": 20
+    },
+    "turn-2d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-2d.json",
+     "bytes": 383346,
+     "sha256": "73d88526150aafd2410bb9363f228f4124320d8243e1ae5332f375a26788c155",
+     "nodes": 20
+    },
+    "turn-Ts": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Ts.json",
+     "bytes": 378855,
+     "sha256": "5478ea3969e48557624b97c28f44304817e01de570ddf51c3c2e62e8f198b440",
+     "nodes": 20
+    },
+    "turn-8s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-8s.json",
+     "bytes": 371692,
+     "sha256": "09e8def895cb7552154b53f20aef32160efcc0efc321457100ae3040535febc3",
+     "nodes": 20
+    },
+    "turn-6h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-6h.json",
+     "bytes": 385489,
+     "sha256": "7c1b85492504ac0acfbcfe0bc034a1f6196d252ab89b74dc0dc3178d2adf527b",
+     "nodes": 20
+    },
+    "turn-4c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-4c.json",
+     "bytes": 371927,
+     "sha256": "f61fa4a78f892cab54fee222e5d358b9b30943270bece630025de014d8d10197",
+     "nodes": 20
+    },
+    "turn-Jc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Jc.json",
+     "bytes": 356569,
+     "sha256": "97a9f995b6c760f7a29a603c09f844f9d385e45b732877a547eb3d0a52ae85a1",
+     "nodes": 20
+    },
+    "river-4c3s-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-4c3s-b182.c.json",
+     "bytes": 268042,
+     "sha256": "217e39979334e9b3caa79d84764d2207a7e1757c592a053ed7d49afc4c077e84",
+     "nodes": 21
+    },
+    "river-4c3s-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-4c3s-b363.c.json",
+     "bytes": 248070,
+     "sha256": "b0a735097dce977b3355ac8d87aa923dc02f5bc300272606073a607c967ace2c",
+     "nodes": 21
+    },
+    "river-4c3s-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-4c3s-x.b363.c.json",
+     "bytes": 230587,
+     "sha256": "ff26f26b147870497deb5813f059e3c65c754f6db16e0ccb5d9514609d292adc",
+     "nodes": 21
+    },
+    "river-4c3s-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-4c3s-x.x.json",
+     "bytes": 312637,
+     "sha256": "e6eb53927d2f701d0b33e2391661c2934d114911b9b0ba6357061c9f2ef0fece",
+     "nodes": 21
+    },
+    "river-Kh9d-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-Kh9d-b182.c.json",
+     "bytes": 252193,
+     "sha256": "0e59817804407bdf6293cf4c94a308aa573079a67ebd097cef7d6b4687fe1aca",
+     "nodes": 21
+    },
+    "river-Kh9d-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-Kh9d-b363.c.json",
+     "bytes": 231966,
+     "sha256": "9c58d83fa373bd00dad5e2203016a9dd0ab227bdf8c10bec939f3af4d318bba0",
+     "nodes": 21
+    },
+    "river-Kh9d-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-Kh9d-x.b363.c.json",
+     "bytes": 216389,
+     "sha256": "66d9a2429ad3acc50560d1c11912e7e09b6dcdba98f7c3725b4a22fdd2a899f9",
+     "nodes": 21
+    },
+    "river-Kh9d-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/river-Kh9d-x.x.json",
+     "bytes": 296304,
+     "sha256": "6a20f8a3af45865c90269d748a83bdb593629c3ecd887ad36a8f9b44f8e4a0f1",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-8s8d3h",
+   "flop": [
+    "8s",
+    "8d",
+    "3h"
+   ],
+   "texture": "paired middle",
+   "spotHash": "fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975",
+   "slicePlanHash": "cd3f48f9de1be0b8929659f5b3a2d8305f9c99229f3ae3e437504de638dfca1d",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/spot.json",
+    "bytes": 32637,
+    "sha256": "fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/root.json",
+    "bytes": 40027,
+    "sha256": "84957934e86ba55ad01488eb4187fab52318c1b6ae86f13a4fa6ec09efdb0167"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "paired",
+    "ranks": [
+     "8",
+     "8",
+     "3"
+    ],
+    "highRank": "8",
+    "broadwayCards": 0,
+    "gaps": [
+     0,
+     5
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 220,
+   "exploitability": {
+    "chips": 1.61922,
+    "pctPot": 0.2944
+   },
+   "value": [
+    -9.21216,
+    9.21216
+   ],
+   "solveMs": 181324,
+   "peakRssBytes": 3807657984,
+   "turnCards": [
+    "Ac",
+    "Kh",
+    "8c",
+    "3c",
+    "Qd",
+    "9h",
+    "5s",
+    "2d"
+   ],
+   "riverBoards": [
+    [
+     "Ac",
+     "7h"
+    ],
+    [
+     "5s",
+     "Kd"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/flop.json",
+     "bytes": 233035,
+     "sha256": "31a9a325a4e30e249e50cb9c2c9cbdc370ea29142daf0a90beb0805d063e3591",
+     "nodes": 8
+    },
+    "turn-Ac": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Ac.json",
+     "bytes": 465918,
+     "sha256": "f6c259c6e49e2f005338dfb5d813213cf095284a80c5463229a2915bdee5e646",
+     "nodes": 20
+    },
+    "turn-Kh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Kh.json",
+     "bytes": 484498,
+     "sha256": "1959a8d15e34c7f007ba89b9ab5349695210d5c787d7db9f20f80e1f722a9361",
+     "nodes": 20
+    },
+    "turn-8c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-8c.json",
+     "bytes": 524797,
+     "sha256": "0e2db5a6cca4336d692388f6e591c6b17de3f0e88e552935a2cd79a799c99ca4",
+     "nodes": 20
+    },
+    "turn-3c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-3c.json",
+     "bytes": 531885,
+     "sha256": "ada2026c76bf7b74cf440021014bfea754b34518d88234c783c6dd7bed03cff5",
+     "nodes": 20
+    },
+    "turn-Qd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Qd.json",
+     "bytes": 488428,
+     "sha256": "442ce5f8beb254a2ba0b7b494ea4c50f625e4b7f1ee8b1f3559f00d27e41566f",
+     "nodes": 20
+    },
+    "turn-9h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-9h.json",
+     "bytes": 489809,
+     "sha256": "245ad8754ffb6a20fb8d2dd7415137dcbe4c42b253fa134dba0ca39f30fb85ab",
+     "nodes": 20
+    },
+    "turn-5s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-5s.json",
+     "bytes": 524531,
+     "sha256": "bcf8771d2c14bd0ff7f6e2961ffa3414f32dec37c6450c28e0238c24b4f5a418",
+     "nodes": 20
+    },
+    "turn-2d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-2d.json",
+     "bytes": 533624,
+     "sha256": "5a50599e549b160993f93872ea20e8f987074b68158500e6e4645028aaaebb35",
+     "nodes": 20
+    },
+    "river-5sKd-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-5sKd-b182.c.json",
+     "bytes": 382905,
+     "sha256": "10f9aed9cc8829972adfcb2a197dc7beff2faf9e4c2184a11fa8523aefac3be4",
+     "nodes": 21
+    },
+    "river-5sKd-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-5sKd-b363.c.json",
+     "bytes": 345599,
+     "sha256": "690d74bf886018c80cb91b80797d1bcb7746eebbc4b2482db2c658cede3d2366",
+     "nodes": 21
+    },
+    "river-5sKd-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-5sKd-x.b363.c.json",
+     "bytes": 391106,
+     "sha256": "eb616ac0f6fcb7716d54fa18030028d0dbe6a74a1fa598236d47d7100c366ec9",
+     "nodes": 21
+    },
+    "river-5sKd-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-5sKd-x.x.json",
+     "bytes": 422923,
+     "sha256": "00f94a3b31025b9a96bcf2b1a04f370a97da0c687e84811b87d547a4a47ad584",
+     "nodes": 21
+    },
+    "river-Ac7h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-Ac7h-b182.c.json",
+     "bytes": 347020,
+     "sha256": "f9c49daf92b47a5de96638d3b1ce4a434ecd522d2055adaffc3f088a283ad5e9",
+     "nodes": 21
+    },
+    "river-Ac7h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-Ac7h-b363.c.json",
+     "bytes": 311191,
+     "sha256": "0ec4280a46d45028fbd1c56cadb7ca56b0ebdbb0c15676c213a8ec816c6b41a2",
+     "nodes": 21
+    },
+    "river-Ac7h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-Ac7h-x.b363.c.json",
+     "bytes": 360346,
+     "sha256": "472ae8dc0556ba8807dad0aa7d287fed52d08389eea00507ef4608bce9e9e326",
+     "nodes": 21
+    },
+    "river-Ac7h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/river-Ac7h-x.x.json",
+     "bytes": 366978,
+     "sha256": "337f9c872dcb98b2568a259da5f4228a685c02c7dd36783da26b8fe1ef2d2ab3",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-5h4c2d",
+   "flop": [
+    "5h",
+    "4c",
+    "2d"
+   ],
+   "texture": "low connected rainbow",
+   "spotHash": "2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb",
+   "slicePlanHash": "b85b007402e241e9c28e5725c2db2dd5ab85ad3d27a7db9e8b3a9655d7dec173",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/spot.json",
+    "bytes": 33919,
+    "sha256": "2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/root.json",
+    "bytes": 41488,
+    "sha256": "1a2c4971d8262cd6cebf30fe7ebac827df573c6bff1cd48b6538202516fecfc4"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "unpaired",
+    "ranks": [
+     "5",
+     "4",
+     "2"
+    ],
+    "highRank": "5",
+    "broadwayCards": 0,
+    "gaps": [
+     1,
+     2
+    ],
+    "straightPossible": true
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 170,
+   "exploitability": {
+    "chips": 1.52438,
+    "pctPot": 0.27716
+   },
+   "value": [
+    -40.7463,
+    40.7463
+   ],
+   "solveMs": 236856,
+   "peakRssBytes": 6281527296,
+   "turnCards": [
+    "Ac",
+    "Kd",
+    "3s",
+    "6h",
+    "5c",
+    "9s",
+    "Th",
+    "2h"
+   ],
+   "riverBoards": [
+    [
+     "Kd",
+     "7c"
+    ],
+    [
+     "3s",
+     "Qh"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/flop.json",
+     "bytes": 210682,
+     "sha256": "c577fbdc9a46cce1f2f14067db0098d4d3a446d7a2ecc309a2bcb6f99eadd0ca",
+     "nodes": 8
+    },
+    "turn-Ac": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Ac.json",
+     "bytes": 364132,
+     "sha256": "a1dfaafdfc50cb6416a9a320f5d743d79caefe9d96589f17a11a6af9ae0851ef",
+     "nodes": 20
+    },
+    "turn-Kd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Kd.json",
+     "bytes": 397999,
+     "sha256": "bcec057510412cfd8eca551630dc16cd3de6ac4b6efbd984219c9ed75f742117",
+     "nodes": 20
+    },
+    "turn-3s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-3s.json",
+     "bytes": 408555,
+     "sha256": "83564fbe11266615e943e3377e89372fbc6bc0463d66266f47b91d7cd1699295",
+     "nodes": 20
+    },
+    "turn-6h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-6h.json",
+     "bytes": 426577,
+     "sha256": "ce36ee18a4bdee672b82f3abca1e08f1a280d1be6722734cd0d6f63e4b7307f5",
+     "nodes": 20
+    },
+    "turn-5c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-5c.json",
+     "bytes": 418283,
+     "sha256": "4634618f1dff22fc94a9a567a4aad47bc1c9bc37d3fd0618d80966566c37d528",
+     "nodes": 20
+    },
+    "turn-9s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-9s.json",
+     "bytes": 423298,
+     "sha256": "d35ec745e6df0d39e0c4fdf2d848e88b10bb1b5e9c6643b6db9f233ab3579cb9",
+     "nodes": 20
+    },
+    "turn-Th": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Th.json",
+     "bytes": 400839,
+     "sha256": "1a62221e594d7e151bf01c98b085b5e93ce705d926aee8231389d87047e9b78e",
+     "nodes": 20
+    },
+    "turn-2h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-2h.json",
+     "bytes": 420267,
+     "sha256": "867405560ab1c4e0e8f11812d6ac2b90e1a47caf532c194a891fe438a4486607",
+     "nodes": 20
+    },
+    "river-3sQh-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-3sQh-b182.c.json",
+     "bytes": 286497,
+     "sha256": "5d67b8278894100b9e3fa789647881b2b035920cb9a1c997d2511b635ab9b28b",
+     "nodes": 21
+    },
+    "river-3sQh-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-3sQh-b363.c.json",
+     "bytes": 246427,
+     "sha256": "b0d4abb8cc81b81ee770100baf01ac720e38ae8708589e553de7425dfbfcc97c",
+     "nodes": 21
+    },
+    "river-3sQh-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-3sQh-x.b363.c.json",
+     "bytes": 263102,
+     "sha256": "b23061631d0993560b1ffbd0b7bff0f309c87995923aadf321c6db3c9f3e779b",
+     "nodes": 21
+    },
+    "river-3sQh-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-3sQh-x.x.json",
+     "bytes": 321717,
+     "sha256": "318c8063c23836e81722b6dae9005bb029a9cbb2c1ede84a36f36b4b8531d490",
+     "nodes": 21
+    },
+    "river-Kd7c-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-Kd7c-b182.c.json",
+     "bytes": 271995,
+     "sha256": "1efff2fd2df5309424e4869e85f039a111205feed7d4d1921d040d8f89b30017",
+     "nodes": 21
+    },
+    "river-Kd7c-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-Kd7c-b363.c.json",
+     "bytes": 228329,
+     "sha256": "08d30f330069982bb3fb9e0a1e32c4aa451bd0d55cf0b0b9768830c1d390e60a",
+     "nodes": 21
+    },
+    "river-Kd7c-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-Kd7c-x.b363.c.json",
+     "bytes": 273990,
+     "sha256": "f3ccc64d20739a22b612be107865313002c8bb59fdf6ea6c4c7ab656c9d539fa",
+     "nodes": 21
+    },
+    "river-Kd7c-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/river-Kd7c-x.x.json",
+     "bytes": 289718,
+     "sha256": "5d755fb9cf44a4eb12f9d6beada2c465aa1dec6b776d4f9454162c9d415890f0",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-tc9d7s",
+   "flop": [
+    "Tc",
+    "9d",
+    "7s"
+   ],
+   "texture": "middle connected rainbow",
+   "spotHash": "999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17",
+   "slicePlanHash": "4da87a3d14b89856eb91a2a4ade369b6e484dcef17339967129b49c1a2a1ebc6",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/spot.json",
+    "bytes": 31813,
+    "sha256": "999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/root.json",
+    "bytes": 38843,
+    "sha256": "682929aa2c7200db6a03a51cd8bd674a495a9b0fc36d1456fed64951112e13ff"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "unpaired",
+    "ranks": [
+     "T",
+     "9",
+     "7"
+    ],
+    "highRank": "T",
+    "broadwayCards": 1,
+    "gaps": [
+     1,
+     2
+    ],
+    "straightPossible": true
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 140,
+   "exploitability": {
+    "chips": 1.6453,
+    "pctPot": 0.29915
+   },
+   "value": [
+    -17.9934,
+    17.9934
+   ],
+   "solveMs": 191115,
+   "peakRssBytes": 5880053760,
+   "turnCards": [
+    "As",
+    "Kh",
+    "8c",
+    "Jh",
+    "6d",
+    "2c",
+    "Td",
+    "4s"
+   ],
+   "riverBoards": [
+    [
+     "Kh",
+     "5h"
+    ],
+    [
+     "2c",
+     "Qd"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/flop.json",
+     "bytes": 196668,
+     "sha256": "7656c6f8c695c9c76607ed43cfc49245db70e74728e61eb79e94c1cd378a44b4",
+     "nodes": 8
+    },
+    "turn-As": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-As.json",
+     "bytes": 370829,
+     "sha256": "42037d5d4e41b0e478e6fb8c9af203b9ca8ef665036519b31d609d07a3aed1a4",
+     "nodes": 20
+    },
+    "turn-Kh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Kh.json",
+     "bytes": 365635,
+     "sha256": "9d1cc21fc6f6df0a1f0b03bb294e9586be8668d2fedc4314e8b603747549626a",
+     "nodes": 20
+    },
+    "turn-8c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-8c.json",
+     "bytes": 347836,
+     "sha256": "892aff1ffbab1debca64b47f49bbf9c650f5215c215e859f15f19f1d14302ccb",
+     "nodes": 20
+    },
+    "turn-Jh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Jh.json",
+     "bytes": 354963,
+     "sha256": "246ba44b87aa984bcc4998aa116feb80719df68811c00cb11d39fce0720ebeab",
+     "nodes": 20
+    },
+    "turn-6d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-6d.json",
+     "bytes": 363844,
+     "sha256": "203c1c60803ac92cb13ba0064232687eed60af18284d5d04f6365859c759fcc5",
+     "nodes": 20
+    },
+    "turn-2c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-2c.json",
+     "bytes": 377688,
+     "sha256": "fb813bbd6df17d2e19f3f2d9a3d030607a361f2065fe902a177c28609eecc5e1",
+     "nodes": 20
+    },
+    "turn-Td": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Td.json",
+     "bytes": 363601,
+     "sha256": "e2d8cb4c08a7e7b0c6e3d3a76bd5ac9e6d5a9d1b4de44f5a0dcb18953d9f53a1",
+     "nodes": 20
+    },
+    "turn-4s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-4s.json",
+     "bytes": 374616,
+     "sha256": "bf4c0a514613e7b88d05becd00f5d83d6979be2eb9dcc6ba565529cb25a29881",
+     "nodes": 20
+    },
+    "river-2cQd-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-2cQd-b182.c.json",
+     "bytes": 253091,
+     "sha256": "483d302f1be92003e28c37d11522de3b19b81ca70eed3f31900c58473120c110",
+     "nodes": 21
+    },
+    "river-2cQd-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-2cQd-b363.c.json",
+     "bytes": 214635,
+     "sha256": "375e5da968f2125527cfa70a4028b8830d03c9a7ec1c574a47de9541fa1bfe93",
+     "nodes": 21
+    },
+    "river-2cQd-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-2cQd-x.b363.c.json",
+     "bytes": 211026,
+     "sha256": "0482890b41000af4588b03c0d0b15b7ce69addda3eb51409bfb48a72e7cee58a",
+     "nodes": 21
+    },
+    "river-2cQd-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-2cQd-x.x.json",
+     "bytes": 272446,
+     "sha256": "beb6d470bf4837e28d2296009202162590744d04ea87543b56abbf7e7ba7aa00",
+     "nodes": 21
+    },
+    "river-Kh5h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-Kh5h-b182.c.json",
+     "bytes": 272772,
+     "sha256": "76778b5a890031ef5cbe87dde23ca036c99b80128344ec2f9da43e7f0b7a6ac2",
+     "nodes": 21
+    },
+    "river-Kh5h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-Kh5h-b363.c.json",
+     "bytes": 227060,
+     "sha256": "1f3b7076e07f96916dcbc259e4a3f53dfb105f86f3642befe981af6494d4b183",
+     "nodes": 21
+    },
+    "river-Kh5h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-Kh5h-x.b363.c.json",
+     "bytes": 220679,
+     "sha256": "45325d1f0721b86d622a213b2ca1ca525cf8b3b5029a470e610300d615fb130a",
+     "nodes": 21
+    },
+    "river-Kh5h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/river-Kh5h-x.x.json",
+     "bytes": 303759,
+     "sha256": "68819eee82073983cbf16513b23f4595212d716eb9c46deac95629632016f32a",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-ahth5c",
+   "flop": [
+    "Ah",
+    "Th",
+    "5c"
+   ],
+   "texture": "ace-high two-tone",
+   "spotHash": "e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8",
+   "slicePlanHash": "77faf635641ea8a902380d815337ad6eec47faa121470526371d3a95dd17eb2d",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/spot.json",
+    "bytes": 30888,
+    "sha256": "e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/root.json",
+    "bytes": 37906,
+    "sha256": "baafdd7b7c922a847c6611193495036b2fdc78b6403349915dbd4185c261f414"
+   },
+   "descriptor": {
+    "suitPattern": "two-tone",
+    "pairing": "unpaired",
+    "ranks": [
+     "A",
+     "T",
+     "5"
+    ],
+    "highRank": "A",
+    "broadwayCards": 2,
+    "gaps": [
+     4,
+     5
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 140,
+   "exploitability": {
+    "chips": 1.48726,
+    "pctPot": 0.27041
+   },
+   "value": [
+    -72.9924,
+    72.9924
+   ],
+   "solveMs": 113136,
+   "peakRssBytes": 3485843456,
+   "turnCards": [
+    "Kc",
+    "Ad",
+    "2h",
+    "5d",
+    "Js",
+    "8s",
+    "4c",
+    "Qh"
+   ],
+   "riverBoards": [
+    [
+     "Kc",
+     "9d"
+    ],
+    [
+     "4c",
+     "3h"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/flop.json",
+     "bytes": 176339,
+     "sha256": "fad1cce82874439caf077fb0ee4b9b30050e0f332fec7c1c8e5463d4db7f1613",
+     "nodes": 8
+    },
+    "turn-Kc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Kc.json",
+     "bytes": 328882,
+     "sha256": "af389538cd307d59ee178e1e155300cdf59775f9914e06400ccee34d8d626d93",
+     "nodes": 20
+    },
+    "turn-Ad": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Ad.json",
+     "bytes": 298021,
+     "sha256": "2013890aa0c7eef80db28e2cea26e7d9249ade6feb803edfe048a24982793ba5",
+     "nodes": 20
+    },
+    "turn-2h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-2h.json",
+     "bytes": 325835,
+     "sha256": "f08be78cfb1574fcf6877aac9dd04feafc67a29d938729d548bc9a24032dc921",
+     "nodes": 20
+    },
+    "turn-5d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-5d.json",
+     "bytes": 329264,
+     "sha256": "bda7693fc0ea87cd7e6132cc7fca41f741a2640cfc8e80807d0006630eab2932",
+     "nodes": 20
+    },
+    "turn-Js": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Js.json",
+     "bytes": 338378,
+     "sha256": "723744822f0af76d8e5c25f4a574cda71bc2e6fa90c0eda3f3aa55e83c033db5",
+     "nodes": 20
+    },
+    "turn-8s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-8s.json",
+     "bytes": 333916,
+     "sha256": "8b85dd0467765d277fb2d95a8495aa27d5bf113da9156c8919aa08f0fafea680",
+     "nodes": 20
+    },
+    "turn-4c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-4c.json",
+     "bytes": 327672,
+     "sha256": "c9d7959963addd09db06d631f200ee0143b193634fe6a833d264dd2046387dad",
+     "nodes": 20
+    },
+    "turn-Qh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Qh.json",
+     "bytes": 316789,
+     "sha256": "042d9be4320f94e03b51bcbf33c0701afa12dd5ebac81f9322fefdcc108d84e9",
+     "nodes": 20
+    },
+    "river-4c3h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-4c3h-b182.c.json",
+     "bytes": 243791,
+     "sha256": "4607aaeae5704ce8930a81b5087c86c3b6b227b33094e486266f8706bfc4fca1",
+     "nodes": 21
+    },
+    "river-4c3h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-4c3h-b363.c.json",
+     "bytes": 200856,
+     "sha256": "ae11375a21f8574edd27fee2e58fce11f7ddce9c4b2319749d0cc4f4321d5720",
+     "nodes": 21
+    },
+    "river-4c3h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-4c3h-x.b363.c.json",
+     "bytes": 195377,
+     "sha256": "99dade689f9b92416026498835a4b651deb5e8173bfe087f5e879183748a361b",
+     "nodes": 21
+    },
+    "river-4c3h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-4c3h-x.x.json",
+     "bytes": 271704,
+     "sha256": "60ae21ed3e471cdbda25332920ce4ba5bea04d851ee591e09e7c400cc6c5ca89",
+     "nodes": 21
+    },
+    "river-Kc9d-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-Kc9d-b182.c.json",
+     "bytes": 228586,
+     "sha256": "b9121a5c504db6a18bd8ed596babad3f3b3b86c831b51dab6c5cf94d5b68edf5",
+     "nodes": 21
+    },
+    "river-Kc9d-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-Kc9d-b363.c.json",
+     "bytes": 208413,
+     "sha256": "13ea7fec81a9bbd70d5abccce02d5e6152642c3a64d7fa5d16ddc8e938a24ff4",
+     "nodes": 21
+    },
+    "river-Kc9d-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-Kc9d-x.b363.c.json",
+     "bytes": 217216,
+     "sha256": "bb7a0a8eb74c76caf29477a201dfa1d3d90e9e6466313cb9a3035982d40d82f3",
+     "nodes": 21
+    },
+    "river-Kc9d-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/river-Kc9d-x.x.json",
+     "bytes": 296116,
+     "sha256": "e916ff4b3104ab54a110d89731f80c671270cd0af35d565c8176a5167cda5694",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-jcjd4s",
+   "flop": [
+    "Jc",
+    "Jd",
+    "4s"
+   ],
+   "texture": "paired high",
+   "spotHash": "15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732",
+   "slicePlanHash": "4e1d78d3fa16c560d14d7b8b0b9347076a2cb1e66789c166f78ab6f42998e474",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/spot.json",
+    "bytes": 32145,
+    "sha256": "15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/root.json",
+    "bytes": 39374,
+    "sha256": "0fa85534fab5f0a69c65e3875432d0e9443815a4ab4ebdeb3171b4d21a05c578"
+   },
+   "descriptor": {
+    "suitPattern": "rainbow",
+    "pairing": "paired",
+    "ranks": [
+     "J",
+     "J",
+     "4"
+    ],
+    "highRank": "J",
+    "broadwayCards": 2,
+    "gaps": [
+     0,
+     7
+    ],
+    "straightPossible": false
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 220,
+   "exploitability": {
+    "chips": 1.61969,
+    "pctPot": 0.29449
+   },
+   "value": [
+    -59.7241,
+    59.7241
+   ],
+   "solveMs": 185149,
+   "peakRssBytes": 3747561472,
+   "turnCards": [
+    "Ah",
+    "Kc",
+    "Jh",
+    "4d",
+    "Tc",
+    "8h",
+    "6s",
+    "2c"
+   ],
+   "riverBoards": [
+    [
+     "Ah",
+     "5h"
+    ],
+    [
+     "8h",
+     "Qs"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/flop.json",
+     "bytes": 207476,
+     "sha256": "48a7c009a8154df758d5033582c84ba67ff4e2b174d12550341a5d672a3cf607",
+     "nodes": 8
+    },
+    "turn-Ah": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Ah.json",
+     "bytes": 391763,
+     "sha256": "f21cca819db086e123dbb201442b67f66ab18e65e045d745b2f27866d1c934f4",
+     "nodes": 20
+    },
+    "turn-Kc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Kc.json",
+     "bytes": 401935,
+     "sha256": "9aab84725e3bff8dd5438a6c2ca79d5e27f34c7b84f941308d4d749a3f1de6db",
+     "nodes": 20
+    },
+    "turn-Jh": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Jh.json",
+     "bytes": 431875,
+     "sha256": "44971ff50cf962c2277bc35c45507df8bb608d3a59c97b5c4e7bac31fb46c08d",
+     "nodes": 20
+    },
+    "turn-4d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-4d.json",
+     "bytes": 428139,
+     "sha256": "31a8bedd12a4f2a3abb877fc034f6f744ebe63aae95e9bfebe9b9a8e3d8aed24",
+     "nodes": 20
+    },
+    "turn-Tc": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Tc.json",
+     "bytes": 403436,
+     "sha256": "e139c069f442c31cce731285f02561fe762090bcfaa0159931b5f2eacc2052d8",
+     "nodes": 20
+    },
+    "turn-8h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-8h.json",
+     "bytes": 415826,
+     "sha256": "5bcef878cc1ce7d21fdfd8fc4b02c836837e01ba93102a7a7c4ddc8430f6bb54",
+     "nodes": 20
+    },
+    "turn-6s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-6s.json",
+     "bytes": 424846,
+     "sha256": "e8ccabed4d8c59cf75e0169263409ca906c9541cc388cf0db0e464fd58edad06",
+     "nodes": 20
+    },
+    "turn-2c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-2c.json",
+     "bytes": 438462,
+     "sha256": "7a8dc44679075fecd28ec3fc72a7a7abafd8fb397ebf525e4e7193f6c4fd2f7f",
+     "nodes": 20
+    },
+    "river-8hQs-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-8hQs-b182.c.json",
+     "bytes": 268869,
+     "sha256": "b38b8f425d57d7866f92120145f73da9db06fa2d6f7cec8c0c3306cc56643f30",
+     "nodes": 21
+    },
+    "river-8hQs-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-8hQs-b363.c.json",
+     "bytes": 309876,
+     "sha256": "ae13bfd380fa720e60d082dc4f51202734fdf7a0858f5254d30d3d8658b6efa5",
+     "nodes": 21
+    },
+    "river-8hQs-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-8hQs-x.b363.c.json",
+     "bytes": 304482,
+     "sha256": "0daf8e1ca1b9e15c2cc4e97ae7c0abe6f9b84b4fb8860fc67179a3c042d8d20d",
+     "nodes": 21
+    },
+    "river-8hQs-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-8hQs-x.x.json",
+     "bytes": 313887,
+     "sha256": "9000d6eb60d786307daaeeb8e5adfd2a9383619bf379e9017ad59492bfc1c7a7",
+     "nodes": 21
+    },
+    "river-Ah5h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-Ah5h-b182.c.json",
+     "bytes": 262029,
+     "sha256": "bd6bb97a18bfa690b97220c906f4545b30f666ba4b4a923025d67f171193972b",
+     "nodes": 21
+    },
+    "river-Ah5h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-Ah5h-b363.c.json",
+     "bytes": 278634,
+     "sha256": "73fa9c499426215fa9772f5ed51e3ed6ec2826858c98819eda6efb25c82217a9",
+     "nodes": 21
+    },
+    "river-Ah5h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-Ah5h-x.b363.c.json",
+     "bytes": 283299,
+     "sha256": "bec245daa5186d080f6740c8fe3f5c02a1a4b62041833264d85e8528bd2bad83",
+     "nodes": 21
+    },
+    "river-Ah5h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/river-Ah5h-x.x.json",
+     "bytes": 391344,
+     "sha256": "581f77cfcc13a9798beb5ff8135805051abb34bb4bf76c4fd1b2c7082e0a055e",
+     "nodes": 21
+    }
+   }
+  },
+  {
+   "id": "srp-btn-bb-7c6c5d",
+   "flop": [
+    "7c",
+    "6c",
+    "5d"
+   ],
+   "texture": "low wet two-tone",
+   "spotHash": "2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b",
+   "slicePlanHash": "d93d024dbbbfb965e578c40c1c9934082277a617b5fd37860a66292f88be2c3c",
+   "spot": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/spot.json",
+    "bytes": 32963,
+    "sha256": "2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b"
+   },
+   "root": {
+    "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/root.json",
+    "bytes": 40356,
+    "sha256": "e77bbfff4401b5a4e84f5bf1860e671e6a44256a71d6382590d54f779c6ae001"
+   },
+   "descriptor": {
+    "suitPattern": "two-tone",
+    "pairing": "unpaired",
+    "ranks": [
+     "7",
+     "6",
+     "5"
+    ],
+    "highRank": "7",
+    "broadwayCards": 0,
+    "gaps": [
+     1,
+     1
+    ],
+    "straightPossible": true
+   },
+   "engine": {
+    "precision": "float32",
+    "threads": 10
+   },
+   "iterations": 160,
+   "exploitability": {
+    "chips": 1.56429,
+    "pctPot": 0.28442
+   },
+   "value": [
+    4.26175,
+    -4.26175
+   ],
+   "solveMs": 130275,
+   "peakRssBytes": 3729129472,
+   "turnCards": [
+    "Ac",
+    "8c",
+    "4s",
+    "Kd",
+    "7h",
+    "3d",
+    "Th",
+    "2c"
+   ],
+   "riverBoards": [
+    [
+     "Kd",
+     "9h"
+    ],
+    [
+     "2c",
+     "Js"
+    ]
+   ],
+   "chunks": {
+    "flop": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/flop.json",
+     "bytes": 214351,
+     "sha256": "dea9d618c5cd32f949bd3fc2cc6b30dbf1198eb276067f10635df709bac90471",
+     "nodes": 8
+    },
+    "turn-Ac": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Ac.json",
+     "bytes": 378242,
+     "sha256": "e517103a39dbdbf2c82d7764823dc631134dc9e70a85f960650a1219d34ce12d",
+     "nodes": 20
+    },
+    "turn-8c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-8c.json",
+     "bytes": 389896,
+     "sha256": "ae3242c388ccb5f654772a888f3b812b889c6d99d788ab5a0b00bd88a0938cf0",
+     "nodes": 20
+    },
+    "turn-4s": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-4s.json",
+     "bytes": 413066,
+     "sha256": "73242b977f01cec92994ba3b020c18edf445bf5766c26beafd3156263a13eeac",
+     "nodes": 20
+    },
+    "turn-Kd": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Kd.json",
+     "bytes": 408690,
+     "sha256": "2060368f3fd55df34a3cd495ccde6caff4d00bd27e6f48026a4ac8d28902d355",
+     "nodes": 20
+    },
+    "turn-7h": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-7h.json",
+     "bytes": 426622,
+     "sha256": "84f2f767b0807e65a631b852799de1c128f7dd2d86f1080207473b7a7a25cc65",
+     "nodes": 20
+    },
+    "turn-3d": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-3d.json",
+     "bytes": 427638,
+     "sha256": "b0d4ca8966f10fea1e751a14b34d11c50ae5a9d7dd3973c7a2300f687b499c51",
+     "nodes": 20
+    },
+    "turn-Th": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Th.json",
+     "bytes": 414397,
+     "sha256": "4524327f2f51995ab93aba891be24a02abfadb18134b5113100499b60547c533",
+     "nodes": 20
+    },
+    "turn-2c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-2c.json",
+     "bytes": 420054,
+     "sha256": "9b28155a5e51e7f0b6b9fb58f8e772fa5d2591d32b09a72c21cfc95965e94658",
+     "nodes": 20
+    },
+    "river-2cJs-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-2cJs-b182.c.json",
+     "bytes": 265856,
+     "sha256": "2f6ca7169298fe25f3d216ff0bc91b94abe9fc2697faac29f8b4d8c7cc685503",
+     "nodes": 21
+    },
+    "river-2cJs-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-2cJs-b363.c.json",
+     "bytes": 263440,
+     "sha256": "f5d38d7058cb80a2a209644ec6258fe603f7a9bfd6b7666624022975a10ed133",
+     "nodes": 21
+    },
+    "river-2cJs-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-2cJs-x.b363.c.json",
+     "bytes": 237209,
+     "sha256": "47769bc0067243e8ab8dc7efd488eef07ff61c593f64956a948d7246d2edc2f2",
+     "nodes": 21
+    },
+    "river-2cJs-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-2cJs-x.x.json",
+     "bytes": 288104,
+     "sha256": "72d6fe53daa6e1cb7d8d20862a66791d7c89260d8b3bb0e02fe684712cba4fde",
+     "nodes": 21
+    },
+    "river-Kd9h-b182.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-Kd9h-b182.c.json",
+     "bytes": 243329,
+     "sha256": "85b3788c25d2e2dcbd02fd66e7fdb6427b78ef0df96b6e6f923a810559e29308",
+     "nodes": 21
+    },
+    "river-Kd9h-b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-Kd9h-b363.c.json",
+     "bytes": 205557,
+     "sha256": "f08a1830af8426b3af258ff9386608e9f804451bf2f8ac6458a564fb884865e9",
+     "nodes": 21
+    },
+    "river-Kd9h-x.b363.c": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-Kd9h-x.b363.c.json",
+     "bytes": 331005,
+     "sha256": "97bcff663e871771dedd95490e0e814bffb6a48962f796367e85997d319f6a5b",
+     "nodes": 21
+    },
+    "river-Kd9h-x.x": {
+     "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/river-Kd9h-x.x.json",
+     "bytes": 280117,
+     "sha256": "4e233c1a0778c9c6c8e75a953c22dfdcaad87264d51cfe26d432426357266f23",
+     "nodes": 21
+    }
+   }
+  }
+ ],
+ "refereeSample": {
+  "url": "/solver-data/bridge-v1/referee-sample.json",
+  "bytes": 93968,
+  "sha256": "d389c4c4e5656e686eef07f8d6aca9310911dc25bfe395667e0b86cb6fc03dd8",
+  "spotId": "srp-btn-bb-ks7h2d",
+  "path": [
+   "x",
+   "b363",
+   "c",
+   "Qh",
+   "x",
+   "b842",
+   "c",
+   "2c"
+  ],
+  "grade": {
+   "exploitability": 0.411907019124925,
+   "value0": -345.8921029593042,
+   "theirValue0": -345.8921362698753
+  }
+ },
+ "totals": {
+  "files": 229,
+  "rawBytes": 68598236,
+  "gzipBytes": 17282981
+ }
+}

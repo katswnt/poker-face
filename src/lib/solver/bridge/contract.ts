@@ -252,6 +252,122 @@ export interface BridgeResultV1 {
     readonly peakRssBytes: number;
   };
   readonly counts: { readonly exportedNodes: number };
+  /** Present only when the solve was given a slice plan (bridge extension, B3/B4). */
+  readonly slices?: BridgeSlices;
+}
+
+// ---------------------------------------------------------------------------------------
+// Slice plans (bridge extension, B3/B4). A solved flop game is far too large to export
+// whole; a plan names the public nodes to write with per-hand detail and the river subgames
+// to write in full for the referee. The plan is a separate file hashed into the result, so
+// slicing never changes the spot hash.
+//
+// Path tokens from the root: "x" check, "c" call, "f" fold, "b<to>" bet to street total
+// <to> (all-in included), "r<to>" raise to <to>, "s<i>" the i-th sized action (plan input
+// only), and a card name ("Qh") at a chance node.
+
+export const BRIDGE_SLICE_PLAN_FORMAT = "poker-face-bridge-slices";
+
+export interface BridgeSlicePlanV1 {
+  readonly format: typeof BRIDGE_SLICE_PLAN_FORMAT;
+  readonly version: 1;
+  /** Flop decision nodes with at most maxDepth flop actions before them (null = every flop node). */
+  readonly flop: { readonly maxDepth: number | null } | null;
+  /**
+   * For each listed turn card, turn decision nodes with at most maxDepth turn actions before
+   * them, on lines with at most maxPriorRaises raises on earlier streets (null = any line).
+   */
+  readonly turn: { readonly cards: readonly RiverCard[]; readonly maxDepth: number; readonly maxPriorRaises: number | null } | null;
+  /** For each listed (turn, river) board, river decision nodes up to maxDepth (same line filter). */
+  readonly river: {
+    readonly boards: readonly (readonly [RiverCard, RiverCard])[]; readonly maxDepth: number; readonly maxPriorRaises: number | null;
+  } | null;
+  /** Decision nodes whose whole subtree is exported (strategies only) for referee spot-checks. */
+  readonly subtrees: readonly (readonly string[])[];
+  readonly equity: boolean;
+}
+
+export interface BridgeSliceNode {
+  /** Canonical tokens from the root, e.g. ["x", "b363", "c", "Qh"]. */
+  readonly path: readonly string[];
+  readonly street: BridgeStreet;
+  readonly board: readonly RiverCard[];
+  readonly player: BridgePlayer;
+  readonly committed: readonly [number, number];
+  readonly actions: readonly { readonly action: BridgeAction; readonly engineAction: string; readonly token: string }[];
+  /** strategy[a][h] of `player`; null = hand blocked by the board. */
+  readonly strategy: readonly (readonly (number | null)[])[];
+  /**
+   * Acting player's EV per action and hand, "from now": chips won back from the pot minus
+   * chips still to be paid (sunk chips excluded; fold = 0). null = blocked or zero reach.
+   */
+  readonly actionEv: readonly (readonly (number | null)[])[];
+  /** Both players' from-now EV per hand under the saved strategy. */
+  readonly ev: readonly [readonly (number | null)[], readonly (number | null)[]];
+  /** Both players' reach: range weight × own action probabilities on the path (0 = blocked). */
+  readonly reach: readonly [readonly number[], readonly number[]];
+  readonly equity: readonly [readonly (number | null)[], readonly (number | null)[]] | null;
+}
+
+export interface BridgeSubtree {
+  readonly path: readonly string[];
+  readonly reach: readonly [readonly number[], readonly number[]];
+  readonly ev: readonly [readonly (number | null)[], readonly (number | null)[]];
+  /** Result-tree format with local ids; node 0 is the subtree root. */
+  readonly nodes: readonly BridgeResultNode[];
+}
+
+export interface BridgeSlices {
+  /** sha256 of the exact plan bytes the bridge read. */
+  readonly planHash: string;
+  readonly nodes: readonly BridgeSliceNode[];
+  readonly subtrees: readonly BridgeSubtree[];
+  /** Listed turn cards / "TtRr" boards the engine never dealt (dead cards). */
+  readonly unreached: readonly string[];
+}
+
+const PATH_TOKEN = /^(?:x|c|f|[br][1-9][0-9]*|s[0-9]+|[2-9TJQKA][cdhs])$/;
+
+/** Strict parse of a slice plan (unknown fields rejected, cards checked against the board). */
+export function validateBridgeSlicePlan(input: unknown, board: BridgeBoard): BridgeSlicePlanV1 {
+  const value = record(input, ["format", "version", "flop", "turn", "river", "subtrees", "equity"], "slices");
+  if (value.format !== BRIDGE_SLICE_PLAN_FORMAT || value.version !== 1) fail(`slices must be ${BRIDGE_SLICE_PLAN_FORMAT} version 1`);
+  if (board.turn !== null && (value.flop !== null || value.turn !== null)) fail("flop/turn slices need a flop spot");
+  const known = new Set(boardCards(board));
+  const offBoard = (c: unknown, label: string) => { const k = card(c, label); if (known.has(k)) fail(`${label} ${k} is on the board`); return k; };
+  const depth = (v: unknown, label: string) => whole(v, label, 0, 20);
+  const flop = value.flop === null ? null : (() => {
+    const f = record(value.flop, ["maxDepth"], "slices.flop");
+    return { maxDepth: f.maxDepth === null ? null : depth(f.maxDepth, "slices.flop.maxDepth") };
+  })();
+  const turn = value.turn === null ? null : (() => {
+    const t = record(value.turn, ["cards", "maxDepth", "maxPriorRaises"], "slices.turn");
+    if (!Array.isArray(t.cards) || t.cards.length > 49) fail("slices.turn.cards must list at most 49 cards");
+    const cards = t.cards.map((c, i) => offBoard(c, `slices.turn.cards[${i}]`));
+    if (new Set(cards).size !== cards.length) fail("slices.turn.cards repeats a card");
+    return { cards, maxDepth: depth(t.maxDepth, "slices.turn.maxDepth"),
+      maxPriorRaises: t.maxPriorRaises === null ? null : depth(t.maxPriorRaises, "slices.turn.maxPriorRaises") };
+  })();
+  const river = value.river === null ? null : (() => {
+    const r = record(value.river, ["boards", "maxDepth", "maxPriorRaises"], "slices.river");
+    if (!Array.isArray(r.boards) || r.boards.length > 2352) fail("slices.river.boards is too long");
+    const boards = r.boards.map((b, i) => {
+      if (!Array.isArray(b) || b.length !== 2) fail(`slices.river.boards[${i}] must be [turn, river]`);
+      const pair = [offBoard(b[0], `slices.river.boards[${i}][0]`), offBoard(b[1], `slices.river.boards[${i}][1]`)] as const;
+      if (pair[0] === pair[1]) fail(`slices.river.boards[${i}] repeats a card`);
+      return pair;
+    });
+    if (new Set(boards.map(b => b.join())).size !== boards.length) fail("slices.river.boards repeats a board");
+    return { boards, maxDepth: depth(r.maxDepth, "slices.river.maxDepth"),
+      maxPriorRaises: r.maxPriorRaises === null ? null : depth(r.maxPriorRaises, "slices.river.maxPriorRaises") };
+  })();
+  if (!Array.isArray(value.subtrees) || value.subtrees.length > 64) fail("slices.subtrees must list at most 64 paths");
+  const subtrees = value.subtrees.map((path, i) => {
+    if (!Array.isArray(path) || path.length > 40 || path.some(t => typeof t !== "string" || !PATH_TOKEN.test(t))) fail(`slices.subtrees[${i}] is not a path`);
+    return [...path] as string[];
+  });
+  if (typeof value.equity !== "boolean") fail("slices.equity must be a boolean");
+  return { format: BRIDGE_SLICE_PLAN_FORMAT, version: 1, flop, turn, river, subtrees, equity: value.equity };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -691,5 +807,37 @@ export function checkBridgeResult(result: unknown, spot: BridgeSpotV1, spotHash:
     }
   });
   if (!Number.isFinite(value.exploitability?.chips) || !Number.isSafeInteger(value.iterations)) bad("missing exploitability/iterations");
+  if (value.slices !== undefined) checkSlices(value.slices, value.hands, bad);
   return value;
+}
+
+function checkSlices(slices: BridgeSlices, hands: BridgeResultV1["hands"], bad: (message: string) => never): void {
+  if (!slices || !/^[0-9a-f]{64}$/.test(slices.planHash) || !Array.isArray(slices.nodes) || !Array.isArray(slices.subtrees)) bad("slices are malformed");
+  const row = (r: readonly unknown[], length: number, nullable: boolean, label: string) => {
+    if (!Array.isArray(r) || r.length !== length || r.some(x => (x === null ? !nullable : typeof x !== "number" || !Number.isFinite(x)))) bad(`${label} is malformed`);
+  };
+  slices.nodes.forEach((node: BridgeSliceNode, n: number) => {
+    const label = `slices.nodes[${n}] (${node.path?.join(" ")})`, count = hands[node.player]?.length;
+    if (count === undefined || !Array.isArray(node.actions) || !node.actions.length) bad(`${label} has no actions`);
+    if (node.strategy.length !== node.actions.length || node.actionEv.length !== node.actions.length) bad(`${label} shape`);
+    node.strategy.forEach((r: readonly (number | null)[], a: number) => row(r, count, true, `${label} strategy[${a}]`));
+    node.actionEv.forEach((r: readonly (number | null)[], a: number) => row(r, count, true, `${label} actionEv[${a}]`));
+    for (const p of [0, 1] as const) {
+      row(node.ev[p], hands[p].length, true, `${label} ev[${p}]`);
+      row(node.reach[p], hands[p].length, false, `${label} reach[${p}]`);
+      if (node.reach[p].some((x: number) => x < 0 || x > 1 + 1e-6)) bad(`${label} reach[${p}] outside [0, 1]`);
+      if (node.equity) row(node.equity[p], hands[p].length, true, `${label} equity[${p}]`);
+    }
+    for (let h = 0; h < count; h += 1) {
+      const column = node.strategy.map((r: readonly (number | null)[]) => r[h]);
+      if (column.every((p: number | null) => p === null)) continue;
+      if (column.some((p: number | null) => p === null || p < -1e-6 || p > 1 + 1e-6)) bad(`${label} hand ${h} has invalid probabilities`);
+      const sum = (column as number[]).reduce((t, p) => t + p, 0);
+      if (Math.abs(sum - 1) > 1e-4) bad(`${label} hand ${h} probabilities sum to ${sum}`);
+    }
+  });
+  slices.subtrees.forEach((tree, t) => {
+    if (!Array.isArray(tree.nodes) || !tree.nodes.length || tree.nodes[0].kind !== "player") bad(`slices.subtrees[${t}] must start at a decision node`);
+    for (const p of [0, 1] as const) { row(tree.reach[p], hands[p].length, false, `subtree ${t} reach[${p}]`); row(tree.ev[p], hands[p].length, true, `subtree ${t} ev[${p}]`); }
+  });
 }

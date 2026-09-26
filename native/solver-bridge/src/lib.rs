@@ -1,6 +1,7 @@
 //! poker-face ⇄ postflop-solver bridge: spot contract v1 in, result contract v1 out.
 //! The contract types are defined in src/lib/solver/bridge/contract.ts.
 
+pub mod slices;
 pub mod spot;
 
 use postflop_solver::{
@@ -470,6 +471,9 @@ pub struct BridgeResult {
     pub timings: Timings,
     pub memory: Memory,
     pub counts: Counts,
+    /// Present only when the solve was given a slice plan (`--slices`).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub slices: Option<slices::Slices>,
 }
 
 pub fn card_name(card: Card) -> String {
@@ -480,16 +484,16 @@ fn engine_label(action: &Action) -> String {
     format!("{action:?}")
 }
 
-struct Exporter {
+pub(crate) struct Exporter {
     /// spot hand index → engine private-hand index, per player.
-    order: [Vec<usize>; 2],
-    hands: [Vec<(Card, Card)>; 2],
-    scope: ExportScope,
-    nodes: Vec<Option<ResultNode>>,
+    pub(crate) order: [Vec<usize>; 2],
+    pub(crate) hands: [Vec<(Card, Card)>; 2],
+    pub(crate) scope: ExportScope,
+    pub(crate) nodes: Vec<Option<ResultNode>>,
 }
 
 impl Exporter {
-    fn visit(
+    pub(crate) fn visit(
         &mut self,
         game: &mut PostFlopGame,
         history: &mut Vec<usize>,
@@ -664,6 +668,16 @@ pub fn estimate_spot(bytes: &[u8]) -> Result<serde_json::Value, String> {
 
 /// Solve one spot. Errors leave nothing behind; the caller writes the result only on Ok.
 pub fn solve_spot(bytes: &[u8], progress: &mut Progress) -> Result<BridgeResult, String> {
+    solve_spot_with_slices(bytes, None, progress)
+}
+
+/// Solve one spot and, with a slice plan, also export the planned slices (see slices.rs).
+pub fn solve_spot_with_slices(
+    bytes: &[u8],
+    plan_bytes: Option<&[u8]>,
+    progress: &mut Progress,
+) -> Result<BridgeResult, String> {
+    let plan = plan_bytes.map(slices::SlicePlan::parse).transpose()?;
     let started = Instant::now();
     let elapsed_ms = |since: Instant| since.elapsed().as_millis() as u64;
     let spot = Spot::parse(bytes)?;
@@ -713,6 +727,9 @@ pub fn solve_spot(bytes: &[u8], progress: &mut Progress) -> Result<BridgeResult,
     let allocate_started = Instant::now();
     game.allocate_memory(compress);
     let allocate_ms = elapsed_ms(allocate_started);
+    if let Some(plan) = &plan {
+        slices::check_subtree_paths(&mut game, plan)?;
+    }
 
     let target = spot.starting_pot as f64 * options.target_exploitability_pct_pot / 100.0;
     let timeout = std::time::Duration::from_millis(options.timeout_ms);
@@ -793,6 +810,19 @@ pub fn solve_spot(bytes: &[u8], progress: &mut Progress) -> Result<BridgeResult,
         .into_iter()
         .map(|n| n.expect("every node exported"))
         .collect();
+    let sliced = match (&plan, plan_bytes) {
+        (Some(plan), Some(raw)) => {
+            progress.emit(serde_json::json!({ "type": "progress", "stage": "exporting", "slices": true, "elapsedMs": elapsed_ms(started) }));
+            Some(slices::export_slices(
+                &mut game,
+                plan,
+                sha256_hex(raw),
+                &exporter.order,
+                &exporter.hands,
+            )?)
+        }
+        _ => None,
+    };
     if started.elapsed() > timeout {
         return Err("timed out while exporting; no result written".into());
     }
@@ -816,6 +846,7 @@ pub fn solve_spot(bytes: &[u8], progress: &mut Progress) -> Result<BridgeResult,
         counts: Counts {
             exported_nodes: tree.len(),
         },
+        slices: sliced,
         tree,
         root,
         exploitability: Exploitability {

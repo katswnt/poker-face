@@ -15,6 +15,7 @@
 /playwright-report/
 /test-results/
 /.cache/flop-library/
+/.cache/bridge-library/
 
 # next.js
 /.next/

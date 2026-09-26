@@ -10,7 +10,7 @@ field it relies on. Engine: postflop-solver `9d1509fe5077d019825f833eed04b16d342
 | --- | --- |
 | `src/lib/solver/bridge/contract.ts` | Spot + Result contract v1 types, strict validation, explicit-tree builder, result check (browser-safe) |
 | `src/lib/solver/bridge/contract-node.ts` | Canonical spot JSON and sha256 spot hash (node:crypto) |
-| `src/lib/solver/bridge/fixtures.ts` | 3 referee spots, 1 benchmark spot, upstream-basic smoke spot, committed hashes |
+| `src/lib/solver/bridge/fixtures.ts` | 3 referee spots, the lean benchmark (B3), the rich B1 draft, upstream-basic smoke spot, committed hashes; `LEAN_SRP_TREE`, `leanSrpSpot` |
 | `native/solver-bridge/` | Rust crate, binary `solver-bridge` (`solve`, `estimate`), `Cargo.lock`, `rust-toolchain.toml` (1.98.1) |
 | `scripts/bridge-runner.ts` | Node runner: child process, timeout, sampled RSS budget, cancellation, no partial results |
 | `scripts/solve-bridge.ts` | `npm run solve:bridge -- --fixture <id> [--out result.json]` |
@@ -20,6 +20,12 @@ field it relies on. Engine: postflop-solver `9d1509fe5077d019825f833eed04b16d342
 | `src/lib/solver/bridge/referee-node.ts` | B2: referee engines (river v3, turn v2, flop reference) with their own graders and saved-artifact bounds; suit-isomorphism probe |
 | `scripts/audit-bridge.ts` | `npm run audit:bridge` (gates) and `npm run audit:bridge -- --measure` (tolerance measurement) |
 | `test/bridge-referee.test.ts` | Tree identity per referee game; corrupted trees/chance nodes/strategies/self-reports must fail (skips without the binary) |
+| `native/solver-bridge/src/slices.rs` | B3/B4: `--slices` plan export (per-hand node detail, full subtrees for the referee) |
+| `src/lib/solver/bridge/subgame-referee.ts` | B3: grade an exported river subgame with our factorized scorekeeper; subgame probability |
+| `scripts/bench-bridge.ts` | `npm run bench:bridge [-- --experiment]` (local): B3 benchmark → `artifacts/benchmark-b3*.json` |
+| `src/lib/solver/bridge/library/` | B4: model, encoder, browser loader, drill queries, invariant audit, flop/slice definitions |
+| `scripts/build-bridge-library.ts` | `npm run generate:bridge:library` / `audit:bridge:library` (CI) / `reproduce:bridge:library` (local) |
+| `test/bridge-library.test.ts` | Quantization, chunk validation, invariants, loader integrity, native slice export (skips without the binary) |
 
 ## Spot identity
 
@@ -108,7 +114,7 @@ evidence the utility origin, chance weighting and chip mapping agree (B2 makes i
 A tiny 2×2 river test game plateaued at 0.026 chips (0.026% pot) after 2000 iterations: set the
 B2 float32 tolerance from measurement, not from these targets.
 
-**Benchmark** `benchmark-srp-btn-bb-100bb-ks7h2d`: 100bb BTN vs BB SRP on K♠7♥2♦, 1bb = 100
+**B0/B1 benchmark, now the "rich" variant** `benchmark-srp-btn-bb-100bb-ks7h2d` (the pass/fail benchmark was re-locked to the lean Fold tree in B3; see "B3 benchmark results"): 100bb BTN vs BB SRP on K♠7♥2♦, 1bb = 100
 chips (sizes round to 0.01bb): pot 550, stack 9750. Ranges are **hand-written approximations,
 not solved** (BB flat 609 combos with partial weights on 3-bet hands; BTN open 502 combos after
 blockers). Bets 33/75/125% + all-in every street, one raise per street; thresholds 1.5/0.15/0.1;
@@ -236,8 +242,216 @@ Runtime: `npm run audit:bridge` 6.6 s wall after the build (flop 5.9 s of it: 1.
 rest parsing the 189,900-node export and the two graders). CI's `bridge` job runs it after the
 referee tests (`test/bridge-referee.test.ts`); first CI run pending push.
 
-## Left for B3
+## Result v1 in the browser (B5 plan; no schema change)
 
-- The Griffin-scale benchmark (compressed): measure an int16 tolerance at its own scale first.
-- Referee spot-checks of river/turn subgames of the big solve need a subgame-extraction path
-  (export a subtree as a spot); not built in B2.
+A live (wasm32) solve writes the same Result v1. Fields whose meaning changes there:
+`memory.peakRssBytes` is the final linear-memory size (`memory_size(0) × 65536`; linear memory
+never shrinks, so it is the peak); `engine.threads` is the rayon pool size (1 for the
+single-thread build); `timings` come from `performance.now()`. `spotHash` must still equal a
+JS `crypto.subtle` SHA-256 of the canonical spot bytes. Admission before allocation:
+`src/lib/solver/bridge/wasm-admission.ts` (see `tasks/postflop-solver-wasm-spec.md`).
+
+## B3 benchmark results (2026-09-25)
+
+**Re-lock (decided by the lead before the first solve).** The B1 menu (33/75/125% + all-in for
+both players, every street) estimated 16.6 GB int16 and ~15 s/iteration (2–4 h), so the
+pass/fail benchmark is now `benchmark-lean-srp-btn-bb-100bb-ks7h2d` (hash `b9e032fc…`): the same
+flop, pot, stack and hand-written ranges on Griffin's own lean **Fold** tree (`LEAN_SRP_TREE`):
+
+- OOP (BB) bets flop 33%/66%, turn 66%, river 50%/100%; IP (BTN) bets 66% every street.
+- Raises: raise-to = bet + 0.6 × (pot + 2·bet) = postflop-solver's `PotRelative(0.6)` raise
+  (pot after the call × 0.6 on top of the bet): exact, not an approximation. One raise per street.
+- All-in: postflop-solver's `forceAllInThreshold` 0.2 is the same rule (a size becomes all-in when
+  the stack left behind is ≤ 0.2 × the pot after the opponent calls); the only approximation is
+  that the threshold is rounded to whole chips (0.01 bb). No extra all-in size
+  (`addAllInThreshold` 0), no merging (0), no donk menu (OOP leads use OOP's bet menu, as in Fold).
+- Test `lean_fold_tree_raises_to_call_plus_60_pct_and_forces_all_in_at_0_2_pot` pins these
+  amounts (e.g. raise to 205 over a 66 bet into 100; the same raise with 240 behind is all-in).
+
+The old spot keeps its hash (`cbe72c…`) as the documented "rich" variant, not a gate.
+
+**Solve** (`npm run bench:bridge`, `src/lib/solver/bridge/artifacts/benchmark-b3.json`; M1 Pro, 10 threads):
+
+| Run | Iterations | Exploitability | Wall | Peak RSS | Self-reported value (BB, BTN) |
+| --- | --- | --- | --- | --- | --- |
+| float32 (locked spot) | 170 | 1.554 chips = **0.283% pot** | 224 s (clean; 260 s in the artifact run, lint running alongside) | 6.01 GB (estimate 6.00) | −64.974 / +64.974 |
+| int16, same spot with compression on | 160 | 1.596 = 0.290% | 202 s | 3.06 GB (estimate 3.05) | −64.996 / +64.997 |
+| int16 stopped at 170 | 170 | 1.433 = 0.261% | 245 s | 3.06 GB | −64.961 / +64.960 |
+
+Build 0.07 s, allocation < 3 ms, export < 20 ms; almost all time is DCFR iterations
+(~1.3 s each, including the exploitability pass every 10). Both precisions fit this machine.
+float32 curve (chips, every 10 iterations): 1359, 492, 172, 43.1, 18.7, 11.4, 7.92, 8.66, 4.90,
+3.77, 3.63, 6.15, 4.11, 2.99, 2.47, 2.09, 1.78, 1.55. int16 tracks it (1359, 502, 157, 38.5,
+17.9, 10.9, 7.64, 9.08, 8.34, 10.4, 5.81, 3.74, 2.94, 2.44, 2.08, 1.80, 1.60); the non-monotone
+bumps are DCFR's, in both. Repeated runs are bit-identical.
+
+**Compression discrepancy on this spot.** At the same 170 iterations, int16 vs float32:
+root value Δ 0.013 chips (0.002% pot), exploitability Δ 0.12 chips, flop strategies differ by a
+reach-weighted mean total-variation distance of 0.010 (worst flop node 0.026). Against our own
+grader on the six river subgames below, postflop-solver's float32 subgame values agree to
+≤ 7.0e-6 chips; int16 values are off by up to 2.8e-3 chips (and its self-reported values fail
+zero-sum by up to 5e-3). So int16 is fine for strategies and for the 0.3% gate, but its EVs
+carry ~1e-3-chip noise at this scale; the library uses float32 (every spot fit).
+
+**Referee spot-check** (`gradeRiverSubgame`, `src/lib/solver/bridge/subgame-referee.ts`). The
+bridge's new slice export (`--slices`, below) writes six river subtrees with both players' reach
+at the subtree root; our factorized river scorekeeper (river v3's acceptance grader) grades
+postflop-solver's river strategy on every blocker-compatible deal weighted by reach0 × reach1.
+The public tree comes from the export (no second rules implementation); payoffs from the
+exported chip totals and our hand evaluator. Subgames were chosen before the solve for line variety.
+
+| River subgame (float32) | Hands in play | Deals | Pot | Local exploitability (ours) | Reach probability | prob × local |
+| --- | --- | --- | --- | --- | --- | --- |
+| `x x 9c x x 3s` (checked to the river) | 569 × 417 | 213,797 | 550 | 0.467 chips = 0.085% | 1.1e-4 | 5.3e-5 |
+| `b182 c Ad x x 5h` | 540 × 432 | 209,863 | 914 | 28.5 = **3.12%** | 4.7e-7 | 1.3e-5 |
+| `x b363 c 7c x b842 c Jd` | 277 × 302 | 74,654 | 2,960 | 2.71 = 0.091% | 1.4e-5 | 3.8e-5 |
+| `x x Th b363 c 2s` (OOP turn lead called) | 438 × 329 | 129,593 | 1,276 | 1.05 = 0.083% | 2.8e-5 | 3.0e-5 |
+| `x x 9c x x 3s x` (IP after a river check) | 551 × 417 | 207,022 | 550 | 0.150 = 0.027% | 6.9e-5 | 1.0e-5 |
+| `x x 9c x x 3s b275` (IP facing a half-pot bet) | 522 × 417 | 196,608 | 825 | 0.414 = 0.050% | 2.5e-5 | 1.0e-5 |
+
+- Values: postflop-solver's subgame value (from its exported per-hand EVs) equals our evaluation
+  of its strategy within 7.0e-6 chips in all six (int16: ≤ 2.8e-3). No disagreement found.
+- Local exploitability is *given the arriving ranges*, not the whole-game number. Five of six are
+  ≤ 0.1% of their pot. The outlier is a line reached with probability 4.7e-7 (OOP's small c-bet
+  called, then the ace turn checked through): CFR spends almost nothing there, and its whole-game
+  weight is 1.3e-5 chips. Every row satisfies the bound it must: probability × local
+  exploitability ≤ the whole-game exploitability (1.55 chips), checked by the script.
+- Coverage: 6 river subgames out of millions of river nodes; flop and turn decisions are not
+  graded by us at this scale. **Turn subgames were not graded**: our turn engines (turn v2 /
+  vector turn) take one street-relative chip menu shared by both players, which cannot express
+  Fold's player- and pot-dependent river sizes. The 64-hand vector flop engine cannot play this
+  game either (flop-v1: one size, no raises, ≤ 64 hands); B2's tiny flop referee is the
+  whole-game agreement check.
+
+**Experiment: how much do extra IP sizes buy?** (`npm run bench:bridge -- --experiment`,
+`artifacts/benchmark-b3-experiment.json`; a measurement, not a gate.) Same flop, ranges and
+tree, but IP may bet 33%, 66% or 125% on every street instead of 66% only; both solved to
+0.15% pot in int16. (A float32 attempt of the richer tree, 22.9 GB, pushed the 32 GB machine
+into ~20 GB of swap and was stopped; int16 needs 11.6 GB, and its EV noise here is ~1e-3 chips.)
+
+| Tree | Iterations | Exploitability | Wall | Peak RSS | BB value | BTN value |
+| --- | --- | --- | --- | --- | --- | --- |
+| lean (IP 66%) | 240 | 0.805 chips (0.146%) | 384 s | 3.1 GB | −64.83 | +64.83 |
+| IP 33/66/125% | 400 | 0.811 chips (0.147%) | 1,948 s | 11.7 GB | −74.58 | +74.58 |
+
+The two extra IP sizes are worth **+9.75 chips to BTN (0.098 bb, 1.8% of the pot)** on this
+flop, against a resolution of ±1.6 chips (the two exploitabilities summed): real, but small,
+for 3.8× the memory and ~5× the time. BB's value drops by the same amount (zero-sum). One flop,
+one formation: not a general claim about bet-size value.
+
+## Slice export (bridge extension, B3/B4)
+
+A solved flop game is far too large to export whole (the benchmark's first-street export is 21
+nodes; its full tree has millions). `solver-bridge solve … --slices plan.json`
+(`BridgeSlicePlanV1`, `validateBridgeSlicePlan`, Rust `src/slices.rs`) names what to write, and
+the plan's sha256 is recorded in `result.slices.planHash` (the spot hash is unchanged, so one
+solved spot can be sliced differently). Paths are tokens from the flop root: `x c f`, `b<to>` /
+`r<to>` (street totals, all-in included), a card name at chance nodes, and `s<i>` (the i-th sized
+action, input only).
+
+- `flop.maxDepth`, `turn {cards, maxDepth, maxPriorRaises}`, `river {boards, maxDepth,
+  maxPriorRaises}`: decision nodes with at most `maxDepth` actions on their street, for the
+  listed cards, on lines with at most `maxPriorRaises` raises on earlier streets.
+- Each sliced node: actor, actions, per-hand strategy, per-action EV of the actor, both players'
+  per-hand EV, reach and (optionally) equity. EVs are **from now** (postflop-solver's
+  convention at a node: chips won back from the pot minus chips still to be paid; fold = 0).
+- `subtrees`: whole subtrees (result-tree format) with root reach and EV, for referee grading.
+- `unreached` lists planned cards/boards the walk never dealt (never silently dropped).
+- Subtree paths are resolved right after allocation, so a bad plan fails before solving.
+- Verified: Rust tests (`slice_plans_select_nodes_by_street_depth_and_report_dead_cards`,
+  `slice_plan_errors_fail_before_solving`); `test/bridge-library.test.ts` checks exported
+  slices of the tiny flop referee against the library invariants and our river grade, and that
+  a corrupted exported strategy raises our grade.
+
+## B4 spot library (2026-09-25)
+
+`public/solver-data/bridge-v1/` — generated by `npm run generate:bridge:library`
+(`scripts/build-bridge-library.ts`, definitions in `src/lib/solver/bridge/library/spots.ts`).
+
+**Contents.** Formation BTN vs BB SRP 100bb (pot 550, 9,750 behind, 1 bb = 100 chips), the
+benchmark's hand-written approximate ranges (labelled "hand-written approximations, not solved"
+in every spot file and the manifest) and the lean Fold tree. Engine credit in the manifest:
+postflop-solver, AGPL-3.0, commit `9d1509fe…`. 12 flops, chosen for texture; all solved in
+float32 and all passed the 0.3%-pot gate (none rejected):
+
+| Spot | Texture | Iterations | Exploitability (% pot) | Solve | Peak RSS | BB value (chips) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Ks7h2d | dry high | 170 | 0.283 | 210 s | 5.8 GB | −65.0 |
+| Ad8c3s | ace-high dry | 150 | 0.278 | 196 s | 5.5 GB | −60.5 |
+| KhQdTc | broadway | 180 | 0.282 | 249 s | 5.5 GB | −71.5 |
+| 9h8h6c | wet connected two-tone | 150 | 0.278 | 126 s | 3.4 GB | −35.1 |
+| Qs9s4s | monotone | 160 | 0.297 | 63 s | 1.7 GB | −51.0 |
+| Td7d3c | two-tone middle | 140 | 0.287 | 114 s | 3.5 GB | −50.1 |
+| 8s8d3h | paired middle | 220 | 0.294 | 181 s | 3.6 GB | −9.2 |
+| 5h4c2d | low connected | 170 | 0.277 | 236 s | 6.0 GB | −40.7 |
+| Tc9d7s | middle connected | 140 | 0.299 | 191 s | 5.6 GB | −18.0 |
+| AhTh5c | ace-high two-tone | 140 | 0.270 | 113 s | 3.3 GB | −73.0 |
+| JcJd4s | paired high | 220 | 0.294 | 185 s | 3.6 GB | −59.7 |
+| 7c6c5d | low wet two-tone | 160 | 0.284 | 130 s | 3.6 GB | +4.3 |
+
+The first flop took 210 s; at that rate 2.5 h allowed ~40 flops, so the count (12) was set by
+the lead's 8–12 range and the size budget, not time. Total generation 30 min (solves are
+sequential; suit isomorphism makes monotone/two-tone boards smaller). Values are net chips from
+the start of the flop; the solves stop at the first 10-iteration checkpoint ≤ 0.3%, so each
+value is only as good as ±1.6 chips of exploitability.
+
+**Slice policy** (the full tree × ~1,100 hands is far too big to ship):
+- flop: every flop decision node (8 per spot: all flop betting lines, raises included);
+- turn: 8 hand-picked turn cards per flop (overcards, board pairs, flush/straight completers,
+  bricks); decisions with ≤ 2 turn actions before them (OOP's first action, IP after a check,
+  IP facing a lead, OOP facing a stab, OOP facing a raise of its lead) on the 4 flop lines that
+  reach the turn without a raise: 20 nodes per card;
+- river: 2 turn+river boards per flop; decisions with ≤ 2 river actions before them on the 12
+  unraised flop+turn lines: 84 nodes per board;
+- raised pots stay flop-only (thin, rare lines). 336 nodes per spot.
+Every node has both players' per-hand reach, from-now EV and equity, plus the actor's per-hand
+strategy and per-action EV — enough for pot odds, MDF, bluff ratios, blockers and range
+composition.
+
+**Format** (`src/lib/solver/bridge/library/model.ts`). `manifest.json` (79 KB) lists per spot:
+spot hash, slice-plan hash, engine precision/threads, iterations, exploitability, values, solve
+time, peak RSS, flop descriptor, and a `{url, bytes, sha256}` for every file. Per spot, under
+`<id>/<spotHash>/`: `spot.json` (the canonical contract spot: its sha256 *is* the spot hash),
+`root.json` (full-precision float32 flop-root weight, normalized weight, net EV and equity per
+combo for both players, plus the flop descriptor: for the preflop solver's realization
+estimate; the UI does not need it), `flop.json`, `turn-<card>.json`, and river chunks split
+by flop line so each file stays under 1 MiB (`river-<turn><river>-<flop line>.json`, e.g.
+`river-Qh2c-x.b363.c.json`). Chunk rows are quantized integers: reach relative to the node's
+largest reach (1e-4; hands that round to 0 are omitted and their mass recorded in
+`omittedReach`), strategy per mille summing exactly to 1000, EVs in 0.1 chip (0.001 bb), equity
+per mille. Relative reach was needed: with absolute 1e-4 units, thin lines (an OOP turn lead)
+lost two-thirds of their range to omission and the opponent-EV invariant failed by 1,270 chips.
+
+**Sizes.** 229 data files, 68.6 MB raw, **17.3 MB gzip** (+ manifest 79 KB raw); largest chunk
+534 KB raw; budget 40 MB gzip.
+
+**Loader** (`src/lib/solver/bridge/library/load.ts`, browser-safe): `loadLibraryManifest`,
+`loadLibraryRanges`, `loadLibraryChunk` fetch lazily and refuse any file whose URL prefix, byte
+count or sha256 differs from its manifest reference, then schema-check it (identity, board vs
+path, live-list order, per-hand shapes, strategies summing to 1000). `query.ts`: node by path,
+decoded hand rows, pot odds, MDF, range action frequencies.
+
+**Audit** (`npm run audit:bridge:library`, ~6 s, no engine; CI main job):
+1. manifest schema and gate; every file's bytes + sha256; no extra or missing files; totals;
+2. spot hash and slice-plan hash rebuilt from code equal the manifest (code/data in sync), and
+   `spot.json` hashes to the spot hash;
+3. `root.json` identity, ranges hash, descriptor, and agreement with the flop chunk's root node;
+4. invariants on every node (`invariants.ts`): reach chain (initial weight × saved probabilities
+   along the path; 672 checks per spot, all complete; max error 1.6e-3 vs tolerance
+   1.5e-4 × max + 1e-3 per step), actor EV = Σ p × action EV (max 5.5 chips at pots up to
+   ~20,000; tolerance 0.1 + 0.15% of the largest action EV), opponent EV = frequency-weighted
+   child EVs at nodes whose actions all lead to saved nodes (57 per spot; max 1.7 chips;
+   tolerance 0.5 + 1%), fold EV = 0, EV and equity bounds. Tolerances are the quantization
+   bounds; the measured maxima above sit inside them;
+5. re-grade of the saved referee sample (`referee-sample.json`, the full-precision river
+   subgame `x b363 c Qh x b842 c 2c` of Ks7h2d, 92,087 deals) with our factorized grader:
+   exploitability 0.412 chips (0.014% of its 2,960 pot), reproduced to 1e-9, and
+   postflop-solver's value agrees with ours to 3.3e-5 chips (gate 0.01).
+
+`npm run reproduce:bridge:library [-- --only <id>]` re-solves from scratch and requires
+byte-identical chunks: local only (~30 min and up to 6 GB per solve; CI runners are x86_64
+where float32 reduction order may differ, the same reason `audit:flop:vector` is local).
+Checked once after generation (and after a rebuild of the binary): `--only srp-btn-bb-qs9s4s` re-solved byte-identical in 66 s. Raw results are cached in `.cache/bridge-library/` (git-ignored) so an
+interrupted generation resumes.
+
+**Not in B4:** UI, turn/river slices beyond the policy above, other formations, solved ranges.

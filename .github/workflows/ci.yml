@@ -75,6 +75,9 @@ jobs:
       - name: Reproduce every saved flop browser slice
         run: npm run audit:flop:explorer
 
+      - name: Validate the bridge spot library (hashes, schema, reach/EV invariants, river re-grade)
+        run: npm run audit:bridge:library
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 
@@ -131,8 +134,8 @@ jobs:
       - name: Test solver-bridge
         run: npm run test:bridge
 
-      - name: Drive solver-bridge through the Node runner and the referee tests
-        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts
+      - name: Drive solver-bridge through the Node runner, referee and slice-export tests
+        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts
 
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge

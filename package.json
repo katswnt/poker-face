@@ -77,7 +77,11 @@
     "build:bridge": "cargo build --release --locked --manifest-path native/solver-bridge/Cargo.toml",
     "test:bridge": "cargo test --release --locked --manifest-path native/solver-bridge/Cargo.toml",
     "solve:bridge": "node --import tsx scripts/solve-bridge.ts",
-    "audit:bridge": "node --import tsx scripts/audit-bridge.ts"
+    "audit:bridge": "node --import tsx scripts/audit-bridge.ts",
+    "bench:bridge": "node --import tsx scripts/bench-bridge.ts",
+    "generate:bridge:library": "node --import tsx scripts/build-bridge-library.ts --generate",
+    "audit:bridge:library": "node --import tsx scripts/build-bridge-library.ts --check",
+    "reproduce:bridge:library": "node --import tsx scripts/build-bridge-library.ts --reproduce"
   },
   "dependencies": {
     "next": "16.3.3",

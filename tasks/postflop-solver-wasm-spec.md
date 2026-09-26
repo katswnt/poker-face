@@ -146,6 +146,7 @@ allocates nothing:
 | Turn, 167×250 hands, 1–2 sizes (upstream `basic`) | `smoke-upstream-basic` | 12.1 MB / 6.4 MB (measured B1) | yes | yes |
 | Turn, full ranges, 3 sizes + raise per street | *(measure)* | expected 10²–10³ MB | likely | only with int16 or narrow ranges |
 | Flop, 3-bet pot, narrow ranges, Pio "FAST" menu | upstream benchmark | 1.25 GB / 660 MB | yes (float32) | no |
+| Flop, SRP 100bb, Griffin lean tree (B3 locked benchmark) | `benchmark-lean-srp-btn-bb-100bb-ks7h2d` | 6.00 GB / 3.05 GB (B3) | int16 only, if X ≲ 580 MB | no |
 | Flop, SRP 100bb, 3 sizes/street + raise (our locked benchmark) | `benchmark-srp-btn-bb-100bb-ks7h2d` | 32.8 GB / 16.6 GB | **no** (9× over) | no |
 | Same, all-in-only raises | B1 trim table | 21.2 GB / 10.7 GB | **no** | no |
 
@@ -196,10 +197,22 @@ network (§13). Corresponding Source must be offered for the exact build:
 ### W0: contract and limits (no browser)
 - [ ] Add `estimateExport` (cells, nodes) to `solver-bridge estimate`. Run `estimate` over a
       grid (river/turn/flop × range width × menu) and fill the *(measure)* cells above.
-- [ ] `src/lib/solver/bridge/admission.ts`: a pure `admitLiveSpot(estimate, env) → {ok,
+      *(Open: needs the native CLI. Until then `admitLiveSpot` takes an explicit export size
+      and refuses when neither is given.)*
+- [x] `src/lib/solver/bridge/wasm-admission.ts`: a pure `admitLiveSpot(estimate, env) → {ok,
       precision, budget, reason}` with unit tests over the table (including the benchmark
-      refusal and the mobile budget).
-- [ ] Document the browser meanings of the Result v1 fields (above) in the bridge spec. No
+      refusal and the mobile budget). Done 2026-09-25: also `parseBridgeEstimate` (the
+      `estimate` line), `wasmBudget` (min of wasm32 ceiling, profile, deviceMemory/4; unknown
+      profile = mobile's 512 MiB), `chooseThreading` (pure MT/ST choice from passed-in flags),
+      `needsFreshWorker`, and the spot-class table as `WASM_SPOT_CLASSES`.
+      `test/bridge-wasm-admission.test.ts` (12 tests): at-cap admits / +1 byte refuses,
+      float32 → int16 → refuse, B1 benchmark and its trim refused everywhere, upstream basic
+      admitted everywhere, mobile/unknown stricter than desktop, table rows match the rule.
+      Finding: the **B3 lean benchmark** (5.996 GB float32 / 3.046 GB int16, exact bytes from
+      `artifacts/benchmark-b3.json`) is admitted on desktop Chromium/Firefox **as int16 only**
+      with X = 0 (3.18 GB of 3.76 GB); a > ~580 MB export refuses it, and so does
+      `allowCompressed: false` (open question 2). Row added to the class table below.
+- [x] Document the browser meanings of the Result v1 fields (above) in the bridge spec. No
       schema change.
 
 ### W1: build
@@ -256,3 +269,10 @@ src/worker.ts, RunSolver.vue, README); RReverser/wasm-bindgen-rayon README; post
 `9d1509fe` src (utility.rs, solver.rs, interpreter.rs); `node_modules/next/dist/docs` headers +
 turbopack; caniuse wf-wasm-memory64; v8.dev/blog/4gb-wasm-memory; godot#70621; Apple forums
 761666; vercel/vercel#16040; MDN COEP.
+
+## Decisions (2026-09-25)
+
+- Verification and referee contexts use float32 only (`allowCompressed: false`): int16 values
+  drift past the locked 2e-4 tolerance (B2 measured up to 8.7e-4 chips; B3 river subgames 2.8e-3).
+- Live play may use int16, but admits only turn and river re-solves. Flops always come from the
+  saved B4 library, even when a lean flop would technically fit a desktop tab as int16.

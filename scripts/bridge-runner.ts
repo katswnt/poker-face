@@ -5,14 +5,24 @@ import { execFile, spawn } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { checkBridgeResult, validateBridgeSpot, type BridgeResultV1, type BridgeSpotV1 } from "../src/lib/solver/bridge/contract";
+import { createHash } from "node:crypto";
+import {
+  checkBridgeResult, validateBridgeSlicePlan, validateBridgeSpot, type BridgeResultV1, type BridgeSlicePlanV1, type BridgeSpotV1,
+} from "../src/lib/solver/bridge/contract";
 import { canonicalBridgeSpotJson, hashBridgeSpot } from "../src/lib/solver/bridge/contract-node";
+import { canonicalSolverJson } from "../src/lib/solver/toy/artifact";
 
 export const BRIDGE_BINARY = resolve(process.env.SOLVER_BRIDGE_BIN
   ?? new URL("../native/solver-bridge/target/release/solver-bridge", import.meta.url).pathname);
 /** Engine estimate excludes allocator slack, the export and the process itself. */
 export const BRIDGE_RSS_HEADROOM_BYTES = 512 * 1024 ** 2;
 const MAX_RESULT_BYTES = 2 * 1024 ** 3;
+
+/** Canonical plan bytes and their sha256 (the bridge reports the hash of the bytes it read). */
+export function canonicalSlicePlan(plan: BridgeSlicePlanV1, spot: BridgeSpotV1): { json: string; hash: string } {
+  const json = canonicalSolverJson(validateBridgeSlicePlan(plan, spot.board));
+  return { json, hash: createHash("sha256").update(json).digest("hex") };
+}
 
 export interface BridgeProgress {
   readonly type: "progress";
@@ -29,11 +39,13 @@ export interface BridgeRun {
   readonly elapsedMs: number;
   readonly sampledPeakRssBytes: number;
   readonly rssLimitBytes: number;
+  /** sha256 of the canonical slice plan, when one was given. */
+  readonly slicePlanHash: string | null;
 }
 
 export async function runBridgeSpot(input: BridgeSpotV1, options: {
   timeoutMs?: number; signal?: AbortSignal; threads?: number; rssLimitBytes?: number;
-  onProgress?: (progress: BridgeProgress) => void; binary?: string;
+  onProgress?: (progress: BridgeProgress) => void; binary?: string; slices?: BridgeSlicePlanV1;
 } = {}): Promise<BridgeRun> {
   const started = performance.now();
   const spot = validateBridgeSpot(input), spotHash = hashBridgeSpot(spot);
@@ -49,7 +61,11 @@ export async function runBridgeSpot(input: BridgeSpotV1, options: {
   const spotPath = join(directory, "spot.json"), outPath = join(directory, "result.json");
   // The bridge hashes these exact bytes, so result.spotHash must equal spotHash.
   writeFileSync(spotPath, canonicalBridgeSpotJson(spot));
-  const args = ["solve", spotPath, "--out", outPath, ...(options.threads ? ["--threads", String(options.threads)] : [])];
+  const plan = options.slices ? canonicalSlicePlan(options.slices, spot) : null;
+  const planPath = join(directory, "slices.json");
+  if (plan) writeFileSync(planPath, plan.json);
+  const args = ["solve", spotPath, "--out", outPath, ...(options.threads ? ["--threads", String(options.threads)] : []),
+    ...(plan ? ["--slices", planPath] : [])];
 
   try {
     return await new Promise<BridgeRun>((resolveRun, reject) => {
@@ -90,8 +106,9 @@ export async function runBridgeSpot(input: BridgeSpotV1, options: {
         try {
           if (statSync(outPath).size > MAX_RESULT_BYTES) throw new Error("Bridge result exceeds 2 GiB");
           const result = checkBridgeResult(JSON.parse(readFileSync(outPath, "utf8")), spot, spotHash);
+          if ((result.slices?.planHash ?? null) !== (plan?.hash ?? null)) throw new Error("Bridge result slices do not match the slice plan");
           settled = true; cleanup();
-          resolveRun({ result, spotHash, elapsedMs: performance.now() - started, sampledPeakRssBytes, rssLimitBytes });
+          resolveRun({ result, spotHash, elapsedMs: performance.now() - started, sampledPeakRssBytes, rssLimitBytes, slicePlanHash: plan?.hash ?? null });
         } catch (error) { fail(error instanceof Error ? error : new Error(String(error))); }
       });
       if (options.signal?.aborted) cancel();

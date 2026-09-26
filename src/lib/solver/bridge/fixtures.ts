@@ -19,7 +19,7 @@ import { FLOP_REFERENCE_REQUEST } from "../postflop/flop/fixtures";
 import { flopActions, initialFlopState, nextFlopAction, nextFlopCard, type FlopAction, type FlopState } from "../postflop/flop/rules";
 import {
   BRIDGE_SPOT_FORMAT, buildExplicitTree, canonicalBridgeCombo, compareBridgeCombos, validateBridgeSpot,
-  type BridgeAction, type BridgeBetSize, type BridgeBoard, type BridgeRange, type BridgeSolveOptions,
+  type BridgeAction, type BridgeBetSize, type BridgeBoard, type BridgeMenuTree, type BridgeRange, type BridgeSolveOptions,
   type BridgeSpotV1, type BridgeStreetMenu,
 } from "./contract";
 
@@ -187,30 +187,74 @@ const benchmarkStreet = (raise: readonly BridgeBetSize[]): BridgeStreetMenu => {
   return { oop: menu, ip: menu };
 };
 /**
- * Bets 33/75/125% + all-in on every street; one raise per street (maxRaisesPerStreet 1):
+ * Rich variant (the B0/B1 draft benchmark, kept as an experiment, not the pass/fail spot):
+ * bets 33/75/125% + all-in on every street; one raise per street (maxRaisesPerStreet 1):
  * 3x or all-in on the flop, all-in on the turn and river. A 3x raise on later streets too
  * estimates 57.0 GB float32 / 28.9 GB int16, beyond a 32 GB laptop; this menu estimates
  * ~17 GB int16 (see tasks/postflop-solver-bridge-spec.md for the sizing table).
  */
-const BENCHMARK_FLOP = benchmarkStreet([{ kind: "prevBet", multiple: 3 }, { kind: "allin" }]);
-const BENCHMARK_LATER = benchmarkStreet([{ kind: "allin" }]);
+const RICH_FLOP = benchmarkStreet([{ kind: "prevBet", multiple: 3 }, { kind: "allin" }]);
+const RICH_LATER = benchmarkStreet([{ kind: "allin" }]);
 
-function benchmarkSpot(): BridgeSpotV1 {
-  const flop = BENCHMARK_BOARD.flop;
+const BENCHMARK_RANGES = (): readonly [BridgeRange, BridgeRange] => [
+  // Player 0 (out of position) is the big blind; player 1 is the button.
+  rangeFromText(BB_CALL.join(" "), BENCHMARK_BOARD.flop, `BB (OOP): ${BENCHMARK_RANGE_SOURCE}`),
+  rangeFromText(BTN_OPEN.join(" "), BENCHMARK_BOARD.flop, `BTN (IP): ${BENCHMARK_RANGE_SOURCE}`),
+];
+// SRP: BTN opens 2.5bb, SB folds, BB calls → 2.5 + 2.5 + 0.5 = 5.5bb; 100 − 2.5 = 97.5bb behind.
+export const SRP_STARTING_POT = 5.5 * BENCHMARK_CHIPS_PER_BB;
+export const SRP_EFFECTIVE_STACK = 97.5 * BENCHMARK_CHIPS_PER_BB;
+
+function richBenchmarkSpot(): BridgeSpotV1 {
   return {
     format: BRIDGE_SPOT_FORMAT, version: 1, id: "benchmark-srp-btn-bb-100bb-ks7h2d", board: BENCHMARK_BOARD,
-    // Player 0 (out of position) is the big blind; player 1 is the button.
-    ranges: [rangeFromText(BB_CALL.join(" "), flop, `BB (OOP): ${BENCHMARK_RANGE_SOURCE}`),
-      rangeFromText(BTN_OPEN.join(" "), flop, `BTN (IP): ${BENCHMARK_RANGE_SOURCE}`)],
-    // SRP: BTN opens 2.5bb, SB folds, BB calls → 2.5 + 2.5 + 0.5 = 5.5bb; 100 − 2.5 = 97.5bb behind.
-    startingPot: 5.5 * BENCHMARK_CHIPS_PER_BB, effectiveStack: 97.5 * BENCHMARK_CHIPS_PER_BB, rake: 0,
+    ranges: BENCHMARK_RANGES(), startingPot: SRP_STARTING_POT, effectiveStack: SRP_EFFECTIVE_STACK, rake: 0,
     tree: {
-      mode: "menu", flop: BENCHMARK_FLOP, turn: BENCHMARK_LATER, river: BENCHMARK_LATER, turnDonk: null, riverDonk: null,
+      mode: "menu", flop: RICH_FLOP, turn: RICH_LATER, river: RICH_LATER, turnDonk: null, riverDonk: null,
       addAllInThreshold: 1.5, forceAllInThreshold: 0.15, mergingThreshold: 0.1, maxRaisesPerStreet: 1,
     },
     solve: { targetExploitabilityPctPot: 0.3, maxIterations: 2000, memoryCapBytes: 24 * GIB, timeoutMs: 3_600_000,
       compression: "auto", exportScope: "first-street" },
   };
+}
+
+/**
+ * Griffin's own lean "Fold" tree for BTN vs BB SRP 100bb (locked B3 benchmark and B4 library
+ * tree): OOP (BB) bets flop 33% and 66%, turn 66%, river 50% and 100%; IP (BTN) bets 66% on
+ * every street; every raise is call + 60% of the pot after the call, i.e. raise-to =
+ * bet + 0.6 × (pot + 2·bet), which is postflop-solver's pot-relative raise exactly; at most
+ * one raise per street; a size becomes all-in when the stack left after it would be
+ * ≤ 0.2 × the pot after the call (postflop-solver forceAllInThreshold 0.2: the same rule, with
+ * the threshold rounded to whole chips). No extra all-in size, no merging. No separate donk
+ * menu: OOP's turn/river leads use OOP's bet menu, as in Fold.
+ */
+export const LEAN_SRP_TREE: BridgeMenuTree = Object.freeze({
+  mode: "menu",
+  flop: { oop: { bet: [pot(33), pot(66)], raise: [pot(60)] }, ip: { bet: [pot(66)], raise: [pot(60)] } },
+  turn: { oop: { bet: [pot(66)], raise: [pot(60)] }, ip: { bet: [pot(66)], raise: [pot(60)] } },
+  river: { oop: { bet: [pot(50), pot(100)], raise: [pot(60)] }, ip: { bet: [pot(66)], raise: [pot(60)] } },
+  turnDonk: null, riverDonk: null, addAllInThreshold: 0, forceAllInThreshold: 0.2, mergingThreshold: 0, maxRaisesPerStreet: 1,
+});
+
+/** Lean-tree solve settings: 0.3%-pot bar, float32 when it fits the cap. */
+export const LEAN_SRP_SOLVE: BridgeSolveOptions = Object.freeze({
+  targetExploitabilityPctPot: 0.3, maxIterations: 3000, memoryCapBytes: 24 * GIB, timeoutMs: 3 * 3_600_000,
+  compression: "auto", exportScope: "first-street",
+});
+
+/** Any flop with the benchmark's formation, ranges and lean tree (the B4 library uses this). */
+export function leanSrpSpot(id: string, flop: BridgeBoard["flop"], solve: BridgeSolveOptions = LEAN_SRP_SOLVE): BridgeSpotV1 {
+  const board: BridgeBoard = { flop, turn: null, river: null };
+  return validateBridgeSpot({
+    format: BRIDGE_SPOT_FORMAT, version: 1, id, board,
+    ranges: [rangeFromText(BB_CALL.join(" "), flop, `BB (OOP): ${BENCHMARK_RANGE_SOURCE}`),
+      rangeFromText(BTN_OPEN.join(" "), flop, `BTN (IP): ${BENCHMARK_RANGE_SOURCE}`)],
+    startingPot: SRP_STARTING_POT, effectiveStack: SRP_EFFECTIVE_STACK, rake: 0, tree: LEAN_SRP_TREE, solve,
+  });
+}
+
+function benchmarkSpot(): BridgeSpotV1 {
+  return leanSrpSpot("benchmark-lean-srp-btn-bb-100bb-ks7h2d", BENCHMARK_BOARD.flop);
 }
 
 // --- Smoke: upstream examples/basic.rs expressed in the contract -----------------------
@@ -251,28 +295,35 @@ function upstreamBasicSpot(): BridgeSpotV1 {
 export const UPSTREAM_BASIC_RANGE_STRINGS = Object.freeze([UPSTREAM_BASIC_OOP, UPSTREAM_BASIC_IP]);
 
 export type BridgeFixtureId = "referee-river-v3-demo" | "referee-turn-v2-dry-value" | "referee-flop-reference"
-  | "benchmark-srp-btn-bb-100bb-ks7h2d" | "smoke-upstream-basic";
+  | "benchmark-lean-srp-btn-bb-100bb-ks7h2d" | "benchmark-srp-btn-bb-100bb-ks7h2d" | "smoke-upstream-basic";
 
 const BUILDERS: Readonly<Record<BridgeFixtureId, () => BridgeSpotV1>> = {
   "referee-river-v3-demo": riverV3Spot,
   "referee-turn-v2-dry-value": turnV2Spot,
   "referee-flop-reference": flopReferenceSpot,
-  "benchmark-srp-btn-bb-100bb-ks7h2d": benchmarkSpot,
+  "benchmark-lean-srp-btn-bb-100bb-ks7h2d": benchmarkSpot,
+  "benchmark-srp-btn-bb-100bb-ks7h2d": richBenchmarkSpot,
   "smoke-upstream-basic": upstreamBasicSpot,
 };
 
 export const BRIDGE_REFEREE_IDS: readonly BridgeFixtureId[] = ["referee-river-v3-demo", "referee-turn-v2-dry-value", "referee-flop-reference"];
-export const BRIDGE_BENCHMARK_ID: BridgeFixtureId = "benchmark-srp-btn-bb-100bb-ks7h2d";
+/** Locked pass/fail benchmark (lean Fold tree, re-locked for B3). */
+export const BRIDGE_BENCHMARK_ID: BridgeFixtureId = "benchmark-lean-srp-btn-bb-100bb-ks7h2d";
+/** B0/B1 draft benchmark: a documented "rich" experiment, not a gate. */
+export const BRIDGE_RICH_BENCHMARK_ID: BridgeFixtureId = "benchmark-srp-btn-bb-100bb-ks7h2d";
 
 /**
  * sha256(canonical spot JSON), locked 2026-09-25. The referee hashes were fixed before any
- * bridge result was inspected; the benchmark menu was then trimmed once to fit a 32 GB
- * machine after the memory preflight refused the first draft (see the spec).
+ * bridge result was inspected; the rich benchmark menu was trimmed once to fit a 32 GB
+ * machine after the memory preflight refused the first draft (see the spec). B3 re-locked the
+ * pass/fail benchmark to the lean Fold tree (decided before its first solve); the rich spot
+ * keeps its original hash as a documented experiment.
  */
 export const BRIDGE_FIXTURE_HASHES: Readonly<Record<BridgeFixtureId, string>> = Object.freeze({
   "referee-river-v3-demo": "f56f2ddd8b95510211ab3d5e90342e374aac85641e9e5623d956586ba4bf829d",
   "referee-turn-v2-dry-value": "f3fe979856453af9e85466ea542ebd93039240620ee176878edf78ead6c3929a",
   "referee-flop-reference": "e232578f4d7ce705a7b63c6c3a285b90d38886e35fe3a294c133354f26acc8d2",
+  "benchmark-lean-srp-btn-bb-100bb-ks7h2d": "b9e032fcbe228fbe306e9c515562b524cc5a1a48cc9c75f082bad2a8cf24a101",
   "benchmark-srp-btn-bb-100bb-ks7h2d": "cbe72c1982aa2abdc6f41094116025221f57545c73379afcf1267278cce62329",
   "smoke-upstream-basic": "6f22b70ff45761e4b00cb9ec3226dae94295f5ff7aa759d21812229cec42d025",
 });

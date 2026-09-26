@@ -1,35 +1,38 @@
-//! `solver-bridge solve <spot.json> --out <result.json> [--threads N]`
+//! `solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json]`
 //! `solver-bridge estimate <spot.json>` (build the tree, report memory, allocate nothing)
 //!
 //! Reads a spot (contract v1), solves it with postflop-solver, and writes a result
 //! (contract v1). Progress and errors are JSON lines on stderr. On any failure the exit
 //! code is nonzero and no output file exists.
 
-use solver_bridge::{solve_spot, Progress};
+use solver_bridge::{solve_spot_with_slices, Progress};
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 const MAX_SPOT_BYTES: u64 = 64 * 1024 * 1024;
-const USAGE: &str = "usage: solver-bridge solve <spot.json> --out <result.json> [--threads N]\n       solver-bridge estimate <spot.json>";
+const USAGE: &str = "usage: solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json]\n       solver-bridge estimate <spot.json>";
 
 fn emit(value: serde_json::Value) {
     let mut stderr = std::io::stderr().lock();
     let _ = writeln!(stderr, "{value}");
 }
 
-fn parse_args(args: &[String]) -> Result<(PathBuf, PathBuf, Option<usize>), String> {
+type Args = (PathBuf, PathBuf, Option<usize>, Option<PathBuf>);
+
+fn parse_args(args: &[String]) -> Result<Args, String> {
     let mut rest = args.iter();
     if rest.next().map(String::as_str) != Some("solve") {
         return Err(USAGE.into());
     }
     let spot = rest.next().filter(|a| !a.starts_with("--")).ok_or(USAGE)?;
-    let (mut out, mut threads) = (None, None);
+    let (mut out, mut threads, mut slices) = (None, None, None);
     while let Some(flag) = rest.next() {
         let value = rest.next().ok_or(USAGE)?;
         match flag.as_str() {
             "--out" if out.is_none() => out = Some(PathBuf::from(value)),
+            "--slices" if slices.is_none() => slices = Some(PathBuf::from(value)),
             "--threads" if threads.is_none() => {
                 threads = Some(
                     value
@@ -42,7 +45,7 @@ fn parse_args(args: &[String]) -> Result<(PathBuf, PathBuf, Option<usize>), Stri
             _ => return Err(USAGE.into()),
         }
     }
-    Ok((PathBuf::from(spot), out.ok_or(USAGE)?, threads))
+    Ok((PathBuf::from(spot), out.ok_or(USAGE)?, threads, slices))
 }
 
 fn write_atomically(out: &Path, bytes: &[u8]) -> Result<(), String> {
@@ -76,7 +79,7 @@ fn run(args: &[String]) -> Result<(), String> {
         println!("{estimate}");
         return Ok(());
     }
-    let (spot_path, out, threads) = parse_args(args)?;
+    let (spot_path, out, threads, slices_path) = parse_args(args)?;
     if out.exists() {
         return Err(format!(
             "output {} already exists; refusing to overwrite",
@@ -96,8 +99,9 @@ fn run(args: &[String]) -> Result<(), String> {
         return Err(format!("spot file exceeds {MAX_SPOT_BYTES} bytes"));
     }
     let bytes = fs::read(&spot_path).map_err(|e| format!("cannot read {}: {e}", spot_path.display()))?;
+    let plan = slices_path.as_deref().map(read_spot).transpose()?;
     let mut sink = emit;
-    let result = solve_spot(&bytes, &mut Progress(&mut sink))?;
+    let result = solve_spot_with_slices(&bytes, plan.as_deref(), &mut Progress(&mut sink))?;
     let json = serde_json::to_vec(&result).map_err(|e| format!("cannot serialize result: {e}"))?;
     write_atomically(&out, &json)?;
     emit(serde_json::json!({

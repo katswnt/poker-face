@@ -312,3 +312,125 @@ fn timeout_fails_without_a_result() {
     spot["solve"]["maxIterations"] = json!(1_000_000);
     assert!(solve(spot).err().unwrap().contains("timed out"));
 }
+
+fn lean_menu() -> Value {
+    let pct = |p: f64| json!({ "kind": "pot", "pct": p });
+    let street = |oop: Vec<Value>, ip: Vec<Value>| json!({ "oop": { "bet": oop, "raise": [pct(60.0)] }, "ip": { "bet": ip, "raise": [pct(60.0)] } });
+    json!({ "mode": "menu", "flop": null, "turn": street(vec![pct(66.0)], vec![pct(66.0)]),
+        "river": street(vec![pct(50.0), pct(100.0)], vec![pct(66.0)]), "turnDonk": null, "riverDonk": null,
+        "addAllInThreshold": 0, "forceAllInThreshold": 0.2, "mergingThreshold": 0, "maxRaisesPerStreet": 1 })
+}
+
+fn engine_labels(tree: &ActionTree) -> Vec<String> {
+    tree.available_actions().iter().map(|a| format!("{a:?}")).collect()
+}
+
+#[test]
+fn lean_fold_tree_raises_to_call_plus_60_pct_and_forces_all_in_at_0_2_pot() {
+    use solver_bridge::{build_action_tree, spot::Spot};
+    let build = |stack: i64| {
+        let mut spot = turn_spot(["Qs", "Jh", "2h", "5d"], lean_menu(), &["AsAh"], &["KsKh"]);
+        spot["effectiveStack"] = json!(stack);
+        let parsed = Spot::parse(&serde_json::to_vec(&spot).unwrap()).unwrap();
+        build_action_tree(&parsed, &parsed.check_cards().unwrap()).unwrap()
+    };
+    let mut deep = build(400);
+    assert_eq!(engine_labels(&deep), ["Check", "Bet(66)"]);
+    deep.play(Action::Bet(66)).unwrap();
+    // raise-to = bet + 0.6 × (pot + 2·bet) = 66 + 0.6 × 232 = 205.2 → 205.
+    assert_eq!(engine_labels(&deep), ["Fold", "Call", "Raise(205)"]);
+    deep.play(Action::Raise(205)).unwrap();
+    assert_eq!(engine_labels(&deep), ["Fold", "Call"], "one raise per street");
+    // With 240 behind, raising to 205 would leave 35 ≤ 0.2 × 510 (the pot after the call): all-in instead.
+    let mut short = build(240);
+    short.play(Action::Bet(66)).unwrap();
+    assert_eq!(engine_labels(&short), ["Fold", "Call", "AllIn(240)"]);
+    // River: OOP 50%/100%, IP 66% after a check.
+    let mut river = build(400);
+    river.play(Action::Check).unwrap();
+    river.play(Action::Check).unwrap();
+    // ActionTree folds the (implicit) river card into the chance node: its actions are the river's.
+    assert!(river.is_chance_node());
+    assert_eq!(engine_labels(&river), ["Check", "Bet(50)", "Bet(100)"]);
+    river.play(Action::Check).unwrap();
+    assert_eq!(engine_labels(&river), ["Check", "Bet(66)"]);
+}
+
+fn flop_slice_spot() -> Value {
+    let pct = |p: f64| json!({ "kind": "pot", "pct": p });
+    let street = json!({ "oop": { "bet": [pct(50.0)], "raise": [] }, "ip": { "bet": [pct(50.0)], "raise": [] } });
+    json!({ "format": "poker-face-bridge-spot", "version": 1, "id": "test-flop-slices",
+        "board": { "flop": ["Ks", "8s", "4d"], "turn": null, "river": null },
+        "ranges": [ { "source": "test", "combos": combos(&["KhKd", "AsQs"]) }, { "source": "test", "combos": combos(&["9h9d", "QdJd"]) } ],
+        "startingPot": 100, "effectiveStack": 100, "rake": 0,
+        "tree": { "mode": "menu", "flop": street, "turn": street, "river": street, "turnDonk": null, "riverDonk": null,
+            "addAllInThreshold": 0, "forceAllInThreshold": 0, "mergingThreshold": 0, "maxRaisesPerStreet": 0 },
+        "solve": solve_options("first-street") })
+}
+
+fn solve_sliced(plan: Value) -> Result<BridgeResult, String> {
+    let bytes = serde_json::to_vec(&flop_slice_spot()).unwrap();
+    let plan = serde_json::to_vec(&plan).unwrap();
+    let mut sink = |_: Value| {};
+    solver_bridge::solve_spot_with_slices(&bytes, Some(&plan), &mut Progress(&mut sink))
+}
+
+#[test]
+fn slice_plans_select_nodes_by_street_depth_and_report_dead_cards() {
+    // Kd is held by KhKd, but other pairs survive it, so it is dealt. The river board Qc3h is
+    // never reached because Qc is not a listed turn card: it must be reported, not dropped.
+    let plan = json!({ "format": "poker-face-bridge-slices", "version": 1, "flop": { "maxDepth": 0 },
+        "turn": { "cards": ["2c", "Kd"], "maxDepth": 1, "maxPriorRaises": null },
+        "river": { "boards": [["2c", "3h"], ["Qc", "3h"]], "maxDepth": 0, "maxPriorRaises": 0 },
+        "subtrees": [["x", "x", "2c", "x", "x", "3h"]], "equity": true });
+    let result = solve_sliced(plan).unwrap();
+    let slices = result.slices.expect("slices exported");
+    let paths: Vec<String> = slices.nodes.iter().map(|n| n.path.join(" ")).collect();
+    assert_eq!(paths[0], "", "flop root first");
+    assert!(
+        paths
+            .iter()
+            .all(|p| p.is_empty() || p.contains("2c") || p.contains("Kd")),
+        "flop depth 0 only: {paths:?}"
+    );
+    assert!(
+        paths.contains(&"x x 2c".to_string())
+            && paths.contains(&"x x 2c x".to_string())
+            && paths.contains(&"x x 2c b50".to_string())
+    );
+    assert!(!paths.contains(&"x x 2c x b50".to_string()), "turn depth ≤ 1");
+    assert!(paths.contains(&"x x 2c x x 3h".to_string()) && !paths.contains(&"x x 2c x x 3h x".to_string()));
+    for node in &slices.nodes {
+        assert_eq!(node.strategy.len(), node.actions.len());
+        assert!(node.equity.is_some());
+        let board: Vec<&str> = node
+            .path
+            .iter()
+            .filter(|t| t.len() == 2 && t.chars().nth(1).is_some_and(|c| "cdhs".contains(c)))
+            .map(String::as_str)
+            .collect();
+        assert_eq!(&node.board[3..], board.as_slice());
+    }
+    assert_eq!(slices.unreached, ["Qc3h"]);
+    let subtree = &slices.subtrees[0];
+    assert_eq!(subtree.path, ["x", "x", "2c", "x", "x", "3h"]);
+    assert!(matches!(subtree.nodes[0], ResultNode::Player { .. }));
+    // Check-check-… river subtree: root, IP after check, two facing-bet nodes and their terminals.
+    assert!(subtree.nodes.len() >= 5);
+}
+
+#[test]
+fn slice_plan_errors_fail_before_solving() {
+    let bad_path = json!({ "format": "poker-face-bridge-slices", "version": 1, "flop": null, "turn": null, "river": null,
+        "subtrees": [["x", "b999"]], "equity": false });
+    assert!(solve_sliced(bad_path).err().unwrap().contains("no action b999"));
+    let terminal = json!({ "format": "poker-face-bridge-slices", "version": 1, "flop": null, "turn": null, "river": null,
+        "subtrees": [["x", "x"]], "equity": false });
+    assert!(solve_sliced(terminal)
+        .err()
+        .unwrap()
+        .contains("must start at a decision node"));
+    let unknown = json!({ "format": "poker-face-bridge-slices", "version": 1, "flop": null, "turn": null, "river": null,
+        "subtrees": [], "equity": false, "extra": 1 });
+    assert!(solve_sliced(unknown).err().unwrap().contains("unknown field"));
+}
