@@ -83,7 +83,8 @@
     "audit:bridge:library": "node --import tsx scripts/build-bridge-library.ts --check",
     "reproduce:bridge:library": "node --import tsx scripts/build-bridge-library.ts --reproduce",
     "solve:preflop": "node --import tsx scripts/solve-preflop.ts --write",
-    "audit:preflop": "node --import tsx scripts/solve-preflop.ts --check"
+    "audit:preflop": "node --import tsx scripts/solve-preflop.ts --check",
+    "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts"
   },
   "dependencies": {
     "next": "16.3.3",

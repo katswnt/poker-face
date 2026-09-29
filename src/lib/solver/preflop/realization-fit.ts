@@ -7,7 +7,8 @@
 //  2. Flop weights: w_f(x) = fraction of the flops disjoint from x in f's texture stratum
 //     (texture.ts), renormalized over the library flops on which x appears.
 //  3. Ratio estimator: S̄(c) = Σ w r s / Σ w r, Ē(c) = Σ w r e / Σ w r, R̂(c) = S̄ / Ē (flop luck
-//     cancels: a hand that hits has both high share and high equity). Kish size over flops:
+//     is heuristically adjusted, not proved to cancel; see tasks/preflop-model-diagnosis.md).
+//     Kish size over flops (weight concentration, not an accuracy guarantee):
 //     n_c = (Σ_f m_f)² / Σ_f m_f², m_f = Σ_{x∈c} w r.
 //  4. Shrinkage to the class's bucket: R̃ = (n R̂ + κ R̂_bucket) / (n + κ); classes the library
 //     never deals take R̂_bucket; empty buckets take the default.

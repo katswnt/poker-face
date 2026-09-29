@@ -7,20 +7,28 @@ measure how much each player could gain by changing strategy.
 Live app: [pokerface.katswint.com](https://pokerface.katswint.com).
 For a solver-first tour, open `/solver/flop` for six saved three-street games,
 `/solver/postflop` for turn-to-river examples with raises, or
-`/solver/river` for small custom river solves. `/drills` has timed poker-math practice.
+`/solver/river` for small custom river solves. `/drills` has timed poker-math practice;
+`/drills?drill=solver` asks for decisions from the saved 12-flop bridge library.
 Open these locally or on a deployment containing those routes.
 
 ## Current state
 
-As of 2026-09-25, the configurable heads-up river solver v3, its dedicated browser lab,
-a portable benchmark/strategy-grading CLI, guided one-change comparisons, and a bounded
-**offline turn-and-river solver with configurable betting, a wider-range CPU backend, and disk checkpoints**, a **saved turn-and-river explorer**, a **bounded joint flop/turn/river CPU solver with a six-scenario saved library**, an **offline bridge to the external postflop-solver engine, checked by our own graders, with a saved 12-flop 100bb library**, and **timed poker-math drills** are implemented. The solvers are separate from
-the heuristic four-player trainer.
+Repository status as of 2026-09-29 (not a deployment verification): the river lab and
+comparisons, bounded TypeScript turn/flop solvers and saved explorers, and an offline bridge
+to the external Rust postflop-solver engine are implemented. The bridge adds wide-range
+CPU solves, checked on small games by our independent graders, and a saved 12-flop 100bb
+library now used by solver-backed drills. Math drills also work without that library.
+The solvers remain separate from the heuristic four-player trainer.
+
+A new **simplified preflop model is research only**: it converges within its assumed
+payoff model, but its near-100% big-blind defence and future-betting valuation need further
+validation. Its ranges are **not used in the library or app**. Browser-native Rust solving
+and heads-up re-solving play have specifications and partial foundations, not shipped UIs.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
 | `/` — hold'em trainer | Observe or practice four-player hands, with worker-backed equity and price explanations | Heuristic strategy; exact heads-up river equity, sampled equity elsewhere; not an equilibrium solver |
-| `/drills` — math drills | Timed one-question drills with exact answers, worked explanations and a browser-stored review queue | Heads-up, single-bet arithmetic; no implied odds, rake, ICM or solver-backed decisions |
+| `/drills` — math and solver drills | Exact-arithmetic drills plus saved-solver decisions, action values, explanations and a browser-stored review queue | Math shortcuts are labelled approximate; solver grades concern a finite game with assumed ranges, not universal poker advice |
 | `/solver` — push/fold explorer | Instant precomputed heads-up shove-or-fold charts from an exact equity matrix, with card removal | Shove-or-fold abstraction only (chip EV, no antes); one frequency per hand class |
 | `/solver/lab` — Leduc lab | Four lessons about mixing, value bets, bluffs, and bluff-catching | A six-card teaching game, not ordinary hold'em |
 | `/solver/river` — River Solver Lab | Saved example, bounded custom solves, decision inspection, and one-change comparisons | Two players, known final board, explicit ranges and finite bet menu |
@@ -28,7 +36,8 @@ the heuristic four-player trainer.
 | `/solver/flop` — three-street explorer | Six saved games, both public-card transitions, exact-hand values, range groups, source-bound links and downloadable inputs | Five small teaching ranges plus one synthetic 64-by-64 example; one opening size/street, no raises or custom browser flop solve |
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 | Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
-| Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; no page uses it yet |
+| Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; no live browser bridge solve |
+| Experimental preflop model (PF0–PF3) | BTN vs BB CFR+/DCFR, independent grading, exact-enumeration all-in inputs, fitted assumptions for future play | SB always folds; no rake; future betting approximated; flagged output is not promoted to the library or app (PF4 not done) |
 
 **Math drills (`/drills`).** Timed one-question drills for pot odds, minimum defence
 frequency, polar bluff share, outs → equity, counting outs on a real flop, combo counting with
@@ -37,6 +46,14 @@ each generator a second way, including the app's hand evaluator and full deck en
 Explanations show the formula with your numbers and the at-table shortcut, and rules of thumb
 are labelled approximate. Missed questions return through a Leitner review queue stored in
 your browser. See the [drills spec](tasks/drills-spec.md).
+
+**Solver decisions (`/drills?drill=solver`).** Choose an action with a particular hand on
+the flop, turn or river. See the saved strategy's frequencies, action EVs, EV differences,
+price and blocker-aware opponent range groups. Questions load from hash-checked library
+slices, and missed decisions can return for review. The 0.3%-of-pot and mixed-action grading
+bands are teaching choices, not a guarantee of that accuracy for every hand or decision;
+whole-game exploitability does not certify every rarely reached continuation. The inputs
+are hand-written approximate ranges, and the strategy is approximate for the declared game.
 
 The repository also contains a Kuhn reference solver and offline three- and four-player
 river proofs, including separate raise, bet-size, and three-player side-pot experiments.
@@ -442,8 +459,9 @@ The repository can now solve heads-up flop, turn and river games with
 [postflop-solver](https://github.com/b-inary/postflop-solver), an open-source Rust solver by
 Wataru Inariba (b-inary). It runs on an ordinary CPU and handles wide ranges and several bet
 sizes, far beyond the 64-hand TypeScript engines above. It is used as a dependency, not copied
-into this repository, and it is **not trusted on its own**: every result small enough for our
-engines is graded again by our own code, and large results are spot-checked.
+into this repository. Our acceptance audits re-grade locked small games with our own code
+and spot-check large results. An arbitrary bridge CLI solve still reports the external
+engine's own grade unless a separate applicable referee audit is run.
 
 **How it is isolated.** All postflop-solver code lives behind one Rust crate,
 [`native/solver-bridge`](native/solver-bridge), pinned to upstream commit
@@ -543,11 +561,31 @@ approximate equilibrium of this finite game, not exact or universal GTO.
   transfer to bigger games without a new measurement.
 - **Ranges are assumptions.** The benchmark and library use hand-written approximate 100bb
   button-open and big-blind-call ranges, not solved preflop ranges.
-- **No page uses it yet.** The live site does not run the bridge, and no page reads the saved
-  library yet. Other formations are not built.
+- **Saved data, not a live bridge in the browser.** Solver-backed drills read this library;
+  the app does not yet run the Rust bridge in a browser. Other formations are not built.
 
 See the [bridge plan](tasks/postflop-solver-bridge-plan.md) and
 [contract, unit mapping, referee, benchmark and library results](tasks/postflop-solver-bridge-spec.md).
+
+### Experimental preflop model: why its ranges are withheld
+
+PF0–PF3 implement a small BTN-versus-BB preflop game with the small blind assumed folded.
+Folds and all-in showdowns use explicit chip accounting and the exact-enumeration equity
+matrix (stored to six decimals). A call that reaches the flop instead receives an
+**estimated continuation payoff**; it does not trigger a joint full-game postflop solve.
+
+The saved fitted model reaches about **0.188 millibigblinds/hand of exploitability** in
+that model, yet its chart has BB defending **99.7%** against a 2.5bb open. This is a model
+warning, not something more CFR iterations establish as sound poker advice. The fit borrows
+values for 68 unmeasured BB hand classes, and its bounded pot-share formula cannot express
+some values produced by future betting. Its small fit residual is measured against adjusted
+targets, not all of the original measured values.
+
+The [model diagnosis](tasks/preflop-model-diagnosis.md) separates measured evidence from
+hypotheses and lists acceptance gates for a replacement. Run `npm run audit:preflop` to
+reproduce the unchanged published model and `npm run diagnose:preflop` for read-only
+convergence, coverage, fit-residual and sensitivity checks. Neither command replaces the
+hand-written library ranges. See the [original model spec](tasks/preflop-solver-v1-spec.md).
 
 ### Share a game and grade a strategy
 
@@ -640,8 +678,13 @@ opponent's private cards. A good small-game result does not establish full-game 
     lockstep tree walk, and the gates that grade postflop-solver's output with our own engines.
     The Rust side is [`native/solver-bridge`](native/solver-bridge); the saved library's
     hash-checked [loader](src/lib/solver/bridge/library/load.ts) is browser-safe.
-11. [Drill generators](src/lib/drills/generators.ts) and [grading](src/lib/drills/grade.ts):
-    each question is a pure function of `(type, seed, level)` with an exact answer.
+11. [Math drill generators](src/lib/drills/generators.ts) and [grading](src/lib/drills/grade.ts):
+    deterministic formula/enumeration questions. [Solver question source](src/lib/drills/solver/source.ts)
+    and [decision grading](src/lib/drills/solver/build.ts) add asynchronous, saved-data-backed
+    questions graded by action-value differences rather than by guessing a mixed frequency.
+12. [Preflop model diagnosis](tasks/preflop-model-diagnosis.md),
+    [read-only diagnostic script](scripts/diagnose-preflop.ts), and
+    [handoff for Claude](tasks/claude-handoff-2026-09-29.md): current evidence, caveats and next gates.
 
 The CLI exchange is implemented; a browser importer and collaborator-specific adapters
 are not. The import format constrains the submitted policy's observations but cannot
@@ -652,42 +695,45 @@ compatible licenses and is credited where it is used.
 ## Roadmap: what is left
 
 The bounded river engine, labs, exchange, guided comparisons, and offline heads-up turn
-reference are implemented. The active path does not depend on a collaboration.
+and flop engines are implemented. The bridge adds larger CPU solves and its saved library
+already powers solver-backed drills. The active path does not depend on a collaboration.
 
-1. **Grow the CPU solver first.** Baseline profiling, compact solving, wider-range vector
-   calculations, scalable independent grading, disk restart checkpoints, and configurable
-   turn/river betting with raises and five accepted examples, and the saved-result turn
-   explorer are complete. M5 adds a joint flop/turn/river reference and accepted wider
-   CPU solve. M6 adds six audited saved games and the three-street explorer. The next
-   capacity expansion would need a new benchmark contract for richer flop betting or
-   more representative ranges; neither is silently included. Porting our own
-   engines to native code or a GPU (M7) is conditional and not needed for the accepted target.
-   Separately, the postflop-solver bridge adds an external native engine for wide-range
-   heads-up solves, checked by our engines on small games and river subgames. Heads-up play
-   against a re-solving AI has only its P0 data contract (`src/lib/hu-play/`: public state,
-   spot building that never sees hidden cards, deterministic replay); there is no UI yet. The standalone turn lesson
-   is deferred. The [saved implementation plan](tasks/cpu-postflop-solver-plan.md) records
-   the architecture, pros/cons, mitigations, resource budgets, and acceptance gates.
-2. **Verification and reliability.** Postflop-solver now matches one small river, turn and
-   flop game each on identical trees (B2), and six river subgames of its large benchmark
-   solve re-grade to within 7e-6 chips of its values (B3). Next: grade turn subgames of large
-   solves, which needs a turn engine that accepts per-player bet menus. Extend reproduction CI to older river/multiway
-   artifacts; Kuhn, Leduc, turn, compact/vector/configurable turn, the saved explorer, v3, and exchange already have checks. Expand browser and
-   assistive-technology coverage beyond Chromium and make random trainer setups deterministic.
-3. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
+1. **Validate preflop continuation values before promoting ranges.** PF0–PF3 and the
+   [read-only diagnosis](tasks/preflop-model-diagnosis.md) are complete, not a validated
+   full-game preflop solution. Check missing-hand coverage, representative flop sampling,
+   unadjusted fit residuals and the ability to model future betting. Freeze held-out tests
+   before changing the payoff model. PF4 (feeding generated ranges back into the library)
+   remains withheld; adding more flops or more iterations alone is not a demonstrated fix.
+2. **Bring bounded turn/river solving to the browser, then heads-up play.** The
+   [WASM plan](tasks/postflop-solver-wasm-spec.md) has an admission-policy helper; the WASM
+   build, resumable worker, measured device budgets, parity checks and `/solver/live` UI
+   are not implemented. The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
+   has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
+   or live policy source. Keep flops in the saved library and re-solve only admitted turn/
+   river spots; local re-solving does not establish global unexploitable play. This work can
+   use clearly labelled hand-written ranges while preflop research stays separate.
+3. **Verification and reliability.** Keep our TypeScript engines as independent referees.
+   Broader turn-subgame grading needs player- and pot-dependent action menus that the
+   existing turn engines cannot express. CI now covers the older river and multiway audits;
+   the expensive full wider-flop re-solve remains local-only, with the saved policy graded
+   independently in CI. Expand physical-device, browser and assistive-technology coverage.
+   A second richer TypeScript flop solver is not a prerequisite for the Rust/browser path;
+   revisit it only with a specific verification gap and frozen benchmark.
+4. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
-4. **Separate multiway research.** Sampled multiway ranges retain their own Stage 4 gate; a three-player
+5. **Separate multiway research.** Sampled multiway ranges retain their own Stage 4 gate; a three-player
    turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
    exact-small-game parity. General multiway flop play and learned leaf values are not implemented.
-5. **Optional integration.** The benchmark exchange is available now. Build an adapter only
+6. **Optional integration.** The benchmark exchange is available now. Build an adapter only
    after inspecting another implementation's rules and license; add held-out games before
    claiming a learned model generalizes.
 
 There is no present full-range, all-streets, arbitrary-bet-size NLHE solver, and the
 four-player trainer does not inherit the heads-up solver's guarantees.
 The [detailed solver roadmap](tasks/solver-lab-roadmap.md) preserves completed milestones;
-the [multiway research plan](tasks/multiway-nlhe-solver-plan.md) defines its separate gates.
+the [completed CPU-first plan](tasks/cpu-postflop-solver-plan.md) records M0–M6, and the
+[multiway research plan](tasks/multiway-nlhe-solver-plan.md) defines its separate gates.
 
 ---
 
@@ -1092,6 +1138,18 @@ npm run reproduce:bridge:library    # re-solve every library flop; files must ma
 `audit:bridge` took about 7 seconds after the build on the recorded M1 Pro run.
 `reproduce:bridge:library` is local only: it takes tens of minutes and up to 6 GB per solve,
 and CI's x86-64 runners may round float32 sums in a different order.
+
+### Audit the experimental preflop model without promoting it
+
+```bash
+npm run audit:preflop       # reproduce PF2/PF3 and independently re-grade; no writes
+npm run diagnose:preflop    # print hash-bound diagnostic JSON; no writes, no Rust needed
+node --import tsx --test test/preflop-diagnostics.test.ts
+```
+
+The diagnostic runs controlled model changes and delete-one-flop sensitivity checks.
+Those are not recommended replacement assumptions, held-out validation or a new library.
+The existing `solve:preflop` command rewrites research artifacts; it is not needed for review.
 
 ## Accessibility
 

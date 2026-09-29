@@ -1,5 +1,10 @@
 # Preflop solver v1: spec (2026-09-25; PF0–PF3 implemented, results in §12)
 
+> 2026-09-29 diagnostic addendum: PF4 remains withheld. The
+> [model diagnosis](preflop-model-diagnosis.md) supersedes claims below that wider ranges
+> alone fix the model, that a ratio removes flop-sampling bias, or that convergence proves
+> poker validity. Published artifacts are preserved unchanged as v1 research results.
+
 Goal: replace the hand-written BTN-open / BB-call ranges behind the B4 flop library
 (`LIBRARY_PROVENANCE.ranges`, `fixtures.ts`) with ranges from **our own simplified preflop
 model**: CFR+ on a small BTN-vs-BB preflop betting tree, with flop-reaching terminals valued by
@@ -102,11 +107,12 @@ and weights renormalized.
 
 **Estimator (per player p, class c, pot type t), ratio of weighted means:**
 ```
-S̄(c) = Σ_f w_f Σ_{x∈c} r_x s_x / Σ_f w_f Σ_{x∈c} r_x      (r_x = combo's range weight)
+S̄(c) = Σ_f w_f Σ_{x∈c} r_x s_x / Σ_f w_f Σ_{x∈c} r_x      (r_x = normalizedWeight; see §12)
 Ē(c) = same with rootEquity
 R̂(c) = S̄(c) / Ē(c)
 ```
-The ratio cancels flop luck (a hand that hits has both high EV and high equity). Report
+The ratio attempts to adjust for flop luck; it is not generally unbiased when realization
+varies across boards. The diagnosis includes a two-board counterexample. Report
 `Ē(c)` next to the exact matrix equity vs the same range as a sampling diagnostic.
 
 **Shrinkage.** Effective sample `n_c = (Σ_f w_f Σ r_x)² / Σ_f (w_f Σ r_x)²`-style Kish size.
@@ -114,10 +120,15 @@ The ratio cancels flop luck (a hand that hits has both high EV and high equity).
 broadway, suited connectors/gappers, other suited, offsuit broadway, offsuit Ax, other offsuit}
 and κ = 4 (config). Classes with no library reach (outside the library range) take the bucket
 value; buckets with none take the default. Clamp R to [0.3, 1.6] and report every clamp.
+Kish size measures concentration of the chosen weights, not independent random observations
+or a confidence interval for this hand-picked texture sample.
 
-**Fit step.** Because the terminal form normalizes per matchup, raw R̂ does not exactly
-reproduce measured shares. Iterate `R ← R · S̄_measured / S̄_model` (model shares computed on
-the library's own ranges) until max per-class share error < 0.005 or 50 steps. Test asserts it.
+**Implemented fit step (see §12 deviations).** Raw R̂ does not exactly reproduce measured
+shares under the normalized terminal form. Form original targets from shrunk R × matrix
+equity; pin infeasible cells to their achieved value, shift unpinned targets to conserve the
+pot, and iterate against those adjusted targets. Stop when the maximum unpinned adjusted-
+target error is below 0.005 or at 50 steps. This does **not** certify agreement with original
+measurements; the diagnosis reports both residuals separately.
 
 3BP/4BP: keep defaults until a library exists for them; the result records which cells were
 measured and which were defaulted.
@@ -160,15 +171,19 @@ BTN 4-bet %, and range L1 distance vs baseline. Checked in as a table, not tuned
 |---|---|---|
 | BTN RFI % | ~43% (2.5bb, raked, SB can 3-bet) | Wider: our SB always folds and rake = 0. Flag if outside 38–65%. |
 | BB defend vs 2.5x (call + 3-bet) | ~52–58% raked; wider no rake | Research band 55–70% for no rake. Flag outside it. |
-| BB defend lower bound | MDF-style ≥ 37.5% | Hard test (must hold). |
+| BB defend fixture check | MDF-style ≥ 37.5% | Legacy v1 guard; not a proved universal preflop bound. See diagnosis. |
 | BB 3-bet % vs BTN | no citable figure found in research | Report only; add a target when a cited source exists. |
 | Rake direction | more rake ⇒ tighter preflop | When rake stub is on: BTN open % and BB defend % must not widen. |
 
-Structural checks (`npm test`): frequencies in [0,1] and sum to 1; AA/KK never fold at any
-node; open range roughly monotone in hand strength within buckets (report violations);
+Structural checks (`npm test`): frequencies in [0,1] and sum to 1; AA/KK never fold in the
+published fixture (not a theorem for arbitrary games); open range roughly monotone in hand strength within buckets (report violations);
 reproducible from config hash. Targets are sanity bands: **R is never tuned to hit them.**
 
 ## 7. Iteration loop (ranges → library → R → ranges)
+
+**Not an approved promotion path yet.** Before this loop, satisfy the held-out
+continuation-value and model-form gates in the [diagnosis](preflop-model-diagnosis.md).
+A stable fixed point can still be a systematically wrong approximation.
 
 ```
 ranges_0 = hand-written (current) → library_0 (B4) → R_1 → solve → ranges_1
@@ -190,7 +205,8 @@ ranges_1 → library_1 (regenerate 12 flops) → R_2 → solve → ranges_2 ...
 - README (after PF4): "Preflop ranges come from our own simplified preflop solve: CFR+ on a
   BTN-vs-BB preflop tree (SB assumed folded), flop play modelled by equity × realization factor
   R measured from our saved postflop solves. No ante, no rake. A model, not a full-game
-  equilibrium. Matches published aggregates within <bands> (sources linked)." Link this spec.
+  equilibrium." Report any held-out validation actually performed and remaining model
+  errors; do not imply that matching aggregate frequencies validates the model. Link this spec.
 - Until PF4 ships, keep the current hand-written label unchanged. Never cite a commercial
   product as a source; aggregates only, as validation. Keep README and code in sync (tests in
   `test/copy.test.ts` pattern for the provenance string).
@@ -218,6 +234,8 @@ ranges_1 → library_1 (regenerate 12 flops) → R_2 → solve → ranges_2 ...
 - [x] Estimator, shrinkage, fit step; re-solve; diff vs PF2 ranges reported.
 
 ### PF4 — feed ranges to the next library
+- [ ] First validate or replace the continuation model against frozen held-out values;
+      report original-target errors, not only the adjusted-target fit residual.
 - [ ] Emit library ranges + provenance; run the §7 loop to its stop rule; update
       `LIBRARY_PROVENANCE`, README, METHODOLOGY in the same change.
 
@@ -287,20 +305,24 @@ per class is 5–7 flop-equivalents, so κ = 4 shrinkage is substantial. Measure
 classes, SRP OOP 101 classes; the other 82 / 68 classes (never dealt by the hand-written ranges)
 take their bucket's value; 3BP/4BP are §3.1 defaults for both positions. Fit: 9 steps, max share
 error 0.0046 (< 0.005). 28 cells pinned at the 1.6 clamp (AA–33 and some suited connectors):
-their measured flop share exceeds what a bounded share can give (AA IP realizes 1.32 × the
-starting pot through implied odds). Solve: 500 iterations, 0.6 s, **0.19 mbb/hand**.
+their measured flop share exceeds what a bounded share can give (the saved fit's sampled
+AA IP value is 1.393 × the starting pot through future betting; after shrinkage/equity
+adjustment its original target is 1.292, and the achieved value is 0.901). Solve: 500
+iterations, 0.6 s, **0.19 mbb/hand**. The 0.0046 fit residual is against adjusted targets,
+excluding pinned cells; it is not agreement with all original observations.
 
 R table highlights (fitted, SRP): bucket ratios R̂ IP/OOP: pairs 1.37/1.15, suited connectors
 1.36/1.00, suited broadway 1.16/0.94, offsuit Ax 0.87/0.67, offsuit other 1.03/0.86. Examples
 IP/OOP: AKo 0.81/0.76, KQs 1.32/0.94, T9s 1.34/0.86, Q6s 1.00/0.67, K9o 0.76/0.62,
 A5o 0.59/0.46, 72o (bucket) 0.91/0.90. Diagnostic: flop-sample equity Ē vs exact matrix
-equity differs by 0.045 on average (max 0.16), which is the flop luck the ratio estimator removes.
+equity differs by 0.045 on average (max 0.16). The ratio estimator attempts an adjustment;
+it does not generally remove bias from twelve hand-picked representative flops.
 
 | Stat (model comparison) | PF2 default R | PF3 fitted R | Published band (research §3) |
 |---|---|---|---|
 | BTN open % | 60.9 | 51.9 | ~43% raked with SB live; flag outside 38–65: **inside** |
 | BB defend % (call + 3-bet) | 95.1 | 99.7 | 55–70 no rake: **outside (flagged)** |
-| BB defend ≥ 37.5% (MDF) | pass | pass | hard check |
+| BB defend ≥ 37.5% (legacy MDF-style fixture guard) | pass | pass | not a universal preflop theorem |
 | BB 3-bet % | 16.1 | 15.7 | no citable figure |
 | BTN 4-bet+jam % of opens | 10.3 | 10.0 | no citable figure |
 
@@ -321,7 +343,10 @@ PF3, R ±10%: R_IP(SRP) −10% / +10% gives open 48.0% / 57.2%; R_OOP(SRP) ±10%
 the trash hands that decide the defend % mostly have R extrapolated from their bucket, which the
 library measured on the better hands of that bucket (for example, offsuit "other" is measured on
 T9o/98o-type calls). The fit's conservation shift δ (below) adds about 1 point (98.6% without it).
-Wider library ranges (PF4) are the fix; R is not tuned to the band.
+Wider library ranges are a hypothesis to test, not a demonstrated fix. The bounded payoff
+form, adjusted targets and sensitivity to individual texture representatives also need
+validation. See the [2026-09-29 diagnosis](preflop-model-diagnosis.md); R must not be tuned
+to the band, and no production ranges change on this evidence alone.
 
 **Deviations from this spec, and choices it left open.**
 - Averaging delay d = 100 (the spec said d = 0). With d = 0, the first uniform iterations leave
@@ -330,7 +355,7 @@ Wider library ranges (PF4) are the fix; R is not tuned to the band.
 - Stopping is judged on the rounded (1e-6) strategy that is saved.
 - r_x = postflop-solver's `normalizedWeight` (range weight × blocker-compatible opponent weight).
 - Target share T(c) = R̃(c) × exact matrix equity vs the library's opponent range. This applies
-  the luck-cancelling ratio to all boards.
+  the heuristic ratio adjustment to all boards; unbiasedness is not established.
 - The fit needs two additions to reach a fixed point. (1) A scale anchor: a/(a+b) is unchanged
   when every R is multiplied by the same constant, so each step is rescaled to keep the
   range-weighted mean R at the shrunk estimates' mean (0.963). (2) Pinning plus pot

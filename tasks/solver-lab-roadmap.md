@@ -1,18 +1,52 @@
 # Explainable solver lab — guiding plan
 
-**Status:** CPU-first M0–M6 delivered: bounded joint flop/turn/river solver, six-scenario three-street library, saved turn/river explorer, configurable two-street solver with restart checkpoints, guided river comparisons, benchmark exchange, Leduc/River Labs, bounded river solvers and exact multiway proofs implemented
-**Last updated:** 2026-09-24
+**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 is experimental and withheld from production ranges; its model diagnosis is complete. WASM solving and heads-up play remain partial foundations, not shipped features.
+**Last updated:** 2026-09-29
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
 right, and what the learner should gain from it.
 
 **Completed bounded implementation plan:** [CPU-first heads-up postflop solver](cpu-postflop-solver-plan.md).
-The user has prioritized solver capacity over a standalone turn lesson. That plan now
-controls the implementation sequence, tradeoffs, budgets and acceptance gates. It is
+The user prioritized solver capacity over a standalone turn lesson. That plan records
+the completed bounded target's tradeoffs, budgets and acceptance gates. It is
 implemented through M6; M7's conditional acceleration gate is evaluated and not needed
 for this target. Separate turn and flop backends admit up to 64 combinations/player;
 existing reference-engine and custom browser-solve limits remain unchanged.
+
+## Current priorities after the native bridge
+
+This section supersedes the old assumption that another TypeScript flop-capacity milestone
+must come next. Preserve the original engines as readable, independent referees; do not
+automatically resume the unfinished configurable-flop-v2 draft.
+
+| Track | Delivered | Not delivered / limit |
+|---|---|---|
+| Rust bridge B0–B4 | Pinned external engine, strict spot/result contract, small-game referees, 100bb CPU benchmark, 12-flop saved library | Full independent grading of the large game; non-SRP formations |
+| Drills | Math drills and saved-solver decisions, action EVs, review queue, keyboard and phone-width checks | General poker-strength certification or live solves |
+| Preflop PF0–PF3 | Explicit small-game rules, CFR+/DCFR, independent grading, fitted continuation assumptions, diagnostic controls | Validated full-game preflop values; PF4 range promotion |
+| WASM | Draft W0–W4 contract and pure admission-policy helper | Native export-size estimate, WASM build, worker/session, measured device budgets, live UI |
+| Heads-up play | P0 public state, ranges, hidden-card safeguards and deterministic replay | Real policy-source integration, re-solving, off-tree handling and playable UI |
+
+1. **Documentation and preflop diagnosis (completed in this handoff).** The
+   [diagnosis](preflop-model-diagnosis.md) separates numerical convergence from payoff-model
+   validity. Tighter solving does not remove near-100% BB defence. Coverage, original-target
+   fit errors and sampling sensitivity need work. Keep the existing hand-written library
+   ranges; do not tune assumptions to a desired defend percentage. The next preflop change
+   needs held-out continuation-value tests and a versioned payoff-model decision before PF4.
+2. **Recommended product milestone: bounded browser turn/river solving, then play.** Follow
+   the [WASM spec](postflop-solver-wasm-spec.md) and [play spec](heads-up-play-resolving-spec.md),
+   filling their still-open acceptance gates. Start with single-thread parity and conservative
+   admission; measured budgets, honest cancellation/progress and source identity come before
+   the UI. Saved flop inputs may stay hand-written and clearly labelled while preflop research
+   proceeds separately. Do not claim local re-solving makes the overall agent unexploitable.
+3. **Keep independent verification growing.** Larger turn-subgame refereeing needs
+   player- and pot-dependent menus; physical-device and assistive-technology coverage remains
+   incomplete. Choose a narrow verification contract before expanding a reference engine.
+
+See the [Claude handoff](claude-handoff-2026-09-29.md) for exact changes, checks, worktree
+preservation notes and recommendations. No GPU, neural-policy training or learned-value
+model is required by this next product milestone. The standalone turn lesson stays deferred.
 
 ## Where we are now and what comes next
 
@@ -76,10 +110,10 @@ Clean release: 662 unit and 62 Chromium tests, type-check, lint, build and relev
 solver audits pass. See the [M6 contract](saved-flop-library-spec.md) and
 [release audit](saved-flop-library-audit.md).
 
-**Next scope is not automatic:** richer flop betting or more representative ranges need
-a new benchmark contract. Native/GPU work is conditional, not a missing required stage
-of this completed target. Independent external turn/flop matching and broader physical-
-device/browser/screen-reader coverage remain valuable verification work.
+**Boundary of the completed TypeScript target:** richer flop betting and more representative
+ranges were outside M0–M6. The separate bridge now covers larger native solves and locked
+small-game external matching; it does not silently expand these TypeScript engine limits.
+Broader turn-subgame and physical-device/browser/screen-reader coverage remains valuable.
 See the [implementation plan](cpu-postflop-solver-plan.md).
 The standalone turn lesson is deferred, not completed. This path does not depend on
 collaboration and does not replace the **three-player** turn contract in multiway Stage 5.
@@ -107,10 +141,10 @@ The four public fixtures are not held-out evidence of a learned model's generali
 
 Other remaining work is deliberately separated:
 
-- **Verification:** extend explicit reproduction CI coverage to older river/multiway artifacts; deterministic
-  setup for the known random-hand-dependent trainer keyboard check; broader browser and
-  assistive-technology testing. CI now reproduces Kuhn, Leduc, reference/compact/vector/configurable
-  turn, saved explorer chunks, v3, and the exchange manifest.
+- **Verification:** older river/multiway audit coverage is now in CI, alongside bridge and
+  preflop checks. Full wider-flop re-solving is local-only because of its time budget; CI
+  independently grades the saved policy. Broader browser and assistive-technology testing,
+  and deterministic trainer setups, remain separate work.
 - **Teaching:** one-variable comparisons now cover opponent ranges, opening bet menus,
   and opponent stacks. Position, board/blocker, and pot/price comparisons need explicit
   matching semantics. An imperfect-opponent lesson needs a stated opponent model and

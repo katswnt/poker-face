@@ -1,0 +1,1175 @@
+{
+  "format": "poker-face-preflop-model-diagnosis",
+  "version": 1,
+  "warning": "Diagnostic evidence only. Low exploitability measures the declared payoff model, not its accuracy as poker. No production range changes.",
+  "inputs": {
+    "preflopLockSha256": "e026fe140ab73dd34dc69acc7187befd2097cda6cd14224ab75a74ea4bc31be7",
+    "files": {
+      "pf1-pushfold-equivalence.json": "a8f5e85cae2b7e3f194c8bdbf08b233b6527fb3eb666454ea6d4039febc3e5d3",
+      "pf2-default-r.json": "2dc114e1d4c4042fbaac31945d8b8a407be875ead89b2afeefdd36ecabdf7e13",
+      "pf2-sensitivity.json": "0429238b0f3fc10f21782cded95b1dc0b1173814cb89f0beff9d0e215c29f47e",
+      "pf3-measured-r.json": "97399197b813c441f8da268c716a7c4d550b64e85ddb4f9b6c0f83b3a35f0982",
+      "pf3-realization-fit.json": "eba1d7581c6e1e1c83d9992de6e900f4ab5d2aba17ab28de94279f48f59dea9f",
+      "pf3-sensitivity.json": "f67381d1a303bece41d44b4e56e8ad273fa776b74aa412a7265b15ff82d69134"
+    },
+    "libraryManifestSha256": "d5a698b4ef0849cd7591983c11031ae02ea43eb5cdb25a4fd243a1dc5d33d97d",
+    "roots": [
+      {
+        "spotId": "srp-btn-bb-ks7h2d",
+        "spotHash": "e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/root.json",
+        "bytes": 40008,
+        "sha256": "ee653104aa97177ed954a55dcc99249f1b1e613616254c35c3d307cfaa3e298d"
+      },
+      {
+        "spotId": "srp-btn-bb-ad8c3s",
+        "spotHash": "76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/root.json",
+        "bytes": 38243,
+        "sha256": "3c2b74158e2e09938ba7b3376304e73cf2926a0945be29c569e190f27d4ccda5"
+      },
+      {
+        "spotId": "srp-btn-bb-khqdtc",
+        "spotHash": "8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/root.json",
+        "bytes": 37979,
+        "sha256": "decdb5f66366f10bfa7df4b17a011a8191bb6ec9cc632ee468c1cdb0f1b1e3b1"
+      },
+      {
+        "spotId": "srp-btn-bb-9h8h6c",
+        "spotHash": "240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/root.json",
+        "bytes": 39039,
+        "sha256": "4d4107297ca60806ea3a648031a52ad185b23cc9560af275512778000276e1d8"
+      },
+      {
+        "spotId": "srp-btn-bb-qs9s4s",
+        "spotHash": "7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/root.json",
+        "bytes": 39411,
+        "sha256": "d51b99ff53e2b0ced24146fd14e4ca80f053473ce88b540a6dd691f9fcfeb613"
+      },
+      {
+        "spotId": "srp-btn-bb-td7d3c",
+        "spotHash": "3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/root.json",
+        "bytes": 40197,
+        "sha256": "13dec7295a6a9f0f6d8b43d8c3f6f65bdfbcfcdbab64ea5aae757a5dbfae5a24"
+      },
+      {
+        "spotId": "srp-btn-bb-8s8d3h",
+        "spotHash": "fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/root.json",
+        "bytes": 40027,
+        "sha256": "84957934e86ba55ad01488eb4187fab52318c1b6ae86f13a4fa6ec09efdb0167"
+      },
+      {
+        "spotId": "srp-btn-bb-5h4c2d",
+        "spotHash": "2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/root.json",
+        "bytes": 41488,
+        "sha256": "1a2c4971d8262cd6cebf30fe7ebac827df573c6bff1cd48b6538202516fecfc4"
+      },
+      {
+        "spotId": "srp-btn-bb-tc9d7s",
+        "spotHash": "999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/root.json",
+        "bytes": 38843,
+        "sha256": "682929aa2c7200db6a03a51cd8bd674a495a9b0fc36d1456fed64951112e13ff"
+      },
+      {
+        "spotId": "srp-btn-bb-ahth5c",
+        "spotHash": "e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/root.json",
+        "bytes": 37906,
+        "sha256": "baafdd7b7c922a847c6611193495036b2fdc78b6403349915dbd4185c261f414"
+      },
+      {
+        "spotId": "srp-btn-bb-jcjd4s",
+        "spotHash": "15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/root.json",
+        "bytes": 39374,
+        "sha256": "0fa85534fab5f0a69c65e3875432d0e9443815a4ab4ebdeb3171b4d21a05c578"
+      },
+      {
+        "spotId": "srp-btn-bb-7c6c5d",
+        "spotHash": "2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b",
+        "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/root.json",
+        "bytes": 40356,
+        "sha256": "e77bbfff4401b5a4e84f5bf1860e671e6a44256a71d6382590d54f779c6ae001"
+      }
+    ]
+  },
+  "fit": {
+    "maxAdjustedTargetError": 0.004615250714756214,
+    "conservationShift": 0.0243228831711897,
+    "ip": {
+      "classes": 169,
+      "measuredClasses": 87,
+      "bucketClasses": 82,
+      "defaultClasses": 0,
+      "measuredSharesAboveOne": [
+        "AA",
+        "KK",
+        "QQ",
+        "JJ",
+        "TT",
+        "77"
+      ],
+      "originalTargetsAboveOne": [
+        "AA",
+        "KK",
+        "QQ",
+        "JJ",
+        "TT"
+      ],
+      "pinnedClasses": 19,
+      "maxOriginalTargetError": 0.3907930880203391,
+      "maxAdjustedTargetErrorUnpinned": 0.004615250714756214,
+      "worstOriginalTargets": [
+        {
+          "hand": "AA",
+          "source": "measured",
+          "measuredShare": 1.392790823686951,
+          "originalTarget": 1.29217073859288,
+          "adjustedTarget": 0.9013776505725409,
+          "achieved": 0.9013776505725409,
+          "pinned": true
+        },
+        {
+          "hand": "KK",
+          "source": "measured",
+          "measuredShare": 1.2150608690167326,
+          "originalTarget": 1.1742943155344123,
+          "adjustedTarget": 0.8821635935593916,
+          "achieved": 0.8821635935593916,
+          "pinned": true
+        },
+        {
+          "hand": "TT",
+          "source": "measured",
+          "measuredShare": 1.270976069423699,
+          "originalTarget": 1.1067984953164758,
+          "adjustedTarget": 0.8279753894222119,
+          "achieved": 0.8279753894222119,
+          "pinned": true
+        },
+        {
+          "hand": "77",
+          "source": "measured",
+          "measuredShare": 1.1534345344017964,
+          "originalTarget": 0.9551555081870767,
+          "adjustedTarget": 0.7375579527555193,
+          "achieved": 0.7375579527555193,
+          "pinned": true
+        },
+        {
+          "hand": "QQ",
+          "source": "measured",
+          "measuredShare": 1.0749115652919083,
+          "originalTarget": 1.0747394041921827,
+          "adjustedTarget": 0.8642182303319531,
+          "achieved": 0.8642182303319531,
+          "pinned": true
+        }
+      ]
+    },
+    "oop": {
+      "classes": 169,
+      "measuredClasses": 101,
+      "bucketClasses": 68,
+      "defaultClasses": 0,
+      "measuredSharesAboveOne": [
+        "QQ",
+        "TT",
+        "77"
+      ],
+      "originalTargetsAboveOne": [
+        "TT"
+      ],
+      "pinnedClasses": 9,
+      "maxOriginalTargetError": 0.263817813311254,
+      "maxAdjustedTargetErrorUnpinned": 0.002764086546120259,
+      "worstOriginalTargets": [
+        {
+          "hand": "TT",
+          "source": "measured",
+          "measuredShare": 1.265265501927376,
+          "originalTarget": 1.0171840210250218,
+          "adjustedTarget": 0.7533662077137678,
+          "achieved": 0.7533662077137678,
+          "pinned": true
+        },
+        {
+          "hand": "77",
+          "source": "measured",
+          "measuredShare": 1.1368530491378583,
+          "originalTarget": 0.8779972118295898,
+          "adjustedTarget": 0.6655215888617069,
+          "achieved": 0.6655215888617069,
+          "pinned": true
+        },
+        {
+          "hand": "QQ",
+          "source": "measured",
+          "measuredShare": 1.020253198966147,
+          "originalTarget": 0.9534774298316705,
+          "adjustedTarget": 0.8070714683279032,
+          "achieved": 0.8070714683279032,
+          "pinned": true
+        },
+        {
+          "hand": "33",
+          "source": "measured",
+          "measuredShare": 0.923745027724784,
+          "originalTarget": 0.7022674493613486,
+          "adjustedTarget": 0.5830631584740757,
+          "achieved": 0.5830631584740757,
+          "pinned": true
+        },
+        {
+          "hand": "AA",
+          "source": "bucket",
+          "measuredShare": null,
+          "originalTarget": 0.9738202912957665,
+          "adjustedTarget": 0.8774712302938463,
+          "achieved": 0.8774712302938463,
+          "pinned": true
+        }
+      ]
+    }
+  },
+  "baselineCallTrace": [
+    {
+      "hand": "72o",
+      "matrixEquityVsOpeningRange": 0.3042349175616432,
+      "modeledShare": 0.2787298115901059,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 0.03301396374558241,
+      "savedCallMinusFoldBb": 0.033009999999999984,
+      "callFrequency": 0.826808,
+      "foldFrequency": 0.173192
+    },
+    {
+      "hand": "83o",
+      "matrixEquityVsOpeningRange": 0.31577043143233935,
+      "modeledShare": 0.2874223577797716,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 0.08082296778874376,
+      "savedCallMinusFoldBb": 0.08082,
+      "callFrequency": 0.994058,
+      "foldFrequency": 0.005942
+    },
+    {
+      "hand": "32o",
+      "matrixEquityVsOpeningRange": 0.30659235454287453,
+      "modeledShare": 0.2812358355745182,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 0.04679709565985002,
+      "savedCallMinusFoldBb": 0.04679999999999995,
+      "callFrequency": 0.902801,
+      "foldFrequency": 0.097199
+    },
+    {
+      "hand": "T9o",
+      "matrixEquityVsOpeningRange": 0.41224783790671465,
+      "modeledShare": 0.34250726297642575,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 0.3837899463703416,
+      "savedCallMinusFoldBb": 0.38378999999999996,
+      "callFrequency": 1,
+      "foldFrequency": 0
+    },
+    {
+      "hand": "98o",
+      "matrixEquityVsOpeningRange": 0.3917084196412797,
+      "modeledShare": 0.44834913738678595,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 0.9659202556273225,
+      "savedCallMinusFoldBb": 0.96592,
+      "callFrequency": 1,
+      "foldFrequency": 0
+    },
+    {
+      "hand": "AA",
+      "matrixEquityVsOpeningRange": 0.8479756715183755,
+      "modeledShare": 0.8840678700044415,
+      "breakEvenShare": 0.2727272727272727,
+      "callMinusFoldBb": 3.362373285024429,
+      "savedCallMinusFoldBb": 3.36237,
+      "callFrequency": 0,
+      "foldFrequency": 0
+    }
+  ],
+  "ratioAdjustmentCounterexample": {
+    "trueMeanEquity": 0.5,
+    "trueMeanShare": 0.65,
+    "adjustedShare": 0.7499999999999999,
+    "bias": 0.09999999999999987
+  },
+  "variants": [
+    {
+      "label": "saved PF3 baseline",
+      "iterations": 500,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00018761777846425243,
+      "btnValueBb": 0.360863817974527,
+      "bestResponseGainsBb": [
+        0.00015491284038088304,
+        0.0002203227165476218
+      ],
+      "strategyHash": "4db193b2ea307f291f3ebcef6e22eeec2ba25626865c75c03be4f07925191faa",
+      "btnOpenPct": 51.86536349924584,
+      "chartDefendPct": 99.70813936651582,
+      "conditionalDefendPct": 99.69773627837034,
+      "unmeasuredShareOfDefendingCombosPct": 49.02235508581576,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.9907,
+          "callingCombos": 482.493344
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 648.1392280000001,
+          "callingCombos": 632.139228
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 0,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3042349175616432,
+          "modeledShare": 0.2787298115901059,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.03301396374558241,
+          "savedCallMinusFoldBb": 0.033009999999999984,
+          "callFrequency": 0.826808,
+          "foldFrequency": 0.173192
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.31577043143233935,
+          "modeledShare": 0.2874223577797716,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.08082296778874376,
+          "savedCallMinusFoldBb": 0.08082,
+          "callFrequency": 0.994058,
+          "foldFrequency": 0.005942
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.30659235454287453,
+          "modeledShare": 0.2812358355745182,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.04679709565985002,
+          "savedCallMinusFoldBb": 0.04679999999999995,
+          "callFrequency": 0.902801,
+          "foldFrequency": 0.097199
+        }
+      ]
+    },
+    {
+      "label": "same model, 100x tighter stopping target",
+      "iterations": 5700,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.000001978526693757754,
+      "btnValueBb": 0.36088220610468713,
+      "bestResponseGainsBb": [
+        0.0000027151359009436327,
+        0.0000012419174865718752
+      ],
+      "strategyHash": "19322c9d14285ef852dd8813fb4b853507222b4c31befb26f4e8f8b4f5bb9f4f",
+      "btnOpenPct": 50.80947511312216,
+      "chartDefendPct": 99.99848054298647,
+      "conditionalDefendPct": 99.99842671505314,
+      "unmeasuredShareOfDefendingCombosPct": 49.16966868060675,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.999952,
+          "callingCombos": 482.0159940000001
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 651.9799,
+          "callingCombos": 635.9798999999999
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 3.849924,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3037292943558758,
+          "modeledShare": 0.27676057240498875,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.022183148227438165,
+          "savedCallMinusFoldBb": 0.022179999999999978,
+          "callFrequency": 0.999084,
+          "foldFrequency": 0.000916
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.31495352512202235,
+          "modeledShare": 0.2850941639853114,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.06801790191921264,
+          "savedCallMinusFoldBb": 0.06801999999999997,
+          "callFrequency": 0.99997,
+          "foldFrequency": 0.00003
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.3060536157529214,
+          "modeledShare": 0.27925176423531684,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.03588470329424265,
+          "savedCallMinusFoldBb": 0.03588000000000002,
+          "callFrequency": 0.999503,
+          "foldFrequency": 0.000497
+        }
+      ]
+    },
+    {
+      "label": "same model, DCFR",
+      "iterations": 200,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00010595574048101464,
+      "btnValueBb": 0.3608232216900117,
+      "bestResponseGainsBb": [
+        0.00010939142879196062,
+        0.00010252005217006865
+      ],
+      "strategyHash": "624117df881c373fb7db59c064dace77e4ed5015fee52daa1ed7d008a451f889",
+      "btnOpenPct": 51.075992006033196,
+      "chartDefendPct": 99.96804012066363,
+      "conditionalDefendPct": 99.96698160310908,
+      "unmeasuredShareOfDefendingCombosPct": 49.155679628324556,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.980216,
+          "callingCombos": 481.259512
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 651.5959960000001,
+          "callingCombos": 635.5953400000002
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 3.56294,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3037533084763636,
+          "modeledShare": 0.2771502467526271,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.024326357139449195,
+          "savedCallMinusFoldBb": 0.024329999999999963,
+          "callFrequency": 0.98841,
+          "foldFrequency": 0.01159
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.31505895335421163,
+          "modeledShare": 0.28556316017462846,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.07059738096045653,
+          "savedCallMinusFoldBb": 0.0706,
+          "callFrequency": 0.998821,
+          "foldFrequency": 0.001179
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.3061953341420509,
+          "modeledShare": 0.27973568116235686,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.03854624639296267,
+          "savedCallMinusFoldBb": 0.03854999999999997,
+          "callFrequency": 0.991309,
+          "foldFrequency": 0.008691
+        }
+      ]
+    },
+    {
+      "label": "all R = 1 (checkdown-payoff control, NOT poker)",
+      "iterations": 700,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.000197682275023342,
+      "btnValueBb": 0.27959371793314713,
+      "bestResponseGainsBb": [
+        0.0001805858957954487,
+        0.00021477865425123532
+      ],
+      "strategyHash": "ada55d3c3cf6fe2e2b1bd4cb1288043f6c3082be10c70db117c3792ed2aca887",
+      "btnOpenPct": 48.470755505279044,
+      "chartDefendPct": 99.99806787330316,
+      "conditionalDefendPct": 99.99799082641022,
+      "unmeasuredShareOfDefendingCombosPct": 49.16945529520714,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 674,
+          "callingCombos": 502.6406440000001
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 651.97438,
+          "callingCombos": 634.5646800000001
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 3.844452,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.29849391631959216,
+          "modeledShare": 0.29849391631959216,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.1417165397577569,
+          "savedCallMinusFoldBb": 0.14171999999999996,
+          "callFrequency": 0.998531,
+          "foldFrequency": 0.001469
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.30640553941155485,
+          "modeledShare": 0.30640553941155485,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.1852304667635516,
+          "savedCallMinusFoldBb": 0.18523,
+          "callFrequency": 0.999962,
+          "foldFrequency": 0.000038
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.30406895979505316,
+          "modeledShare": 0.30406895979505316,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.17237927887279247,
+          "savedCallMinusFoldBb": 0.17237999999999998,
+          "callFrequency": 0.99966,
+          "foldFrequency": 0.00034
+        }
+      ]
+    },
+    {
+      "label": "all fitted R scaled by 0.9 (scale-invariance control)",
+      "iterations": 500,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.0001876177784642663,
+      "btnValueBb": 0.360863817974527,
+      "bestResponseGainsBb": [
+        0.00015491284038082753,
+        0.00022032271654770508
+      ],
+      "strategyHash": "4db193b2ea307f291f3ebcef6e22eeec2ba25626865c75c03be4f07925191faa",
+      "btnOpenPct": 51.86536349924584,
+      "chartDefendPct": 99.70813936651582,
+      "conditionalDefendPct": 99.69773627837034,
+      "unmeasuredShareOfDefendingCombosPct": 49.02235508581576,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.9907,
+          "callingCombos": 482.493344
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 648.1392280000001,
+          "callingCombos": 632.139228
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 0,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3042349175616432,
+          "modeledShare": 0.27872981159010585,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.03301396374558219,
+          "savedCallMinusFoldBb": 0.033009999999999984,
+          "callFrequency": 0.826808,
+          "foldFrequency": 0.173192
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.31577043143233935,
+          "modeledShare": 0.28742235777977154,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.08082296778874354,
+          "savedCallMinusFoldBb": 0.08082,
+          "callFrequency": 0.994058,
+          "foldFrequency": 0.005942
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.30659235454287453,
+          "modeledShare": 0.2812358355745182,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.04679709565985002,
+          "savedCallMinusFoldBb": 0.04679999999999995,
+          "callFrequency": 0.902801,
+          "foldFrequency": 0.097199
+        }
+      ]
+    },
+    {
+      "label": "no conservation shift",
+      "iterations": 600,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00016944069405468165,
+      "btnValueBb": 0.3755724921806996,
+      "bestResponseGainsBb": [
+        0.00007930654808813165,
+        0.00025957484002123166
+      ],
+      "strategyHash": "a3732fc2d917a1d8924df6c634ff9d9eeae5b9b5db1dabd39f1faec5636e92e5",
+      "btnOpenPct": 52.47548265460029,
+      "chartDefendPct": 98.56810648567124,
+      "conditionalDefendPct": 98.51569712682615,
+      "unmeasuredShareOfDefendingCombosPct": 48.44826604078116,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.787912,
+          "callingCombos": 478.478018
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 633.22518,
+          "callingCombos": 617.22518
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 15.116836000000001,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.30490998083063053,
+          "modeledShare": 0.270066170749521,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.014636060877634582,
+          "savedCallMinusFoldBb": -0.014639999999999986,
+          "callFrequency": 0.474243,
+          "foldFrequency": 0.525757
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.316471338605478,
+          "modeledShare": 0.2793079281103799,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.036193604607089425,
+          "savedCallMinusFoldBb": 0.036190000000000055,
+          "callFrequency": 0.938391,
+          "foldFrequency": 0.061609
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.3068707727695732,
+          "modeledShare": 0.2723203468549743,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.00223809229764127,
+          "savedCallMinusFoldBb": -0.0022400000000000198,
+          "callFrequency": 0.517434,
+          "foldFrequency": 0.482566
+        }
+      ],
+      "fitConvergedToAdjustedTargets": false,
+      "fitMaxAdjustedError": 0.039462828756056556,
+      "conservationShift": 0,
+      "pinnedCells": 22,
+      "clampedCells": 28
+    },
+    {
+      "label": "no bucket shrinkage for measured classes",
+      "iterations": 600,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00016152693294452236,
+      "btnValueBb": 0.35917914830418524,
+      "bestResponseGainsBb": [
+        0.00012588184702866378,
+        0.00019717201886038094
+      ],
+      "strategyHash": "e92c6867ea1b758b348df0ea760e629b1fd723659580786f1ce5cd13f3879380",
+      "btnOpenPct": 50.70911040723981,
+      "chartDefendPct": 97.89436591251884,
+      "conditionalDefendPct": 97.88454588027726,
+      "unmeasuredShareOfDefendingCombosPct": 50.0101801177181,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 648.9075,
+          "callingCombos": 456.34784
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 649.1717919999999,
+          "callingCombos": 633.1717919999999
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 26.130931999999998,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.30365304187811154,
+          "modeledShare": 0.27952066120014296,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.03736363660078634,
+          "savedCallMinusFoldBb": 0.03735999999999995,
+          "callFrequency": 0.874666,
+          "foldFrequency": 0.125334
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.3152488208200671,
+          "modeledShare": 0.28761897662542807,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.0819043714398544,
+          "savedCallMinusFoldBb": 0.08189999999999997,
+          "callFrequency": 0.993927,
+          "foldFrequency": 0.006073
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.3059555775194625,
+          "modeledShare": 0.2821202697089859,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.05166148339942245,
+          "savedCallMinusFoldBb": 0.05166000000000004,
+          "callFrequency": 0.928713,
+          "foldFrequency": 0.071287
+        }
+      ],
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004102121328346198,
+      "conservationShift": 0.032025021022430204,
+      "pinnedCells": 36,
+      "clampedCells": 36
+    },
+    {
+      "label": "wider R clamps [0.05, 8], still bounded pot shares",
+      "iterations": 700,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.0001534688856800609,
+      "btnValueBb": 0.37497357435546413,
+      "bestResponseGainsBb": [
+        0.00008365402219934204,
+        0.00022328374916077975
+      ],
+      "strategyHash": "eee500e500a6d81cc119ee72ac607e272ddabf2039410d9971746280ace1ae90",
+      "btnOpenPct": 50.7204681749623,
+      "chartDefendPct": 98.20781508295624,
+      "conditionalDefendPct": 98.14352339796098,
+      "unmeasuredShareOfDefendingCombosPct": 48.259615578571776,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 673.7817200000001,
+          "callingCombos": 491.24277800000004
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 628.453908,
+          "callingCombos": 612.453908
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 19.8943,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.30417555948356945,
+          "modeledShare": 0.26787865413703843,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.02666740224628872,
+          "savedCallMinusFoldBb": -0.02666999999999997,
+          "callFrequency": 0.397114,
+          "foldFrequency": 0.602886
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.31484376813420745,
+          "modeledShare": 0.27576196066744635,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": 0.01669078367095489,
+          "savedCallMinusFoldBb": 0.016689999999999983,
+          "callFrequency": 0.827721,
+          "foldFrequency": 0.172279
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.30627680900449283,
+          "modeledShare": 0.2702669092579755,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.013531999081134893,
+          "savedCallMinusFoldBb": -0.013530000000000042,
+          "callFrequency": 0.463854,
+          "foldFrequency": 0.536146
+        }
+      ],
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.003770252861599488,
+      "conservationShift": 0.013524862578138393,
+      "pinnedCells": 9,
+      "clampedCells": 9
+    },
+    {
+      "label": "unmeasured BB SRP cells set to 0.5 (unvalidated stress test)",
+      "iterations": 500,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00019322536072986785,
+      "btnValueBb": 0.46936745385653217,
+      "bestResponseGainsBb": [
+        0.00013397004905302268,
+        0.000252480672406713
+      ],
+      "strategyHash": "e6be82ac805cac3c7f0711af3159e4160e4256b6e4f66ec2a56f3302140c6413",
+      "btnOpenPct": 69.61017194570135,
+      "chartDefendPct": 62.40566123680241,
+      "conditionalDefendPct": 61.88971757376081,
+      "unmeasuredShareOfDefendingCombosPct": 18.549757206493922,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 674,
+          "callingCombos": 408.24587199999996
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 153.49906800000002,
+          "callingCombos": 137.46668
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 494.64946,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3127322424428093,
+          "modeledShare": 0.18969662454142394,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.45666856502216824,
+          "savedCallMinusFoldBb": -0.4566699999999999,
+          "callFrequency": 0,
+          "foldFrequency": 1
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.3280549077520671,
+          "modeledShare": 0.20161063453360994,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.3911415100651454,
+          "savedCallMinusFoldBb": -0.39114000000000004,
+          "callFrequency": 0,
+          "foldFrequency": 1
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.31206501235395284,
+          "modeledShare": 0.18961233345400247,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.45713216600298634,
+          "savedCallMinusFoldBb": -0.45713000000000004,
+          "callFrequency": 0,
+          "foldFrequency": 1
+        }
+      ]
+    },
+    {
+      "label": "unmeasured BB SRP cells set to 0.7 (unvalidated stress test)",
+      "iterations": 800,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.0001759596941493663,
+      "btnValueBb": 0.42494864808886823,
+      "bestResponseGainsBb": [
+        0.00005439369360465962,
+        0.000297525694694073
+      ],
+      "strategyHash": "7ee2788ace1632bfcce2b8ec93a323fa92eb43a0d96ff4c4453c993d9dc266b8",
+      "btnOpenPct": 61.05568084464555,
+      "chartDefendPct": 84.62266274509803,
+      "conditionalDefendPct": 84.23597803264614,
+      "unmeasuredShareOfDefendingCombosPct": 39.93386529637075,
+      "groups": {
+        "measured": {
+          "classes": 101,
+          "combos": 674,
+          "defendingCombos": 674,
+          "callingCombos": 455.0149620000001
+        },
+        "bucket": {
+          "classes": 68,
+          "combos": 652,
+          "defendingCombos": 448.096508,
+          "callingCombos": 432.096508
+        },
+        "default": {
+          "classes": 0,
+          "combos": 0,
+          "defendingCombos": 0,
+          "callingCombos": 0
+        }
+      },
+      "bbDefendL1CombosVsBaseline": 200.05202000000003,
+      "weakCalls": [
+        {
+          "hand": "72o",
+          "matrixEquityVsOpeningRange": 0.3121982604112812,
+          "modeledShare": 0.24329918577260704,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.16185447825066124,
+          "savedCallMinusFoldBb": -0.16185000000000005,
+          "callFrequency": 0.000114,
+          "foldFrequency": 0.999886
+        },
+        {
+          "hand": "83o",
+          "matrixEquityVsOpeningRange": 0.3242914425205688,
+          "modeledShare": 0.25368316743800956,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.10474257909094753,
+          "savedCallMinusFoldBb": -0.10474000000000006,
+          "callFrequency": 0.003465,
+          "foldFrequency": 0.996535
+        },
+        {
+          "hand": "32o",
+          "matrixEquityVsOpeningRange": 0.3101697598350799,
+          "modeledShare": 0.24195504793731532,
+          "breakEvenShare": 0.2727272727272727,
+          "callMinusFoldBb": -0.16924723634476568,
+          "savedCallMinusFoldBb": -0.1692499999999999,
+          "callFrequency": 0.00002,
+          "foldFrequency": 0.99998
+        }
+      ]
+    }
+  ],
+  "deleteOneFlop": [
+    {
+      "omitted": "srp-btn-bb-ks7h2d",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.0038029841255131647,
+      "conservationShift": 0.025625706717000405,
+      "pinnedCells": 36,
+      "clampedCells": 36,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00013435630417812927,
+      "btnOpenPct": 51.53348898944191,
+      "bbDefendPct": 99.92034177978884,
+      "bbDefendL1Combos": 2.8140280000000004
+    },
+    {
+      "omitted": "srp-btn-bb-ad8c3s",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.0037319345914035296,
+      "conservationShift": 0.025073993119871164,
+      "pinnedCells": 28,
+      "clampedCells": 28,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00017380498350089146,
+      "btnOpenPct": 49.907928506787336,
+      "bbDefendPct": 99.55891402714933,
+      "bbDefendL1Combos": 1.9787279999999998
+    },
+    {
+      "omitted": "srp-btn-bb-khqdtc",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004575602165433623,
+      "conservationShift": 0.02468304425889722,
+      "pinnedCells": 28,
+      "clampedCells": 28,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00018931229563062812,
+      "btnOpenPct": 51.58202564102562,
+      "bbDefendPct": 99.80158823529412,
+      "bbDefendL1Combos": 1.239132
+    },
+    {
+      "omitted": "srp-btn-bb-9h8h6c",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.00464750912758205,
+      "conservationShift": 0.024564624585273,
+      "pinnedCells": 29,
+      "clampedCells": 29,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00017602822776054128,
+      "btnOpenPct": 51.758952036199105,
+      "bbDefendPct": 99.68212126696832,
+      "bbDefendL1Combos": 0.3669839999999998
+    },
+    {
+      "omitted": "srp-btn-bb-qs9s4s",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004130777968991861,
+      "conservationShift": 0.02545486812920442,
+      "pinnedCells": 30,
+      "clampedCells": 30,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.0001682912467620007,
+      "btnOpenPct": 50.983951131221716,
+      "bbDefendPct": 99.8697592760181,
+      "bbDefendL1Combos": 2.1430800000000003
+    },
+    {
+      "omitted": "srp-btn-bb-td7d3c",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.002136121432743332,
+      "conservationShift": 0.021012854941565382,
+      "pinnedCells": 27,
+      "clampedCells": 27,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00016729070671324398,
+      "btnOpenPct": 50.92027662141779,
+      "bbDefendPct": 99.51901206636501,
+      "bbDefendL1Combos": 9.950084000000004
+    },
+    {
+      "omitted": "srp-btn-bb-8s8d3h",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004875271659363745,
+      "conservationShift": 0.021971930793795155,
+      "pinnedCells": 26,
+      "clampedCells": 26,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00016829203564592415,
+      "btnOpenPct": 57.34786063348417,
+      "bbDefendPct": 92.18306063348416,
+      "bbDefendL1Combos": 99.78784800000001
+    },
+    {
+      "omitted": "srp-btn-bb-5h4c2d",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004724604217542172,
+      "conservationShift": 0.024269957327813653,
+      "pinnedCells": 28,
+      "clampedCells": 28,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00018486235564561804,
+      "btnOpenPct": 50.783096229260934,
+      "bbDefendPct": 99.74868325791856,
+      "bbDefendL1Combos": 0.9991799999999997
+    },
+    {
+      "omitted": "srp-btn-bb-tc9d7s",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004963321125930231,
+      "conservationShift": 0.024291454105484434,
+      "pinnedCells": 28,
+      "clampedCells": 28,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00013749829301838712,
+      "btnOpenPct": 52.24344947209654,
+      "bbDefendPct": 99.71103257918553,
+      "bbDefendL1Combos": 0.14420399999999967
+    },
+    {
+      "omitted": "srp-btn-bb-ahth5c",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.0047641271555688425,
+      "conservationShift": 0.025669421420954464,
+      "pinnedCells": 30,
+      "clampedCells": 30,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00014724240994543059,
+      "btnOpenPct": 50.258917345399695,
+      "bbDefendPct": 99.93276199095023,
+      "bbDefendL1Combos": 2.978544
+    },
+    {
+      "omitted": "srp-btn-bb-jcjd4s",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.0043773161042025555,
+      "conservationShift": 0.02448679612729038,
+      "pinnedCells": 29,
+      "clampedCells": 29,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00015213054065371656,
+      "btnOpenPct": 51.40585972850678,
+      "bbDefendPct": 99.88628687782806,
+      "bbDefendL1Combos": 2.3622360000000002
+    },
+    {
+      "omitted": "srp-btn-bb-7c6c5d",
+      "fitConvergedToAdjustedTargets": true,
+      "fitMaxAdjustedError": 0.004610275354329785,
+      "conservationShift": 0.02404944911106697,
+      "pinnedCells": 25,
+      "clampedCells": 25,
+      "convergedWithinModel": true,
+      "exploitabilityBbPerHand": 0.00017425095715412064,
+      "btnOpenPct": 52.79320723981901,
+      "bbDefendPct": 99.36089864253394,
+      "bbDefendL1Combos": 4.604412
+    }
+  ]
+}
