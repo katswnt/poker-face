@@ -253,10 +253,17 @@ network (§13). Corresponding Source must be offered for the exact build:
 - [x] Node ST gates and 20-case measurement grid: zero observed native/WASM numerical
       differences; independent referee tolerance unchanged. See the W1 audit.
 - [x] `bridge-wasm` CI definition and local Chromium/Firefox/WebKit ST Worker parity.
-- [x] W1 hosted CI observed green: run `36753561883`, commit `ebcd248`, 2026-09-30.
-      W2's hosted gates must pass on its own release commit. MT parity remains deferred.
-- [ ] Manual: Safari macOS and iOS (ST and, if isolated, MT), Android Chrome. Record timings
-      and OOM behaviour at the budget edge.
+- [x] Hosted ST CI observed green: W1 run `36753561883` (`ebcd248`) and W2 run
+      `36757906224` (`bf44ef2`), 2026-09-30; all jobs, not only the WASM job.
+- [x] M1 Pro Chromium/Firefox/WebKit grid: 72 fresh-process/Worker observations, 63 admitted
+      results with matching fingerprints and nine expected refusals. Wall time, post-export
+      WASM high-water and sampled browser RSS (including WebKit XPC services) are recorded
+      in [W3](postflop-solver-w3-verification.md). Caps and 0.0002-chip tolerance unchanged.
+- [ ] **Open (device):** actual Safari.app, physical iOS Safari and Android Chrome; no
+      devices provided. Thermal/background/OOM behavior at the edge remains unmeasured.
+      Playwright WebKit is not a substitute for those tests.
+
+MT parity is deferred optional scope, not a completed ST gate or an implied claim.
 
 ### W4: minimal UI hook
 - [ ] `/solver/live` (a full-load `<a>` link from the lab): guided setup or pasted spot,

@@ -178,6 +178,7 @@ jobs:
       - run: npm run test:wasm:live
       - run: npm run profile:wasm:live
       - run: npm run audit:wasm:live -- chromium firefox webkit
+      - run: npm run profile:wasm:browsers -- chromium firefox webkit
 
   # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
   # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the

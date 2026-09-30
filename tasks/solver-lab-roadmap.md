@@ -3,6 +3,10 @@
 **Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 remains experimental and withheld. W1 provides a verified single-thread WASM foundation and W2 a bounded Worker; public browser UI and heads-up play remain unfinished.
 **Last updated:** 2026-09-30
 
+**W3 verification:** [Desktop browser measurements](postflop-solver-w3-verification.md)
+cover 72 fresh-process jobs on the M1 Pro; W1 and W2 are pushed with all hosted CI green.
+Physical devices remain open and the conservative ST admission caps are unchanged.
+
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
 right, and what the learner should gain from it.

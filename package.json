@@ -81,6 +81,7 @@
     "audit:wasm:live": "node --import tsx scripts/audit-bridge-live-browser.ts",
     "test:wasm:live": "node --import tsx --test test/bridge-live.test.ts",
     "profile:wasm:live": "node --import tsx scripts/profile-bridge-live.ts",
+    "profile:wasm:browsers": "node --import tsx scripts/profile-bridge-live-browser.ts",
     "test:wasm": "node --import tsx --test test/bridge-wasm.test.ts",
     "test:bridge": "cargo test --release --locked --manifest-path native/solver-bridge/Cargo.toml",
     "solve:bridge": "node --import tsx scripts/solve-bridge.ts",

@@ -712,7 +712,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    real progress, cancellation and stale-job protection for bounded turn/river solves.
    It uses float32, at most 64 hands per player and a conservative 256 MiB reservation;
    no automatic compressed fallback or silent change to the game. This is not yet a public
-   browser rollout: device measurements and the learner UI follow in W3–W4. See the
+   browser rollout: [W3 desktop measurements](tasks/postflop-solver-w3-verification.md)
+   cover Chromium, Firefox and WebKit, but physical devices remain unvalidated and the
+   learner UI follows in W4. See the
    [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
    or live policy source. Keep flops in the saved library and re-solve only admitted turn/
