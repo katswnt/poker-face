@@ -705,9 +705,12 @@ already powers solver-backed drills. The active path does not depend on a collab
    before changing the payoff model. PF4 (feeding generated ranges back into the library)
    remains withheld; adding more flops or more iterations alone is not a demonstrated fix.
 2. **Bring bounded turn/river solving to the browser, then heads-up play.** The
-   [WASM plan](tasks/postflop-solver-wasm-spec.md) has an admission-policy helper; the WASM
-   build, resumable worker, measured device budgets, parity checks and `/solver/live` UI
-   are not implemented. The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
+   [W1 single-threaded foundation](tasks/postflop-solver-w1-st.md) shares a resumable Rust
+   session with the native bridge. Its WASM output matches native on the tested games and
+   passes independent small-game checks; Chromium, Firefox and WebKit Worker harnesses
+   agree. This is not a public browser rollout: production admission, cancellation, device
+   measurements and the learner UI follow in W2–W4. See the
+   [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
    or live policy source. Keep flops in the saved library and re-solve only admitted turn/
    river spots; local re-solving does not establish global unexploitable play. This work can

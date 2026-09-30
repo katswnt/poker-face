@@ -138,10 +138,43 @@ jobs:
         run: npm run test:bridge
 
       - name: Drive solver-bridge through the Node runner, referee and slice-export tests
-        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts
+        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts test/bridge-session-regression.test.ts
 
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge
+
+  # W1 ST build and parity harness only; no live page or MT/isolation claim.
+  bridge-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.98.1
+          targets: wasm32-unknown-unknown
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            native/solver-bridge
+            native/solver-bridge-wasm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: cargo +1.98.1 install wasm-bindgen-cli --version 0.2.104 --locked
+      - run: npm run build:bridge
+      - run: npm run build:wasm
+      - name: Rust format and WASM lint
+        run: |
+          cargo +1.98.1 fmt --check --manifest-path native/solver-bridge-wasm/Cargo.toml
+          cargo +1.98.1 clippy --release --locked --manifest-path native/solver-bridge-wasm/Cargo.toml --target wasm32-unknown-unknown -- -D warnings
+      - run: npm run test:wasm
+      - run: npm run audit:wasm
+      - run: npm run audit:wasm -- --measure
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run audit:wasm:browser -- chromium firefox webkit
 
   # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
   # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the

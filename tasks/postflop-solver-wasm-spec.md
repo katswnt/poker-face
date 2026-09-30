@@ -1,9 +1,13 @@
 # B5: WASM live solving in the browser (spec draft, 2026-09-25)
 
 Follows `tasks/postflop-solver-bridge-plan.md` ("After this plan: B5") and
-`tasks/postflop-solver-bridge-spec.md` (contract v1, B2 tolerance). Research only so far:
-nothing below has been built or measured in a browser yet. Numbers marked *(measure)* are
-placeholders that W0/W2 must replace with measured values.
+`tasks/postflop-solver-bridge-spec.md` (contract v1, B2 tolerance).
+
+**2026-09-30 W1 update:** [the ST implementation record](postflop-solver-w1-st.md)
+supersedes this draft's build assumptions: stable Rust 1.98.1, wasm-bindgen 0.2.104, shared
+resumable session, hashed source-complete build and UI-less browser parity are implemented.
+MT, public assets, production Worker/admission and UI are later milestones. The large-game
+sizing table below is a research proposal, not permission for live browser allocations.
 
 ## Goals
 
@@ -215,12 +219,14 @@ network (§13). Corresponding Source must be offered for the exact build:
 - [x] Document the browser meanings of the Result v1 fields (above) in the bridge spec. No
       schema change.
 
-### W1: build
-- [ ] Feature-gate `solver-bridge` (`native`, `threads`, `wasm`) and refactor to `Session`.
-      The native `audit:bridge` output must be bit-identical to B2.
-- [ ] `native/solver-bridge-wasm` crate, pinned nightly, `npm run build:wasm` → hashed
-      `public/wasm/<hash>/{st,mt}`, plus the rev-equality test.
-- [ ] `next.config.ts` headers (COOP/COEP/immutable caching). Verify isolation and worker COEP
+### W1: build (ST implemented; MT/deployment deferred)
+- [x] Feature-gate `solver-bridge` (`native`, `threads`, `wasm`) and refactor to `Session`.
+      Native numerical/tree/slice output matches the pre-W1 binary; timing/RSS excluded.
+- [x] `native/solver-bridge-wasm`, stable Rust 1.98.1, wasm-bindgen 0.2.104; hashed ST
+      assets under ignored `target/web/<hash>/`, with exact source, vendored dependencies,
+      licenses and manifest. Engine-revision and stale-source checks.
+- [ ] MT build and public deployment. Nightly/isolation are not required for ST.
+- [ ] When MT is pursued: `next.config.ts` headers (COOP/COEP/immutable caching). Verify isolation and worker COEP
       in Chrome, Firefox and Safari, and that soft navigation falls back to ST.
 
 ### W2: worker and UI-less harness
@@ -231,8 +237,10 @@ network (§13). Corresponding Source must be offered for the exact build:
       the placeholders.
 
 ### W3: verification
-- [ ] Node ST gates and the measurement run. Record bit-identity or the |Δ| table in this spec.
-- [ ] `bridge-wasm` CI job + Playwright Chromium (MT/ST) and WebKit (ST).
+- [x] Node ST gates and 20-case measurement grid: zero observed native/WASM numerical
+      differences; independent referee tolerance unchanged. See the W1 record.
+- [x] `bridge-wasm` CI definition and local Chromium/Firefox/WebKit ST Worker parity.
+- [ ] Hosted CI observed green; MT parity remains deferred, not implied by ST.
 - [ ] Manual: Safari macOS and iOS (ST and, if isolated, MT), Android Chrome. Record timings
       and OOM behaviour at the budget edge.
 
@@ -245,8 +253,8 @@ network (§13). Corresponding Source must be offered for the exact build:
 
 - **Nightly drift** (threads need nightly plus `build-std`): pin a date and keep ST
   stable-capable.
-- **Upstream on a new target**: we have never built the pinned commit for wasm (compare
-  bincode in B1).
+- **Coverage on a new target**: W1 ST passes the listed parity/referee cases. Larger trees,
+  MT and physical mobile devices still need separate evidence.
 - **Trap = lost session** (panic or OOM): admission makes it rare, and restarting the worker
   makes it safe.
 - **Browser memory**: tabs die below the stated limits, especially on iOS. Keep budgets

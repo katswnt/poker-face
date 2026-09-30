@@ -245,9 +245,10 @@ referee tests (`test/bridge-referee.test.ts`); first CI run pending push.
 ## Result v1 in the browser (B5 plan; no schema change)
 
 A live (wasm32) solve writes the same Result v1. Fields whose meaning changes there:
-`memory.peakRssBytes` is the final linear-memory size (`memory_size(0) × 65536`; linear memory
-never shrinks, so it is the peak); `engine.threads` is the rayon pool size (1 for the
-single-thread build); `timings` come from `performance.now()`. `spotHash` must still equal a
+`memory.peakRssBytes` is **0 (unavailable)**, not fabricated process RSS. W1 status reports
+linear memory separately (`memory_size(0) × 65536`); it excludes JS/browser overhead and
+is not a device memory budget. `engine.threads` is 1 for ST; monotonic `timings` use web-time.
+`spotHash` must still equal a
 JS `crypto.subtle` SHA-256 of the canonical spot bytes. Admission before allocation:
 `src/lib/solver/bridge/wasm-admission.ts` (see `tasks/postflop-solver-wasm-spec.md`).
 

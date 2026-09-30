@@ -1,7 +1,7 @@
 # Explainable solver lab — guiding plan
 
-**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 is experimental and withheld from production ranges; its model diagnosis is complete. WASM solving and heads-up play remain partial foundations, not shipped features.
-**Last updated:** 2026-09-29
+**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 remains experimental and withheld. W1 provides a verified single-thread WASM foundation; production browser solving and heads-up play remain unfinished.
+**Last updated:** 2026-09-30
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -25,7 +25,7 @@ automatically resume the unfinished configurable-flop-v2 draft.
 | Rust bridge B0–B4 | Pinned external engine, strict spot/result contract, small-game referees, 100bb CPU benchmark, 12-flop saved library | Full independent grading of the large game; non-SRP formations |
 | Drills | Math drills and saved-solver decisions, action EVs, review queue, keyboard and phone-width checks | General poker-strength certification or live solves |
 | Preflop PF0–PF3 | Explicit small-game rules, CFR+/DCFR, independent grading, fitted continuation assumptions, diagnostic controls | Validated full-game preflop values; PF4 range promotion |
-| WASM | Draft W0–W4 contract and pure admission-policy helper | Native export-size estimate, WASM build, worker/session, measured device budgets, live UI |
+| WASM | W1 single-thread WASM session, native parity and independent small-game checks | Production export admission/Worker, measured device budgets, live UI, MT |
 | Heads-up play | P0 public state, ranges, hidden-card safeguards and deterministic replay | Real policy-source integration, re-solving, off-tree handling and playable UI |
 
 1. **Documentation and preflop diagnosis (completed in this handoff).** The
@@ -36,9 +36,10 @@ automatically resume the unfinished configurable-flop-v2 draft.
    needs held-out continuation-value tests and a versioned payoff-model decision before PF4.
 2. **Recommended product milestone: bounded browser turn/river solving, then play.** Follow
    the [WASM spec](postflop-solver-wasm-spec.md) and [play spec](heads-up-play-resolving-spec.md),
-   filling their still-open acceptance gates. Start with single-thread parity and conservative
-   admission; measured budgets, honest cancellation/progress and source identity come before
-   the UI. Saved flop inputs may stay hand-written and clearly labelled while preflop research
+   filling their still-open acceptance gates. [W1 ST](postflop-solver-w1-st.md) establishes
+   single-thread parity. Next: conservative export-aware admission, genuine progress and
+   cancellation, then the learner UI and physical-device checks. Saved flop inputs may stay
+   hand-written and clearly labelled while preflop research
    proceeds separately. Do not claim local re-solving makes the overall agent unexploitable.
 3. **Keep independent verification growing.** Larger turn-subgame refereeing needs
    player- and pot-dependent menus; physical-device and assistive-technology coverage remains

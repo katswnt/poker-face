@@ -2,7 +2,7 @@
 
 use postflop_solver::{Action, ActionTree, BetSizeOptions, BoardState, DonkSizeOptions, TreeConfig};
 use serde_json::{json, Value};
-use solver_bridge::{solve_spot, BridgeResult, Progress, ResultNode};
+use solver_bridge::{solve_spot, BridgeResult, Progress, ResultNode, Session};
 
 fn basic_config() -> TreeConfig {
     let sizes = BetSizeOptions::try_from(("60%, e, a", "2.5x")).unwrap();
@@ -433,4 +433,109 @@ fn slice_plan_errors_fail_before_solving() {
     let unknown = json!({ "format": "poker-face-bridge-slices", "version": 1, "flop": null, "turn": null, "river": null,
         "subtrees": [], "equity": false, "extra": 1 });
     assert!(solve_sliced(unknown).err().unwrap().contains("unknown field"));
+}
+
+fn numerical_result(result: BridgeResult) -> Value {
+    let mut value = serde_json::to_value(result).unwrap();
+    value.as_object_mut().unwrap().remove("timings");
+    value.as_object_mut().unwrap().remove("memory");
+    for checkpoint in value["convergence"].as_array_mut().unwrap() {
+        checkpoint.as_object_mut().unwrap().remove("elapsedMs");
+    }
+    value
+}
+
+fn session_spot() -> Value {
+    let mut spot = turn_spot(
+        ["Qs", "Jh", "2h", "3s"],
+        menu(json!([{ "kind": "pot", "pct": 50 }]), json!([]), json!(0)),
+        &["AdAc", "Tc9c", "Td9d"],
+        &["KdKc", "8c7c", "8d7d"],
+    );
+    spot["solve"]["maxIterations"] = json!(23);
+    spot["solve"]["targetExploitabilityPctPot"] = json!(1e-9);
+    spot
+}
+
+#[test]
+fn chunks_and_previews_preserve_the_same_solve_and_checkpoint_schedule() {
+    let spot = session_spot();
+    let bytes = serde_json::to_vec(&spot).unwrap();
+    let expected = numerical_result(solve(spot).unwrap());
+    for chunk in [1, 3, 7, 10, 100, u32::MAX] {
+        let mut session = Session::new(&bytes).unwrap();
+        session.allocate().unwrap();
+        while !session.is_done() {
+            let status = session.step(chunk).unwrap();
+            assert!(status.measured_at_iteration.unwrap() <= status.iterations);
+            let preview = session.root_strategy().unwrap();
+            assert_eq!(preview["final"], false);
+            assert!(preview.get("ev").is_none());
+        }
+        assert_eq!(session.status().iterations, 23);
+        assert_eq!(session.step(1).unwrap().iterations, 23);
+        let actual = numerical_result(session.finish().unwrap());
+        assert_eq!(actual, expected, "chunk {chunk}");
+        assert_eq!(
+            actual["convergence"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|c| c["iteration"].as_u64().unwrap())
+                .collect::<Vec<_>>(),
+            [0, 10, 20, 23]
+        );
+    }
+}
+
+#[test]
+fn session_enforces_allocation_and_no_partial_result() {
+    let bytes = serde_json::to_vec(&session_spot()).unwrap();
+    let mut session = Session::new(&bytes).unwrap();
+    assert!(!session.status().allocated);
+    assert_eq!(session.status().exploitability, None);
+    assert_eq!(session.estimate(), solver_bridge::estimate_spot(&bytes).unwrap());
+    assert!(session.step(1).is_err());
+    assert!(session.root_strategy().is_err());
+    session.allocate().unwrap();
+    assert!(session.allocate().is_err());
+    assert!(session.step(0).is_err());
+    let status = session.step(3).unwrap();
+    assert_eq!(status.iterations, 3);
+    assert_eq!(
+        status.measured_at_iteration,
+        Some(0),
+        "do not pretend the old grade is current"
+    );
+    assert!(session.finish().err().unwrap().contains("cannot finish"));
+}
+
+#[test]
+fn session_refuses_storage_over_cap_and_poisoned_timeouts_cannot_resume() {
+    let mut spot = session_spot();
+    spot["solve"]["memoryCapBytes"] = json!(1);
+    let mut session = Session::new(&serde_json::to_vec(&spot).unwrap()).unwrap();
+    assert!(session.allocate().err().unwrap().contains("exceeds the cap"));
+    assert!(!session.status().allocated);
+
+    spot["solve"]["memoryCapBytes"] = json!(1u64 << 30);
+    spot["solve"]["timeoutMs"] = json!(1);
+    let mut session = Session::new(&serde_json::to_vec(&spot).unwrap()).unwrap();
+    std::thread::sleep(std::time::Duration::from_millis(3));
+    assert!(session.allocate().err().unwrap().contains("timed out"));
+    assert!(session.status().failed);
+    assert!(session.step(1).err().unwrap().contains("discard"));
+    assert!(session.finish().is_err());
+}
+
+#[test]
+fn a_game_already_at_target_finishes_without_invented_iterations() {
+    let bytes = serde_json::to_vec(&river_spot(check_down(), &["AsAh"], &["3s3h"])).unwrap();
+    let mut session = Session::new(&bytes).unwrap();
+    let status = session.allocate().unwrap();
+    assert!(status.done);
+    assert_eq!(status.iterations, 0);
+    let result = session.finish().unwrap();
+    assert_eq!(result.iterations, 0);
+    assert_eq!(result.convergence.len(), 1);
 }

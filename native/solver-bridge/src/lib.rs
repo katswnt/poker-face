@@ -14,7 +14,13 @@ use spot::{
     StreetMenu, TreeSpec,
 };
 use std::collections::HashMap;
+#[cfg(not(all(feature = "wasm", target_arch = "wasm32")))]
 use std::time::Instant;
+#[cfg(all(feature = "wasm", target_arch = "wasm32"))]
+use web_time::Instant;
+
+#[cfg(all(target_arch = "wasm32", feature = "native"))]
+compile_error!("WASM must disable the native feature (no libc or native thread pool)");
 
 pub const POSTFLOP_SOLVER_REPOSITORY: &str = "https://github.com/b-inary/postflop-solver";
 /// Must equal the `rev` in Cargo.toml and POSTFLOP_SOLVER_COMMIT in contract.ts.
@@ -626,6 +632,7 @@ impl Exporter {
 }
 
 /// Peak resident set size of this process in bytes.
+#[cfg(feature = "native")]
 pub fn peak_rss_bytes() -> u64 {
     let mut usage: libc::rusage = unsafe { std::mem::zeroed() };
     if unsafe { libc::getrusage(libc::RUSAGE_SELF, &mut usage) } != 0 {
@@ -637,6 +644,39 @@ pub fn peak_rss_bytes() -> u64 {
     } else {
         max * 1024
     }
+}
+
+/// RSS is unavailable in WASM. Zero means unavailable, NOT zero memory consumption.
+#[cfg(not(feature = "native"))]
+pub fn peak_rss_bytes() -> u64 {
+    0
+}
+
+/// Linear memory is not RSS and excludes JS objects, serialization and browser overhead.
+pub fn linear_memory_bytes() -> Option<u64> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        Some(core::arch::wasm32::memory_size(0) as u64 * 65_536)
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        None
+    }
+}
+
+fn thread_count() -> usize {
+    #[cfg(feature = "threads")]
+    {
+        rayon::current_num_threads()
+    }
+    #[cfg(not(feature = "threads"))]
+    {
+        1
+    }
+}
+
+fn elapsed_ms(since: Instant) -> u64 {
+    since.elapsed().as_millis() as u64
 }
 
 pub fn sha256_hex(bytes: &[u8]) -> String {
@@ -677,199 +717,417 @@ pub fn solve_spot_with_slices(
     plan_bytes: Option<&[u8]>,
     progress: &mut Progress,
 ) -> Result<BridgeResult, String> {
-    let plan = plan_bytes.map(slices::SlicePlan::parse).transpose()?;
-    let started = Instant::now();
-    let elapsed_ms = |since: Instant| since.elapsed().as_millis() as u64;
-    let spot = Spot::parse(bytes)?;
-    let cards = spot.check_cards()?;
-    let options = spot.solve;
-    progress.emit(serde_json::json!({ "type": "progress", "stage": "building", "elapsedMs": elapsed_ms(started) }));
-
-    let build_started = Instant::now();
-    let mut game = build_game(&spot, &cards)?;
-    let build_ms = elapsed_ms(build_started);
-
-    // Map the spot's hands to the engine's private-hand order; both must be the same set.
-    let mut order: [Vec<usize>; 2] = [Vec::new(), Vec::new()];
-    let mut hands: [Vec<(Card, Card)>; 2] = [Vec::new(), Vec::new()];
-    for player in 0..2 {
-        hands[player] = game.private_cards(player).to_vec();
-        let index: HashMap<(Card, Card), usize> = hands[player].iter().enumerate().map(|(i, &h)| (h, i)).collect();
-        if index.len() != cards.hands[player].len() {
-            return Err(format!(
-                "engine kept {} hands for player {player}; spot has {}",
-                index.len(),
-                cards.hands[player].len()
-            ));
-        }
-        for (combo, pair, _) in &cards.hands[player] {
-            order[player].push(*index.get(pair).ok_or_else(|| format!("engine dropped hand {combo}"))?);
-        }
+    progress.emit(serde_json::json!({ "type": "progress", "stage": "building", "elapsedMs": 0 }));
+    let mut session = Session::with_slices(bytes, plan_bytes)?;
+    progress.emit(serde_json::json!({ "type": "progress", "stage": "allocating",
+        "estimatedBytes": session.estimated, "estimatedCompressedBytes": session.estimated_compressed,
+        "compression": session.compress, "elapsedMs": elapsed_ms(session.started) }));
+    session.allocate()?;
+    while !session.is_done() {
+        let status = session.step(EXPLOITABILITY_EVERY)?;
+        progress.emit(
+            serde_json::json!({ "type": "progress", "stage": "solving", "iteration": status.iterations,
+            "maxIterations": status.max_iterations, "exploitability": status.exploitability, "target": status.target,
+            "elapsedMs": status.elapsed_ms, "peakRssBytes": peak_rss_bytes() }),
+        );
     }
-
-    let (estimated, estimated_compressed) = game.memory_usage();
-    let compress = match options.compression {
-        Compression::Off => false,
-        Compression::On => true,
-        Compression::Auto => estimated > options.memory_cap_bytes,
-    };
-    let allocated_estimate = if compress { estimated_compressed } else { estimated };
     progress.emit(
-        serde_json::json!({ "type": "progress", "stage": "allocating", "estimatedBytes": estimated,
-        "estimatedCompressedBytes": estimated_compressed, "compression": compress, "elapsedMs": elapsed_ms(started) }),
+        serde_json::json!({ "type": "progress", "stage": "exporting", "elapsedMs": elapsed_ms(session.started) }),
     );
-    if allocated_estimate > options.memory_cap_bytes {
-        return Err(format!(
-            "estimated memory {allocated_estimate} bytes (compression {compress}) exceeds the cap {} bytes; nothing allocated",
-            options.memory_cap_bytes
-        ));
-    }
-    let allocate_started = Instant::now();
-    game.allocate_memory(compress);
-    let allocate_ms = elapsed_ms(allocate_started);
-    if let Some(plan) = &plan {
-        slices::check_subtree_paths(&mut game, plan)?;
+    session.finish()
+}
+
+/// A checkpoint describes the last MEASURED policy, not an estimate of later iterations.
+#[derive(Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct SessionStatus {
+    pub iterations: u32,
+    pub max_iterations: u32,
+    pub measured_at_iteration: Option<u32>,
+    pub exploitability: Option<f32>,
+    pub target: f64,
+    pub allocated: bool,
+    pub done: bool,
+    pub failed: bool,
+    pub elapsed_ms: u64,
+    pub linear_memory_bytes: Option<u64>,
+}
+
+/// One persistent DCFR solve. Chunk boundaries never reset regrets, averaging or iteration
+/// indices, and never trigger extra exploitability checks. Drop it to cancel between calls.
+/// Construction allocates the public game/card tables, but NOT strategy storage. This is
+/// an engine API, not a browser admission policy; export/JS overhead is not in memory_usage.
+pub struct Session {
+    spot: Spot,
+    cards: CheckedCards,
+    spot_hash: String,
+    game: PostFlopGame,
+    order: [Vec<usize>; 2],
+    hands: [Vec<(Card, Card)>; 2],
+    plan: Option<slices::SlicePlan>,
+    plan_hash: Option<String>,
+    started: Instant,
+    solve_started: Option<Instant>,
+    build_ms: u64,
+    allocate_ms: u64,
+    estimated: u64,
+    estimated_compressed: u64,
+    allocated_estimate: u64,
+    compress: bool,
+    allocated: bool,
+    failed: bool,
+    iterations: u32,
+    target: f64,
+    exploitability: Option<f32>,
+    convergence: Vec<Checkpoint>,
+}
+
+impl Session {
+    pub fn new(bytes: &[u8]) -> Result<Self, String> {
+        Self::with_slices(bytes, None)
     }
 
-    let target = spot.starting_pot as f64 * options.target_exploitability_pct_pot / 100.0;
-    let timeout = std::time::Duration::from_millis(options.timeout_ms);
-    let solve_started = Instant::now();
-    let mut exploitability = compute_exploitability(&game);
-    let mut convergence = vec![Checkpoint {
-        iteration: 0,
-        exploitability,
-        elapsed_ms: 0,
-    }];
-    let mut iterations = 0;
-    while iterations < options.max_iterations && f64::from(exploitability) > target {
-        if started.elapsed() > timeout {
+    fn with_slices(bytes: &[u8], plan_bytes: Option<&[u8]>) -> Result<Self, String> {
+        let started = Instant::now();
+        let plan = plan_bytes.map(slices::SlicePlan::parse).transpose()?;
+        let spot = Spot::parse(bytes)?;
+        let cards = spot.check_cards()?;
+        let options = spot.solve;
+
+        let build_started = Instant::now();
+        let game = build_game(&spot, &cards)?;
+        let build_ms = elapsed_ms(build_started);
+
+        // Map the spot's hands to the engine's private-hand order; both must be the same set.
+        let mut order: [Vec<usize>; 2] = [Vec::new(), Vec::new()];
+        let mut hands: [Vec<(Card, Card)>; 2] = [Vec::new(), Vec::new()];
+        for player in 0..2 {
+            hands[player] = game.private_cards(player).to_vec();
+            let index: HashMap<(Card, Card), usize> = hands[player].iter().enumerate().map(|(i, &h)| (h, i)).collect();
+            if index.len() != cards.hands[player].len() {
+                return Err(format!(
+                    "engine kept {} hands for player {player}; spot has {}",
+                    index.len(),
+                    cards.hands[player].len()
+                ));
+            }
+            for (combo, pair, _) in &cards.hands[player] {
+                order[player].push(*index.get(pair).ok_or_else(|| format!("engine dropped hand {combo}"))?);
+            }
+        }
+
+        let (estimated, estimated_compressed) = game.memory_usage();
+        let compress = match options.compression {
+            Compression::Off => false,
+            Compression::On => true,
+            Compression::Auto => estimated > options.memory_cap_bytes,
+        };
+        let allocated_estimate = if compress { estimated_compressed } else { estimated };
+        let target = spot.starting_pot as f64 * options.target_exploitability_pct_pot / 100.0;
+        Ok(Self {
+            spot,
+            cards,
+            spot_hash: sha256_hex(bytes),
+            game,
+            order,
+            hands,
+            plan,
+            plan_hash: plan_bytes.map(sha256_hex),
+            started,
+            solve_started: None,
+            build_ms,
+            allocate_ms: 0,
+            estimated,
+            estimated_compressed,
+            allocated_estimate,
+            compress,
+            allocated: false,
+            failed: false,
+            iterations: 0,
+            target,
+            exploitability: None,
+            convergence: Vec::new(),
+        })
+    }
+
+    pub fn estimate(&self) -> serde_json::Value {
+        serde_json::json!({ "type": "estimate", "spotId": self.spot.id, "spotHash": self.spot_hash,
+            "estimatedBytes": self.estimated, "estimatedCompressedBytes": self.estimated_compressed,
+            "hands": [self.hands[0].len(), self.hands[1].len()], "memoryCapBytes": self.spot.solve.memory_cap_bytes })
+    }
+
+    pub fn status(&self) -> SessionStatus {
+        SessionStatus {
+            iterations: self.iterations,
+            max_iterations: self.spot.solve.max_iterations,
+            measured_at_iteration: self.convergence.last().map(|c| c.iteration),
+            exploitability: self.exploitability,
+            target: self.target,
+            allocated: self.allocated,
+            done: self.is_done(),
+            failed: self.failed,
+            elapsed_ms: elapsed_ms(self.started),
+            linear_memory_bytes: linear_memory_bytes(),
+        }
+    }
+
+    fn check_time(&mut self) -> Result<(), String> {
+        if self.failed {
+            return Err("session failed; discard it".into());
+        }
+        if self.started.elapsed() > std::time::Duration::from_millis(self.spot.solve.timeout_ms) {
+            self.failed = true;
             return Err(format!(
-                "timed out after {iterations} iterations (limit {} ms); no result written",
-                options.timeout_ms
+                "timed out after {} iterations (limit {} ms); no result written",
+                self.iterations, self.spot.solve.timeout_ms
             ));
         }
-        solve_step(&game, iterations);
-        iterations += 1;
-        if iterations % EXPLOITABILITY_EVERY == 0 || iterations == options.max_iterations {
-            exploitability = compute_exploitability(&game);
-            let elapsed = elapsed_ms(solve_started);
-            convergence.push(Checkpoint {
-                iteration: iterations,
-                exploitability,
-                elapsed_ms: elapsed,
-            });
-            progress.emit(
-                serde_json::json!({ "type": "progress", "stage": "solving", "iteration": iterations,
-                "maxIterations": options.max_iterations, "exploitability": exploitability, "target": target,
-                "elapsedMs": elapsed_ms(started), "peakRssBytes": peak_rss_bytes() }),
-            );
-        }
-    }
-    finalize(&mut game);
-    let exploitability = compute_exploitability(&game);
-    let solve_ms = elapsed_ms(solve_started);
-    if !exploitability.is_finite() {
-        return Err("engine reported a non-finite exploitability".into());
-    }
-    if started.elapsed() > timeout {
-        return Err("timed out while finalizing; no result written".into());
+        Ok(())
     }
 
-    progress.emit(serde_json::json!({ "type": "progress", "stage": "exporting", "elapsedMs": elapsed_ms(started) }));
-    let export_started = Instant::now();
-    game.back_to_root();
-    game.cache_normalized_weights();
-    let reorder = |values: Vec<f32>, player: usize| -> Vec<f32> { order[player].iter().map(|&e| values[e]).collect() };
-    let half_pot = spot.starting_pot as f32 / 2.0;
-    let engine_ev = [reorder(game.expected_values(0), 0), reorder(game.expected_values(1), 1)];
-    let ev = [0, 1].map(|p| engine_ev[p].iter().map(|v| v - half_pot).collect::<Vec<f32>>());
-    let root = Root {
-        ev,
-        engine_ev,
-        equity: [reorder(game.equity(0), 0), reorder(game.equity(1), 1)],
-        weights: [
-            reorder(game.normalized_weights(0).to_vec(), 0),
-            reorder(game.normalized_weights(1).to_vec(), 1),
-        ],
-    };
-    if [&root.ev, &root.equity, &root.weights]
-        .iter()
-        .any(|rows| rows.iter().flatten().any(|v| !v.is_finite()))
-    {
-        return Err("engine produced non-finite root values".into());
-    }
-    let mut exporter = Exporter {
-        order,
-        hands,
-        scope: options.export_scope,
-        nodes: Vec::new(),
-    };
-    exporter.visit(&mut game, &mut Vec::new(), None, false)?;
-    let tree: Vec<ResultNode> = exporter
-        .nodes
-        .into_iter()
-        .map(|n| n.expect("every node exported"))
-        .collect();
-    let sliced = match (&plan, plan_bytes) {
-        (Some(plan), Some(raw)) => {
-            progress.emit(serde_json::json!({ "type": "progress", "stage": "exporting", "slices": true, "elapsedMs": elapsed_ms(started) }));
-            Some(slices::export_slices(
-                &mut game,
-                plan,
-                sha256_hex(raw),
-                &exporter.order,
-                &exporter.hands,
-            )?)
+    pub fn allocate(&mut self) -> Result<SessionStatus, String> {
+        self.check_time()?;
+        if self.allocated {
+            return Err("session already allocated".into());
         }
-        _ => None,
-    };
-    if started.elapsed() > timeout {
-        return Err("timed out while exporting; no result written".into());
+        if self.allocated_estimate > self.spot.solve.memory_cap_bytes {
+            return Err(format!(
+                "estimated memory {} bytes (compression {}) exceeds the cap {} bytes; no strategy storage allocated",
+                self.allocated_estimate, self.compress, self.spot.solve.memory_cap_bytes
+            ));
+        }
+        let allocate_started = Instant::now();
+        self.game.allocate_memory(self.compress);
+        self.allocated = true;
+        self.allocate_ms = elapsed_ms(allocate_started);
+        if let Some(plan) = &self.plan {
+            if let Err(error) = slices::check_subtree_paths(&mut self.game, plan) {
+                self.failed = true;
+                return Err(error);
+            }
+        }
+        self.solve_started = Some(Instant::now());
+        let exploitability = compute_exploitability(&self.game);
+        self.record_exploitability(exploitability)?;
+        self.convergence.push(Checkpoint {
+            iteration: 0,
+            exploitability,
+            elapsed_ms: 0,
+        });
+        self.check_time()?;
+        Ok(self.status())
     }
-    let export_ms = elapsed_ms(export_started);
 
-    Ok(BridgeResult {
-        format: RESULT_FORMAT,
-        version: 1,
-        spot_id: spot.id.clone(),
-        spot_hash: sha256_hex(bytes),
-        engine: Engine {
-            name: "postflop-solver",
-            repository: POSTFLOP_SOLVER_REPOSITORY,
-            commit: POSTFLOP_SOLVER_COMMIT,
-            bridge_version: env!("CARGO_PKG_VERSION"),
-            algorithm: "discounted-cfr",
-            precision: if compress { "int16-compressed" } else { "float32" },
-            threads: rayon::current_num_threads(),
-        },
-        hands: [0, 1].map(|p| cards.hands[p].iter().map(|(combo, _, _)| combo.clone()).collect()),
-        counts: Counts {
-            exported_nodes: tree.len(),
-        },
-        slices: sliced,
-        tree,
-        root,
-        exploitability: Exploitability {
-            chips: exploitability,
-            pct_pot: f64::from(exploitability) / spot.starting_pot as f64 * 100.0,
-            convention: "half-sum-of-best-response-gains",
-            target,
-            reached: f64::from(exploitability) <= target,
-        },
-        iterations,
-        convergence,
-        timings: Timings {
+    fn record_exploitability(&mut self, value: f32) -> Result<(), String> {
+        if !value.is_finite() {
+            self.failed = true;
+            return Err("engine reported a non-finite exploitability".into());
+        }
+        self.exploitability = Some(value);
+        Ok(())
+    }
+
+    pub fn is_done(&self) -> bool {
+        self.allocated
+            && !self.failed
+            && (self.iterations >= self.spot.solve.max_iterations
+                || self.exploitability.is_some_and(|e| f64::from(e) <= self.target))
+    }
+
+    /// At most `count` more iterations. A single iteration/checkpoint cannot be interrupted.
+    pub fn step(&mut self, count: u32) -> Result<SessionStatus, String> {
+        self.check_time()?;
+        if !self.allocated {
+            return Err("allocate before stepping".into());
+        }
+        if count == 0 {
+            return Err("step count must be positive".into());
+        }
+        let end = self
+            .iterations
+            .saturating_add(count)
+            .min(self.spot.solve.max_iterations);
+        while self.iterations < end && !self.is_done() {
+            self.check_time()?;
+            solve_step(&self.game, self.iterations);
+            self.iterations += 1;
+            if self.iterations.is_multiple_of(EXPLOITABILITY_EVERY) || self.iterations == self.spot.solve.max_iterations
+            {
+                let exploitability = compute_exploitability(&self.game);
+                self.record_exploitability(exploitability)?;
+                self.convergence.push(Checkpoint {
+                    iteration: self.iterations,
+                    exploitability,
+                    elapsed_ms: elapsed_ms(self.solve_started.expect("allocated")),
+                });
+            }
+        }
+        self.check_time()?;
+        Ok(self.status())
+    }
+
+    /// Non-final root strategy only. EV is deliberately unavailable until finalization.
+    pub fn root_strategy(&mut self) -> Result<serde_json::Value, String> {
+        self.check_time()?;
+        if !self.allocated {
+            return Err("allocate before previewing".into());
+        }
+        self.game.back_to_root();
+        let strategy = self.game.strategy();
+        let actions = self.game.available_actions();
+        let rows: Vec<Vec<f32>> = (0..actions.len())
+            .map(|a| {
+                self.order[0]
+                    .iter()
+                    .map(|&h| strategy[a * self.hands[0].len() + h])
+                    .collect()
+            })
+            .collect();
+        if rows.iter().flatten().any(|p| !p.is_finite()) {
+            self.failed = true;
+            return Err("engine produced non-finite preview".into());
+        }
+        Ok(
+            serde_json::json!({ "type": "preview", "final": false, "iteration": self.iterations,
+            "hands": self.cards.hands[0].iter().map(|(combo, _, _)| combo).collect::<Vec<_>>(),
+            "engineActions": actions.iter().map(engine_label).collect::<Vec<_>>(), "strategy": rows }),
+        )
+    }
+
+    /// Consumes the session. No partial Result v1; unfinished solves must be dropped/cancelled.
+    pub fn finish(mut self) -> Result<BridgeResult, String> {
+        self.check_time()?;
+        if !self.is_done() {
+            return Err("cannot finish before the target or iteration limit is reached".into());
+        }
+        let Self {
+            spot,
+            cards,
+            spot_hash,
+            mut game,
+            order,
+            hands,
+            plan,
+            plan_hash,
+            started,
+            solve_started,
             build_ms,
             allocate_ms,
-            solve_ms,
-            export_ms,
-            total_ms: elapsed_ms(started),
-        },
-        memory: Memory {
-            estimated_bytes: estimated,
-            estimated_compressed_bytes: estimated_compressed,
-            allocated_estimate_bytes: allocated_estimate,
-            peak_rss_bytes: peak_rss_bytes(),
-        },
-    })
+            estimated,
+            estimated_compressed,
+            allocated_estimate,
+            compress,
+            iterations,
+            target,
+            convergence,
+            ..
+        } = self;
+        let options = spot.solve;
+        let timeout = std::time::Duration::from_millis(options.timeout_ms);
+        let solve_started = solve_started.expect("allocated");
+        finalize(&mut game);
+        let exploitability = compute_exploitability(&game);
+        let solve_ms = elapsed_ms(solve_started);
+        if !exploitability.is_finite() {
+            return Err("engine reported a non-finite exploitability".into());
+        }
+        if started.elapsed() > timeout {
+            return Err("timed out while finalizing; no result written".into());
+        }
+
+        let export_started = Instant::now();
+        game.back_to_root();
+        game.cache_normalized_weights();
+        let reorder =
+            |values: Vec<f32>, player: usize| -> Vec<f32> { order[player].iter().map(|&e| values[e]).collect() };
+        let half_pot = spot.starting_pot as f32 / 2.0;
+        let engine_ev = [reorder(game.expected_values(0), 0), reorder(game.expected_values(1), 1)];
+        let ev = [0, 1].map(|p| engine_ev[p].iter().map(|v| v - half_pot).collect::<Vec<f32>>());
+        let root = Root {
+            ev,
+            engine_ev,
+            equity: [reorder(game.equity(0), 0), reorder(game.equity(1), 1)],
+            weights: [
+                reorder(game.normalized_weights(0).to_vec(), 0),
+                reorder(game.normalized_weights(1).to_vec(), 1),
+            ],
+        };
+        if [&root.ev, &root.equity, &root.weights]
+            .iter()
+            .any(|rows| rows.iter().flatten().any(|v| !v.is_finite()))
+        {
+            return Err("engine produced non-finite root values".into());
+        }
+        let mut exporter = Exporter {
+            order,
+            hands,
+            scope: options.export_scope,
+            nodes: Vec::new(),
+        };
+        exporter.visit(&mut game, &mut Vec::new(), None, false)?;
+        let tree: Vec<ResultNode> = exporter
+            .nodes
+            .into_iter()
+            .map(|n| n.expect("every node exported"))
+            .collect();
+        let sliced = match (&plan, plan_hash) {
+            (Some(plan), Some(hash)) => Some(slices::export_slices(
+                &mut game,
+                plan,
+                hash,
+                &exporter.order,
+                &exporter.hands,
+            )?),
+            _ => None,
+        };
+        if started.elapsed() > timeout {
+            return Err("timed out while exporting; no result written".into());
+        }
+        let export_ms = elapsed_ms(export_started);
+
+        Ok(BridgeResult {
+            format: RESULT_FORMAT,
+            version: 1,
+            spot_id: spot.id.clone(),
+            spot_hash,
+            engine: Engine {
+                name: "postflop-solver",
+                repository: POSTFLOP_SOLVER_REPOSITORY,
+                commit: POSTFLOP_SOLVER_COMMIT,
+                bridge_version: env!("CARGO_PKG_VERSION"),
+                algorithm: "discounted-cfr",
+                precision: if compress { "int16-compressed" } else { "float32" },
+                threads: thread_count(),
+            },
+            hands: [0, 1].map(|p| cards.hands[p].iter().map(|(combo, _, _)| combo.clone()).collect()),
+            counts: Counts {
+                exported_nodes: tree.len(),
+            },
+            slices: sliced,
+            tree,
+            root,
+            exploitability: Exploitability {
+                chips: exploitability,
+                pct_pot: f64::from(exploitability) / spot.starting_pot as f64 * 100.0,
+                convention: "half-sum-of-best-response-gains",
+                target,
+                reached: f64::from(exploitability) <= target,
+            },
+            iterations,
+            convergence,
+            timings: Timings {
+                build_ms,
+                allocate_ms,
+                solve_ms,
+                export_ms,
+                total_ms: elapsed_ms(started),
+            },
+            memory: Memory {
+                estimated_bytes: estimated,
+                estimated_compressed_bytes: estimated_compressed,
+                allocated_estimate_bytes: allocated_estimate,
+                peak_rss_bytes: peak_rss_bytes(),
+            },
+        })
+    }
 }
