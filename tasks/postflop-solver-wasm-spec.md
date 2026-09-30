@@ -12,6 +12,12 @@ the draft admission/cancellation policy below: float32 only, 256 MiB total reser
 Physical-device budgets remain unvalidated. The older large-game sizing table below is a
 research proposal, **not production permission to allocate those amounts**.
 
+**2026-09-30 update:** [W4](postflop-solver-w4-ui.md) implements the local `/solver/live`
+page and explicit preparation of full hashed assets/source. Public release and physical
+device validation are still open; no MT or live-flop scope was added.
+The W4 release record includes saved-only/prepared production builds, real Chromium 200%
+browser zoom, three-engine keyboard/responsive checks and full-load links from all solver labs.
+
 ## Goals
 
 1. The same postflop-solver commit, behind the same **Spot v1 in, Result v1 out** contract,
@@ -245,7 +251,7 @@ network (§13). Corresponding Source must be offered for the exact build:
       generation/watchdog protection. No automatic compressed or MT fallback.
 - [x] Loopback-only UI-less harness runs the production runtime/client in Chromium,
       Firefox and WebKit; numerical parity, responsiveness, cancellation and refusal.
-- [ ] Next route and explicit local asset/source preparation (W4).
+- [x] Next route and explicit local asset/source preparation (W4).
 - [ ] Public deployment and physical Safari/iOS/Android budgets (W3).
       Engineering reservations are conservative estimates, not measured JS heap upper bounds.
 
@@ -266,11 +272,11 @@ network (§13). Corresponding Source must be offered for the exact build:
 MT parity is deferred optional scope, not a completed ST gate or an implied claim.
 
 ### W4: minimal UI hook
-- [ ] `/solver/live` (a full-load `<a>` link from the lab): guided setup or pasted spot,
+- [x] `/solver/live` (a full-load `<a>` link from the lab): guided setup or pasted spot,
       see the admission verdict, solve, cancel, view the root strategy preview and the final
       exploitability. It shows the AGPL source link and build hash, and retains a saved
-      independently checked example when WASM assets are absent. Root values must not
-      be represented as action EVs.
+      independently checked example when WASM assets are absent. Root values are not
+      represented as action EVs. See W4 for the deployment checklist and tests.
 
 ## Risks
 

@@ -1,0 +1,1713 @@
+{
+  "format": "poker-face-live-example",
+  "version": 1,
+  "spot": {
+    "format": "poker-face-bridge-spot",
+    "version": 1,
+    "id": "referee-turn-v2-dry-value",
+    "board": {
+      "flop": [
+        "As",
+        "7d",
+        "4h"
+      ],
+      "turn": "2c",
+      "river": null
+    },
+    "ranges": [
+      {
+        "source": "configurable turn v2 corpus 'turn-v2-dry-value' (handcrafted, not preflop advice)",
+        "combos": [
+          {
+            "combo": "QdQc",
+            "weight": 1
+          },
+          {
+            "combo": "AdAc",
+            "weight": 1
+          },
+          {
+            "combo": "AhKd",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "source": "configurable turn v2 corpus 'turn-v2-dry-value' (handcrafted, not preflop advice)",
+        "combos": [
+          {
+            "combo": "6s5s",
+            "weight": 1
+          },
+          {
+            "combo": "7h7c",
+            "weight": 1
+          },
+          {
+            "combo": "AhQh",
+            "weight": 1
+          }
+        ]
+      }
+    ],
+    "startingPot": 100,
+    "effectiveStack": 100,
+    "rake": 0,
+    "tree": {
+      "mode": "explicit",
+      "root": {
+        "kind": "player",
+        "player": 0,
+        "actions": [
+          {
+            "action": {
+              "type": "check"
+            },
+            "next": {
+              "kind": "player",
+              "player": 1,
+              "actions": [
+                {
+                  "action": {
+                    "type": "check"
+                  },
+                  "next": {
+                    "kind": "chance",
+                    "next": {
+                      "kind": "player",
+                      "player": 0,
+                      "actions": [
+                        {
+                          "action": {
+                            "type": "check"
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "check"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 10
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 25
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 10
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 25
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "type": "bet",
+                    "to": 25
+                  },
+                  "next": {
+                    "kind": "player",
+                    "player": 0,
+                    "actions": [
+                      {
+                        "action": {
+                          "type": "fold"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "fold"
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "call"
+                        },
+                        "next": {
+                          "kind": "chance",
+                          "next": {
+                            "kind": "player",
+                            "player": 0,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "check"
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "check"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "bet",
+                                        "to": 10
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "raise",
+                                              "to": 50
+                                            },
+                                            "next": {
+                                              "kind": "player",
+                                              "player": 1,
+                                              "actions": [
+                                                {
+                                                  "action": {
+                                                    "type": "fold"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "fold"
+                                                  }
+                                                },
+                                                {
+                                                  "action": {
+                                                    "type": "call"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "showdown"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "bet",
+                                        "to": 25
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "raise",
+                                              "to": 50
+                                            },
+                                            "next": {
+                                              "kind": "player",
+                                              "player": 1,
+                                              "actions": [
+                                                {
+                                                  "action": {
+                                                    "type": "fold"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "fold"
+                                                  }
+                                                },
+                                                {
+                                                  "action": {
+                                                    "type": "call"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "showdown"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 10
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 25
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "raise",
+                          "to": 100
+                        },
+                        "next": {
+                          "kind": "player",
+                          "player": 1,
+                          "actions": [
+                            {
+                              "action": {
+                                "type": "fold"
+                              },
+                              "next": {
+                                "kind": "terminal",
+                                "outcome": "fold"
+                              }
+                            },
+                            {
+                              "action": {
+                                "type": "call"
+                              },
+                              "next": {
+                                "kind": "terminal",
+                                "outcome": "showdown"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "action": {
+                    "type": "bet",
+                    "to": 50
+                  },
+                  "next": {
+                    "kind": "player",
+                    "player": 0,
+                    "actions": [
+                      {
+                        "action": {
+                          "type": "fold"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "fold"
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "call"
+                        },
+                        "next": {
+                          "kind": "chance",
+                          "next": {
+                            "kind": "player",
+                            "player": 0,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "check"
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "check"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "bet",
+                                        "to": 10
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "raise",
+                                              "to": 50
+                                            },
+                                            "next": {
+                                              "kind": "player",
+                                              "player": 1,
+                                              "actions": [
+                                                {
+                                                  "action": {
+                                                    "type": "fold"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "fold"
+                                                  }
+                                                },
+                                                {
+                                                  "action": {
+                                                    "type": "call"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "showdown"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "bet",
+                                        "to": 25
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "raise",
+                                              "to": 50
+                                            },
+                                            "next": {
+                                              "kind": "player",
+                                              "player": 1,
+                                              "actions": [
+                                                {
+                                                  "action": {
+                                                    "type": "fold"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "fold"
+                                                  }
+                                                },
+                                                {
+                                                  "action": {
+                                                    "type": "call"
+                                                  },
+                                                  "next": {
+                                                    "kind": "terminal",
+                                                    "outcome": "showdown"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 10
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 25
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 1,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 0,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "raise",
+                          "to": 100
+                        },
+                        "next": {
+                          "kind": "player",
+                          "player": 1,
+                          "actions": [
+                            {
+                              "action": {
+                                "type": "fold"
+                              },
+                              "next": {
+                                "kind": "terminal",
+                                "outcome": "fold"
+                              }
+                            },
+                            {
+                              "action": {
+                                "type": "call"
+                              },
+                              "next": {
+                                "kind": "terminal",
+                                "outcome": "showdown"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "action": {
+              "type": "bet",
+              "to": 25
+            },
+            "next": {
+              "kind": "player",
+              "player": 1,
+              "actions": [
+                {
+                  "action": {
+                    "type": "fold"
+                  },
+                  "next": {
+                    "kind": "terminal",
+                    "outcome": "fold"
+                  }
+                },
+                {
+                  "action": {
+                    "type": "call"
+                  },
+                  "next": {
+                    "kind": "chance",
+                    "next": {
+                      "kind": "player",
+                      "player": 0,
+                      "actions": [
+                        {
+                          "action": {
+                            "type": "check"
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "check"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 10
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 25
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 10
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 25
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "type": "raise",
+                    "to": 100
+                  },
+                  "next": {
+                    "kind": "player",
+                    "player": 0,
+                    "actions": [
+                      {
+                        "action": {
+                          "type": "fold"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "fold"
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "call"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "showdown"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "action": {
+              "type": "bet",
+              "to": 50
+            },
+            "next": {
+              "kind": "player",
+              "player": 1,
+              "actions": [
+                {
+                  "action": {
+                    "type": "fold"
+                  },
+                  "next": {
+                    "kind": "terminal",
+                    "outcome": "fold"
+                  }
+                },
+                {
+                  "action": {
+                    "type": "call"
+                  },
+                  "next": {
+                    "kind": "chance",
+                    "next": {
+                      "kind": "player",
+                      "player": 0,
+                      "actions": [
+                        {
+                          "action": {
+                            "type": "check"
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "check"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 10
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "bet",
+                                  "to": 25
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "raise",
+                                        "to": 50
+                                      },
+                                      "next": {
+                                        "kind": "player",
+                                        "player": 1,
+                                        "actions": [
+                                          {
+                                            "action": {
+                                              "type": "fold"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "fold"
+                                            }
+                                          },
+                                          {
+                                            "action": {
+                                              "type": "call"
+                                            },
+                                            "next": {
+                                              "kind": "terminal",
+                                              "outcome": "showdown"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 10
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "action": {
+                            "type": "bet",
+                            "to": 25
+                          },
+                          "next": {
+                            "kind": "player",
+                            "player": 1,
+                            "actions": [
+                              {
+                                "action": {
+                                  "type": "fold"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "fold"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "call"
+                                },
+                                "next": {
+                                  "kind": "terminal",
+                                  "outcome": "showdown"
+                                }
+                              },
+                              {
+                                "action": {
+                                  "type": "raise",
+                                  "to": 50
+                                },
+                                "next": {
+                                  "kind": "player",
+                                  "player": 0,
+                                  "actions": [
+                                    {
+                                      "action": {
+                                        "type": "fold"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "fold"
+                                      }
+                                    },
+                                    {
+                                      "action": {
+                                        "type": "call"
+                                      },
+                                      "next": {
+                                        "kind": "terminal",
+                                        "outcome": "showdown"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "type": "raise",
+                    "to": 100
+                  },
+                  "next": {
+                    "kind": "player",
+                    "player": 0,
+                    "actions": [
+                      {
+                        "action": {
+                          "type": "fold"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "fold"
+                        }
+                      },
+                      {
+                        "action": {
+                          "type": "call"
+                        },
+                        "next": {
+                          "kind": "terminal",
+                          "outcome": "showdown"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "solve": {
+      "targetExploitabilityPctPot": 0.01,
+      "maxIterations": 1000,
+      "memoryCapBytes": 1073741824,
+      "timeoutMs": 120000,
+      "compression": "off",
+      "exportScope": "full"
+    }
+  },
+  "summary": {
+    "spotHash": "d4efac8db4cd26c80f984b19e739903960c3c0f871787f2d8acd2aa839cc441f",
+    "spotId": "referee-turn-v2-dry-value",
+    "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+    "iterations": 520,
+    "exploitability": 0.00971508,
+    "target": 0.01,
+    "reached": true,
+    "exportedNodes": 6507,
+    "hands": [
+      "QdQc",
+      "AdAc",
+      "AhKd"
+    ],
+    "actions": [
+      "check",
+      "bet25",
+      "bet50"
+    ],
+    "strategy": [
+      [
+        0.7709421,
+        0.50283223,
+        0.919252
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0.22905797,
+        0.4971677,
+        0.08074798
+      ]
+    ],
+    "ev": [
+      -38.080654,
+      90.817154,
+      -30.351292
+    ],
+    "equity": [
+      0.29545453,
+      0.9318182,
+      0.4090909
+    ]
+  },
+  "independent": {
+    "exploitability": 0.009715601225684267,
+    "value0": 12.188358358416163,
+    "toleranceChips": 0.0002,
+    "source": "1221202fbbe66be69e07f7284bf58b971bffb90851ea5a8d26ae5cc874090689"
+  },
+  "payloadHash": "b9fac5d1e63b275eb6b4d28bc1c6940e598e449959d52e9f98618dd9b251477d"
+}

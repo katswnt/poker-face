@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "native/**/target/**"]
+  "exclude": ["node_modules", "native/**/target/**", "public/solver-live/**"]
 }

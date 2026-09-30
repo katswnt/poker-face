@@ -46,6 +46,7 @@ export default function SolverPage() {
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <header style={{ borderBottom: `1px solid ${T.hair}`, paddingBottom: 16, marginBottom: 20 }}>
           <nav aria-label="Solver navigation" style={{ display: "flex", flexWrap: "wrap", gap: 18, marginBottom: 12 }}>
+            <a href="/solver/live" style={{ fontSize: 11, color: T.shove }}>Live turn &amp; river solver</a>
             <Link href="/" aria-label="Back to the Hold'em Trainer"
               style={{ fontSize: 11, letterSpacing: 1, color: T.shove, textDecoration: "none" }}>
               <span aria-hidden="true">←</span> back to trainer

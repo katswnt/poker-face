@@ -1,6 +1,6 @@
 # Explainable solver lab — guiding plan
 
-**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 remains experimental and withheld. W1 provides a verified single-thread WASM foundation and W2 a bounded Worker; public browser UI and heads-up play remain unfinished.
+**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 remains experimental and withheld. W1/W2/W4 now provide a locally verified bounded browser solver and learner page; public deployment and physical-device validation remain open. Heads-up play still has only its P0 foundation.
 **Last updated:** 2026-09-30
 
 **W3 verification:** [Desktop browser measurements](postflop-solver-w3-verification.md)
@@ -29,7 +29,7 @@ automatically resume the unfinished configurable-flop-v2 draft.
 | Rust bridge B0–B4 | Pinned external engine, strict spot/result contract, small-game referees, 100bb CPU benchmark, 12-flop saved library | Full independent grading of the large game; non-SRP formations |
 | Drills | Math drills and saved-solver decisions, action EVs, review queue, keyboard and phone-width checks | General poker-strength certification or live solves |
 | Preflop PF0–PF3 | Explicit small-game rules, CFR+/DCFR, independent grading, fitted continuation assumptions, diagnostic controls | Validated full-game preflop values; PF4 range promotion |
-| WASM | W1 ST session and parity; W2 export-aware admission, genuine progress, cancellation and stale-job protection | Measured device budgets, live UI/deployment, MT |
+| WASM | W1 ST session; W2 export-aware admission/Worker; W4 guided `/solver/live` UI, saved checked example, asset/source preparation | Public release, physical-device memory validation, deeper per-action live inspection, MT |
 | Heads-up play | P0 public state, ranges, hidden-card safeguards and deterministic replay | Real policy-source integration, re-solving, off-tree handling and playable UI |
 
 1. **Documentation and preflop diagnosis (completed in this handoff).** The
@@ -40,11 +40,14 @@ automatically resume the unfinished configurable-flop-v2 draft.
    needs held-out continuation-value tests and a versioned payoff-model decision before PF4.
 2. **Recommended product milestone: bounded browser turn/river solving, then play.** Follow
    the [WASM spec](postflop-solver-wasm-spec.md) and [play spec](heads-up-play-resolving-spec.md),
-   filling their still-open acceptance gates. [W1 ST](postflop-solver-w1-st.md) establishes
-   single-thread parity. [W2](postflop-solver-w2-worker.md) adds conservative export-aware
-   admission, genuine progress and cancellation. Next: W3 measurements and the W4 learner
-   UI, without raising the narrow browser caps. Saved flop inputs may stay
-   hand-written and clearly labelled while preflop research
+   filling their still-open acceptance gates. [W1 ST](postflop-solver-w1-st.md) now establishes
+   single-thread parity. [W2](postflop-solver-w2-worker.md) adds bounded export admission,
+   actual iteration/checkpoint progress, cancellable jobs and checked source identity.
+   [W4](postflop-solver-w4-ui.md) adds the learner UI and explicit source-complete asset preparation.
+   W1–W3 have landed with observed green CI; W4's record covers its separate release gates.
+   Next integrate P1's measured admission ladder while retaining narrow ST limits. Public
+   prepared-asset deployment and physical-device checks are not implied by a source release.
+   Saved flop inputs may stay hand-written and clearly labelled while preflop research
    proceeds separately. Do not claim local re-solving makes the overall agent unexploitable.
 3. **Keep independent verification growing.** Larger turn-subgame refereeing needs
    player- and pot-dependent menus; physical-device and assistive-technology coverage remains

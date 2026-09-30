@@ -72,6 +72,7 @@ export default function LeducLab({ data }: Readonly<{ data: LeducLabData }>) {
             <Link href="/">← Trainer</Link>
             <Link href="/solver">Push/fold explorer</Link>
             <Link href="/solver/river">River solver lab</Link>
+            <a href="/solver/live">Live turn &amp; river solver</a>
             <Link href="/solver/postflop">Turn &amp; river explorer</Link>
             <Link href="/solver/flop">Flop to river library</Link>
             <Link href="/drills">Math drills</Link>

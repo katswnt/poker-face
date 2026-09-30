@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "native/**/target/**",
+    "public/solver-live/**",
     "next-env.d.ts",
   ]),
 ]);

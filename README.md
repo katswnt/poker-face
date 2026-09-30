@@ -707,15 +707,19 @@ already powers solver-backed drills. The active path does not depend on a collab
 2. **Bring bounded turn/river solving to the browser, then heads-up play.** The
    [W1 single-threaded foundation](tasks/postflop-solver-w1-st.md) shares a resumable Rust
    session with the native bridge. Its WASM output matches native on the tested games and
-   passes independent small-game checks; Chromium, Firefox and WebKit Worker harnesses
+   passes the independent small-game checks; Chromium, Firefox and WebKit Worker tests
    agree. The [W2 Worker](tasks/postflop-solver-w2-worker.md) adds export-aware admission,
    real progress, cancellation and stale-job protection for bounded turn/river solves.
-   It uses float32, at most 64 hands per player and a conservative 256 MiB reservation;
-   no automatic compressed fallback or silent change to the game. This is not yet a public
-   browser rollout: [W3 desktop measurements](tasks/postflop-solver-w3-verification.md)
-   cover Chromium, Firefox and WebKit, but physical devices remain unvalidated and the
-   learner UI follows in W4. See the
-   [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
+   [W3 desktop measurements](tasks/postflop-solver-w3-verification.md) cover Chromium,
+   Firefox and WebKit; physical-device memory behavior remains unvalidated.
+   The [W4 page at `/solver/live`](tasks/postflop-solver-w4-ui.md) now adds guided setup,
+   advanced Spot JSON, preflight, cancellation, root-hand frequencies/values and an instant
+   independently checked example. Live solving requires the explicit WASM asset-preparation
+   step; builds without those assets still show the saved example. It keeps float32,
+   64 hands per player and the 256 MiB solver reservation; that is not a total-browser-memory
+   cap. Public asset deployment and physical-device memory validation remain separate checks.
+   No live flop, per-action EV or GPU training claim for this page.
+   See the [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
    or live policy source. Keep flops in the saved library and re-solve only admitted turn/
    river spots; local re-solving does not establish global unexploitable play. This work can

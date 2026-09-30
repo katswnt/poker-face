@@ -23,6 +23,7 @@
 
 # production
 /build
+/public/solver-live/
 
 # misc
 .DS_Store

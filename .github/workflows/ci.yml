@@ -95,6 +95,8 @@ jobs:
 
       - name: Test (browser smoke suite)
         run: npm run test:e2e
+        env:
+          POKER_FACE_LIVE_SAVED_ONLY: "1"
 
   # Native postflop-solver bridge (AGPL-3.0 dependency pinned in Cargo.lock): build with the
   # pinned toolchain, lint, run the crate's semantic tests, then drive the real binary through
@@ -143,7 +145,7 @@ jobs:
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge
 
-  # Single-threaded foundation and bounded Worker; no live page or shared memory/MT.
+  # Single-threaded foundation, bounded Worker and prepared live UI. No shared memory/MT.
   bridge-wasm:
     runs-on: ubuntu-latest
     steps:
@@ -179,6 +181,17 @@ jobs:
       - run: npm run profile:wasm:live
       - run: npm run audit:wasm:live -- chromium firefox webkit
       - run: npm run profile:wasm:browsers -- chromium firefox webkit
+      - run: npm run audit:wasm:example
+      - run: npm run test:wasm:ui
+      - run: npm run prepare:wasm:live
+      - name: Build the prepared live-solver route
+        run: npm run build
+        env:
+          POKER_FACE_LIVE_REQUIRED: "1"
+      - name: Exercise the production Next Worker, UI, source links and keyboard controls
+        run: npx playwright test --config playwright.live.config.ts
+        env:
+          POKER_FACE_LIVE_REQUIRED: "1"
 
   # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
   # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the
