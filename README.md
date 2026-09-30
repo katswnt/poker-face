@@ -721,7 +721,10 @@ already powers solver-backed drills. The active path does not depend on a collab
    No live flop, per-action EV or GPU training claim for this page.
    See the [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
-   or live policy source. Keep flops in the saved library and re-solve only admitted turn/
+   or live policy source. The [P1 admission audit](tasks/heads-up-play-p1-admission.md) is
+   blocked: the current 64-hand browser cap cannot retain the required 99% of both ranges,
+   and saved policies do not cover every later board. No heavily pruned substitute is shipped.
+   Keep flops in the saved library and re-solve only admitted turn/
    river spots; local re-solving does not establish global unexploitable play. This work can
    use clearly labelled hand-written ranges while preflop research stays separate.
 3. **Verification and reliability.** Keep our TypeScript engines as independent referees.

@@ -45,7 +45,9 @@ automatically resume the unfinished configurable-flop-v2 draft.
    actual iteration/checkpoint progress, cancellable jobs and checked source identity.
    [W4](postflop-solver-w4-ui.md) adds the learner UI and explicit source-complete asset preparation.
    W1–W3 have landed with observed green CI; W4's record covers its separate release gates.
-   Next integrate P1's measured admission ladder while retaining narrow ST limits. Public
+   P1's [measured admission gate](heads-up-play-p1-admission.md) is blocked: 99% of both
+   ranges does not fit within 64 hands/player, and saved board coverage is incomplete.
+   Do not ship an unmeasured ladder or dependent play UI. Public
    prepared-asset deployment and physical-device checks are not implied by a source release.
    Saved flop inputs may stay hand-written and clearly labelled while preflop research
    proceeds separately. Do not claim local re-solving makes the overall agent unexploitable.

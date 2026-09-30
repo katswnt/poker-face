@@ -50,8 +50,12 @@ W1 `ebcd248` (CI `36753561883`), W2 `bf44ef2` (`36757906224`) and W3 `0accb63`
 (`36763545452`) are landed in order, each exact commit verified in isolation before push
 and every hosted CI job observed green before the next step. The
 [W4 release record](postflop-solver-w4-ui.md#milestone-release-verification--2026-09-30)
-documents the learner-page release candidate and its exact-commit/CI handoff requirements.
-P1–P5 have not started. The original status table above is historical, not current completion.
+documents the learner page, now landed as `a87b34a` with all eight CI jobs green in run
+`36768099422` after exact-commit isolation checks. P1's
+[frozen admission audit](heads-up-play-p1-admission.md) found an unsatisfied necessary
+range-capacity/board-coverage gate. P1 is not shipped; dependent P2/P3/P5 work cannot proceed
+under the current ladder. P4's independent small-game gadget study remains possible.
+The original status table above is historical, not current completion.
 
 ## Working rules for every step (non-negotiable)
 

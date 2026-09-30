@@ -84,6 +84,9 @@ jobs:
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 
+      - name: Reproduce P1 admission diagnosis (records a blocked play gate, not a playing policy)
+        run: npm run audit:hu-play:admission
+
       - name: Audit river benchmark exchange
         run: npm run audit:river:exchange
 

@@ -1,0 +1,2744 @@
+{
+  "format": "poker-face-hu-p1-admission-audit",
+  "version": 1,
+  "interpretation": "Necessary reach-capacity and saved-policy coverage test; no EV or exploitability claim.",
+  "seedPlan": {
+    "first": 0,
+    "last": 4095,
+    "flops": 12,
+    "selection": "first 32 reached roots per street in seed order",
+    "riverSelectionLimit": "River roots require an earlier sampled turn to have a usable saved policy; unavailable prefixes stop. This is not an unconditional river sample."
+  },
+  "limits": {
+    "maxHandsPerPlayer": 64,
+    "minimumRetainedMass": 0.99,
+    "solverBudgetBytes": 268435456,
+    "medianLocalExploitabilityPctPotGate": 1
+  },
+  "inputFiles": [
+    {
+      "url": "/solver-data/bridge-v1/manifest.json",
+      "bytes": 79408,
+      "sha256": "d5a698b4ef0849cd7591983c11031ae02ea43eb5cdb25a4fd243a1dc5d33d97d"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/flop.json",
+      "bytes": 210682,
+      "sha256": "c577fbdc9a46cce1f2f14067db0098d4d3a446d7a2ecc309a2bcb6f99eadd0ca"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/spot.json",
+      "bytes": 33919,
+      "sha256": "2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-2h.json",
+      "bytes": 420267,
+      "sha256": "867405560ab1c4e0e8f11812d6ac2b90e1a47caf532c194a891fe438a4486607"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-3s.json",
+      "bytes": 408555,
+      "sha256": "83564fbe11266615e943e3377e89372fbc6bc0463d66266f47b91d7cd1699295"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-5c.json",
+      "bytes": 418283,
+      "sha256": "4634618f1dff22fc94a9a567a4aad47bc1c9bc37d3fd0618d80966566c37d528"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-6h.json",
+      "bytes": 426577,
+      "sha256": "ce36ee18a4bdee672b82f3abca1e08f1a280d1be6722734cd0d6f63e4b7307f5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-9s.json",
+      "bytes": 423298,
+      "sha256": "d35ec745e6df0d39e0c4fdf2d848e88b10bb1b5e9c6643b6db9f233ab3579cb9"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Ac.json",
+      "bytes": 364132,
+      "sha256": "a1dfaafdfc50cb6416a9a320f5d743d79caefe9d96589f17a11a6af9ae0851ef"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Kd.json",
+      "bytes": 397999,
+      "sha256": "bcec057510412cfd8eca551630dc16cd3de6ac4b6efbd984219c9ed75f742117"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-5h4c2d/2d973a92cbc46308ebdb0f490f136d9b86fdf9c897f5ebee56a87edf62c2eebb/turn-Th.json",
+      "bytes": 400839,
+      "sha256": "1a62221e594d7e151bf01c98b085b5e93ce705d926aee8231389d87047e9b78e"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/flop.json",
+      "bytes": 214351,
+      "sha256": "dea9d618c5cd32f949bd3fc2cc6b30dbf1198eb276067f10635df709bac90471"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/spot.json",
+      "bytes": 32963,
+      "sha256": "2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-2c.json",
+      "bytes": 420054,
+      "sha256": "9b28155a5e51e7f0b6b9fb58f8e772fa5d2591d32b09a72c21cfc95965e94658"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-3d.json",
+      "bytes": 427638,
+      "sha256": "b0d4ca8966f10fea1e751a14b34d11c50ae5a9d7dd3973c7a2300f687b499c51"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-4s.json",
+      "bytes": 413066,
+      "sha256": "73242b977f01cec92994ba3b020c18edf445bf5766c26beafd3156263a13eeac"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-7h.json",
+      "bytes": 426622,
+      "sha256": "84f2f767b0807e65a631b852799de1c128f7dd2d86f1080207473b7a7a25cc65"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-8c.json",
+      "bytes": 389896,
+      "sha256": "ae3242c388ccb5f654772a888f3b812b889c6d99d788ab5a0b00bd88a0938cf0"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Ac.json",
+      "bytes": 378242,
+      "sha256": "e517103a39dbdbf2c82d7764823dc631134dc9e70a85f960650a1219d34ce12d"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Kd.json",
+      "bytes": 408690,
+      "sha256": "2060368f3fd55df34a3cd495ccde6caff4d00bd27e6f48026a4ac8d28902d355"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-7c6c5d/2fe6d80f1195262f5558335d71ffae5a51b4f647ed115be019ed640f90b2df6b/turn-Th.json",
+      "bytes": 414397,
+      "sha256": "4524327f2f51995ab93aba891be24a02abfadb18134b5113100499b60547c533"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/flop.json",
+      "bytes": 233035,
+      "sha256": "31a9a325a4e30e249e50cb9c2c9cbdc370ea29142daf0a90beb0805d063e3591"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/spot.json",
+      "bytes": 32637,
+      "sha256": "fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-2d.json",
+      "bytes": 533624,
+      "sha256": "5a50599e549b160993f93872ea20e8f987074b68158500e6e4645028aaaebb35"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-3c.json",
+      "bytes": 531885,
+      "sha256": "ada2026c76bf7b74cf440021014bfea754b34518d88234c783c6dd7bed03cff5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-5s.json",
+      "bytes": 524531,
+      "sha256": "bcf8771d2c14bd0ff7f6e2961ffa3414f32dec37c6450c28e0238c24b4f5a418"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-8c.json",
+      "bytes": 524797,
+      "sha256": "0e2db5a6cca4336d692388f6e591c6b17de3f0e88e552935a2cd79a799c99ca4"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-9h.json",
+      "bytes": 489809,
+      "sha256": "245ad8754ffb6a20fb8d2dd7415137dcbe4c42b253fa134dba0ca39f30fb85ab"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Ac.json",
+      "bytes": 465918,
+      "sha256": "f6c259c6e49e2f005338dfb5d813213cf095284a80c5463229a2915bdee5e646"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Kh.json",
+      "bytes": 484498,
+      "sha256": "1959a8d15e34c7f007ba89b9ab5349695210d5c787d7db9f20f80e1f722a9361"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-8s8d3h/fe7c8dbe931da00a0aa44063407c58b752e7ddca0edc1721acb5bbf2a7e3b975/turn-Qd.json",
+      "bytes": 488428,
+      "sha256": "442ce5f8beb254a2ba0b7b494ea4c50f625e4b7f1ee8b1f3559f00d27e41566f"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/flop.json",
+      "bytes": 193230,
+      "sha256": "7d05e3c4e91b928010b17097ca70144b638cff8cf8afdb81acd831858da52e59"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/spot.json",
+      "bytes": 31959,
+      "sha256": "240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-2h.json",
+      "bytes": 377226,
+      "sha256": "38504d9163e96dd6393c08b1d54afb47384067a769ff541d1596980c5458868b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-3s.json",
+      "bytes": 375895,
+      "sha256": "8cf817b56048a738968d873aba7b807cc7d07d2db832bc662908c026ffdaab29"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-5c.json",
+      "bytes": 358448,
+      "sha256": "aea8c773ded6e7bd6023ce43c2d636600272374036dde1761b606d8c498b7890"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-7d.json",
+      "bytes": 356721,
+      "sha256": "256a92870b71ed6096749921304b876ffcc0a81f97c20b2dd6a4377253f12695"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-9s.json",
+      "bytes": 369316,
+      "sha256": "c1a0bdea7d7594af174e11fb1b696c31fec9fca105b7252905e390201685cfc2"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Ah.json",
+      "bytes": 340849,
+      "sha256": "3ab77262007e59c9326a5fc5423f8352094531a2b67f1740376c793ccf1c9b03"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Kd.json",
+      "bytes": 359208,
+      "sha256": "ca186a6d114e0f0586b008cc83a48b601abf4fe5ce4a68f4c9764e1a219d005c"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-9h8h6c/240ffeafac0d983c12bd0c9229f10531c8bfd17156d0ede14af4c21d0cf447ee/turn-Ts.json",
+      "bytes": 352907,
+      "sha256": "6818f6451a2208ad0d12c1a177068ea885e7e665b699f4e624d85a886649e323"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/flop.json",
+      "bytes": 182383,
+      "sha256": "542ebc34c9eb0630990f8de62c492c51ede9fdae84ba9de24eaf8fc5b8ba57c1"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/spot.json",
+      "bytes": 31351,
+      "sha256": "76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-2d.json",
+      "bytes": 353336,
+      "sha256": "358165ae9d67e8b2ac5f45c2f689a0b6998eeb4cab4819c91cbf756d8b73035b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-5c.json",
+      "bytes": 346149,
+      "sha256": "5b146ca61bc20e3d8b0c11a42a110c55f134ad983b0bd379cb09225f1c0212e6"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-8d.json",
+      "bytes": 333835,
+      "sha256": "b4be24225cf8c162c5756e389eb02ebeb4e742859e322438ec924114f6f57c76"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-9h.json",
+      "bytes": 361936,
+      "sha256": "54a8a5d8d8000f92bf5eaa179e9d2789f16d0c0010a8b247b3417f2243f7128c"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Ac.json",
+      "bytes": 333987,
+      "sha256": "14718c3feb701b46d7542f2ddf20716a2d45ecc7c327c74bf3c4d2e46e39ccdd"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Js.json",
+      "bytes": 353593,
+      "sha256": "ac677b1aee57c77b3f5500b8592050135d60ee0410e46d864581ef40d4aeef31"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Kh.json",
+      "bytes": 348487,
+      "sha256": "aa4d2b0435fcf16b0b2e458e4ba1462ec617fa6e99206e22cee0fe8830effd34"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ad8c3s/76762ef033b7ccc404eeb9b1a142b579d989be7f5d1aea939151e9f05f987807/turn-Qs.json",
+      "bytes": 355021,
+      "sha256": "cabb58ecc27d21bd0a29b8dac670d96ec5e90cd153b074cf2b1b27285771a42d"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/flop.json",
+      "bytes": 176339,
+      "sha256": "fad1cce82874439caf077fb0ee4b9b30050e0f332fec7c1c8e5463d4db7f1613"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/spot.json",
+      "bytes": 30888,
+      "sha256": "e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-2h.json",
+      "bytes": 325835,
+      "sha256": "f08be78cfb1574fcf6877aac9dd04feafc67a29d938729d548bc9a24032dc921"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-4c.json",
+      "bytes": 327672,
+      "sha256": "c9d7959963addd09db06d631f200ee0143b193634fe6a833d264dd2046387dad"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-5d.json",
+      "bytes": 329264,
+      "sha256": "bda7693fc0ea87cd7e6132cc7fca41f741a2640cfc8e80807d0006630eab2932"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-8s.json",
+      "bytes": 333916,
+      "sha256": "8b85dd0467765d277fb2d95a8495aa27d5bf113da9156c8919aa08f0fafea680"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Ad.json",
+      "bytes": 298021,
+      "sha256": "2013890aa0c7eef80db28e2cea26e7d9249ade6feb803edfe048a24982793ba5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Js.json",
+      "bytes": 338378,
+      "sha256": "723744822f0af76d8e5c25f4a574cda71bc2e6fa90c0eda3f3aa55e83c033db5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Kc.json",
+      "bytes": 328882,
+      "sha256": "af389538cd307d59ee178e1e155300cdf59775f9914e06400ccee34d8d626d93"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ahth5c/e04e9da12c1d7b4bfd2c7a5c8b22bd7c4f0beb1ac2469150e7d1f778182ebba8/turn-Qh.json",
+      "bytes": 316789,
+      "sha256": "042d9be4320f94e03b51bcbf33c0701afa12dd5ebac81f9322fefdcc108d84e9"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/flop.json",
+      "bytes": 207476,
+      "sha256": "48a7c009a8154df758d5033582c84ba67ff4e2b174d12550341a5d672a3cf607"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/spot.json",
+      "bytes": 32145,
+      "sha256": "15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-2c.json",
+      "bytes": 438462,
+      "sha256": "7a8dc44679075fecd28ec3fc72a7a7abafd8fb397ebf525e4e7193f6c4fd2f7f"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-4d.json",
+      "bytes": 428139,
+      "sha256": "31a8bedd12a4f2a3abb877fc034f6f744ebe63aae95e9bfebe9b9a8e3d8aed24"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-6s.json",
+      "bytes": 424846,
+      "sha256": "e8ccabed4d8c59cf75e0169263409ca906c9541cc388cf0db0e464fd58edad06"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-8h.json",
+      "bytes": 415826,
+      "sha256": "5bcef878cc1ce7d21fdfd8fc4b02c836837e01ba93102a7a7c4ddc8430f6bb54"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Ah.json",
+      "bytes": 391763,
+      "sha256": "f21cca819db086e123dbb201442b67f66ab18e65e045d745b2f27866d1c934f4"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Jh.json",
+      "bytes": 431875,
+      "sha256": "44971ff50cf962c2277bc35c45507df8bb608d3a59c97b5c4e7bac31fb46c08d"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Kc.json",
+      "bytes": 401935,
+      "sha256": "9aab84725e3bff8dd5438a6c2ca79d5e27f34c7b84f941308d4d749a3f1de6db"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-jcjd4s/15dbe4121247363ca37705b5f4abc121e77be3cbecfb438a6a42732a1ba5b732/turn-Tc.json",
+      "bytes": 403436,
+      "sha256": "e139c069f442c31cce731285f02561fe762090bcfaa0159931b5f2eacc2052d8"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/flop.json",
+      "bytes": 213591,
+      "sha256": "75415f5477a6b5d9475fb3489962f2fce168598171860e7ebf7979ee3f8695d5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/spot.json",
+      "bytes": 31050,
+      "sha256": "8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-2c.json",
+      "bytes": 476160,
+      "sha256": "3977ff50f60defc2afb0a7b635bcd4102b522eed8595a9f32e465e420af96283"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-5s.json",
+      "bytes": 472796,
+      "sha256": "1afbe6941da7de8bd3b0e2d781d367fc1389ac742f48cb1a9ef3084a77b1cafa"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-8h.json",
+      "bytes": 464410,
+      "sha256": "6ceb2a0ba5e181683b09abdefc3cfa8dcf95b488328ebdd68d3cedbbfbd7009a"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-9d.json",
+      "bytes": 463097,
+      "sha256": "935e8af1cb51d47275dd2521f2eb5a772ccf73c0dd486af97f895a21714c1fa0"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-As.json",
+      "bytes": 428682,
+      "sha256": "33c582e9c94e112f179e8203407f38359fc8e765f63910606f97cb349accea32"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Js.json",
+      "bytes": 433652,
+      "sha256": "5ac496651b53de399e5ecda8c1e2b0f4615d67d9a198c86f64997048c7912ec3"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Kc.json",
+      "bytes": 446467,
+      "sha256": "96add71df8e5c9ebfbca8a4f9ad478d979a665dc1f3f269a714c9f1856ad1d4b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-khqdtc/8a8b9605855f878beea26b0bbb979fd3dd723beceb7ae7d2f72f305c25309320/turn-Qc.json",
+      "bytes": 443440,
+      "sha256": "837d5e8e277dc0a6d6891c5162fa3ee83f668d23b1c02dfdb33824875461a322"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/flop.json",
+      "bytes": 219035,
+      "sha256": "111e45a7e673e3a7e02ea85008f9798a93ddd2f9a6a7a4da4b5cf49fc66942fc"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/spot.json",
+      "bytes": 32597,
+      "sha256": "e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-3c.json",
+      "bytes": 470420,
+      "sha256": "19e59d422e1ef060b4b24b1419fffa063aad335bdc87336f932856f54781d282"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-5d.json",
+      "bytes": 453139,
+      "sha256": "bfc3a70afe411e120e015d17d875564c01110d66288583b4cfa11e0db2a362f8"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-7c.json",
+      "bytes": 470322,
+      "sha256": "b0277dc061871d0bcc1eda9b14e690ce8a241ae74e71c0c5d5a0cd4c2435aa2a"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-9s.json",
+      "bytes": 444827,
+      "sha256": "680e4c443d21c8eaea1db953bd34905de8c274eca8b445f1d6b6b31ae549599b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Ac.json",
+      "bytes": 432603,
+      "sha256": "7d45fc7972b30e2421ffb7999596b558f46488b632547818e873ae34c0743d93"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Kd.json",
+      "bytes": 460384,
+      "sha256": "56453eb410d116486f9b9fcc3dd5a5ff6758b73dccc024d7ac8ecb5ea19bf5a2"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Qh.json",
+      "bytes": 458176,
+      "sha256": "485fde63862886b7afd5aae3a38b08d23f97d910a4f8cce8e85d7db2d53aa904"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-ks7h2d/e90f206190621522a6ebcc812e3050f611f3c9db80b6233d83b4d5f646993fc3/turn-Th.json",
+      "bytes": 451358,
+      "sha256": "b6aaa99598ca7ca1971378fff55097d6760b5e7dee58ce6f314d70366015d766"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/flop.json",
+      "bytes": 185773,
+      "sha256": "1df58ce5dc5043f7f42a82777db58519a2a7b3af0befb7c607a48702e32da328"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/spot.json",
+      "bytes": 32110,
+      "sha256": "7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-2s.json",
+      "bytes": 340563,
+      "sha256": "1463ecdc115c265705bb0b13f44fc289a73d384b9c04de59e77a5682d74bf5b2"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-3c.json",
+      "bytes": 366980,
+      "sha256": "e9e7b1bd57d5c1ad127cca9753fcc9534222ddf66ec9ede07892d0213257910e"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-7h.json",
+      "bytes": 363073,
+      "sha256": "ac49623dbdceeb38b03d237c91707dfa4f22f0ee32816cfa8cc5d38aafdbeb89"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-9d.json",
+      "bytes": 355237,
+      "sha256": "eb7df106015d8f17d767dc4c53fb68973ac60c8b25013183a094598293e5d219"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Ah.json",
+      "bytes": 339613,
+      "sha256": "fe7e6b0e2f2c9449ac06402c189b2c313a5d72664e5109b3201084462b058d90"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-As.json",
+      "bytes": 321916,
+      "sha256": "d8fe8b25a8ecafb852feada2a72ea269e61a8f047c20b4ed690a7b6b54615f2b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Jc.json",
+      "bytes": 353394,
+      "sha256": "50a898bde40220d4a9b49917beea22ddd2f20537dc8c4cefbc31a238f4f29616"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-qs9s4s/7262273c035914510d0fb96123e19ffdf104dda7b16e85026db799622167ad18/turn-Qd.json",
+      "bytes": 349644,
+      "sha256": "4b5b5fb59e107c838db0fa10125713682324d8f8b3ea44336dd2a370a6287b15"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/flop.json",
+      "bytes": 196668,
+      "sha256": "7656c6f8c695c9c76607ed43cfc49245db70e74728e61eb79e94c1cd378a44b4"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/spot.json",
+      "bytes": 31813,
+      "sha256": "999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-2c.json",
+      "bytes": 377688,
+      "sha256": "fb813bbd6df17d2e19f3f2d9a3d030607a361f2065fe902a177c28609eecc5e1"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-4s.json",
+      "bytes": 374616,
+      "sha256": "bf4c0a514613e7b88d05becd00f5d83d6979be2eb9dcc6ba565529cb25a29881"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-6d.json",
+      "bytes": 363844,
+      "sha256": "203c1c60803ac92cb13ba0064232687eed60af18284d5d04f6365859c759fcc5"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-8c.json",
+      "bytes": 347836,
+      "sha256": "892aff1ffbab1debca64b47f49bbf9c650f5215c215e859f15f19f1d14302ccb"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-As.json",
+      "bytes": 370829,
+      "sha256": "42037d5d4e41b0e478e6fb8c9af203b9ca8ef665036519b31d609d07a3aed1a4"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Jh.json",
+      "bytes": 354963,
+      "sha256": "246ba44b87aa984bcc4998aa116feb80719df68811c00cb11d39fce0720ebeab"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Kh.json",
+      "bytes": 365635,
+      "sha256": "9d1cc21fc6f6df0a1f0b03bb294e9586be8668d2fedc4314e8b603747549626a"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-tc9d7s/999330fa540ad29b22bfe358218f53f804d57fb144be9217e96a323aa975db17/turn-Td.json",
+      "bytes": 363601,
+      "sha256": "e2d8cb4c08a7e7b0c6e3d3a76bd5ac9e6d5a9d1b4de44f5a0dcb18953d9f53a1"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/flop.json",
+      "bytes": 197405,
+      "sha256": "b4dc1f56e310bfb3e3eaf95d3e764d5952345f5b98ceab7396a55a0052bafd4c"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/spot.json",
+      "bytes": 32821,
+      "sha256": "3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-2d.json",
+      "bytes": 383346,
+      "sha256": "73d88526150aafd2410bb9363f228f4124320d8243e1ae5332f375a26788c155"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-4c.json",
+      "bytes": 371927,
+      "sha256": "f61fa4a78f892cab54fee222e5d358b9b30943270bece630025de014d8d10197"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-6h.json",
+      "bytes": 385489,
+      "sha256": "7c1b85492504ac0acfbcfe0bc034a1f6196d252ab89b74dc0dc3178d2adf527b"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-8s.json",
+      "bytes": 371692,
+      "sha256": "09e8def895cb7552154b53f20aef32160efcc0efc321457100ae3040535febc3"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Ad.json",
+      "bytes": 348219,
+      "sha256": "d1e3bf014291b034977052d78f6b413b9cb9819daff270f4e41308c4f8a14f8c"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Jc.json",
+      "bytes": 356569,
+      "sha256": "97a9f995b6c760f7a29a603c09f844f9d385e45b732877a547eb3d0a52ae85a1"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Kh.json",
+      "bytes": 364589,
+      "sha256": "33ac258358bdfb564857d9070c0d5d2aee6fb4edc54b361af18f009557f942d4"
+    },
+    {
+      "url": "/solver-data/bridge-v1/srp-btn-bb-td7d3c/3b7c49e20e1f3fd25345d7ebe07b4dfbf642c2d370740dd69cb7ca9dcb372397/turn-Ts.json",
+      "bytes": 378855,
+      "sha256": "5478ea3969e48557624b97c28f44304817e01de570ddf51c3c2e62e8f198b440"
+    }
+  ],
+  "inputFilesHash": "1d5fb4f7d791ffbf62151680e83ca579eec788b9ea8c469e2bb938446c92e1c2",
+  "cohort": {
+    "hands": 4096,
+    "completedUsingSavedPoliciesOnly": 1066,
+    "stoppedUnavailable": 3030,
+    "stoppedForMissingPositiveReachColumn": 9,
+    "publicPrefixesHash": "f6bbd7290448757ddcf74e98b0d2f59c2a1467d634bb03c9354fb630001ac61e",
+    "byStreet": [
+      {
+        "street": "turn",
+        "roots": 3131,
+        "bothRangesFit99Within64": 0,
+        "fullRangeBrowserInputsAccepted": 0,
+        "exactSavedNodeAvailable": 474,
+        "noSavedBoardPolicy": 2627,
+        "blockedWithNoBoardFallback": 2627,
+        "smallerPlayerTop64Mass": {
+          "min": 0.11243989297127688,
+          "median": 0.13004238060864914,
+          "max": 0.6227155147231993
+        },
+        "handsFor99Mass": [
+          {
+            "min": 94,
+            "median": 541,
+            "max": 604
+          },
+          {
+            "min": 151,
+            "median": 384,
+            "max": 451
+          }
+        ]
+      },
+      {
+        "street": "river",
+        "roots": 354,
+        "bothRangesFit99Within64": 0,
+        "fullRangeBrowserInputsAccepted": 0,
+        "exactSavedNodeAvailable": 0,
+        "noSavedBoardPolicy": 354,
+        "blockedWithNoBoardFallback": 354,
+        "smallerPlayerTop64Mass": {
+          "min": 0.13929289846774953,
+          "median": 0.2801620148424353,
+          "max": 0.5864111591241788
+        },
+        "handsFor99Mass": [
+          {
+            "min": 138,
+            "median": 368.5,
+            "max": 536
+          },
+          {
+            "min": 135,
+            "median": 263,
+            "max": 370
+          }
+        ]
+      }
+    ]
+  },
+  "corpus": [
+    {
+      "seed": 0,
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "spotHash": "39bb9921fb4806890b5100df21c1b448dc00e4ec8c1bf8404544c830fa7e7733",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 574,
+          "retainedMass": 0.12556442681310617,
+          "handsForTarget": 554,
+          "possible": false
+        },
+        {
+          "totalHands": 421,
+          "retainedMass": 0.2713451085804411,
+          "handsForTarget": 364,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 1,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "Js"
+      ],
+      "spotHash": "4e2f53fef28e15b9b1b260318f2d7cacabf2afe47b9c176d4679d03df21b3134",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 561,
+          "retainedMass": 0.13987817485208975,
+          "handsForTarget": 534,
+          "possible": false
+        },
+        {
+          "totalHands": 424,
+          "retainedMass": 0.20904990086461733,
+          "handsForTarget": 405,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 2,
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "4h"
+      ],
+      "spotHash": "e690324bd9e4674b6b6950e455199f939f876db34de11531b328308e90cf1164",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 595,
+          "retainedMass": 0.11469287398837302,
+          "handsForTarget": 575,
+          "possible": false
+        },
+        {
+          "totalHands": 450,
+          "retainedMass": 0.23806335461024564,
+          "handsForTarget": 409,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 4,
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "Ad"
+      ],
+      "spotHash": "43a263ccf9e042aeb7b205eb8930d659233f1a62a75daec01b0f758298ae562a",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 536,
+          "retainedMass": 0.12578480381992727,
+          "handsForTarget": 520,
+          "possible": false
+        },
+        {
+          "totalHands": 386,
+          "retainedMass": 0.24218939210462584,
+          "handsForTarget": 352,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 5,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "Ah"
+      ],
+      "spotHash": "0449783387cf8696c860be0fed3c35dd46bb108ca760a656df193dda8193a851",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 545,
+          "retainedMass": 0.12698085168438117,
+          "handsForTarget": 528,
+          "possible": false
+        },
+        {
+          "totalHands": 410,
+          "retainedMass": 0.23470993153071215,
+          "handsForTarget": 373,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 6,
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "2h"
+      ],
+      "spotHash": "b557d9123fe1eab2565aab60999c2913cc575214716de664b220d430a133223f",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 573,
+          "retainedMass": 0.11818246449217089,
+          "handsForTarget": 554,
+          "possible": false
+        },
+        {
+          "totalHands": 424,
+          "retainedMass": 0.22272179959214072,
+          "handsForTarget": 387,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 7,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "spotHash": "96e22af2c76b332634ddceae30a88000a2ae46d03800360516a31b49e515afc0",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 567,
+          "retainedMass": 0.12277753478057352,
+          "handsForTarget": 548,
+          "possible": false
+        },
+        {
+          "totalHands": 438,
+          "retainedMass": 0.22330618767489413,
+          "handsForTarget": 398,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 8,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "Qh"
+      ],
+      "spotHash": "d8874628bc8271de71a0fca16f15e028bc5f983cc20895b4927eca3a82b45c5c",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 553,
+          "retainedMass": 0.12106646312367553,
+          "handsForTarget": 538,
+          "possible": false
+        },
+        {
+          "totalHands": 440,
+          "retainedMass": 0.27357114441055563,
+          "handsForTarget": 369,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 9,
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "6h"
+      ],
+      "spotHash": "8558a23249af4e537a9aee063f714e5c2325e0bb90e75d9e5ed97a1e632c9efc",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 587,
+          "retainedMass": 0.11603672925095572,
+          "handsForTarget": 567,
+          "possible": false
+        },
+        {
+          "totalHands": 444,
+          "retainedMass": 0.2414738962945076,
+          "handsForTarget": 404,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 10,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "spotHash": "5c7db6bf4a2e8a868245911ad0853b4ed9f903ee8782f32499c5a372c663bd94",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 363,
+          "retainedMass": 0.29065079857959103,
+          "handsForTarget": 333,
+          "possible": false
+        },
+        {
+          "totalHands": 368,
+          "retainedMass": 0.3589797892495521,
+          "handsForTarget": 329,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 13,
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "Kh"
+      ],
+      "spotHash": "e892362b6eb492bbcc008782ea28f3a30b24c570f52490040187ae769ae56399",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 601,
+          "retainedMass": 0.1321015551345965,
+          "handsForTarget": 583,
+          "possible": false
+        },
+        {
+          "totalHands": 446,
+          "retainedMass": 0.23449150151503495,
+          "handsForTarget": 392,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 14,
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "8h"
+      ],
+      "spotHash": "35115b13deb333e9139fbe5d75b812c1f0cdb1ccc2294d3fc98630009c675474",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 578,
+          "retainedMass": 0.11735173799757595,
+          "handsForTarget": 560,
+          "possible": false
+        },
+        {
+          "totalHands": 459,
+          "retainedMass": 0.23831478122916844,
+          "handsForTarget": 410,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 15,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qs"
+      ],
+      "spotHash": "895e93699325877a024eefde3b04d99ee7521dc98b0dd0801a708ad63e09274e",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 342,
+          "retainedMass": 0.303801797690414,
+          "handsForTarget": 315,
+          "possible": false
+        },
+        {
+          "totalHands": 350,
+          "retainedMass": 0.3774657757396559,
+          "handsForTarget": 313,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 16,
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "street": "turn",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "9d"
+      ],
+      "spotHash": "4b5891d799aad830c8d4b5030d8b29b15b55dcb242a4d841b11ac7eb7a120ddb",
+      "pot": 2010,
+      "stack": 9020,
+      "capacity": [
+        {
+          "totalHands": 348,
+          "retainedMass": 0.31464416730880596,
+          "handsForTarget": 321,
+          "possible": false
+        },
+        {
+          "totalHands": 326,
+          "retainedMass": 0.4052503517595752,
+          "handsForTarget": 279,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 18,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "spotHash": "3c6f6a6f14eda66d1a42ed8a4033e21993897f0993740a8df2601728da7a8511",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 318,
+          "retainedMass": 0.2559345734779201,
+          "handsForTarget": 294,
+          "possible": false
+        },
+        {
+          "totalHands": 334,
+          "retainedMass": 0.34785395779328493,
+          "handsForTarget": 296,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 19,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "6d"
+      ],
+      "spotHash": "d81a55a7092a81bf9b418030a27fdb2f5c11d921f761bd8ca1530c0e0c44b8bc",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 562,
+          "retainedMass": 0.12174301760993728,
+          "handsForTarget": 544,
+          "possible": false
+        },
+        {
+          "totalHands": 431,
+          "retainedMass": 0.22026507525149797,
+          "handsForTarget": 399,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 20,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6s"
+      ],
+      "spotHash": "a4a854143e9d2e7d49720282191acd1a076deac72eefb647ace1e6c7ab84b22c",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 351,
+          "retainedMass": 0.24519459656047438,
+          "handsForTarget": 322,
+          "possible": false
+        },
+        {
+          "totalHands": 367,
+          "retainedMass": 0.3418506133946907,
+          "handsForTarget": 315,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 22,
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Td"
+      ],
+      "spotHash": "ef22602cf2b24cbfdb338453dea3986d6c2257474b1a182b6e6bc952b0105d0e",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 384,
+          "retainedMass": 0.3534747490905993,
+          "handsForTarget": 337,
+          "possible": false
+        },
+        {
+          "totalHands": 380,
+          "retainedMass": 0.32206023005025075,
+          "handsForTarget": 327,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 23,
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "8d"
+      ],
+      "spotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "pot": 2808,
+      "stack": 8621,
+      "capacity": [
+        {
+          "totalHands": 267,
+          "retainedMass": 0.49143095629574635,
+          "handsForTarget": 214,
+          "possible": false
+        },
+        {
+          "totalHands": 243,
+          "retainedMass": 0.4745508256556628,
+          "handsForTarget": 202,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 24,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "9d"
+      ],
+      "spotHash": "990fbe581ec2bf9b228a9f75bb60b10e033474f04e950c958e9772526ad3853d",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 556,
+          "retainedMass": 0.12100214353406612,
+          "handsForTarget": 540,
+          "possible": false
+        },
+        {
+          "totalHands": 443,
+          "retainedMass": 0.2718644269513916,
+          "handsForTarget": 370,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 25,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d"
+      ],
+      "spotHash": "a6906937b24031cd1486476b70839ae2ab9e9a23be5fdf3538b5bb710778a170",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 346,
+          "retainedMass": 0.2713801792332842,
+          "handsForTarget": 305,
+          "possible": false
+        },
+        {
+          "totalHands": 409,
+          "retainedMass": 0.292993158177739,
+          "handsForTarget": 342,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 28,
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "street": "turn",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "Kd"
+      ],
+      "spotHash": "6230e9a4c66fbd9383f38270151ed60155b95ac5562253fafe71eca496b786f0",
+      "pot": 2010,
+      "stack": 9020,
+      "capacity": [
+        {
+          "totalHands": 360,
+          "retainedMass": 0.3084361982996093,
+          "handsForTarget": 328,
+          "possible": false
+        },
+        {
+          "totalHands": 331,
+          "retainedMass": 0.39556741013715324,
+          "handsForTarget": 281,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 29,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qh"
+      ],
+      "spotHash": "de06c09c467d45c0b8fc002ae09eeb04d1abf15ddd5eff378d536693216b0c74",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 316,
+          "retainedMass": 0.2550259620843186,
+          "handsForTarget": 293,
+          "possible": false
+        },
+        {
+          "totalHands": 327,
+          "retainedMass": 0.3610797208662931,
+          "handsForTarget": 287,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 30,
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "street": "turn",
+      "path": [
+        "b363",
+        "c",
+        "9s"
+      ],
+      "spotHash": "6f311da95d1c676ec1477406afe94bb1e89d30d64fd8a5adb642d7bc4b86ea48",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 535,
+          "retainedMass": 0.37678449861304447,
+          "handsForTarget": 433,
+          "possible": false
+        },
+        {
+          "totalHands": 427,
+          "retainedMass": 0.2303797286006511,
+          "handsForTarget": 378,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 31,
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "spotHash": "3409105392b7f4f02b2bc8c37b15e828be7f176e382b5c1aa2f702eeeaa1acf2",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 579,
+          "retainedMass": 0.20562063509294803,
+          "handsForTarget": 545,
+          "possible": false
+        },
+        {
+          "totalHands": 497,
+          "retainedMass": 0.24536205404365802,
+          "handsForTarget": 394,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 32,
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "spotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 580,
+          "retainedMass": 0.12376919752113504,
+          "handsForTarget": 560,
+          "possible": false
+        },
+        {
+          "totalHands": 424,
+          "retainedMass": 0.2699613196046754,
+          "handsForTarget": 367,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 33,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "2c"
+      ],
+      "spotHash": "2a42154c5ef508941510e99b6926cba98a5c23cccc30d8b4356bfdc6b3b3c8e9",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 590,
+          "retainedMass": 0.1145679914038204,
+          "handsForTarget": 572,
+          "possible": false
+        },
+        {
+          "totalHands": 444,
+          "retainedMass": 0.21167731116895488,
+          "handsForTarget": 403,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 34,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2d"
+      ],
+      "spotHash": "725d28af4f81940ffc582f44d59dcbcd17331de4c02c3a11c721a785f673f957",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 364,
+          "retainedMass": 0.2906494513668469,
+          "handsForTarget": 333,
+          "possible": false
+        },
+        {
+          "totalHands": 362,
+          "retainedMass": 0.36784595713732715,
+          "handsForTarget": 324,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 35,
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "6s"
+      ],
+      "spotHash": "995ffeb229807eff31e6b4c96fd40958b3911de8958d4b591c7d29cc455ec53c",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 588,
+          "retainedMass": 0.11495388373492353,
+          "handsForTarget": 570,
+          "possible": false
+        },
+        {
+          "totalHands": 460,
+          "retainedMass": 0.23691692581075077,
+          "handsForTarget": 410,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 36,
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "2s"
+      ],
+      "spotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 600,
+          "retainedMass": 0.1136936949740281,
+          "handsForTarget": 580,
+          "possible": false
+        },
+        {
+          "totalHands": 453,
+          "retainedMass": 0.23627570421235278,
+          "handsForTarget": 412,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 37,
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "x",
+        "4d"
+      ],
+      "spotHash": "e0bbdc4fd20a9efab8e8bd7fca664063f7cf0938bd1d47515795a738b94ac788",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 587,
+          "retainedMass": 0.12229996550758786,
+          "handsForTarget": 567,
+          "possible": false
+        },
+        {
+          "totalHands": 428,
+          "retainedMass": 0.2675775452268765,
+          "handsForTarget": 369,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": true,
+      "exactNodeAvailable": true,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 38,
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "street": "turn",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "6c"
+      ],
+      "spotHash": "38a41d1f68181cb804a16e87830a9137a45278306dd3d45ecb8ed6dc3f18300d",
+      "pot": 2808,
+      "stack": 8621,
+      "capacity": [
+        {
+          "totalHands": 289,
+          "retainedMass": 0.42746121148200794,
+          "handsForTarget": 236,
+          "possible": false
+        },
+        {
+          "totalHands": 308,
+          "retainedMass": 0.45504562664733283,
+          "handsForTarget": 253,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 4,
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Ad",
+        "b363",
+        "c",
+        "5d"
+      ],
+      "spotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 246,
+          "retainedMass": 0.6991050344105612,
+          "handsForTarget": 182,
+          "possible": false
+        },
+        {
+          "totalHands": 259,
+          "retainedMass": 0.38021579570310804,
+          "handsForTarget": 235,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 5,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "x",
+        "x",
+        "Th"
+      ],
+      "spotHash": "c4cf0af38ba0d10dc8fce53d63cccefdaba2f8212cc6377ff8299143f0340b12",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 487,
+          "retainedMass": 0.19505722344237883,
+          "handsForTarget": 426,
+          "possible": false
+        },
+        {
+          "totalHands": 333,
+          "retainedMass": 0.3747013579853818,
+          "handsForTarget": 289,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 6,
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "b363",
+        "c",
+        "6d"
+      ],
+      "spotHash": "cccdaf64bf75e52f052ee89fe350069ff92374f5b43ecf84d545630f7bc82aa3",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 280,
+          "retainedMass": 0.37203027505773706,
+          "handsForTarget": 240,
+          "possible": false
+        },
+        {
+          "totalHands": 251,
+          "retainedMass": 0.5048713830836111,
+          "handsForTarget": 210,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 9,
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "6h",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "spotHash": "0b5cd3997afc75692f3d0ce85433f387fc8bd93d312534138f708b0136aa5a7c",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 451,
+          "retainedMass": 0.20950825061266662,
+          "handsForTarget": 409,
+          "possible": false
+        },
+        {
+          "totalHands": 337,
+          "retainedMass": 0.41800072035286134,
+          "handsForTarget": 294,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 24,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "spotHash": "a9e701d2c940909c23c1bba68938ca0c2caa350b7cafbaa568139a27a535ea3a",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 490,
+          "retainedMass": 0.19120499572442146,
+          "handsForTarget": 429,
+          "possible": false
+        },
+        {
+          "totalHands": 358,
+          "retainedMass": 0.434534775181432,
+          "handsForTarget": 248,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 25,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d",
+        "x",
+        "x",
+        "3s"
+      ],
+      "spotHash": "00572a1e2bb5906f7ecee5b4c9fddce1cbd1fffde5e058e09812f2ddacac5a9f",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 343,
+          "retainedMass": 0.27600847518640526,
+          "handsForTarget": 301,
+          "possible": false
+        },
+        {
+          "totalHands": 395,
+          "retainedMass": 0.38907587291088147,
+          "handsForTarget": 294,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 45,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Qc",
+        "x",
+        "x",
+        "8d"
+      ],
+      "spotHash": "ed16088277a6a8f9c97bbeaa82471ef7a6c7c2001205f26bfa84339952961548",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 521,
+          "retainedMass": 0.1641058011946887,
+          "handsForTarget": 467,
+          "possible": false
+        },
+        {
+          "totalHands": 374,
+          "retainedMass": 0.45406882149156325,
+          "handsForTarget": 241,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 48,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "5c",
+        "b363",
+        "c",
+        "8c"
+      ],
+      "spotHash": "61c45d215c0d217c02eccab423daa85c6e43a76815a9517f8dff16c520cdd03a",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 423,
+          "retainedMass": 0.2477968045045255,
+          "handsForTarget": 363,
+          "possible": false
+        },
+        {
+          "totalHands": 269,
+          "retainedMass": 0.40298132942923975,
+          "handsForTarget": 244,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 77,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ah",
+        "x",
+        "x",
+        "5d"
+      ],
+      "spotHash": "9ad8bf96e486815a267ba3e0c777899921c1aac7463ed0cb9e8ba7b1dc6083b4",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 349,
+          "retainedMass": 0.2455778798881226,
+          "handsForTarget": 321,
+          "possible": false
+        },
+        {
+          "totalHands": 294,
+          "retainedMass": 0.5612690634559387,
+          "handsForTarget": 230,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 85,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kc"
+      ],
+      "spotHash": "0a3092bdbd4634ab94a96e8bdebc4daf6de3df4362b920cc2fba523e1d4b4303",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 495,
+          "retainedMass": 0.1776358260286012,
+          "handsForTarget": 437,
+          "possible": false
+        },
+        {
+          "totalHands": 317,
+          "retainedMass": 0.34741647155132505,
+          "handsForTarget": 280,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 99,
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Qh",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "spotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 544,
+          "retainedMass": 0.15664468542928878,
+          "handsForTarget": 489,
+          "possible": false
+        },
+        {
+          "totalHands": 391,
+          "retainedMass": 0.3674386697161079,
+          "handsForTarget": 319,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 103,
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Th",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "spotHash": "a25ff2ad59161abf919b025e8b81d7a7b6733faa7999abec8c6f5805ba3b4769",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 534,
+          "retainedMass": 0.18933396892943927,
+          "handsForTarget": 464,
+          "possible": false
+        },
+        {
+          "totalHands": 301,
+          "retainedMass": 0.3668163760838084,
+          "handsForTarget": 255,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 106,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "2d",
+        "x",
+        "x",
+        "8d"
+      ],
+      "spotHash": "d3084211d6b0d580df1fe0ee312f26b4cccb9b0008a27a0dfbf2a321b881feb9",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 481,
+          "retainedMass": 0.16187042704938706,
+          "handsForTarget": 439,
+          "possible": false
+        },
+        {
+          "totalHands": 381,
+          "retainedMass": 0.2834300621087381,
+          "handsForTarget": 328,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 122,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "3s",
+        "b363",
+        "c",
+        "Js"
+      ],
+      "spotHash": "0e9c7553d07201c824d6732623690fb582e19c7e21622c1753a6d53eca50453d",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 343,
+          "retainedMass": 0.3235531647484152,
+          "handsForTarget": 302,
+          "possible": false
+        },
+        {
+          "totalHands": 270,
+          "retainedMass": 0.4188781354127794,
+          "handsForTarget": 236,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 123,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "x",
+        "3h"
+      ],
+      "spotHash": "64c003aa47cb5c87ddac503411b913bbaa1371a6c6965cd90f76a294f8d0567e",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 530,
+          "retainedMass": 0.14867459772210742,
+          "handsForTarget": 489,
+          "possible": false
+        },
+        {
+          "totalHands": 387,
+          "retainedMass": 0.3298322107983634,
+          "handsForTarget": 322,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 125,
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "street": "river",
+      "path": [
+        "b182",
+        "c",
+        "9h",
+        "b603",
+        "c",
+        "Ks"
+      ],
+      "spotHash": "fdcdebe6a996e4a05fef52c97ad231b9e380ec97ba8831aca11389e88de6b520",
+      "pot": 2120,
+      "stack": 8965,
+      "capacity": [
+        {
+          "totalHands": 346,
+          "retainedMass": 0.3725419520719471,
+          "handsForTarget": 276,
+          "possible": false
+        },
+        {
+          "totalHands": 301,
+          "retainedMass": 0.3429002991525142,
+          "handsForTarget": 265,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 128,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "7h"
+      ],
+      "spotHash": "8037146c0f9f9398ced99acc3ecaaada1747bbe0adb5703181edd397735ba8be",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 509,
+          "retainedMass": 0.1889393866850267,
+          "handsForTarget": 441,
+          "possible": false
+        },
+        {
+          "totalHands": 375,
+          "retainedMass": 0.424924991240707,
+          "handsForTarget": 258,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 144,
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "x",
+        "6s"
+      ],
+      "spotHash": "f49b7b94da696dbe3cdff77fcbf5acc957bdd76b44147f7138a1964b898f8461",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 489,
+          "retainedMass": 0.17739509000243142,
+          "handsForTarget": 427,
+          "possible": false
+        },
+        {
+          "totalHands": 304,
+          "retainedMass": 0.3319423341685988,
+          "handsForTarget": 276,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 169,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Jh",
+        "b363",
+        "c",
+        "Ts"
+      ],
+      "spotHash": "978c0a77d29a3d733dabd9382d49cd86a3ba669356af03e09fea473f2dfe7784",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 334,
+          "retainedMass": 0.4317546106062866,
+          "handsForTarget": 286,
+          "possible": false
+        },
+        {
+          "totalHands": 282,
+          "retainedMass": 0.39059665309194913,
+          "handsForTarget": 252,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 196,
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "b363",
+        "c",
+        "8h"
+      ],
+      "spotHash": "70f9cb2227ed6d322dbb858f9caff8f6827e401139c3702e1c3e30413700a9e9",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 323,
+          "retainedMass": 0.4588471005889268,
+          "handsForTarget": 275,
+          "possible": false
+        },
+        {
+          "totalHands": 281,
+          "retainedMass": 0.5379545176390021,
+          "handsForTarget": 190,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 200,
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "b842",
+        "c",
+        "6d"
+      ],
+      "spotHash": "91af458c9e1312b131d1977efa600b3a5a5ad245f024c94403c61842b4087393",
+      "pot": 2960,
+      "stack": 8545,
+      "capacity": [
+        {
+          "totalHands": 216,
+          "retainedMass": 0.5503143764164089,
+          "handsForTarget": 182,
+          "possible": false
+        },
+        {
+          "totalHands": 307,
+          "retainedMass": 0.4161943951265041,
+          "handsForTarget": 258,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 258,
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "x",
+        "Ac"
+      ],
+      "spotHash": "544ab72974127c256069bd734a5310f7774690327f281d99638d49fd1ccff2ac",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 323,
+          "retainedMass": 0.35769458754036504,
+          "handsForTarget": 299,
+          "possible": false
+        },
+        {
+          "totalHands": 246,
+          "retainedMass": 0.5489487401560471,
+          "handsForTarget": 197,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 267,
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6h",
+        "x",
+        "b842",
+        "c",
+        "8h"
+      ],
+      "spotHash": "47e353f0860b54629b9e7df49601f6e9801a25a76ea7671a1b57ca13b2210543",
+      "pot": 2960,
+      "stack": 8545,
+      "capacity": [
+        {
+          "totalHands": 244,
+          "retainedMass": 0.45502202747931764,
+          "handsForTarget": 208,
+          "possible": false
+        },
+        {
+          "totalHands": 270,
+          "retainedMass": 0.6146120989081135,
+          "handsForTarget": 186,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 276,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "8d",
+        "x",
+        "x",
+        "9c"
+      ],
+      "spotHash": "fd86ddaf3818f6850e5380bd828d4c94badd882692ee8fed6a661b8a3355f8de",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 285,
+          "retainedMass": 0.29249318939782437,
+          "handsForTarget": 262,
+          "possible": false
+        },
+        {
+          "totalHands": 283,
+          "retainedMass": 0.43308858071579504,
+          "handsForTarget": 242,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 288,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kd"
+      ],
+      "spotHash": "98790ddcf8f45d99cc05c7b976921e7e2bae6af24efa63a10c306d94301be4fc",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 495,
+          "retainedMass": 0.17766726331127622,
+          "handsForTarget": 437,
+          "possible": false
+        },
+        {
+          "totalHands": 317,
+          "retainedMass": 0.3474993482078309,
+          "handsForTarget": 280,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 290,
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Kc",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "spotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 307,
+          "retainedMass": 0.31828935034618466,
+          "handsForTarget": 270,
+          "possible": false
+        },
+        {
+          "totalHands": 350,
+          "retainedMass": 0.4155432079792449,
+          "handsForTarget": 283,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 291,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Js",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "spotHash": "b496989e79a1cdc47ff77b62eaece9054994ad7b0936aa61959b9e7579c46ea4",
+      "pot": 550,
+      "stack": 9750,
+      "capacity": [
+        {
+          "totalHands": 522,
+          "retainedMass": 0.16325807226971487,
+          "handsForTarget": 466,
+          "possible": false
+        },
+        {
+          "totalHands": 351,
+          "retainedMass": 0.35731274251211026,
+          "handsForTarget": 290,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 302,
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "b363",
+        "c",
+        "Jh"
+      ],
+      "spotHash": "3ddf0a2f1ac1c8d947790ab420c6da03c3b9690475ac26aed261e4d37aa1d15e",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 278,
+          "retainedMass": 0.5352854820551918,
+          "handsForTarget": 183,
+          "possible": false
+        },
+        {
+          "totalHands": 284,
+          "retainedMass": 0.4027874531805956,
+          "handsForTarget": 231,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 314,
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "street": "river",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ac",
+        "x",
+        "b842",
+        "c",
+        "4s"
+      ],
+      "spotHash": "6bad18a71dd170d9229b37198c36dcdf6bde21e0f87af7cf10cea4b0ade1259b",
+      "pot": 2960,
+      "stack": 8545,
+      "capacity": [
+        {
+          "totalHands": 221,
+          "retainedMass": 0.470004333561626,
+          "handsForTarget": 174,
+          "possible": false
+        },
+        {
+          "totalHands": 299,
+          "retainedMass": 0.46890177341518074,
+          "handsForTarget": 236,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 345,
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "2c",
+        "x",
+        "b363",
+        "c",
+        "3c"
+      ],
+      "spotHash": "7a8316222a7caac530c33df62cc1b66d792cc9baf430ebc91ee4ca94d24edd08",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 208,
+          "retainedMass": 0.6077729419733773,
+          "handsForTarget": 172,
+          "possible": false
+        },
+        {
+          "totalHands": 330,
+          "retainedMass": 0.4565550182963584,
+          "handsForTarget": 275,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 354,
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "Qs",
+        "x",
+        "b363",
+        "c",
+        "7s"
+      ],
+      "spotHash": "e36ba4d3419f40e7be16bc3ede30cb9ae55941753d075aa875a1fbe27e4135d2",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 301,
+          "retainedMass": 0.3825721592414917,
+          "handsForTarget": 257,
+          "possible": false
+        },
+        {
+          "totalHands": 301,
+          "retainedMass": 0.46921947977694806,
+          "handsForTarget": 244,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    },
+    {
+      "seed": 367,
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "street": "river",
+      "path": [
+        "x",
+        "x",
+        "6d",
+        "x",
+        "b363",
+        "c",
+        "Qc"
+      ],
+      "spotHash": "1c975ea81bb476b85cd835176877cf1335a09ca99acc59c53198f4db561381ea",
+      "pot": 1276,
+      "stack": 9387,
+      "capacity": [
+        {
+          "totalHands": 285,
+          "retainedMass": 0.4584023652812445,
+          "handsForTarget": 237,
+          "possible": false
+        },
+        {
+          "totalHands": 240,
+          "retainedMass": 0.5404954137364617,
+          "handsForTarget": 213,
+          "possible": false
+        }
+      ],
+      "savedBoardAvailable": false,
+      "exactNodeAvailable": false,
+      "browserInputError": "Browser preflight currently allows at most 64 hands per player."
+    }
+  ],
+  "decision": {
+    "status": "blocked-before-solving",
+    "reason": "Some seeded roots cannot retain 99% of both ranges in 64 hands and have no saved policy on their board. Action-size translation cannot supply a different board.",
+    "nativeFullPrunedComparison": null,
+    "independentFullRangeExploitability": null,
+    "productionHandsTested": 0,
+    "unmeasured": "No admissible 99%-mass pruned policy exists at the blocked roots; do not report an invented EV/exploitability or substitute a top-64 game."
+  },
+  "payloadHash": "5708279f22c75c316a8d97dd4dfb1d857976127da11b3527f50e4c390cc807f9"
+}

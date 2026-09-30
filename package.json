@@ -79,6 +79,7 @@
     "prepare:wasm:live": "node scripts/prepare-bridge-live.mjs",
     "generate:wasm:example": "node --import tsx scripts/build-live-example.ts --write",
     "audit:wasm:example": "node --import tsx scripts/build-live-example.ts --check",
+    "audit:hu-play:admission": "node --import tsx scripts/audit-hu-play-admission.ts --check",
     "audit:wasm": "node --import tsx scripts/audit-bridge-wasm.ts",
     "audit:wasm:browser": "node --import tsx scripts/audit-bridge-wasm-browser.ts",
     "audit:wasm:live": "node --import tsx scripts/audit-bridge-live-browser.ts",

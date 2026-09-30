@@ -1,9 +1,14 @@
 # Heads-up play vs a solver-backed AI with live subgame re-solving — spec (draft, 2026-09-25)
 
-Status: P0 (contract, no solving) built in `src/lib/hu-play/`, tests `test/hu-play-*.test.ts`; P1+ not started. Depends on the postflop-solver bridge
+Status: P0 (contract, no solving) built in `src/lib/hu-play/`, tests `test/hu-play-*.test.ts`;
+P1's [admission audit](heads-up-play-p1-admission.md) is blocked before solving (2026-09-30).
+No production ladder or playable UI is shipped. Depends on the postflop-solver bridge
 (`tasks/postflop-solver-bridge-plan.md`, `-spec.md`, `src/lib/solver/bridge/*`) and the lean
 BTN-vs-BB SRP flop library being generated from `leanSrpSpot` / `LEAN_SRP_TREE`
-(`src/lib/solver/bridge/fixtures.ts`). The WASM bridge (plan B5) has no spec file yet.
+(`src/lib/solver/bridge/fixtures.ts`). Browser W1–W4 have since landed; see
+`postflop-solver-wasm-spec.md`. The CPU-ceiling roadmap's Architecture decision supersedes
+the older native-server and ad-hoc size/range degradation drafts in §2.4–2.5 below:
+production solves use the bounded browser Worker, preserving at least 99% of each range.
 
 ## Goal and non-goals
 
@@ -213,6 +218,9 @@ B = bet, C = call):
       card appears, and swapping the human's hand on the same public line leaves every spot byte-identical.
 
 ### P1 — on-tree play from the library (human limited to tree sizes)
+- [x] Frozen necessary admission/coverage audit recorded: **failed**, not a P1 completion.
+      No reached turn/river root in the 4,096-prefix cohort meets 99% retention within 64
+      hands/player; missing-board fallbacks block the proposed ladder. See the P1 record.
 - [ ] Scripted preflop + joint deal from library ranges; honest-label copy (test in `copy.test.ts` style).
 - [ ] Flop: sample from library slices. Turn/river: street-root re-solves with the lean menu (native).
 - [ ] Measure the turn/river cost model on the M1 Pro. Set budgets from the data, record them here.
