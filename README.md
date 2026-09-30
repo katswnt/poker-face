@@ -724,6 +724,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    or live policy source. The [P1 admission audit](tasks/heads-up-play-p1-admission.md) is
    blocked: the current 64-hand browser cap cannot retain the required 99% of both ranges,
    and saved policies do not cover every later board. No heavily pruned substitute is shipped.
+   A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
+   unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
+   per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.
    Keep flops in the saved library and re-solve only admitted turn/
    river spots; local re-solving does not establish global unexploitable play. This work can
    use clearly labelled hand-written ranges while preflop research stays separate.

@@ -44,9 +44,11 @@ automatically resume the unfinished configurable-flop-v2 draft.
    single-thread parity. [W2](postflop-solver-w2-worker.md) adds bounded export admission,
    actual iteration/checkpoint progress, cancellable jobs and checked source identity.
    [W4](postflop-solver-w4-ui.md) adds the learner UI and explicit source-complete asset preparation.
-   W1–W3 have landed with observed green CI; W4's record covers its separate release gates.
+   W1–W4 have landed with observed green CI; W4's record covers its separate release gates.
    P1's [measured admission gate](heads-up-play-p1-admission.md) is blocked: 99% of both
    ranges does not fit within 64 hands/player, and saved board coverage is incomplete.
+   P4's independent [TS gadget study](heads-up-play-p4-study.md) measures per-hand protection
+   in small expanded games; it neither unlocks play nor adds a gadget to the Rust engine.
    Do not ship an unmeasured ladder or dependent play UI. Public
    prepared-asset deployment and physical-device checks are not implied by a source release.
    Saved flop inputs may stay hand-written and clearly labelled while preflop research

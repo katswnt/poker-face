@@ -237,10 +237,15 @@ B = bet, C = call):
 
 ### P4 — flop translation + safe re-solve study
 - [ ] Flop off-tree via pseudo-harmonic translation, real-chip settlement, next-street re-solve.
-- [ ] Toy-scale full-game study (2.7 #3) for policies a–c.
-- [ ] Gadget re-solve (Resolve, then Max-margin) in our TS river engine for referee-scale spots.
-      Measure policy d. Decide with Kat whether to fork postflop-solver to add a per-hand
-      opt-out terminal (the fork would live under `native/`, still behind contract v1).
+- [x] Independent toy-scale whole-game study for translation, unsafe, unsafe-at-parent,
+      Resolve and Max-margin. See [frozen P4 study](heads-up-play-p4-study.md): one added
+      opponent bet in the river-v3 demo and one river branch of the turn-v2 referee.
+      Bounds are graded against a complete translated blueprint in each expanded game,
+      **not** against an abstraction that has no response to the new action.
+- [x] Resolve and Max-margin adapters on the existing TS compact river CFR+ engine,
+      with independent per-hand BR checks, analytic/rare-hand/blocker tests, and no Rust changes.
+      This does not complete P4: production flop translation depends on the blocked P1 ladder.
+      A postflop-solver gadget fork remains a decision for Kat, not authorized here.
 
 ### P5 — UI
 - [ ] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state.

@@ -87,6 +87,9 @@ jobs:
       - name: Reproduce P1 admission diagnosis (records a blocked play gate, not a playing policy)
         run: npm run audit:hu-play:admission
 
+      - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
+        run: npm run audit:hu-play:gadget
+
       - name: Audit river benchmark exchange
         run: npm run audit:river:exchange
 

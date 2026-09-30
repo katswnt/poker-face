@@ -1,0 +1,1548 @@
+{
+  "format": "poker-face-hu-p4-gadget-study",
+  "version": 1,
+  "algorithm": "compact-alternating-cfr-plus",
+  "averagingDelay": 20,
+  "checkpoints": [
+    1000,
+    10000,
+    100000,
+    200000
+  ],
+  "safetyTargetChips": 0.0002,
+  "limits": [
+    "Referee-scale TypeScript study, not a production play policy or Rust gadget",
+    "Finite floating-point policies, exact enumeration rather than exact equilibrium",
+    "Protection is compared with the complete translated blueprint in the expanded game, not a missing-action abstraction",
+    "Only AI strategy is grafted; human profile is unchanged; per-hand bounds use counterfactual rather than modeled reach",
+    "Turn fixture replaces one river response; not a turn gadget or full-street production safety claim"
+  ],
+  "fixtures": [
+    {
+      "name": "river-v3-demo-plus-IP-150",
+      "inputFiles": [
+        {
+          "path": "src/lib/solver/river/configurable-v3/artifacts/configurable-river-v3.json",
+          "bytes": 75000,
+          "sha256": "dd7530b4ed97fa2f90c3373600cbfced18ff26b287641d9dd482d99dd6b12527"
+        }
+      ],
+      "sizes": {
+        "lower": 100,
+        "upper": 200,
+        "actual": 150,
+        "pot": 100
+      },
+      "lowerTranslationProbability": 0.4,
+      "expandedGameStates": 12145,
+      "expandedInformationSets": 336,
+      "roots": 176,
+      "opponentHands": 14,
+      "replacedAiInformationSets": 14,
+      "originalBlueprintPolicyHash": "63147f213719633ab02b83cd4e073c4394bb6ade5810cc5fba1cedec19730298",
+      "expandedBlueprintPolicyHash": "342ca70069fb044cac269fb15b342001a3836ac9ca6e61df83e0053e4a126383",
+      "rows": [
+        {
+          "mode": "translation",
+          "iterations": 0,
+          "trainingGameNashGap": null,
+          "attempts": [],
+          "policyHash": "342ca70069fb044cac269fb15b342001a3836ac9ca6e61df83e0053e4a126383",
+          "replacement": {
+            "river-configurable-v3:v3:p0:hand=7c6c:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9999992210248559,
+              "call": 0,
+              "raise-to-200": 7.78975144103192e-7
+            },
+            "river-configurable-v3:v3:p0:hand=7d6d:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9999992210248559,
+              "call": 0,
+              "raise-to-200": 7.78975144103192e-7
+            },
+            "river-configurable-v3:v3:p0:hand=7h6h:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9999992210248559,
+              "call": 0,
+              "raise-to-200": 7.78975144103192e-7
+            },
+            "river-configurable-v3:v3:p0:hand=7s6s:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.6004837537050589,
+              "raise-to-200": 0.3995162462949411
+            },
+            "river-configurable-v3:v3:p0:hand=AcQc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7019400031976744,
+              "call": 0.27971457621986934,
+              "raise-to-200": 0.018345420582456286
+            },
+            "river-configurable-v3:v3:p0:hand=AdAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.10702483659931344,
+              "call": 0.6722223816610513,
+              "raise-to-200": 0.22075278173963528
+            },
+            "river-configurable-v3:v3:p0:hand=AdQd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7019400031976744,
+              "call": 0.27971457621986934,
+              "raise-to-200": 0.018345420582456286
+            },
+            "river-configurable-v3:v3:p0:hand=AhAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.10702483659931344,
+              "call": 0.6722223816610513,
+              "raise-to-200": 0.22075278173963528
+            },
+            "river-configurable-v3:v3:p0:hand=AhAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.10702483659931344,
+              "call": 0.6722223816610513,
+              "raise-to-200": 0.22075278173963528
+            },
+            "river-configurable-v3:v3:p0:hand=AhQh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7019400031976744,
+              "call": 0.27971457621986934,
+              "raise-to-200": 0.018345420582456286
+            },
+            "river-configurable-v3:v3:p0:hand=AsAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.6013691235947776,
+              "raise-to-200": 0.39863087640522243
+            },
+            "river-configurable-v3:v3:p0:hand=AsAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.6013691235947776,
+              "raise-to-200": 0.39863087640522243
+            },
+            "river-configurable-v3:v3:p0:hand=AsAh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.6013691235947776,
+              "raise-to-200": 0.39863087640522243
+            },
+            "river-configurable-v3:v3:p0:hand=AsQs:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.6,
+              "raise-to-200": 0.4
+            }
+          },
+          "grade": {
+            "value": [
+              16.081056725396856,
+              -16.081056725396856
+            ],
+            "bestResponseValues": [
+              16.096050169414262,
+              -15.668002550249113
+            ],
+            "gains": [
+              0.014993444017406432,
+              0.41305417514774234
+            ],
+            "exploitability": 0.2140238095825744
+          },
+          "constraints": [
+            {
+              "key": "6d5d",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -49.997675120256886,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "6h5h",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -49.997675120256886,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "6s5s",
+              "mass": 0.01592011863796236,
+              "bound": 102.17716207272096,
+              "value": 102.17716207272096,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "AcTc",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.49081349989346,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "AdTd",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.49081349989346,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "AhTh",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.49081349989346,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "AsTs",
+              "mass": 0.01574874370466585,
+              "bound": 107.72361338885754,
+              "value": 107.72361338885754,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JdJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JhJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JhJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JsJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JsJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "JsJh",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.925549925444834,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "6c5c",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -49.997675120256886,
+              "gain": 0,
+              "margin": 0
+            }
+          ],
+          "maximumGain": 0,
+          "minimumMargin": 0,
+          "opponentWholeGameGain": 0,
+          "accepted": null
+        },
+        {
+          "mode": "unsafe",
+          "iterations": 10000,
+          "trainingGameNashGap": 0.0000059367582281311115,
+          "attempts": [
+            {
+              "iterations": 10000,
+              "maximumGain": 75.4865496035465,
+              "opponentWholeGameGain": 9.202488671090988,
+              "trainingGameNashGap": 0.0000059367582281311115
+            }
+          ],
+          "policyHash": "c3f997510a16de348d72ce7a642efcfc047719f0de6627f7b2dace233c82be3e",
+          "replacement": {
+            "river-configurable-v3:v3:p0:hand=7c6c:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 1,
+              "call": 0,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=7d6d:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 1,
+              "call": 0,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=7h6h:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 1,
+              "call": 0,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=7s6s:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9999999904924283,
+              "raise-to-200": 9.507571703979892e-9
+            },
+            "river-configurable-v3:v3:p0:hand=AcQc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.4587635893400876e-8,
+              "call": 0.9976014918413618,
+              "raise-to-200": 0.002398463571002438
+            },
+            "river-configurable-v3:v3:p0:hand=AdAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AdQd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.4587635893400876e-8,
+              "call": 0.9976014918413618,
+              "raise-to-200": 0.002398463571002438
+            },
+            "river-configurable-v3:v3:p0:hand=AhAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AhAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AhQh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.4587635893400876e-8,
+              "call": 0.9976014918413618,
+              "raise-to-200": 0.002398463571002438
+            },
+            "river-configurable-v3:v3:p0:hand=AsAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9999790633725214,
+              "raise-to-200": 0.000020936627478563115
+            },
+            "river-configurable-v3:v3:p0:hand=AsAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9999790633725214,
+              "raise-to-200": 0.000020936627478563115
+            },
+            "river-configurable-v3:v3:p0:hand=AsAh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9999790633725214,
+              "raise-to-200": 0.000020936627478563115
+            },
+            "river-configurable-v3:v3:p0:hand=AsQs:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-200": 1
+            }
+          },
+          "grade": {
+            "value": [
+              16.081056725396856,
+              -16.081056725396856
+            ],
+            "bestResponseValues": [
+              16.096050169414262,
+              -6.4655138791581255
+            ],
+            "gains": [
+              0.014993444017406432,
+              9.61554284623873
+            ],
+            "exploitability": 4.815268145128068
+          },
+          "constraints": [
+            {
+              "key": "6d5d",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -181.1107805086461,
+              "gain": -131.11310538838922,
+              "margin": 131.11310538838922
+            },
+            {
+              "key": "6h5h",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -181.1107805086461,
+              "gain": -131.11310538838922,
+              "margin": 131.11310538838922
+            },
+            {
+              "key": "6s5s",
+              "mass": 0.01592011863796236,
+              "bound": 102.17716207272096,
+              "value": 176.48286451602837,
+              "gain": 74.30570244330741,
+              "margin": -74.30570244330741
+            },
+            {
+              "key": "AcTc",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -159.00838076662967,
+              "gain": -124.51756726673621,
+              "margin": 124.51756726673621
+            },
+            {
+              "key": "AdTd",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -159.00838076662967,
+              "gain": -124.51756726673621,
+              "margin": 124.51756726673621
+            },
+            {
+              "key": "AhTh",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -159.00838076662967,
+              "gain": -124.51756726673621,
+              "margin": 124.51756726673621
+            },
+            {
+              "key": "AsTs",
+              "mass": 0.01574874370466585,
+              "bound": 107.72361338885754,
+              "value": 183.21016299240404,
+              "gain": 75.4865496035465,
+              "margin": -75.4865496035465
+            },
+            {
+              "key": "JdJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "JhJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "JhJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "JsJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "JsJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "JsJh",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 105.77667242081068,
+              "gain": 70.85112249536584,
+              "margin": -70.85112249536584
+            },
+            {
+              "key": "6c5c",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -181.1107805086461,
+              "gain": -131.11310538838922,
+              "margin": 131.11310538838922
+            }
+          ],
+          "maximumGain": 75.4865496035465,
+          "minimumMargin": -75.4865496035465,
+          "opponentWholeGameGain": 9.202488671090988,
+          "accepted": null
+        },
+        {
+          "mode": "unsafe-at-parent",
+          "iterations": 10000,
+          "trainingGameNashGap": 0.00515381501677048,
+          "attempts": [
+            {
+              "iterations": 10000,
+              "maximumGain": -0.03317355658730037,
+              "opponentWholeGameGain": -0.40989835725093826,
+              "trainingGameNashGap": 0.00515381501677048
+            }
+          ],
+          "policyHash": "dc63d5e62e976003ac00207290eb6debd54c7b33360037fa2325545df977088e",
+          "replacement": {
+            "river-configurable-v3:v3:p0:hand=7c6c:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9902881353896479,
+              "call": 0.0027961666989629852,
+              "raise-to-200": 0.006915697911389101
+            },
+            "river-configurable-v3:v3:p0:hand=7d6d:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9902881353896479,
+              "call": 0.0027961666989629852,
+              "raise-to-200": 0.006915697911389101
+            },
+            "river-configurable-v3:v3:p0:hand=7h6h:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9902881353896479,
+              "call": 0.0027961666989629852,
+              "raise-to-200": 0.006915697911389101
+            },
+            "river-configurable-v3:v3:p0:hand=7s6s:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 1.6168569167832497e-8,
+              "call": 0.29883472902357955,
+              "raise-to-200": 0.7011652548078512
+            },
+            "river-configurable-v3:v3:p0:hand=AcQc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7140883386823843,
+              "call": 0.2784934443748323,
+              "raise-to-200": 0.007418216942783412
+            },
+            "river-configurable-v3:v3:p0:hand=AdAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.0000023341350515583463,
+              "call": 0.9595481354386517,
+              "raise-to-200": 0.040449530426296655
+            },
+            "river-configurable-v3:v3:p0:hand=AdQd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7140883386823843,
+              "call": 0.2784934443748323,
+              "raise-to-200": 0.007418216942783412
+            },
+            "river-configurable-v3:v3:p0:hand=AhAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.0000023341350515583463,
+              "call": 0.9595481354386517,
+              "raise-to-200": 0.040449530426296655
+            },
+            "river-configurable-v3:v3:p0:hand=AhAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.0000023341350515583463,
+              "call": 0.9595481354386517,
+              "raise-to-200": 0.040449530426296655
+            },
+            "river-configurable-v3:v3:p0:hand=AhQh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.7140883386823843,
+              "call": 0.2784934443748323,
+              "raise-to-200": 0.007418216942783412
+            },
+            "river-configurable-v3:v3:p0:hand=AsAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.2852876676833773e-8,
+              "call": 0.3426296033199943,
+              "raise-to-200": 0.6573703538271289
+            },
+            "river-configurable-v3:v3:p0:hand=AsAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.2852876676833773e-8,
+              "call": 0.3426296033199943,
+              "raise-to-200": 0.6573703538271289
+            },
+            "river-configurable-v3:v3:p0:hand=AsAh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 4.2852876676833773e-8,
+              "call": 0.3426296033199943,
+              "raise-to-200": 0.6573703538271289
+            },
+            "river-configurable-v3:v3:p0:hand=AsQs:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-200": 1
+            }
+          },
+          "grade": {
+            "value": [
+              16.081056725396856,
+              -16.081056725396856
+            ],
+            "bestResponseValues": [
+              16.096050169414262,
+              -16.07790090750005
+            ],
+            "gains": [
+              0.014993444017406432,
+              0.0031558178968040806
+            ],
+            "exploitability": 0.009074630957105256
+          },
+          "constraints": [
+            {
+              "key": "6d5d",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.00425626466644,
+              "gain": -2.0065811444095516,
+              "margin": 2.0065811444095516
+            },
+            {
+              "key": "6h5h",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.00425626466644,
+              "gain": -2.0065811444095516,
+              "margin": 2.0065811444095516
+            },
+            {
+              "key": "6s5s",
+              "mass": 0.01592011863796236,
+              "bound": 102.17716207272096,
+              "value": 101.45965224675132,
+              "gain": -0.7175098259696426,
+              "margin": 0.7175098259696426
+            },
+            {
+              "key": "AcTc",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.52398705648076,
+              "gain": -0.03317355658730037,
+              "margin": 0.03317355658730037
+            },
+            {
+              "key": "AdTd",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.52398705648076,
+              "gain": -0.03317355658730037,
+              "margin": 0.03317355658730037
+            },
+            {
+              "key": "AhTh",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -34.52398705648076,
+              "gain": -0.03317355658730037,
+              "margin": 0.03317355658730037
+            },
+            {
+              "key": "AsTs",
+              "mass": 0.01574874370466585,
+              "bound": 107.72361338885754,
+              "value": 107.56525983024639,
+              "gain": -0.15835355861115374,
+              "margin": 0.15835355861115374
+            },
+            {
+              "key": "JdJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "JhJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "JhJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "JsJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "JsJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "JsJh",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 29.980333867034204,
+              "gain": -4.9452160584106295,
+              "margin": 4.9452160584106295
+            },
+            {
+              "key": "6c5c",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.00425626466644,
+              "gain": -2.0065811444095516,
+              "margin": 2.0065811444095516
+            }
+          ],
+          "maximumGain": -0.03317355658730037,
+          "minimumMargin": 0.03317355658730037,
+          "opponentWholeGameGain": -0.40989835725093826,
+          "accepted": null
+        },
+        {
+          "mode": "resolve",
+          "iterations": 1000,
+          "trainingGameNashGap": 0.003208534850122291,
+          "attempts": [
+            {
+              "iterations": 1000,
+              "maximumGain": -0.0014065008002432933,
+              "opponentWholeGameGain": -0.0001369166354248108,
+              "trainingGameNashGap": 0.003208534850122291
+            }
+          ],
+          "policyHash": "c1c389fa314b17f1fce492dda2e4ba8ac716de64fc65e9bccdd6a6de75577521",
+          "replacement": {
+            "river-configurable-v3:v3:p0:hand=7c6c:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9831871271690196,
+              "call": 0,
+              "raise-to-200": 0.01681287283098044
+            },
+            "river-configurable-v3:v3:p0:hand=7d6d:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9831871271690196,
+              "call": 0,
+              "raise-to-200": 0.01681287283098044
+            },
+            "river-configurable-v3:v3:p0:hand=7h6h:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9831871271690196,
+              "call": 0,
+              "raise-to-200": 0.01681287283098044
+            },
+            "river-configurable-v3:v3:p0:hand=7s6s:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9987190380907741,
+              "raise-to-200": 0.001280961909225856
+            },
+            "river-configurable-v3:v3:p0:hand=AcQc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.704807628006992,
+              "call": 0.2932891034131651,
+              "raise-to-200": 0.0019032685798428893
+            },
+            "river-configurable-v3:v3:p0:hand=AdAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.07264149985668028,
+              "call": 0.9262046748076087,
+              "raise-to-200": 0.0011538253357109946
+            },
+            "river-configurable-v3:v3:p0:hand=AdQd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.704807628006992,
+              "call": 0.2932891034131651,
+              "raise-to-200": 0.0019032685798428893
+            },
+            "river-configurable-v3:v3:p0:hand=AhAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.07264149985668028,
+              "call": 0.9262046748076087,
+              "raise-to-200": 0.0011538253357109946
+            },
+            "river-configurable-v3:v3:p0:hand=AhAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.07264149985668028,
+              "call": 0.9262046748076087,
+              "raise-to-200": 0.0011538253357109946
+            },
+            "river-configurable-v3:v3:p0:hand=AhQh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.704807628006992,
+              "call": 0.2932891034131651,
+              "raise-to-200": 0.0019032685798428893
+            },
+            "river-configurable-v3:v3:p0:hand=AsAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9362247966137339,
+              "raise-to-200": 0.063775203386266
+            },
+            "river-configurable-v3:v3:p0:hand=AsAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9362247966137339,
+              "raise-to-200": 0.063775203386266
+            },
+            "river-configurable-v3:v3:p0:hand=AsAh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9362247966137339,
+              "raise-to-200": 0.063775203386266
+            },
+            "river-configurable-v3:v3:p0:hand=AsQs:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-200": 1
+            }
+          },
+          "grade": {
+            "value": [
+              16.081056725396856,
+              -16.081056725396856
+            ],
+            "bestResponseValues": [
+              16.096050169414262,
+              -15.668139466884538
+            ],
+            "gains": [
+              0.014993444017406432,
+              0.41291725851231753
+            ],
+            "exploitability": 0.21395535126486198
+          },
+          "constraints": [
+            {
+              "key": "6d5d",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -51.08841469584408,
+              "gain": -1.0907395755871931,
+              "margin": 1.0907395755871931
+            },
+            {
+              "key": "6h5h",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -51.08841469584408,
+              "gain": -1.0907395755871931,
+              "margin": 1.0907395755871931
+            },
+            {
+              "key": "6s5s",
+              "mass": 0.01592011863796236,
+              "bound": 102.17716207272096,
+              "value": 100.09754297412442,
+              "gain": -2.079619098596538,
+              "margin": 2.079619098596538
+            },
+            {
+              "key": "AcTc",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.3024453247473,
+              "gain": -0.8116318248538406,
+              "margin": 0.8116318248538406
+            },
+            {
+              "key": "AdTd",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.3024453247473,
+              "gain": -0.8116318248538406,
+              "margin": 0.8116318248538406
+            },
+            {
+              "key": "AhTh",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.3024453247473,
+              "gain": -0.8116318248538406,
+              "margin": 0.8116318248538406
+            },
+            {
+              "key": "AsTs",
+              "mass": 0.01574874370466585,
+              "bound": 107.72361338885754,
+              "value": 105.94808492443006,
+              "gain": -1.775528464427481,
+              "margin": 1.775528464427481
+            },
+            {
+              "key": "JdJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "JhJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "JhJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "JsJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "JsJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "JsJh",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 34.92414342464459,
+              "gain": -0.0014065008002432933,
+              "margin": 0.0014065008002432933
+            },
+            {
+              "key": "6c5c",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -51.08841469584408,
+              "gain": -1.0907395755871931,
+              "margin": 1.0907395755871931
+            }
+          ],
+          "maximumGain": -0.0014065008002432933,
+          "minimumMargin": 0.0014065008002432933,
+          "opponentWholeGameGain": -0.0001369166354248108,
+          "accepted": true
+        },
+        {
+          "mode": "max-margin",
+          "iterations": 1000,
+          "trainingGameNashGap": 0.06443499332003899,
+          "attempts": [
+            {
+              "iterations": 1000,
+              "maximumGain": -1.2207905291956322,
+              "opponentWholeGameGain": -0.11883856148287641,
+              "trainingGameNashGap": 0.06443499332003899
+            }
+          ],
+          "policyHash": "0677db9f660eefac2f809f791ebc0b3ff9b345e5ba0283c0dcdafc641e079888",
+          "replacement": {
+            "river-configurable-v3:v3:p0:hand=7c6c:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9807723909600777,
+              "call": 0,
+              "raise-to-200": 0.019227609039922284
+            },
+            "river-configurable-v3:v3:p0:hand=7d6d:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9807723909600773,
+              "call": 0,
+              "raise-to-200": 0.019227609039922662
+            },
+            "river-configurable-v3:v3:p0:hand=7h6h:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.9807723909600773,
+              "call": 0,
+              "raise-to-200": 0.019227609039922662
+            },
+            "river-configurable-v3:v3:p0:hand=7s6s:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.9999491987500397,
+              "raise-to-200": 0.00005080124996021886
+            },
+            "river-configurable-v3:v3:p0:hand=AcQc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.705530461761463,
+              "call": 0.29446953823853705,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AdAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.04521712157138343,
+              "call": 0.9547828784286165,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AdQd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.705530461761463,
+              "call": 0.29446953823853705,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AhAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.04521712157138343,
+              "call": 0.9547828784286165,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AhAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.04521712157138343,
+              "call": 0.9547828784286165,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AhQh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0.705530461761463,
+              "call": 0.29446953823853705,
+              "raise-to-200": 0
+            },
+            "river-configurable-v3:v3:p0:hand=AsAc:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.5959516189695552,
+              "raise-to-200": 0.4040483810304449
+            },
+            "river-configurable-v3:v3:p0:hand=AsAd:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.5959516189695552,
+              "raise-to-200": 0.4040483810304449
+            },
+            "river-configurable-v3:v3:p0:hand=AsAh:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0.5959516189695552,
+              "raise-to-200": 0.4040483810304449
+            },
+            "river-configurable-v3:v3:p0:hand=AsQs:put=0,150:bet=150:last=150:raises=0:checks=0:history=check-bet-to-150": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-200": 1
+            }
+          },
+          "grade": {
+            "value": [
+              16.081056725396856,
+              -16.081056725396856
+            ],
+            "bestResponseValues": [
+              16.096050169414262,
+              -15.78684111173199
+            ],
+            "gains": [
+              0.014993444017406432,
+              0.2942156136648659
+            ],
+            "exploitability": 0.15460452884113618
+          },
+          "constraints": [
+            {
+              "key": "6d5d",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.03395893999199,
+              "gain": -2.036283819735104,
+              "margin": 2.036283819735104
+            },
+            {
+              "key": "6h5h",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.03395893999199,
+              "gain": -2.036283819735104,
+              "margin": 2.036283819735104
+            },
+            {
+              "key": "6s5s",
+              "mass": 0.01592011863796236,
+              "bound": 102.17716207272096,
+              "value": 100.85234088685323,
+              "gain": -1.3248211858677337,
+              "margin": 1.3248211858677337
+            },
+            {
+              "key": "AcTc",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.772304642025816,
+              "gain": -1.281491142132353,
+              "margin": 1.281491142132353
+            },
+            {
+              "key": "AdTd",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.772304642025816,
+              "gain": -1.281491142132353,
+              "margin": 1.281491142132353
+            },
+            {
+              "key": "AhTh",
+              "mass": 0.010806136339474517,
+              "bound": -34.49081349989346,
+              "value": -35.772304642025816,
+              "gain": -1.281491142132353,
+              "margin": 1.281491142132353
+            },
+            {
+              "key": "AsTs",
+              "mass": 0.01574874370466585,
+              "bound": 107.72361338885754,
+              "value": 106.46021860641017,
+              "gain": -1.263394782447378,
+              "margin": 1.263394782447378
+            },
+            {
+              "key": "JdJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "JhJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "JhJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "JsJc",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "JsJd",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "JsJh",
+              "mass": 0.01622426324593342,
+              "bound": 34.925549925444834,
+              "value": 33.7047593962492,
+              "gain": -1.2207905291956322,
+              "margin": 1.2207905291956322
+            },
+            {
+              "key": "6c5c",
+              "mass": 0.015633648656502946,
+              "bound": -49.997675120256886,
+              "value": -52.03395893999199,
+              "gain": -2.036283819735104,
+              "margin": 2.036283819735104
+            }
+          ],
+          "maximumGain": -1.2207905291956322,
+          "minimumMargin": 1.2207905291956322,
+          "opponentWholeGameGain": -0.11883856148287641,
+          "accepted": true
+        }
+      ]
+    },
+    {
+      "name": "turn-v2-dry-value-plus-IP-river-20",
+      "inputFiles": [
+        {
+          "path": "src/lib/solver/postflop/configurable-turn/artifacts/turn-v2-dry-value.json",
+          "bytes": 1117301,
+          "sha256": "aa74c47e7678a48df6f530363389bb82ab50fe4feecf8ed2d142783ad0614879"
+        }
+      ],
+      "sizes": {
+        "lower": 10,
+        "upper": 25,
+        "actual": 20,
+        "pot": 100
+      },
+      "lowerTranslationProbability": 0.3055555555555555,
+      "expandedGameStates": 49193,
+      "expandedInformationSets": 6936,
+      "roots": 8,
+      "opponentHands": 3,
+      "replacedAiInformationSets": 3,
+      "originalBlueprintPolicyHash": "ad8c5433d9288884e6b65945fd85466b3a22343a0b5502d96ec4a9e101410a54",
+      "expandedBlueprintPolicyHash": "3f41478f439f0bd301e1d8b96fde92ed4a468c8c1b3261e49026c077708d1078",
+      "rows": [
+        {
+          "mode": "translation",
+          "iterations": 0,
+          "trainingGameNashGap": null,
+          "attempts": [],
+          "policyHash": "3f41478f439f0bd301e1d8b96fde92ed4a468c8c1b3261e49026c077708d1078",
+          "replacement": {
+            "turn-v2:p0:AdAc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-50": 1
+            },
+            "turn-v2:p0:AhKd:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0.9896655237751681,
+              "raise-to-50": 0.010334476224831848
+            },
+            "turn-v2:p0:QdQc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0.39345472180845903,
+              "call": 0.5608651884617861,
+              "raise-to-50": 0.04568008972975485
+            }
+          },
+          "grade": {
+            "value": [
+              12.192367231649257,
+              -12.192367231649257
+            ],
+            "bestResponseValues": [
+              12.249566027303239,
+              -12.144455277649469
+            ],
+            "gains": [
+              0.05719879565398145,
+              0.04791195399978854
+            ],
+            "exploitability": 0.05255537482688499
+          },
+          "constraints": [
+            {
+              "key": "6s5s",
+              "mass": 0.005073979268548934,
+              "bound": -51.39616196669908,
+              "value": -51.39616196669908,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "7h7c",
+              "mass": 0.005073979268548934,
+              "bound": 49.872604153779264,
+              "value": 49.872604153779264,
+              "gain": 0,
+              "margin": 0
+            },
+            {
+              "key": "AhQh",
+              "mass": 0.0025282433024868345,
+              "bound": 29.42942891087042,
+              "value": 29.42942891087042,
+              "gain": 0,
+              "margin": 0
+            }
+          ],
+          "maximumGain": 0,
+          "minimumMargin": 0,
+          "opponentWholeGameGain": 0,
+          "accepted": null
+        },
+        {
+          "mode": "unsafe",
+          "iterations": 10000,
+          "trainingGameNashGap": 0.00047736498450134945,
+          "attempts": [
+            {
+              "iterations": 10000,
+              "maximumGain": 6.1116083889965225,
+              "opponentWholeGameGain": 0.015451632976894558,
+              "trainingGameNashGap": 0.00047736498450134945
+            }
+          ],
+          "policyHash": "2cc971af507650e4d90d383b15faf97c22a880e31c388aee14982dd3cbcce5a2",
+          "replacement": {
+            "turn-v2:p0:AdAc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-50": 1
+            },
+            "turn-v2:p0:AhKd:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-50": 0
+            },
+            "turn-v2:p0:QdQc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0.9532856815325603,
+              "raise-to-50": 0.04671431846743969
+            }
+          },
+          "grade": {
+            "value": [
+              12.192367231649257,
+              -12.192367231649257
+            ],
+            "bestResponseValues": [
+              12.249566027303239,
+              -12.129003644672574
+            ],
+            "gains": [
+              0.05719879565398145,
+              0.0633635869766831
+            ],
+            "exploitability": 0.06028119131533227
+          },
+          "constraints": [
+            {
+              "key": "6s5s",
+              "mass": 0.005073979268548934,
+              "bound": -51.39616196669908,
+              "value": -70,
+              "gain": -18.603838033300917,
+              "margin": 18.603838033300917
+            },
+            {
+              "key": "7h7c",
+              "mass": 0.005073979268548934,
+              "bound": 49.872604153779264,
+              "value": 52.82991769452578,
+              "gain": 2.9573135407465188,
+              "margin": -2.9573135407465188
+            },
+            {
+              "key": "AhQh",
+              "mass": 0.0025282433024868345,
+              "bound": 29.42942891087042,
+              "value": 35.54103729986694,
+              "gain": 6.1116083889965225,
+              "margin": -6.1116083889965225
+            }
+          ],
+          "maximumGain": 6.1116083889965225,
+          "minimumMargin": -6.1116083889965225,
+          "opponentWholeGameGain": 0.015451632976894558,
+          "accepted": null
+        },
+        {
+          "mode": "unsafe-at-parent",
+          "iterations": 10000,
+          "trainingGameNashGap": 0.0003144187087329442,
+          "attempts": [
+            {
+              "iterations": 10000,
+              "maximumGain": 1.2066267986096548,
+              "opponentWholeGameGain": -0.0008185731281500352,
+              "trainingGameNashGap": 0.0003144187087329442
+            }
+          ],
+          "policyHash": "762f475831666f2d8b3d5536353f1ead0c94e6ddce1f2d239acc17f43650f812",
+          "replacement": {
+            "turn-v2:p0:AdAc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-50": 1
+            },
+            "turn-v2:p0:AhKd:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-50": 0
+            },
+            "turn-v2:p0:QdQc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0.41897381149972507,
+              "call": 0.5345812689086594,
+              "raise-to-50": 0.04644491959161544
+            }
+          },
+          "grade": {
+            "value": [
+              12.192367231649257,
+              -12.192367231649257
+            ],
+            "bestResponseValues": [
+              12.249566027303239,
+              -12.145273850777619
+            ],
+            "gains": [
+              0.05719879565398145,
+              0.0470933808716385
+            ],
+            "exploitability": 0.052146088262809975
+          },
+          "constraints": [
+            {
+              "key": "6s5s",
+              "mass": 0.005073979268548934,
+              "bound": -51.39616196669908,
+              "value": -50.18953516808943,
+              "gain": 1.2066267986096548,
+              "margin": -1.2066267986096548
+            },
+            {
+              "key": "7h7c",
+              "mass": 0.005073979268548934,
+              "bound": 49.872604153779264,
+              "value": 49.54135303020166,
+              "gain": -0.33125112357760145,
+              "margin": 0.33125112357760145
+            },
+            {
+              "key": "AhQh",
+              "mass": 0.0025282433024868345,
+              "bound": 29.42942891087042,
+              "value": 28.9411547198754,
+              "gain": -0.48827419099502123,
+              "margin": 0.48827419099502123
+            }
+          ],
+          "maximumGain": 1.2066267986096548,
+          "minimumMargin": -1.2066267986096548,
+          "opponentWholeGameGain": -0.0008185731281500352,
+          "accepted": null
+        },
+        {
+          "mode": "resolve",
+          "iterations": 100000,
+          "trainingGameNashGap": 7.001023725194955e-7,
+          "attempts": [
+            {
+              "iterations": 1000,
+              "maximumGain": 0.03734135113086978,
+              "opponentWholeGameGain": 0.0000944080209013265,
+              "trainingGameNashGap": 0.014733231153139847
+            },
+            {
+              "iterations": 10000,
+              "maximumGain": 0.0005466836353136273,
+              "opponentWholeGameGain": 0.0000013821492395038604,
+              "trainingGameNashGap": 0.00017929163637919743
+            },
+            {
+              "iterations": 100000,
+              "maximumGain": -0.000054892590746646874,
+              "opponentWholeGameGain": -1.3878182514304171e-7,
+              "trainingGameNashGap": 7.001023725194955e-7
+            }
+          ],
+          "policyHash": "db9167cd7ec516b1cfc1f475185e79bd44a4b6f5d508825be456772761d5a0a5",
+          "replacement": {
+            "turn-v2:p0:AdAc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-50": 1
+            },
+            "turn-v2:p0:AhKd:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 1.7918300801353933e-9,
+              "call": 0.9999999982066449,
+              "raise-to-50": 1.5249699602756371e-12
+            },
+            "turn-v2:p0:QdQc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0.3901757877553977,
+              "call": 0.5636752075383745,
+              "raise-to-50": 0.0461490047062277
+            }
+          },
+          "grade": {
+            "value": [
+              12.192367231649257,
+              -12.192367231649257
+            ],
+            "bestResponseValues": [
+              12.249566027303239,
+              -12.144455416431294
+            ],
+            "gains": [
+              0.05719879565398145,
+              0.047911815217963394
+            ],
+            "exploitability": 0.05255530543597242
+          },
+          "constraints": [
+            {
+              "key": "6s5s",
+              "mass": 0.005073979268548934,
+              "bound": -51.39616196669908,
+              "value": -51.551200684543346,
+              "gain": -0.15503871784426337,
+              "margin": 0.15503871784426337
+            },
+            {
+              "key": "7h7c",
+              "mass": 0.005073979268548934,
+              "bound": 49.872604153779264,
+              "value": 49.78462108752552,
+              "gain": -0.08798306625374153,
+              "margin": 0.08798306625374153
+            },
+            {
+              "key": "AhQh",
+              "mass": 0.0025282433024868345,
+              "bound": 29.42942891087042,
+              "value": 29.429374018279674,
+              "gain": -0.000054892590746646874,
+              "margin": 0.000054892590746646874
+            }
+          ],
+          "maximumGain": -0.000054892590746646874,
+          "minimumMargin": 0.000054892590746646874,
+          "opponentWholeGameGain": -1.3878182514304171e-7,
+          "accepted": true
+        },
+        {
+          "mode": "max-margin",
+          "iterations": 1000,
+          "trainingGameNashGap": 0.032940752942560714,
+          "attempts": [
+            {
+              "iterations": 1000,
+              "maximumGain": -0.0688058719677116,
+              "opponentWholeGameGain": -0.00017395798498398563,
+              "trainingGameNashGap": 0.032940752942560714
+            }
+          ],
+          "policyHash": "412e4af259e9ceba048beaa8b1298296c80d9608d2888dd902b54f3d5ce894c2",
+          "replacement": {
+            "turn-v2:p0:AdAc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 0,
+              "raise-to-50": 1
+            },
+            "turn-v2:p0:AhKd:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0,
+              "call": 1,
+              "raise-to-50": 0
+            },
+            "turn-v2:p0:QdQc:board=As7d4h2c:river=Ks:street=1:turn=check-check:river-actions=check-bet-to-20": {
+              "fold": 0.3909339886915907,
+              "call": 0.5622483717844391,
+              "raise-to-50": 0.04681763952397022
+            }
+          },
+          "grade": {
+            "value": [
+              12.192367231649257,
+              -12.192367231649257
+            ],
+            "bestResponseValues": [
+              12.249566027303239,
+              -12.144629235634453
+            ],
+            "gains": [
+              0.05719879565398145,
+              0.04773799601480455
+            ],
+            "exploitability": 0.052468395834393
+          },
+          "constraints": [
+            {
+              "key": "6s5s",
+              "mass": 0.005073979268548934,
+              "bound": -51.39616196669908,
+              "value": -51.51535054935441,
+              "gain": -0.11918858265532606,
+              "margin": 0.11918858265532606
+            },
+            {
+              "key": "7h7c",
+              "mass": 0.005073979268548934,
+              "bound": 49.872604153779264,
+              "value": 49.750364126238225,
+              "gain": -0.12224002754103935,
+              "margin": 0.12224002754103935
+            },
+            {
+              "key": "AhQh",
+              "mass": 0.0025282433024868345,
+              "bound": 29.42942891087042,
+              "value": 29.36062303890271,
+              "gain": -0.0688058719677116,
+              "margin": 0.0688058719677116
+            }
+          ],
+          "maximumGain": -0.0688058719677116,
+          "minimumMargin": 0.0688058719677116,
+          "opponentWholeGameGain": -0.00017395798498398563,
+          "accepted": true
+        }
+      ]
+    }
+  ],
+  "payloadHash": "909f2a92a2ebaad1c151bc5da5cca7c36d6c10d86aba5c22dc23980a6f10df30"
+}
