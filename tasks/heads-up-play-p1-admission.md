@@ -141,3 +141,15 @@ inference error in the new probe was corrected with an explicit `BridgeLibrarySp
 no source exclusions, `any` escape or changed numerical output. The commit must repeat these
 checks in a new isolated copy before push. No application route, Worker or mathematical
 solver was changed; this is a research/diagnostic release, not completion of P1.
+
+### Landed diagnostic verification
+
+Commit `f394fb7f8e1142d93bf06afbc28251ab6795cffb` was tested in the fresh isolated
+checkout `/private/tmp/poker-p1-commit.vg06q6` with copied, not symlinked, dependencies:
+**884/884 unit tests, no skips; 16/16 Rust tests; typecheck, lint and production build**.
+The admission report reproduced byte for byte; native bridge, bridge library, river-v3
+and preflop audits passed. An additional saved-only Chromium run passed 82 tests with
+four explicitly skipped live-only cases and zero retries. After push, all eight jobs in
+[CI 36773596576](https://github.com/katswnt/poker-face/actions/runs/36773596576) were
+observed green before the independent P4 research began. This validates the diagnosis,
+not the failed admission ladder. See the [closing handoff](codex-handoff-2026-09-30.md).

@@ -94,7 +94,7 @@ separately from the deterministic report. No training, native engine fork or dep
 - [x] Both complete poker-game study rows, independently graded; unchanged checked-in
   solver artifacts reproduce. A failed numerical gate is recorded, not concealed.
 - [x] Versioned/hash-bound report, repeatable byte for byte.
-- [ ] Full isolated exact-commit unit/tsc/lint/audits; push; every CI job green.
+- [x] Full isolated exact-commit unit/tsc/lint/audits; push; every CI job green.
 
 ## Sources and guarantee boundary
 
@@ -197,3 +197,24 @@ The gadget and P1 admission reports reproduce byte for byte. River-v3, the full 
 corpus, native bridge, bridge library and diagnosed-preflop audits all pass unchanged.
 No application code changed. Repeat these gates on the exact commit before push; the
 closing handoff records its hash and observed hosted-CI result.
+
+### Exact-commit verification
+
+Commit `0fae3eda02bca1011e41066cd2aa623833dcb82d` was verified before push in the fresh
+checkout `/private/tmp/poker-p4-commit.PaKJFb`, with copied, not symlinked, dependencies.
+**899/899 unit tests pass, no skips; 16/16 Rust tests; typecheck, lint and production
+build pass.** Both new reports reproduce byte for byte. River-v3, the full turn-v2 corpus,
+native bridge, bridge library and diagnosed-preflop audits pass unchanged.
+
+The first full unit run, concurrent with heavy audits, stalled in the existing
+flop-explorer cancellation-test file with an idle child process. That file passed 7/7
+independently. Only the identified stalled child was terminated; its explicit failed-run
+log was retained. The unchanged full suite then passed 899/899 without concurrent audits.
+No test, timeout or quality bar was changed, and the cause was not established. The
+[closing handoff](codex-handoff-2026-09-30.md) identifies both logs and hosted CI status.
+
+After push, all eight jobs in
+[CI 36779205846](https://github.com/katswnt/poker-face/actions/runs/36779205846) were
+observed green, including the unchanged domain suite, both new report reproductions,
+native/WASM audits and the three-browser prepared Worker/UI checks. This lands the
+independent research increment only; P1 and P4's production translation remain blocked.

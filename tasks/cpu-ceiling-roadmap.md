@@ -56,8 +56,10 @@ documents the learner page, now landed as `a87b34a` with all eight CI jobs green
 range-capacity/board-coverage gate. P1 is not shipped; dependent P2/P3/P5 work cannot proceed
 under the current ladder. P1 diagnostic `f394fb7` also passed exact-commit verification and
 all eight jobs in CI `36773596576`. P4's independent [small-game gadget study](heads-up-play-p4-study.md)
-now has passing local per-hand and whole-game measurements; its release verification is
-recorded separately. This does not complete P4's blocked production flop-translation part.
+landed as `0fae3ed`: 899/899 isolated exact-commit tests, unchanged per-hand and whole-game
+gates passed, and all eight jobs in CI `36779205846` green. This does not complete P4's
+blocked production flop-translation part. The [closing handoff](codex-handoff-2026-09-30.md)
+records measurements, release identities, open gates and all untouched work.
 The original status table above is historical, not current completion.
 
 ## Working rules for every step (non-negotiable)
