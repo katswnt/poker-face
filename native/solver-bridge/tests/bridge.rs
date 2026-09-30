@@ -458,6 +458,56 @@ fn session_spot() -> Value {
 }
 
 #[test]
+fn pre_storage_export_counts_bound_real_exports() {
+    // Unequal ranges catch incorrect actor accounting; turn blockers/isomorphism and the
+    // full flop test exercise expansion of real cards, not just stored representatives.
+    let river = river_spot(check_down(), &["AsAh", "QsQh", "6s5s"], &["3s3h"]);
+    let mut flop = flop_slice_spot();
+    flop["tree"]["flop"]["oop"]["bet"] = json!([]);
+    flop["tree"]["flop"]["ip"]["bet"] = json!([]);
+    let turn = turn_spot(
+        ["Qs", "Jh", "2h", "3s"],
+        menu(
+            json!([{ "kind": "pot", "pct": 50 }, { "kind": "allin" }]),
+            json!([]),
+            json!(0),
+        ),
+        &["AdAc", "Tc9c", "Td9d"],
+        &["KdKc", "8c7c"],
+    );
+    for mut spot in [river, turn, flop] {
+        for scope in ["full", "first-street"] {
+            spot["solve"]["exportScope"] = json!(scope);
+            spot["solve"]["maxIterations"] = json!(1);
+            let bytes = serde_json::to_vec(&spot).unwrap();
+            let session = Session::new(&bytes).unwrap();
+            assert!(!session.status().allocated);
+            let estimate = session.estimate()["estimateExport"].clone();
+            let result = solve(spot.clone()).unwrap();
+            let mut cells = 0u64;
+            let mut edges = 0u64;
+            for node in &result.tree {
+                match node {
+                    ResultNode::Player { strategy, actions, .. } => {
+                        cells += strategy.iter().map(|r| r.len() as u64).sum::<u64>();
+                        edges += actions.len() as u64;
+                    }
+                    ResultNode::Chance { children, .. } => edges += children.len() as u64,
+                    _ => (),
+                }
+            }
+            assert!(estimate["nodes"].as_u64().unwrap() >= result.tree.len() as u64);
+            assert!(estimate["cells"].as_u64().unwrap() >= cells);
+            assert!(estimate["edges"].as_u64().unwrap() >= edges);
+            assert!(
+                estimate["jsonBytesUpperBound"].as_u64().unwrap() >= serde_json::to_vec(&result).unwrap().len() as u64
+            );
+            assert_eq!(estimate["scope"], scope);
+        }
+    }
+}
+
+#[test]
 fn chunks_and_previews_preserve_the_same_solve_and_checkpoint_schedule() {
     let spot = session_spot();
     let bytes = serde_json::to_vec(&spot).unwrap();

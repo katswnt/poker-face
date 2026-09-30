@@ -1,5 +1,5 @@
 /**
- * B5 / W0: the admission rule for live (in-browser, wasm32) postflop-solver solves, and the
+ * B5 / W0: the original sizing-study rule, NOT the production admission policy, and the
  * pure half of the thread-mode choice. See tasks/postflop-solver-wasm-spec.md, "Admission rule".
  *
  * Nothing here touches the DOM, `navigator` or WebAssembly: the worker gathers the flags
@@ -9,8 +9,9 @@
  * Rule: let E = postflop-solver `memory_usage()` for a precision, X = export bytes, F = fixed
  * overhead. Admit iff E + X + F ≤ B, where B is the smallest applicable budget. Try float32
  * first; int16-compressed only if float32 does not fit (and flag it: B2 measured int16 root-EV
- * error up to 8.7e-4 chips, outside the locked τ = 2e-4). Otherwise refuse, before anything
- * is allocated, with the numbers.
+ * error up to 8.7e-4 chips, outside the locked τ = 2e-4). Otherwise refuse before strategy
+ * storage is allocated. Preflight itself builds tables. Production W2 uses the stricter,
+ * float32-only live/admission.ts with versioned export + JS-copy reservations.
  */
 
 const KIB = 1024;
@@ -245,7 +246,7 @@ export function admitLiveSpot(
   return {
     ok: false, precision: null, budget, numbers, overBytes: smallest - B,
     reason: `Too large to solve in this browser: ${tried}, over ${where} by ${formatBytes(smallest - B)}. `
-      + "Nothing was allocated.",
+      + "No strategy storage was allocated; preflight may have built game tables.",
   };
 }
 

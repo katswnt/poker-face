@@ -3,17 +3,20 @@
 Follows `tasks/postflop-solver-bridge-plan.md` ("After this plan: B5") and
 `tasks/postflop-solver-bridge-spec.md` (contract v1, B2 tolerance).
 
-**2026-09-30 W1 update:** [the ST implementation record](postflop-solver-w1-st.md)
-supersedes this draft's build assumptions: stable Rust 1.98.1, wasm-bindgen 0.2.104, shared
-resumable session, hashed source-complete build and UI-less browser parity are implemented.
-MT, public assets, production Worker/admission and UI are later milestones. The large-game
-sizing table below is a research proposal, not permission for live browser allocations.
+**2026-09-29 update:** the [W1 ST implementation and audit](postflop-solver-w1-st.md)
+supersede the draft's build assumptions below: stable Rust, a single-threaded build, shared
+resumable session and UI-less parity Workers are implemented. No live page or MT deployment
+has shipped. [W2's bounded ST runtime and audit](postflop-solver-w2-worker.md) now supersede
+the draft admission/cancellation policy below: float32 only, 256 MiB total reservation,
+64 hands/player, turn/river only, export-aware refusal, fresh Worker for every job.
+Physical-device budgets remain unvalidated. The older large-game sizing table below is a
+research proposal, **not production permission to allocate those amounts**.
 
 ## Goals
 
 1. The same postflop-solver commit, behind the same **Spot v1 in, Result v1 out** contract,
    runs in a Web Worker. No browser-only format.
-2. A **size-based admission rule**: an oversized spot is refused before allocation, with the
+2. A **size-based admission rule**: an oversized spot is refused before strategy allocation, with the
    estimate and budget shown.
 3. Threads when cross-origin isolated, a **single-thread (ST) build** otherwise, with the same
    answers from both.
@@ -62,8 +65,9 @@ page (/solver/live, COOP+COEP) ──postMessage──► live-solver.worker.ts 
 **Rust crate split (shared code, no fork).**
 - `native/solver-bridge` gains features: `native` (default; `libc::getrusage`, global rayon
   pool), `threads` (every `rayon::` use), and `wasm`. `wasm` replaces `std::time::Instant`,
-  which **panics on wasm32-unknown-unknown**, with `web-time`, and reports peak memory as
-  `core::arch::wasm32::memory_size(0) × 65536`. Memory never shrinks, so that is the peak.
+  which **panics on wasm32-unknown-unknown**, with `web-time`. W1 reports WASM linear memory
+  separately as `core::arch::wasm32::memory_size(0) × 65536`, never as process RSS.
+  Result v1's `peakRssBytes: 0` means unavailable on WASM. Linear memory excludes JS/browser overhead.
 - The solve loop becomes a resumable `Session`: `new(spot_bytes)`, `estimate()`,
   `allocate(compress)`, `step(n)`, `root_strategy()` and `finish()` (finalize, export, Result
   v1 JSON). `root_strategy()` works because `game.strategy()` runs before finalize; EVs need
@@ -104,21 +108,26 @@ same `source`/`headers` API; these rules run before the filesystem (including `/
 tagged commands, `cancelled` event). Commands: `estimate`, `solve`, `cancel`. Events:
 `estimate` (bytes, compressed bytes, export estimate, budget, verdict), `progress` (stage,
 iteration, exploitability, target, linear-memory bytes), `preview` (root strategy, sent at
-most once per second), `result` (Result v1 JSON string, checked with `checkBridgeResult`
-before the page uses it), `cancelled`, `error`.
+most once per second), `result` (Result v1 object parsed/checked inside the Worker before
+publication), `cancelled`, `error`. W2 adds source provenance and measured-at iteration.
 
-**Cancellation.** JS drives `session.step(k)` in chunks of about 200 ms (k adapted to the
+**Cancellation (W2 ST).** JS drives `session.step(k)` in chunks targeting 40 ms (k adapted to the
 measured time per iteration) and `await`s a macrotask between them, so `cancel` gets through.
 The page terminates the worker on unmount, on a new spot, or when a cancel goes unacknowledged
-for 2 s (one benchmark iteration took about 15 s natively in B1). Linear memory never shrinks,
-so **each solve over 256 MiB gets a fresh worker**.
+for 250 ms. One synchronous call may exceed the target; cancellation on the main thread
+immediately revokes publication. **Every estimate/solve gets a fresh Worker**, including
+small jobs. The overall watchdog includes asset loading, preflight, grading and export.
 
 **Spot hash** is computed by `crypto.subtle` SHA-256 in JS and by the WASM, and must equal
-`result.spotHash`. In the browser, `memory.peakRssBytes` is final linear memory,
-`engine.threads` is the pool size (1 for ST), and `timings` use `performance.now()`. Result v1
-is documented, not changed.
+`result.spotHash`. In the browser, `memory.peakRssBytes: 0` means unavailable. Status reports
+WASM linear memory separately (not JS heap/RSS). `engine.threads` is 1 for ST. Result v1
+is unchanged. Never describe linear memory as process RSS.
 
-## Admission rule
+## Original large-game sizing proposal (not the W2 production policy)
+
+Use [W2 admission](postflop-solver-w2-worker.md) for production. The pure legacy
+`wasm-admission.ts` rule/table remains an offline sizing study; compressed fallback and
+multi-GiB budgets below are not enabled by the Worker.
 
 Let `E` = `memory_usage()` for the chosen precision (float32 first; int16 only if float32 does
 not fit, flagged "outside τ" because B2 measured int16 root-EV error up to 8.7e-4 chips). Let
@@ -141,8 +150,8 @@ On iOS the declared `maximum` must itself be small: an MT variant with a 1 GiB m
 (unshared, so it declares no max). W2 decides.
 
 **Which spot classes fit.** Every value below comes from the B1 estimates or upstream. W0
-fills in the *(measure)* cells with `solver-bridge estimate`, which builds the tree only and
-allocates nothing:
+would fill in the *(measure)* cells with `solver-bridge estimate`, which builds game/card
+tables but not strategy storage:
 
 | Class | Example | E float32 / int16 | Desktop 3.5 GiB | Mobile 512 MiB |
 | --- | --- | --- | --- | --- |
@@ -199,10 +208,11 @@ network (§13). Corresponding Source must be offered for the exact build:
 ## Milestones
 
 ### W0: contract and limits (no browser)
-- [ ] Add `estimateExport` (cells, nodes) to `solver-bridge estimate`. Run `estimate` over a
-      grid (river/turn/flop × range width × menu) and fill the *(measure)* cells above.
-      *(Open: needs the native CLI. Until then `admitLiveSpot` takes an explicit export size
-      and refuses when neither is given.)*
+- [x] Versioned `estimateExport`: public nodes, strategy cells, edges, JSON upper bound and
+      engineering working-memory reservation. Rust tests cover river/turn/flop, blockers,
+      unequal ranges, full/first-street exports. W2 measures 24 bounded turn/river cases.
+- [ ] Broader large-game/flop/device grid and physical-device budgets. Intentionally not
+      required to admit larger games in this ST milestone; those games remain refused.
 - [x] `src/lib/solver/bridge/wasm-admission.ts`: a pure `admitLiveSpot(estimate, env) → {ok,
       precision, budget, reason}` with unit tests over the table (including the benchmark
       refusal and the mobile budget). Done 2026-09-25: also `parseBridgeEstimate` (the
@@ -223,38 +233,44 @@ network (§13). Corresponding Source must be offered for the exact build:
 - [x] Feature-gate `solver-bridge` (`native`, `threads`, `wasm`) and refactor to `Session`.
       Native numerical/tree/slice output matches the pre-W1 binary; timing/RSS excluded.
 - [x] `native/solver-bridge-wasm`, stable Rust 1.98.1, wasm-bindgen 0.2.104; hashed ST
-      assets under ignored `target/web/<hash>/`, with exact source, vendored dependencies,
-      licenses and manifest. Engine-revision and stale-source checks.
+      assets under its ignored `target/web/<hash>/`, with exact source, vendored dependencies,
+      licenses and manifest. `npm run build:wasm`; engine-revision and stale-build checks.
 - [ ] MT build and public deployment. Nightly/isolation are not required for ST.
 - [ ] When MT is pursued: `next.config.ts` headers (COOP/COEP/immutable caching). Verify isolation and worker COEP
       in Chrome, Firefox and Safari, and that soft navigation falls back to ST.
 
 ### W2: worker and UI-less harness
-- [ ] `live-solver.worker.ts` + runtime (injected clock/yield, as the river lab does),
-      MT/ST selection, chunked `step`, cancel, preview, trap handling, fresh worker over 256 MiB.
-- [ ] Harness route (no styling) that runs a fixture spot and prints progress and the checked
-      Result v1. Measure `F`, the per-thread overhead and the Safari/iOS budgets, and replace
-      the placeholders.
+- [x] `src/lib/solver/bridge/live/`: single-use ST Worker, injected runtime, small typed
+      protocol, admission, chunked `step`, cancel, previews, trap retirement and client
+      generation/watchdog protection. No automatic compressed or MT fallback.
+- [x] Loopback-only UI-less harness runs the production runtime/client in Chromium,
+      Firefox and WebKit; numerical parity, responsiveness, cancellation and refusal.
+- [ ] Next route and explicit local asset/source preparation (W4).
+- [ ] Public deployment and physical Safari/iOS/Android budgets (W3).
+      Engineering reservations are conservative estimates, not measured JS heap upper bounds.
 
 ### W3: verification
 - [x] Node ST gates and 20-case measurement grid: zero observed native/WASM numerical
-      differences; independent referee tolerance unchanged. See the W1 record.
+      differences; independent referee tolerance unchanged. See the W1 audit.
 - [x] `bridge-wasm` CI definition and local Chromium/Firefox/WebKit ST Worker parity.
-- [ ] Hosted CI observed green; MT parity remains deferred, not implied by ST.
+- [x] W1 hosted CI observed green: run `36753561883`, commit `ebcd248`, 2026-09-30.
+      W2's hosted gates must pass on its own release commit. MT parity remains deferred.
 - [ ] Manual: Safari macOS and iOS (ST and, if isolated, MT), Android Chrome. Record timings
       and OOM behaviour at the budget edge.
 
 ### W4: minimal UI hook
-- [ ] `/solver/live` (a full-load `<a>` link from the lab): pick a fixture or pasted spot,
+- [ ] `/solver/live` (a full-load `<a>` link from the lab): guided setup or pasted spot,
       see the admission verdict, solve, cancel, view the root strategy preview and the final
-      exploitability. It shows the AGPL source link and build hash.
+      exploitability. It shows the AGPL source link and build hash, and retains a saved
+      independently checked example when WASM assets are absent. Root values must not
+      be represented as action EVs.
 
 ## Risks
 
 - **Nightly drift** (threads need nightly plus `build-std`): pin a date and keep ST
   stable-capable.
-- **Coverage on a new target**: W1 ST passes the listed parity/referee cases. Larger trees,
-  MT and physical mobile devices still need separate evidence.
+- **Coverage on a new target**: W1 ST now builds and passes the listed parity/referee cases.
+  Larger trees, MT and real mobile devices still need separate evidence.
 - **Trap = lost session** (panic or OOM): admission makes it rare, and restarting the worker
   makes it safe.
 - **Browser memory**: tabs die below the stated limits, especially on iOS. Keep budgets

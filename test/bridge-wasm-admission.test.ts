@@ -53,7 +53,7 @@ test("boundary: exactly at the budget admits, one byte over refuses", () => {
   const over = admitLiveSpot(est(B - X - F + 1, B - X - F + 1), desktop, { exportBytes: X });
   assert.equal(over.ok, false);
   assert.equal(!over.ok && over.overBytes, 1);
-  assert.match(over.reason, /Too large.*over the 3\.50 GiB budget.*Nothing was allocated/);
+  assert.match(over.reason, /Too large.*over the 3\.50 GiB budget.*No strategy storage was allocated/);
   // The export and the overhead count: the same storage with one more export byte is refused.
   assert.equal(admitLiveSpot(est(B - X - F, B - X - F), desktop, { exportBytes: X + 1 }).ok, false);
   assert.equal(admitLiveSpot(est(B - X - F, B - X - F), desktop, { exportBytes: X, fixedOverheadBytes: F + 1 }).ok, false);

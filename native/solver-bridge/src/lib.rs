@@ -1,6 +1,7 @@
 //! poker-face ⇄ postflop-solver bridge: spot contract v1 in, result contract v1 out.
 //! The contract types are defined in src/lib/solver/bridge/contract.ts.
 
+pub mod export_estimate;
 pub mod slices;
 pub mod spot;
 
@@ -313,6 +314,10 @@ pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree
 }
 
 pub fn build_game(spot: &Spot, cards: &CheckedCards) -> Result<PostFlopGame, String> {
+    build_game_with_tree(cards, build_action_tree(spot, cards)?)
+}
+
+fn build_game_with_tree(cards: &CheckedCards, tree: ActionTree) -> Result<PostFlopGame, String> {
     let mut ranges = [Range::new(), Range::new()];
     for (player, hands) in cards.hands.iter().enumerate() {
         for &(_, (c1, c2), weight) in hands {
@@ -325,7 +330,6 @@ pub fn build_game(spot: &Spot, cards: &CheckedCards) -> Result<PostFlopGame, Str
         turn: cards.turn.unwrap_or(NOT_DEALT),
         river: cards.river.unwrap_or(NOT_DEALT),
     };
-    let tree = build_action_tree(spot, cards)?;
     PostFlopGame::with_config(card_config, tree)
 }
 
@@ -694,16 +698,7 @@ impl Progress<'_> {
 
 /// Build the game without allocating solver storage and report its size (a preflight).
 pub fn estimate_spot(bytes: &[u8]) -> Result<serde_json::Value, String> {
-    let spot = Spot::parse(bytes)?;
-    let cards = spot.check_cards()?;
-    let game = build_game(&spot, &cards)?;
-    let (estimated, compressed) = game.memory_usage();
-    Ok(serde_json::json!({
-        "type": "estimate", "spotId": spot.id, "spotHash": sha256_hex(bytes),
-        "estimatedBytes": estimated, "estimatedCompressedBytes": compressed,
-        "hands": [game.private_cards(0).len(), game.private_cards(1).len()],
-        "memoryCapBytes": spot.solve.memory_cap_bytes,
-    }))
+    Ok(Session::new(bytes)?.estimate())
 }
 
 /// Solve one spot. Errors leave nothing behind; the caller writes the result only on Ok.
@@ -772,6 +767,7 @@ pub struct Session {
     allocate_ms: u64,
     estimated: u64,
     estimated_compressed: u64,
+    export_estimate: export_estimate::ExportEstimate,
     allocated_estimate: u64,
     compress: bool,
     allocated: bool,
@@ -795,7 +791,16 @@ impl Session {
         let options = spot.solve;
 
         let build_started = Instant::now();
-        let game = build_game(&spot, &cards)?;
+        let mut tree = build_action_tree(&spot, &cards)?;
+        let export_estimate = export_estimate::estimate_export(
+            &mut tree,
+            3 + u64::from(cards.turn.is_some()) + u64::from(cards.river.is_some()),
+            cards.hands.each_ref().map(|hands| hands.len() as u64),
+            options.export_scope,
+            bytes.len() as u64,
+            options.max_iterations,
+        )?;
+        let game = build_game_with_tree(&cards, tree)?;
         let build_ms = elapsed_ms(build_started);
 
         // Map the spot's hands to the engine's private-hand order; both must be the same set.
@@ -839,6 +844,7 @@ impl Session {
             allocate_ms: 0,
             estimated,
             estimated_compressed,
+            export_estimate,
             allocated_estimate,
             compress,
             allocated: false,
@@ -853,7 +859,8 @@ impl Session {
     pub fn estimate(&self) -> serde_json::Value {
         serde_json::json!({ "type": "estimate", "spotId": self.spot.id, "spotHash": self.spot_hash,
             "estimatedBytes": self.estimated, "estimatedCompressedBytes": self.estimated_compressed,
-            "hands": [self.hands[0].len(), self.hands[1].len()], "memoryCapBytes": self.spot.solve.memory_cap_bytes })
+            "hands": [self.hands[0].len(), self.hands[1].len()], "memoryCapBytes": self.spot.solve.memory_cap_bytes,
+            "estimateExport": self.export_estimate })
     }
 
     pub fn status(&self) -> SessionStatus {

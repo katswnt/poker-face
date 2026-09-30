@@ -143,7 +143,7 @@ jobs:
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge
 
-  # W1 ST build and parity harness only; no live page or MT/isolation claim.
+  # Single-threaded foundation and bounded Worker; no live page or shared memory/MT.
   bridge-wasm:
     runs-on: ubuntu-latest
     steps:
@@ -175,6 +175,9 @@ jobs:
       - run: npm run audit:wasm -- --measure
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run audit:wasm:browser -- chromium firefox webkit
+      - run: npm run test:wasm:live
+      - run: npm run profile:wasm:live
+      - run: npm run audit:wasm:live -- chromium firefox webkit
 
   # Slow reproducibility audits run in parallel with the main job. audit:flop:vector is
   # local-only: its bit-identical re-solve needs ~14 minutes on a CI runner, beyond the

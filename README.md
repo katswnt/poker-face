@@ -708,8 +708,11 @@ already powers solver-backed drills. The active path does not depend on a collab
    [W1 single-threaded foundation](tasks/postflop-solver-w1-st.md) shares a resumable Rust
    session with the native bridge. Its WASM output matches native on the tested games and
    passes independent small-game checks; Chromium, Firefox and WebKit Worker harnesses
-   agree. This is not a public browser rollout: production admission, cancellation, device
-   measurements and the learner UI follow in W2–W4. See the
+   agree. The [W2 Worker](tasks/postflop-solver-w2-worker.md) adds export-aware admission,
+   real progress, cancellation and stale-job protection for bounded turn/river solves.
+   It uses float32, at most 64 hands per player and a conservative 256 MiB reservation;
+   no automatic compressed fallback or silent change to the game. This is not yet a public
+   browser rollout: device measurements and the learner UI follow in W3–W4. See the
    [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
    or live policy source. Keep flops in the saved library and re-solve only admitted turn/
