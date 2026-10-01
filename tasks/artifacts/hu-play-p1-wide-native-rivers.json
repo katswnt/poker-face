@@ -1,0 +1,3592 @@
+{
+  "format": "poker-face-p1-full-range-native-observations",
+  "version": 1,
+  "measuredAt": "2026-09-30T23:16:08.478Z",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "ramBytes": 34359738368,
+    "platform": "darwin",
+    "osRelease": "25.4.0",
+    "node": "v24.10.0"
+  },
+  "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+  "nativeBinarySha256": "7d6211a74d4959de25ac4211e93498a0175662b218e1a1576403e9ac8ecc64ca",
+  "sourceAdmissionHash": "5708279f22c75c316a8d97dd4dfb1d857976127da11b3527f50e4c390cc807f9",
+  "sourceEstimateHash": "005992de36d8542818cefb2093e0539633415066efc31437c995f66878cfa9ff",
+  "interpretation": "Sequential 1-thread full-range float32 research solves; native engine self-grades except independently graded complete rivers. Not production play or browser latency.",
+  "rows": [
+    {
+      "corpusIndex": 32,
+      "seed": 4,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "Ad",
+        "b363",
+        "c",
+        "5d"
+      ],
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "status": "passed",
+      "measurementSpotHash": "e40797f5101bf88790e56c837eb5d013f43161c0cee0a683ebd4c95ee9995ca5",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 60,
+      "reached": true,
+      "exploitabilityChips": 2.7855796813964844,
+      "exploitabilityPctPot": 0.2183056176643013,
+      "targetPctPot": 0.3,
+      "wallMs": 20.029291000000057,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 2,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 194792,
+        "estimatedCompressedBytes": 174074,
+        "allocatedEstimateBytes": 194792,
+        "peakRssBytes": 3244032
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 67693,
+      "numericalHash": "830b0c8b101e22b48ccde61494321f499451890cd6d71577859efb1757008134",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 685.3829,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 77.49663,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 55.722626,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 6.2901077,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.280258,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 50,
+          "exploitability": 9.337608,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.7855797,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ah",
+          "Th",
+          "5c",
+          "Ad",
+          "5d"
+        ],
+        "handsInPlay": [
+          246,
+          259
+        ],
+        "deals": 56103,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -108.13692489660515,
+            108.13692489660515
+          ],
+          "gains": [
+            2.758201501355927,
+            2.812957379961304
+          ],
+          "exploitability": 2.7855794406586156
+        },
+        "theirs": {
+          "value": [
+            -108.13692911757376,
+            108.13692430781974
+          ]
+        },
+        "localExploitabilityPctPot": 0.21830559879769712,
+        "reachMass": 10116.06765715881,
+        "maxColumnSumError": 1.0999999999761201e-7,
+        "elapsedMs": 199.45412499999998
+      },
+      "resultFile": "root-32.result.json"
+    },
+    {
+      "corpusIndex": 33,
+      "seed": 5,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "x",
+        "x",
+        "Th"
+      ],
+      "sourceSpotHash": "c4cf0af38ba0d10dc8fce53d63cccefdaba2f8212cc6377ff8299143f0340b12",
+      "status": "passed",
+      "measurementSpotHash": "1cf136f43a9c5eed221f9ca0f2bdc1c9e8e3f47d3119fe7cbe849ac6ec5ceb88",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 1.1398500204086304,
+      "exploitabilityPctPot": 0.2072454582561146,
+      "targetPctPot": 0.3,
+      "wallMs": 17.361667000000125,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 224580,
+        "estimatedCompressedBytes": 191114,
+        "allocatedEstimateBytes": 224580,
+        "peakRssBytes": 3473408
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 108825,
+      "numericalHash": "7e29b4e079a198456d49d8ed836b0251aac541f7588c751e69b54f2e0e8980da",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 265.62396,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 41.535908,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 23.237885,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.4060225,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.8014107,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 1.13985,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "9h",
+          "8h",
+          "6c",
+          "Ah",
+          "Th"
+        ],
+        "handsInPlay": [
+          487,
+          333
+        ],
+        "deals": 145630,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            4.955639909270006,
+            -4.955639909270006
+          ],
+          "gains": [
+            1.0300501914835074,
+            1.2496511051990766
+          ],
+          "exploitability": 1.139850648341292
+        },
+        "theirs": {
+          "value": [
+            4.955639051197753,
+            -4.95563888284859
+          ]
+        },
+        "localExploitabilityPctPot": 0.20724557242568947,
+        "reachMass": 49997.47242959468,
+        "maxColumnSumError": 1.2104500002330099e-7,
+        "elapsedMs": 488.5060000000001
+      },
+      "resultFile": "root-33.result.json"
+    },
+    {
+      "corpusIndex": 34,
+      "seed": 6,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "b363",
+        "c",
+        "6d"
+      ],
+      "sourceSpotHash": "cccdaf64bf75e52f052ee89fe350069ff92374f5b43ecf84d545630f7bc82aa3",
+      "status": "passed",
+      "measurementSpotHash": "4ce248cc996deddd4954c480a8fab170c0a8fac7de383c1f8f8bbdd23818ca0c",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 1.8528470993041992,
+      "exploitabilityPctPot": 0.14520745292352658,
+      "targetPctPot": 0.3,
+      "wallMs": 13.502666999999974,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 1
+      },
+      "memory": {
+        "estimatedBytes": 197152,
+        "estimatedCompressedBytes": 175410,
+        "allocatedEstimateBytes": 197152,
+        "peakRssBytes": 3227648
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 60803,
+      "numericalHash": "45e96737301d84b1ba5d4127c5e14652943df74c8820ba28d3954787f567709f",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 597.48193,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 85.496765,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 18.03592,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 1.8528471,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ah",
+          "Th",
+          "5c",
+          "2h",
+          "6d"
+        ],
+        "handsInPlay": [
+          280,
+          251
+        ],
+        "deals": 62318,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -24.46211282334797,
+            24.46211282334797
+          ],
+          "gains": [
+            1.3950612867947214,
+            2.310629533476
+          ],
+          "exploitability": 1.8528454101353606
+        },
+        "theirs": {
+          "value": [
+            -24.462114556627284,
+            24.462112176458277
+          ]
+        },
+        "localExploitabilityPctPot": 0.14520732054352356,
+        "reachMass": 12778.599489637612,
+        "maxColumnSumError": 1.3171000001754862e-7,
+        "elapsedMs": 211.67995800000017
+      },
+      "resultFile": "root-34.result.json"
+    },
+    {
+      "corpusIndex": 35,
+      "seed": 9,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "6h",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "0b5cd3997afc75692f3d0ce85433f387fc8bd93d312534138f708b0136aa5a7c",
+      "status": "passed",
+      "measurementSpotHash": "1c47577f84fe36a79129fef04f7dc36d0dac30f8a2f8293227fc56474817cd4e",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 2.811239242553711,
+      "exploitabilityPctPot": 0.22031655505906825,
+      "targetPctPot": 0.3,
+      "wallMs": 16.705124999999953,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 221652,
+        "estimatedCompressedBytes": 189458,
+        "allocatedEstimateBytes": 221652,
+        "peakRssBytes": 3391488
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 105839,
+      "numericalHash": "b54305cf096fe91ba07ad21169e4e62c858e2ec549ea685ae8cfd01bc3cf9e9c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 614.53467,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 81.09925,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 68.88658,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 9.54104,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.1332684,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 2.8112392,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Td",
+          "7d",
+          "3c",
+          "6h",
+          "5h"
+        ],
+        "handsInPlay": [
+          451,
+          337
+        ],
+        "deals": 136444,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            62.16613851195968,
+            -62.16613851195968
+          ],
+          "gains": [
+            3.596799606712402,
+            2.0256865326709033
+          ],
+          "exploitability": 2.8112430696916526
+        },
+        "theirs": {
+          "value": [
+            62.16613889714615,
+            -62.16614368141558
+          ]
+        },
+        "localExploitabilityPctPot": 0.22031685499150883,
+        "reachMass": 41244.9107119829,
+        "maxColumnSumError": 1.4699999995038127e-7,
+        "elapsedMs": 504.5980420000001
+      },
+      "resultFile": "root-35.result.json"
+    },
+    {
+      "corpusIndex": 36,
+      "seed": 24,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "a9e701d2c940909c23c1bba68938ca0c2caa350b7cafbaa568139a27a535ea3a",
+      "status": "passed",
+      "measurementSpotHash": "b61935ab626d7f07b189750412d1968acbb614bef71649e5e5b0bde34d1e666d",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 1.4441299438476562,
+      "exploitabilityPctPot": 0.26256908069957385,
+      "targetPctPot": 0.3,
+      "wallMs": 19.044166000000132,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 227256,
+        "estimatedCompressedBytes": 192620,
+        "allocatedEstimateBytes": 227256,
+        "peakRssBytes": 3522560
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 108210,
+      "numericalHash": "89dae58ebfea63842fccf2df7e2f0121560103e8fcb8a3b2d3ef5540b8e0acc8",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 267.88068,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 48.878887,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 16.480997,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.2006435,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.44413,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Kh",
+          "Qd",
+          "Tc",
+          "9d",
+          "Ad"
+        ],
+        "handsInPlay": [
+          490,
+          358
+        ],
+        "deals": 157742,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -56.048106705065365,
+            56.048106705065365
+          ],
+          "gains": [
+            1.5588806092067529,
+            1.3293809254333695
+          ],
+          "exploitability": 1.4441307673200612
+        },
+        "theirs": {
+          "value": [
+            -56.048108010497266,
+            56.04810603592953
+          ]
+        },
+        "localExploitabilityPctPot": 0.2625692304218293,
+        "reachMass": 43077.21555676607,
+        "maxColumnSumError": 1.0600000011073973e-7,
+        "elapsedMs": 537.47125
+      },
+      "resultFile": "root-36.result.json"
+    },
+    {
+      "corpusIndex": 37,
+      "seed": 25,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d",
+        "x",
+        "x",
+        "3s"
+      ],
+      "sourceSpotHash": "00572a1e2bb5906f7ecee5b4c9fddce1cbd1fffde5e058e09812f2ddacac5a9f",
+      "status": "passed",
+      "measurementSpotHash": "803114ed3df115e5c3738dab91ee6acb3c3800e79d6e61bebdd699062f579a13",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 2.826629638671875,
+      "exploitabilityPctPot": 0.22152269895547608,
+      "targetPctPot": 0.3,
+      "wallMs": 15.23266700000022,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 2,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 217284,
+        "estimatedCompressedBytes": 186974,
+        "allocatedEstimateBytes": 217284,
+        "peakRssBytes": 3391488
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 82970,
+      "numericalHash": "2b4d606d7e5d45d948328e99cd71ff16be325f67d02c45c5dcc94e98f163160c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 611.40314,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 35.36959,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 18.57135,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.8266296,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Kh",
+          "Qd",
+          "Tc",
+          "9d",
+          "3s"
+        ],
+        "handsInPlay": [
+          343,
+          395
+        ],
+        "deals": 120409,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            252.85835582056728,
+            -252.85835582056728
+          ],
+          "gains": [
+            4.337764545945845,
+            1.3154852483670822
+          ],
+          "exploitability": 2.8266248971564636
+        },
+        "theirs": {
+          "value": [
+            252.858356545822,
+            -252.85835754863325
+          ]
+        },
+        "localExploitabilityPctPot": 0.22152232736335922,
+        "reachMass": 30024.035117956875,
+        "maxColumnSumError": 1.4402530001955682e-7,
+        "elapsedMs": 386.4391249999999
+      },
+      "resultFile": "root-37.result.json"
+    },
+    {
+      "corpusIndex": 38,
+      "seed": 45,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "Qc",
+        "x",
+        "x",
+        "8d"
+      ],
+      "sourceSpotHash": "ed16088277a6a8f9c97bbeaa82471ef7a6c7c2001205f26bfa84339952961548",
+      "status": "passed",
+      "measurementSpotHash": "daeffeb592badbbb7d6c08eb200e153e425870e16e9f81f277bf2045529b08b9",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 1.2405529022216797,
+      "exploitabilityPctPot": 0.22555507313121448,
+      "targetPctPot": 0.3,
+      "wallMs": 21.388874999999643,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 5,
+        "exportMs": 0,
+        "totalMs": 6
+      },
+      "memory": {
+        "estimatedBytes": 232668,
+        "estimatedCompressedBytes": 196120,
+        "allocatedEstimateBytes": 232668,
+        "peakRssBytes": 3555328
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 112410,
+      "numericalHash": "80507bb82899abb44456db7b9558cdfc380e3bd077e05103f136cb840dfbf1ef",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 275.75574,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 56.05465,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 23.03555,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 30,
+          "exploitability": 4.219078,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 40,
+          "exploitability": 2.1645203,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 50,
+          "exploitability": 1.2405529,
+          "elapsedMs": 5
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Kh",
+          "Qd",
+          "Tc",
+          "Qc",
+          "8d"
+        ],
+        "handsInPlay": [
+          521,
+          374
+        ],
+        "deals": 175603,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -51.97626339850422,
+            51.97626339850422
+          ],
+          "gains": [
+            1.2367015789971418,
+            1.2444066518931436
+          ],
+          "exploitability": 1.2405541154451427
+        },
+        "theirs": {
+          "value": [
+            -51.97626418593124,
+            51.97626344315778
+          ]
+        },
+        "localExploitabilityPctPot": 0.22555529371729868,
+        "reachMass": 48567.4517116758,
+        "maxColumnSumError": 1.4527229996730284e-7,
+        "elapsedMs": 511.1826249999999
+      },
+      "resultFile": "root-38.result.json"
+    },
+    {
+      "corpusIndex": 39,
+      "seed": 48,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "5c",
+        "b363",
+        "c",
+        "8c"
+      ],
+      "sourceSpotHash": "61c45d215c0d217c02eccab423daa85c6e43a76815a9517f8dff16c520cdd03a",
+      "status": "passed",
+      "measurementSpotHash": "c42b75ac63edd5a5ec5882d507c29a38df046999dc0fd620ebca295862419a55",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 3.565920829772949,
+      "exploitabilityPctPot": 0.2794608800762499,
+      "targetPctPot": 0.3,
+      "wallMs": 16.971292000000176,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 212548,
+        "estimatedCompressedBytes": 184330,
+        "allocatedEstimateBytes": 212548,
+        "peakRssBytes": 3391488
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 97215,
+      "numericalHash": "0b5abce171bed744064cb458bc76926478facf2a098682a4a80a89ca489e1b1f",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 634.84436,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 91.226456,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 44.186928,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 15.720281,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.70774,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.5659208,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "9h",
+          "8h",
+          "6c",
+          "5c",
+          "8c"
+        ],
+        "handsInPlay": [
+          423,
+          269
+        ],
+        "deals": 101706,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -21.68320190365838,
+            21.68320190365838
+          ],
+          "gains": [
+            3.936486070234867,
+            3.195355719211296
+          ],
+          "exploitability": 3.5659208947230816
+        },
+        "theirs": {
+          "value": [
+            -21.683207014650478,
+            21.68320519122726
+          ]
+        },
+        "localExploitabilityPctPot": 0.2794608851663857,
+        "reachMass": 35523.80478593415,
+        "maxColumnSumError": 1.5259999996963813e-7,
+        "elapsedMs": 305.1981660000001
+      },
+      "resultFile": "root-39.result.json"
+    },
+    {
+      "corpusIndex": 40,
+      "seed": 77,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ah",
+        "x",
+        "x",
+        "5d"
+      ],
+      "sourceSpotHash": "9ad8bf96e486815a267ba3e0c777899921c1aac7463ed0cb9e8ba7b1dc6083b4",
+      "status": "passed",
+      "measurementSpotHash": "f54b19b9edf4f72046de5e3e51c74ebdc192214b6ea0bcee848ce4922c10b7f8",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 3.687861919403076,
+      "exploitabilityPctPot": 0.28901739180274894,
+      "targetPctPot": 0.3,
+      "wallMs": 16.022209000000657,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 208140,
+        "estimatedCompressedBytes": 181832,
+        "allocatedEstimateBytes": 208140,
+        "peakRssBytes": 3457024
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 84156,
+      "numericalHash": "726aff47307ffbe299eb7088a58854822643d9dc608af676135760295251a699",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 627.69006,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 98.795654,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 64.49193,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.687386,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.954005,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.687862,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Qs",
+          "9s",
+          "4s",
+          "Ah",
+          "5d"
+        ],
+        "handsInPlay": [
+          349,
+          294
+        ],
+        "deals": 92272,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            13.021853648320937,
+            -13.021853648320937
+          ],
+          "gains": [
+            4.9999414806301115,
+            2.3757866711969395
+          ],
+          "exploitability": 3.6878640759135255
+        },
+        "theirs": {
+          "value": [
+            13.02185125775237,
+            -13.021858367489545
+          ]
+        },
+        "localExploitabilityPctPot": 0.28901756080827,
+        "reachMass": 14781.577348886223,
+        "maxColumnSumError": 1.3009999988433663e-7,
+        "elapsedMs": 272.71358300000065
+      },
+      "resultFile": "root-40.result.json"
+    },
+    {
+      "corpusIndex": 41,
+      "seed": 85,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kc"
+      ],
+      "sourceSpotHash": "0a3092bdbd4634ab94a96e8bdebc4daf6de3df4362b920cc2fba523e1d4b4303",
+      "status": "passed",
+      "measurementSpotHash": "e6f78acae4adf38b9251ad7d84f45ef29e33d3436fa86ca2654befa6a0312f79",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 0.9789161682128906,
+      "exploitabilityPctPot": 0.1779847578568892,
+      "targetPctPot": 0.3,
+      "wallMs": 19.032374999999774,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 223780,
+        "estimatedCompressedBytes": 190666,
+        "allocatedEstimateBytes": 223780,
+        "peakRssBytes": 3440640
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 105833,
+      "numericalHash": "cdee0611a92c1eaa9b5f5b9219bb8f1c82f05d8710ab0d6ca45be84bd0bba3e1",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 265.1491,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 25.990679,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 14.075134,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.5597277,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 0.97891617,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Qs",
+          "9s",
+          "4s",
+          "Jc",
+          "Kc"
+        ],
+        "handsInPlay": [
+          495,
+          317
+        ],
+        "deals": 141037,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -33.54067902860639,
+            33.54067902860639
+          ],
+          "gains": [
+            1.0546195608154534,
+            0.9032124660179122
+          ],
+          "exploitability": 0.9789160134166828
+        },
+        "theirs": {
+          "value": [
+            -33.54067864488106,
+            33.54067817377432
+          ]
+        },
+        "localExploitabilityPctPot": 0.17798472971212415,
+        "reachMass": 59134.847846936944,
+        "maxColumnSumError": 1.0399999994525899e-7,
+        "elapsedMs": 465.7097909999993
+      },
+      "resultFile": "root-41.result.json"
+    },
+    {
+      "corpusIndex": 42,
+      "seed": 99,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "Qh",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "status": "passed",
+      "measurementSpotHash": "6c8a3ba76cf79c450f70384f8f2477e7990ccc2075703602913d4dfda00246a5",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 1.2859172821044922,
+      "exploitabilityPctPot": 0.23380314220081674,
+      "targetPctPot": 0.3,
+      "wallMs": 20.64641699999993,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 5,
+        "exportMs": 0,
+        "totalMs": 6
+      },
+      "memory": {
+        "estimatedBytes": 236416,
+        "estimatedCompressedBytes": 198234,
+        "allocatedEstimateBytes": 236416,
+        "peakRssBytes": 3538944
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 116636,
+      "numericalHash": "99c6a0552ba2d96e0f8073f7705fd21bb0418f8281388cb5a12c7dfcbc6f871a",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 265.4792,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 38.013752,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 9.958351,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.8701382,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.2859173,
+          "elapsedMs": 5
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ks",
+          "7h",
+          "2d",
+          "Qh",
+          "Ts"
+        ],
+        "handsInPlay": [
+          544,
+          391
+        ],
+        "deals": 191373,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -52.99641268859936,
+            52.99641268859936
+          ],
+          "gains": [
+            1.3114043742901913,
+            1.2604300446570704
+          ],
+          "exploitability": 1.2859172094736309
+        },
+        "theirs": {
+          "value": [
+            -52.996412765789394,
+            52.996412653716355
+          ]
+        },
+        "localExploitabilityPctPot": 0.2338031289952056,
+        "reachMass": 63439.78184781446,
+        "maxColumnSumError": 1.0858499988053438e-7,
+        "elapsedMs": 558.6217499999993
+      },
+      "resultFile": "root-42.result.json"
+    },
+    {
+      "corpusIndex": 43,
+      "seed": 103,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "x",
+        "Th",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "a25ff2ad59161abf919b025e8b81d7a7b6733faa7999abec8c6f5805ba3b4769",
+      "status": "passed",
+      "measurementSpotHash": "24dcf26339a3fe543b61c656802bf8f216bb776ead5d3c49d43b183f6d09486d",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 1.135972023010254,
+      "exploitabilityPctPot": 0.20654036782004614,
+      "targetPctPot": 0.3,
+      "wallMs": 20.331333000000086,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 4,
+        "exportMs": 0,
+        "totalMs": 5
+      },
+      "memory": {
+        "estimatedBytes": 226856,
+        "estimatedCompressedBytes": 192854,
+        "allocatedEstimateBytes": 226856,
+        "peakRssBytes": 3522560
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 109533,
+      "numericalHash": "761ca14939960cee9ed1cf67e0758d56b386cdc020e025212f8106f5c46e250d",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 271.03244,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 47.858955,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 29.8353,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 5.101267,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 2.3818893,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 50,
+          "exploitability": 1.135972,
+          "elapsedMs": 4
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "5h",
+          "4c",
+          "2d",
+          "Th",
+          "Ts"
+        ],
+        "handsInPlay": [
+          534,
+          301
+        ],
+        "deals": 143486,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -21.49349719546045,
+            21.49349719546045
+          ],
+          "gains": [
+            1.0986085855805001,
+            1.173334207663892
+          ],
+          "exploitability": 1.135971396622196
+        },
+        "theirs": {
+          "value": [
+            -21.493495571493753,
+            21.493498541657118
+          ]
+        },
+        "localExploitabilityPctPot": 0.20654025393130837,
+        "reachMass": 51996.73927212961,
+        "maxColumnSumError": 1.3700000001115598e-7,
+        "elapsedMs": 431.6076659999999
+      },
+      "resultFile": "root-43.result.json"
+    },
+    {
+      "corpusIndex": 44,
+      "seed": 106,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "2d",
+        "x",
+        "x",
+        "8d"
+      ],
+      "sourceSpotHash": "d3084211d6b0d580df1fe0ee312f26b4cccb9b0008a27a0dfbf2a321b881feb9",
+      "status": "passed",
+      "measurementSpotHash": "2fc90cf4f24380f73482d9abb615a2950018a06ecd523990816b668cbba75ab1",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 1.0877065658569336,
+      "exploitabilityPctPot": 0.1977648301558061,
+      "targetPctPot": 0.3,
+      "wallMs": 20.388709000000745,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 4,
+        "exportMs": 0,
+        "totalMs": 5
+      },
+      "memory": {
+        "estimatedBytes": 228636,
+        "estimatedCompressedBytes": 193394,
+        "allocatedEstimateBytes": 228636,
+        "peakRssBytes": 3489792
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 109250,
+      "numericalHash": "0e8ee6fbd631f5e9406035f22355eda70903dc169d5ed84a2d4474a5229b86b8",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 267.83728,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 39.440865,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 17.501629,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.2993855,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 2.062929,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 50,
+          "exploitability": 1.0877066,
+          "elapsedMs": 4
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ad",
+          "8c",
+          "3s",
+          "2d",
+          "8d"
+        ],
+        "handsInPlay": [
+          481,
+          381
+        ],
+        "deals": 164708,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -10.015469571280539,
+            10.015469571280539
+          ],
+          "gains": [
+            1.222809945412779,
+            0.9526033077451928
+          ],
+          "exploitability": 1.0877066265789859
+        },
+        "theirs": {
+          "value": [
+            -10.015469739997487,
+            10.015468779352373
+          ]
+        },
+        "localExploitabilityPctPot": 0.19776484119617924,
+        "reachMass": 80256.16414880268,
+        "maxColumnSumError": 1.31099999967077e-7,
+        "elapsedMs": 508.8728339999998
+      },
+      "resultFile": "root-44.result.json"
+    },
+    {
+      "corpusIndex": 45,
+      "seed": 122,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "3s",
+        "b363",
+        "c",
+        "Js"
+      ],
+      "sourceSpotHash": "0e9c7553d07201c824d6732623690fb582e19c7e21622c1753a6d53eca50453d",
+      "status": "passed",
+      "measurementSpotHash": "e907005a6239639919e4c6c6f7a5b86bb756c5cde1ca9116def9bea8d5d32ab4",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 60,
+      "reached": true,
+      "exploitabilityChips": 2.8496246337890625,
+      "exploitabilityPctPot": 0.22332481456027137,
+      "targetPctPot": 0.3,
+      "wallMs": 18.75500000000011,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 205284,
+        "estimatedCompressedBytes": 180224,
+        "allocatedEstimateBytes": 205284,
+        "peakRssBytes": 3375104
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 83181,
+      "numericalHash": "31a4bcf6c9730dd0c80751391b458a06c5ff390ef2b06f802e4df52d3e981bf7",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 619.08655,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 189.872,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 66.09048,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 13.294113,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.3522186,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.1919556,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.8496246,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "9h",
+          "8h",
+          "6c",
+          "3s",
+          "Js"
+        ],
+        "handsInPlay": [
+          343,
+          270
+        ],
+        "deals": 82669,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            194.91268587389604,
+            -194.91268587389604
+          ],
+          "gains": [
+            3.4929616504102228,
+            2.206274843125783
+          ],
+          "exploitability": 2.849618246768003
+        },
+        "theirs": {
+          "value": [
+            194.9126909855254,
+            -194.9126881104313
+          ]
+        },
+        "localExploitabilityPctPot": 0.22332431401003158,
+        "reachMass": 25515.382715308995,
+        "maxColumnSumError": 1.2053699993685996e-7,
+        "elapsedMs": 268.77599999999984
+      },
+      "resultFile": "root-45.result.json"
+    },
+    {
+      "corpusIndex": 46,
+      "seed": 123,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "x",
+        "3h"
+      ],
+      "sourceSpotHash": "64c003aa47cb5c87ddac503411b913bbaa1371a6c6965cd90f76a294f8d0567e",
+      "status": "passed",
+      "measurementSpotHash": "f130028e2d07af625985d3c37dd0c69000a32a4a92c14d6c67e40b33c6feb7ee",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 1.3636999130249023,
+      "exploitabilityPctPot": 0.24794543873180044,
+      "targetPctPot": 0.3,
+      "wallMs": 21.259000000000015,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 5,
+        "exportMs": 0,
+        "totalMs": 6
+      },
+      "memory": {
+        "estimatedBytes": 234744,
+        "estimatedCompressedBytes": 197290,
+        "allocatedEstimateBytes": 234744,
+        "peakRssBytes": 3588096
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 111613,
+      "numericalHash": "913aba76bc1cfae77de71e100f828e7103c1fe0b93f9cb13563f4bc3fcc134e0",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 270.7334,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 41.45817,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 22.713009,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.501665,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.3636999,
+          "elapsedMs": 5
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ad",
+          "8c",
+          "3s",
+          "Ac",
+          "3h"
+        ],
+        "handsInPlay": [
+          530,
+          387
+        ],
+        "deals": 184972,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -32.0374841433164,
+            32.0374841433164
+          ],
+          "gains": [
+            1.5418165446015593,
+            1.185583213799731
+          ],
+          "exploitability": 1.3636998792006452
+        },
+        "theirs": {
+          "value": [
+            -32.03748579782518,
+            32.03748453495055
+          ]
+        },
+        "localExploitabilityPctPot": 0.2479454325819355,
+        "reachMass": 75259.19446352746,
+        "maxColumnSumError": 1.1213600004111868e-7,
+        "elapsedMs": 620.0665410000001
+      },
+      "resultFile": "root-46.result.json"
+    },
+    {
+      "corpusIndex": 47,
+      "seed": 125,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "b182",
+        "c",
+        "9h",
+        "b603",
+        "c",
+        "Ks"
+      ],
+      "sourceSpotHash": "fdcdebe6a996e4a05fef52c97ad231b9e380ec97ba8831aca11389e88de6b520",
+      "status": "passed",
+      "measurementSpotHash": "94b5b61b923b42a0a2c555f8c98f8a35f9b83cb8b7123f353e96ee5b69549152",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 5.437950134277344,
+      "exploitabilityPctPot": 0.2565070818055351,
+      "targetPctPot": 0.3,
+      "wallMs": 21.59154099999978,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 208536,
+        "estimatedCompressedBytes": 182054,
+        "allocatedEstimateBytes": 208536,
+        "peakRssBytes": 3358720
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 89927,
+      "numericalHash": "33464ddc77f29912e4977385b7f8078a0fcafe8768c8b1fb01b56fcea466ecd1",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1034.654,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 148.95499,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 111.92056,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 19.504974,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 8.630127,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 5.43795,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "8s",
+          "8d",
+          "3h",
+          "9h",
+          "Ks"
+        ],
+        "handsInPlay": [
+          346,
+          301
+        ],
+        "deals": 94160,
+        "publicNodes": 21,
+        "pot": 2120,
+        "ours": {
+          "value": [
+            210.01001136247214,
+            -210.01001136247214
+          ],
+          "gains": [
+            6.836219800234801,
+            4.039675131563683
+          ],
+          "exploitability": 5.437947465899242
+        },
+        "theirs": {
+          "value": [
+            210.01000583547346,
+            -210.0100129202369
+          ]
+        },
+        "localExploitabilityPctPot": 0.2565069559386435,
+        "reachMass": 15788.403266207613,
+        "maxColumnSumError": 1.551999999627185e-7,
+        "elapsedMs": 315.39529199999924
+      },
+      "resultFile": "root-47.result.json"
+    },
+    {
+      "corpusIndex": 48,
+      "seed": 128,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "8037146c0f9f9398ced99acc3ecaaada1747bbe0adb5703181edd397735ba8be",
+      "status": "passed",
+      "measurementSpotHash": "347d478297d8b4522cd0c7d2ec1a157f398f39a0f902ec65b6527adbb94d50de",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 1.1363420486450195,
+      "exploitabilityPctPot": 0.20660764520818536,
+      "targetPctPot": 0.3,
+      "wallMs": 22.657124999999724,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 4,
+        "exportMs": 0,
+        "totalMs": 5
+      },
+      "memory": {
+        "estimatedBytes": 230636,
+        "estimatedCompressedBytes": 194526,
+        "allocatedEstimateBytes": 230636,
+        "peakRssBytes": 3538944
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 112519,
+      "numericalHash": "559380a031b50586f9bca353ca84b6e5f9ad630eea9348c7267394a3a3dc9478",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 269.17065,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 56.38276,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 19.6792,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 5.645009,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 2.1953325,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 50,
+          "exploitability": 1.136342,
+          "elapsedMs": 4
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Kh",
+          "Qd",
+          "Tc",
+          "9d",
+          "7h"
+        ],
+        "handsInPlay": [
+          509,
+          375
+        ],
+        "deals": 171869,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -27.756079814285343,
+            27.756079814285343
+          ],
+          "gains": [
+            1.2686746159885267,
+            1.0040095230439015
+          ],
+          "exploitability": 1.136342069516214
+        },
+        "theirs": {
+          "value": [
+            -27.75607858413827,
+            27.756079525765088
+          ]
+        },
+        "localExploitabilityPctPot": 0.206607649002948,
+        "reachMass": 44689.3663887408,
+        "maxColumnSumError": 1.4090000011179882e-7,
+        "elapsedMs": 497.8279170000005
+      },
+      "resultFile": "root-48.result.json"
+    },
+    {
+      "corpusIndex": 49,
+      "seed": 144,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "x",
+        "6s"
+      ],
+      "sourceSpotHash": "f49b7b94da696dbe3cdff77fcbf5acc957bdd76b44147f7138a1964b898f8461",
+      "status": "passed",
+      "measurementSpotHash": "611436b9c0c72272b546605a831221ada37310e2fee3d4e548d74e77de1c1365",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 0.9928493499755859,
+      "exploitabilityPctPot": 0.1805180636319247,
+      "targetPctPot": 0.3,
+      "wallMs": 19.122457999999824,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 221980,
+        "estimatedCompressedBytes": 189652,
+        "allocatedEstimateBytes": 221980,
+        "peakRssBytes": 3358720
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 98555,
+      "numericalHash": "45adf5a9b89b10703a1deed0d32ba5009af8c839c74b2f5d7cb030bb9784f0d2",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 269.2619,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 44.003674,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 21.294344,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.644189,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.8259077,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 0.99284935,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ah",
+          "Th",
+          "5c",
+          "2h",
+          "6s"
+        ],
+        "handsInPlay": [
+          489,
+          304
+        ],
+        "deals": 133059,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -19.72276370550383,
+            19.72276370550383
+          ],
+          "gains": [
+            1.2346829574361422,
+            0.751017230221791
+          ],
+          "exploitability": 0.9928500938289666
+        },
+        "theirs": {
+          "value": [
+            -19.72276422117411,
+            19.72276470570612
+          ]
+        },
+        "localExploitabilityPctPot": 0.18051819887799392,
+        "reachMass": 61880.68153506134,
+        "maxColumnSumError": 1.3060000003672911e-7,
+        "elapsedMs": 388.48983299999963
+      },
+      "resultFile": "root-49.result.json"
+    },
+    {
+      "corpusIndex": 50,
+      "seed": 169,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "Jh",
+        "b363",
+        "c",
+        "Ts"
+      ],
+      "sourceSpotHash": "978c0a77d29a3d733dabd9382d49cd86a3ba669356af03e09fea473f2dfe7784",
+      "status": "passed",
+      "measurementSpotHash": "de7f9ff1ce7af7f55c3d70be3135cd8ba6b396db1527cfe7ea519a91edfd0254",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 60,
+      "reached": true,
+      "exploitabilityChips": 2.6907405853271484,
+      "exploitabilityPctPot": 0.21087308662438467,
+      "targetPctPot": 0.3,
+      "wallMs": 17.062332999999853,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 205608,
+        "estimatedCompressedBytes": 180404,
+        "allocatedEstimateBytes": 205608,
+        "peakRssBytes": 3424256
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 83169,
+      "numericalHash": "5ee9f674102e011bb6e2f4c84f5097e8a74fe10087b520df84a24c7aceea207c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 658.6875,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 86.88377,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 66.00679,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 13.586239,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.8281956,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 5.3828373,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.6907406,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Tc",
+          "9d",
+          "7s",
+          "Jh",
+          "Ts"
+        ],
+        "handsInPlay": [
+          334,
+          282
+        ],
+        "deals": 84420,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -61.63049041209722,
+            61.63049041209722
+          ],
+          "gains": [
+            3.134968310932585,
+            2.2465145134424915
+          ],
+          "exploitability": 2.6907414121875384
+        },
+        "theirs": {
+          "value": [
+            -61.630489612918446,
+            61.630488325941045
+          ]
+        },
+        "localExploitabilityPctPot": 0.21087315142535565,
+        "reachMass": 18748.349704598,
+        "maxColumnSumError": 1.2599999998919031e-7,
+        "elapsedMs": 237.99583399999938
+      },
+      "resultFile": "root-50.result.json"
+    },
+    {
+      "corpusIndex": 51,
+      "seed": 196,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "b363",
+        "c",
+        "8h"
+      ],
+      "sourceSpotHash": "70f9cb2227ed6d322dbb858f9caff8f6827e401139c3702e1c3e30413700a9e9",
+      "status": "passed",
+      "measurementSpotHash": "3554328bdb5f523a054f1700eb0803de03aeeeefc2c32c2fb1e491ac965d6724",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 60,
+      "reached": true,
+      "exploitabilityChips": 2.4621429443359375,
+      "exploitabilityPctPot": 0.19295791099811424,
+      "targetPctPot": 0.3,
+      "wallMs": 14.90625,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 204500,
+        "estimatedCompressedBytes": 179778,
+        "allocatedEstimateBytes": 204500,
+        "peakRssBytes": 3440640
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 82375,
+      "numericalHash": "21d0c8ba295d477b8cfa809141057d1f5ca9bf426c334fadcaafaeb3e6a2539a",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 623.1035,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 117.55852,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 19.917702,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 19.385162,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 11.431015,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 50,
+          "exploitability": 5.1700974,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.462143,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "8s",
+          "8d",
+          "3h",
+          "Ac",
+          "8h"
+        ],
+        "handsInPlay": [
+          323,
+          281
+        ],
+        "deals": 80699,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            160.69847541779714,
+            -160.69847541779714
+          ],
+          "gains": [
+            4.025246901447446,
+            0.8990593383624343
+          ],
+          "exploitability": 2.46215311990494
+        },
+        "theirs": {
+          "value": [
+            160.69846809209264,
+            -160.6984727823127
+          ]
+        },
+        "localExploitabilityPctPot": 0.1929587084565,
+        "reachMass": 4728.7838450891295,
+        "maxColumnSumError": 1.0745000000866867e-7,
+        "elapsedMs": 259.9676670000008
+      },
+      "resultFile": "root-51.result.json"
+    },
+    {
+      "corpusIndex": 52,
+      "seed": 200,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "b842",
+        "c",
+        "6d"
+      ],
+      "sourceSpotHash": "91af458c9e1312b131d1977efa600b3a5a5ad245f024c94403c61842b4087393",
+      "status": "passed",
+      "measurementSpotHash": "5c39fb2b4868a77da013f6ac0d3ece4bf987023e04f1914ca95aa8d684d822d4",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 7.002967834472656,
+      "exploitabilityPctPot": 0.23658675116461675,
+      "targetPctPot": 0.3,
+      "wallMs": 15.74370799999997,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 2,
+        "exportMs": 0,
+        "totalMs": 2
+      },
+      "memory": {
+        "estimatedBytes": 196584,
+        "estimatedCompressedBytes": 175050,
+        "allocatedEstimateBytes": 196584,
+        "peakRssBytes": 3358720
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 71963,
+      "numericalHash": "eef56f4d57d3f928b384dde9334171bd916043c5f25f92531f421f477674c8b9",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1426.9949,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 163.3646,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 79.01809,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 16.975803,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 7.002968,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "9h",
+          "8h",
+          "6c",
+          "2h",
+          "6d"
+        ],
+        "handsInPlay": [
+          216,
+          307
+        ],
+        "deals": 59243,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value": [
+            99.589612139073,
+            -99.589612139073
+          ],
+          "gains": [
+            6.662143270331924,
+            7.343797115175747
+          ],
+          "exploitability": 7.0029701927538355
+        },
+        "theirs": {
+          "value": [
+            99.58960295836786,
+            -99.58962717528867
+          ]
+        },
+        "localExploitabilityPctPot": 0.2365868308362782,
+        "reachMass": 14240.210878213738,
+        "maxColumnSumError": 1.199999999368373e-7,
+        "elapsedMs": 189.0343750000011
+      },
+      "resultFile": "root-52.result.json"
+    },
+    {
+      "corpusIndex": 53,
+      "seed": 258,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "x",
+        "Ac"
+      ],
+      "sourceSpotHash": "544ab72974127c256069bd734a5310f7774690327f281d99638d49fd1ccff2ac",
+      "status": "passed",
+      "measurementSpotHash": "042bc9c72dd6b706ef125be237bff17ebf754c7c453ae1d1801429dd3e1eb416",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 60,
+      "reached": true,
+      "exploitabilityChips": 3.4661102294921875,
+      "exploitabilityPctPot": 0.27163873271882344,
+      "targetPctPot": 0.3,
+      "wallMs": 15.994166999998924,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 200628,
+        "estimatedCompressedBytes": 177376,
+        "allocatedEstimateBytes": 200628,
+        "peakRssBytes": 3260416
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 79728,
+      "numericalHash": "7c7edfff89b8d4ac46930fd8d6aa53a2f374aeeb0784f910458e17fe76721ca6",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 624.427,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 78.3306,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 32.69937,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 6.662628,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 4.3192596,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.9449615,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 3.4661102,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "5h",
+          "4c",
+          "2d",
+          "2h",
+          "Ac"
+        ],
+        "handsInPlay": [
+          323,
+          246
+        ],
+        "deals": 72333,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            323.5773302559203,
+            -323.5773302559203
+          ],
+          "gains": [
+            4.840977657944393,
+            2.0912600411073186
+          ],
+          "exploitability": 3.4661188495258557
+        },
+        "theirs": {
+          "value": [
+            323.57734574388365,
+            -323.5773381729809
+          ]
+        },
+        "localExploitabilityPctPot": 0.2716394082700514,
+        "reachMass": 12293.352195160944,
+        "maxColumnSumError": 1.0999999999761201e-7,
+        "elapsedMs": 239.08008299999892
+      },
+      "resultFile": "root-53.result.json"
+    },
+    {
+      "corpusIndex": 54,
+      "seed": 267,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6h",
+        "x",
+        "b842",
+        "c",
+        "8h"
+      ],
+      "sourceSpotHash": "47e353f0860b54629b9e7df49601f6e9801a25a76ea7671a1b57ca13b2210543",
+      "status": "passed",
+      "measurementSpotHash": "594821bc5923d492bf3bcebd1b72da7dd53ccad4aae8cfb0257960e3edeb0c05",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 7.3479461669921875,
+      "exploitabilityPctPot": 0.24824142456054688,
+      "targetPctPot": 0.3,
+      "wallMs": 14.528167000000394,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 2
+      },
+      "memory": {
+        "estimatedBytes": 195608,
+        "estimatedCompressedBytes": 174508,
+        "allocatedEstimateBytes": 195608,
+        "peakRssBytes": 3211264
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 54986,
+      "numericalHash": "151c1f14c48162e021ebd50c44f3d5a81547374ba2a90d2f5ceb0ae63f537373",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1418.4905,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 78.895004,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 47.131317,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 7.347946,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Td",
+          "7d",
+          "3c",
+          "6h",
+          "8h"
+        ],
+        "handsInPlay": [
+          244,
+          270
+        ],
+        "deals": 59687,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value": [
+            -399.8024818468111,
+            399.8024818468111
+          ],
+          "gains": [
+            9.637784993719379,
+            5.05811253856632
+          ],
+          "exploitability": 7.347948766142849
+        },
+        "theirs": {
+          "value": [
+            -399.8024676730115,
+            399.8024852071618
+          ]
+        },
+        "localExploitabilityPctPot": 0.24824151236969086,
+        "reachMass": 11152.430765841447,
+        "maxColumnSumError": 1.3175000002085824e-7,
+        "elapsedMs": 159.79570799999965
+      },
+      "resultFile": "root-54.result.json"
+    },
+    {
+      "corpusIndex": 55,
+      "seed": 276,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "8d",
+        "x",
+        "x",
+        "9c"
+      ],
+      "sourceSpotHash": "fd86ddaf3818f6850e5380bd828d4c94badd882692ee8fed6a661b8a3355f8de",
+      "status": "passed",
+      "measurementSpotHash": "a68acfcd9576bc208ee896625142afb10ed3b060e48bd4a81f2b0fe6fa0b6c0f",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 3.5201568603515625,
+      "exploitabilityPctPot": 0.27587436209651744,
+      "targetPctPot": 0.3,
+      "wallMs": 17.574249999999665,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 4,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 201196,
+        "estimatedCompressedBytes": 177910,
+        "allocatedEstimateBytes": 201196,
+        "peakRssBytes": 3244032
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 66726,
+      "numericalHash": "781d0e54591de90025da49ae6a8840b30eb7283f6bd51741b92401ac9d853f98",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 641.92413,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 400.10214,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 53.948303,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 23.12233,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 13.234604,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 7.67395,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 3.8812408,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.5325317,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.5201569,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ad",
+          "8c",
+          "3s",
+          "8d",
+          "9c"
+        ],
+        "handsInPlay": [
+          285,
+          283
+        ],
+        "deals": 71586,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            359.3315364100466,
+            -359.3315364100466
+          ],
+          "gains": [
+            4.528361801151277,
+            2.5119420497845226
+          ],
+          "exploitability": 3.5201519254679
+        },
+        "theirs": {
+          "value": [
+            359.331535339456,
+            -359.3315359022662
+          ]
+        },
+        "localExploitabilityPctPot": 0.2758739753501489,
+        "reachMass": 22038.87291640468,
+        "maxColumnSumError": 1.224000001354142e-7,
+        "elapsedMs": 222.27629200000047
+      },
+      "resultFile": "root-55.result.json"
+    },
+    {
+      "corpusIndex": 56,
+      "seed": 288,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kd"
+      ],
+      "sourceSpotHash": "98790ddcf8f45d99cc05c7b976921e7e2bae6af24efa63a10c306d94301be4fc",
+      "status": "passed",
+      "measurementSpotHash": "dfb640297a7b47f60c37a86f4201675047c05de998cfb61831c7d81aec14038f",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 40,
+      "reached": true,
+      "exploitabilityChips": 1.0192451477050781,
+      "exploitabilityPctPot": 0.18531729958274148,
+      "targetPctPot": 0.3,
+      "wallMs": 18.026165999999648,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 223780,
+        "estimatedCompressedBytes": 190666,
+        "allocatedEstimateBytes": 223780,
+        "peakRssBytes": 3424256
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 106046,
+      "numericalHash": "ea1c885f3c3b9459ed1ae9a2943500edee481785ff576077e307e636f635c84e",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 265.15533,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 26.02304,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 14.745069,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.8001814,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.0192451,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Qs",
+          "9s",
+          "4s",
+          "Jc",
+          "Kd"
+        ],
+        "handsInPlay": [
+          495,
+          317
+        ],
+        "deals": 141042,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -33.52167615064336,
+            33.52167615064336
+          ],
+          "gains": [
+            1.1131565278340148,
+            0.9253341958217547
+          ],
+          "exploitability": 1.0192453618278847
+        },
+        "theirs": {
+          "value": [
+            -33.52167803270477,
+            33.521676447917876
+          ]
+        },
+        "localExploitabilityPctPot": 0.18531733851416085,
+        "reachMass": 59113.26015529185,
+        "maxColumnSumError": 1.200000000478596e-7,
+        "elapsedMs": 410.5123340000009
+      },
+      "resultFile": "root-56.result.json"
+    },
+    {
+      "corpusIndex": 57,
+      "seed": 290,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Kc",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "status": "passed",
+      "measurementSpotHash": "68025e2d87059cd85ca98fcf1876d883b3fd146164ef66794e071ff5770576cb",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 2.7500991821289062,
+      "exploitabilityPctPot": 0.21552501427342524,
+      "targetPctPot": 0.3,
+      "wallMs": 18.764290999999503,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 3,
+        "exportMs": 0,
+        "totalMs": 4
+      },
+      "memory": {
+        "estimatedBytes": 209652,
+        "estimatedCompressedBytes": 182672,
+        "allocatedEstimateBytes": 209652,
+        "peakRssBytes": 3375104
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 93134,
+      "numericalHash": "1bc4796729a6a919da7a2a71f203b747259c99cb3f8c9bb95156228134147409",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 613.9155,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 111.68265,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 33.548767,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 15.10569,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.297447,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 2.7500992,
+          "elapsedMs": 3
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Kh",
+          "Qd",
+          "Tc",
+          "Kc",
+          "Ad"
+        ],
+        "handsInPlay": [
+          307,
+          350
+        ],
+        "deals": 94880,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            156.1702240573748,
+            -156.1702240573748
+          ],
+          "gains": [
+            2.914922091914633,
+            2.585273890005311
+          ],
+          "exploitability": 2.750097990959972
+        },
+        "theirs": {
+          "value": [
+            156.17022313577948,
+            -156.17021828295657
+          ]
+        },
+        "localExploitabilityPctPot": 0.2155249209216279,
+        "reachMass": 22838.942264312976,
+        "maxColumnSumError": 1.359999999284156e-7,
+        "elapsedMs": 264.5774999999994
+      },
+      "resultFile": "root-57.result.json"
+    },
+    {
+      "corpusIndex": 58,
+      "seed": 291,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Js",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "b496989e79a1cdc47ff77b62eaece9054994ad7b0936aa61959b9e7579c46ea4",
+      "status": "passed",
+      "measurementSpotHash": "7d55aa8e19da9962c6a34214c3dd7d3e1e508a7d7fbf03ed1e342a8eb4612ce6",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 0.9731216430664062,
+      "exploitabilityPctPot": 0.17693120783025568,
+      "targetPctPot": 0.3,
+      "wallMs": 17.99187499999971,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 4,
+        "exportMs": 0,
+        "totalMs": 5
+      },
+      "memory": {
+        "estimatedBytes": 230552,
+        "estimatedCompressedBytes": 194930,
+        "allocatedEstimateBytes": 230552,
+        "peakRssBytes": 3637248
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 113858,
+      "numericalHash": "4e9bdbe01257bcc86c9c75cbf42d495595ec80e064bb60879e1fd176ac0a8472",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 266.16516,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 51.55704,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 17.030281,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.5644665,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 2.1185513,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 50,
+          "exploitability": 0.97312164,
+          "elapsedMs": 4
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ad",
+          "8c",
+          "3s",
+          "Js",
+          "Ts"
+        ],
+        "handsInPlay": [
+          522,
+          351
+        ],
+        "deals": 165532,
+        "publicNodes": 21,
+        "pot": 550,
+        "ours": {
+          "value": [
+            -36.52516591546557,
+            36.52516591546557
+          ],
+          "gains": [
+            1.1160693839785623,
+            0.8301718071729098
+          ],
+          "exploitability": 0.973120595575736
+        },
+        "theirs": {
+          "value": [
+            -36.52516423955811,
+            36.52516735433636
+          ]
+        },
+        "localExploitabilityPctPot": 0.17693101737740655,
+        "reachMass": 63102.414758252846,
+        "maxColumnSumError": 1.2851999997565144e-7,
+        "elapsedMs": 458.5776670000014
+      },
+      "resultFile": "root-58.result.json"
+    },
+    {
+      "corpusIndex": 59,
+      "seed": 302,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "b363",
+        "c",
+        "Jh"
+      ],
+      "sourceSpotHash": "3ddf0a2f1ac1c8d947790ab420c6da03c3b9690475ac26aed261e4d37aa1d15e",
+      "status": "passed",
+      "measurementSpotHash": "88d6824fd73b3f1b36b77ab402aef2f9ea5a220d10f8b6b0c40e0f201531dee1",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 50,
+      "reached": true,
+      "exploitabilityChips": 3.33758544921875,
+      "exploitabilityPctPot": 0.2615662577757641,
+      "targetPctPot": 0.3,
+      "wallMs": 14.92004199999974,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 2,
+        "exportMs": 0,
+        "totalMs": 3
+      },
+      "memory": {
+        "estimatedBytes": 200648,
+        "estimatedCompressedBytes": 177600,
+        "allocatedEstimateBytes": 200648,
+        "peakRssBytes": 3227648
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 75628,
+      "numericalHash": "205fb9e20bb14bd2702a19506ffabb81121a50f5c9bfb5638c2b4fb3d2cfb124",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 643.65955,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 54.225983,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 38.183937,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 17.39429,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.1790695,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.3375854,
+          "elapsedMs": 2
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Qs",
+          "9s",
+          "4s",
+          "Ah",
+          "Jh"
+        ],
+        "handsInPlay": [
+          278,
+          284
+        ],
+        "deals": 70102,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            137.27324003904712,
+            -137.27324003904712
+          ],
+          "gains": [
+            3.5769245668494705,
+            3.098239445149659
+          ],
+          "exploitability": 3.3375820059995647
+        },
+        "theirs": {
+          "value": [
+            137.27324988477284,
+            -137.27323716110834
+          ]
+        },
+        "localExploitabilityPctPot": 0.2615659879310004,
+        "reachMass": 16295.404237657984,
+        "maxColumnSumError": 1.199999999368373e-7,
+        "elapsedMs": 190.63750000000073
+      },
+      "resultFile": "root-59.result.json"
+    },
+    {
+      "corpusIndex": 60,
+      "seed": 314,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ac",
+        "x",
+        "b842",
+        "c",
+        "4s"
+      ],
+      "sourceSpotHash": "6bad18a71dd170d9229b37198c36dcdf6bde21e0f87af7cf10cea4b0ade1259b",
+      "status": "passed",
+      "measurementSpotHash": "7c2e038bdd65254ef9f4fd95892b3c2458c575a06b4f5d557d0c64e8749ab4ab",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 4.209526062011719,
+      "exploitabilityPctPot": 0.14221371831120672,
+      "targetPctPot": 0.3,
+      "wallMs": 13.009958999999071,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 1
+      },
+      "memory": {
+        "estimatedBytes": 196276,
+        "estimatedCompressedBytes": 174878,
+        "allocatedEstimateBytes": 196276,
+        "peakRssBytes": 3309568
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 60184,
+      "numericalHash": "d10e73b05df5013f75b9a97fef989b7343c41ec0b3ed16d62cd272858bec455b",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1426.119,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 87.215614,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 41.7965,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 4.209526,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ks",
+          "7h",
+          "2d",
+          "Ac",
+          "4s"
+        ],
+        "handsInPlay": [
+          221,
+          299
+        ],
+        "deals": 58816,
+        "publicNodes": 21,
+        "pot": 2960,
+        "ours": {
+          "value": [
+            -195.50792535873208,
+            195.50792535873208
+          ],
+          "gains": [
+            3.709083281695314,
+            4.709961314264945
+          ],
+          "exploitability": 4.209522297980129
+        },
+        "theirs": {
+          "value": [
+            -195.50791160579513,
+            195.50796065990176
+          ]
+        },
+        "localExploitabilityPctPot": 0.14221359114797733,
+        "reachMass": 13169.669841900191,
+        "maxColumnSumError": 1.229999999630138e-7,
+        "elapsedMs": 180.0718330000018
+      },
+      "resultFile": "root-60.result.json"
+    },
+    {
+      "corpusIndex": 61,
+      "seed": 345,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "x",
+        "x",
+        "2c",
+        "x",
+        "b363",
+        "c",
+        "3c"
+      ],
+      "sourceSpotHash": "7a8316222a7caac530c33df62cc1b66d792cc9baf430ebc91ee4ca94d24edd08",
+      "status": "passed",
+      "measurementSpotHash": "329cc495ad4cb155892a245bcf31a187c75d2edc5bb688b059ff32bd4d6ca9a1",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 1.696380615234375,
+      "exploitabilityPctPot": 0.13294518928169083,
+      "targetPctPot": 0.3,
+      "wallMs": 13.843541999998706,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 2
+      },
+      "memory": {
+        "estimatedBytes": 198112,
+        "estimatedCompressedBytes": 175932,
+        "allocatedEstimateBytes": 198112,
+        "peakRssBytes": 3325952
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 61984,
+      "numericalHash": "8055811ec0e23c67b55947c5dce1cf2c886ad2217429c6cd106044d8513c054b",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 613.0648,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 38.30838,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 17.52246,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 1.6963806,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "7c",
+          "6c",
+          "5d",
+          "2c",
+          "3c"
+        ],
+        "handsInPlay": [
+          208,
+          330
+        ],
+        "deals": 62789,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -233.7785950782864,
+            233.7785950782864
+          ],
+          "gains": [
+            2.365262316414004,
+            1.0275047405669397
+          ],
+          "exploitability": 1.6963835284904718
+        },
+        "theirs": {
+          "value": [
+            -233.77860290159506,
+            233.7785902705603
+          ]
+        },
+        "localExploitabilityPctPot": 0.13294541759329717,
+        "reachMass": 7775.63624875546,
+        "maxColumnSumError": 1.300000000981072e-7,
+        "elapsedMs": 191.24012500000026
+      },
+      "resultFile": "root-61.result.json"
+    },
+    {
+      "corpusIndex": 62,
+      "seed": 354,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Qs",
+        "x",
+        "b363",
+        "c",
+        "7s"
+      ],
+      "sourceSpotHash": "e36ba4d3419f40e7be16bc3ede30cb9ae55941753d075aa875a1fbe27e4135d2",
+      "status": "passed",
+      "measurementSpotHash": "4ff846d6836d76c67ce3f298dce391fa692e417b69630f67e0ba9351560b43bf",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 3.191741943359375,
+      "exploitabilityPctPot": 0.2501365159372551,
+      "targetPctPot": 0.3,
+      "wallMs": 14.849167000000307,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 2
+      },
+      "memory": {
+        "estimatedBytes": 204396,
+        "estimatedCompressedBytes": 179714,
+        "allocatedEstimateBytes": 204396,
+        "peakRssBytes": 3194880
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 71321,
+      "numericalHash": "6f709760a6e14563ab04d38083e15166f5b7278e9f38ca341d5b569b33a9d51c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 609.504,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 59.06078,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 41.561714,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 30,
+          "exploitability": 3.191742,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Ad",
+          "8c",
+          "3s",
+          "Qs",
+          "7s"
+        ],
+        "handsInPlay": [
+          301,
+          301
+        ],
+        "deals": 80308,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -109.07938361933788,
+            109.07938361933788
+          ],
+          "gains": [
+            3.9810656291047763,
+            2.4024084441755917
+          ],
+          "exploitability": 3.191737036640184
+        },
+        "theirs": {
+          "value": [
+            -109.07938016369559,
+            109.07938305663255
+          ]
+        },
+        "localExploitabilityPctPot": 0.2501361313981335,
+        "reachMass": 13490.45125068527,
+        "maxColumnSumError": 1.4837000006373557e-7,
+        "elapsedMs": 237.98816699999952
+      },
+      "resultFile": "root-62.result.json"
+    },
+    {
+      "corpusIndex": 63,
+      "seed": 367,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "6d",
+        "x",
+        "b363",
+        "c",
+        "Qc"
+      ],
+      "sourceSpotHash": "1c975ea81bb476b85cd835176877cf1335a09ca99acc59c53198f4db561381ea",
+      "status": "passed",
+      "measurementSpotHash": "405d1a8a409c4501ea33a078e5e0ee0975621b65508188ae7750044543684de8",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 30,
+      "reached": true,
+      "exploitabilityChips": 2.5300979614257812,
+      "exploitabilityPctPot": 0.19828353929669135,
+      "targetPctPot": 0.3,
+      "wallMs": 15.80724999999984,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 1,
+        "exportMs": 0,
+        "totalMs": 2
+      },
+      "memory": {
+        "estimatedBytes": 196556,
+        "estimatedCompressedBytes": 175076,
+        "allocatedEstimateBytes": 196556,
+        "peakRssBytes": 3358720
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 57727,
+      "numericalHash": "3eabe80a8e4c097812e651ace071cad709dda9c547989a9f77d3322a770e383c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 614.1619,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 48.694756,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 10.302589,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.530098,
+          "elapsedMs": 1
+        }
+      ],
+      "referee": {
+        "path": [],
+        "board": [
+          "Tc",
+          "9d",
+          "7s",
+          "6d",
+          "Qc"
+        ],
+        "handsInPlay": [
+          285,
+          240
+        ],
+        "deals": 62040,
+        "publicNodes": 21,
+        "pot": 1276,
+        "ours": {
+          "value": [
+            -221.6294188577232,
+            221.6294188577232
+          ],
+          "gains": [
+            2.9375388342102156,
+            2.122633220885376
+          ],
+          "exploitability": 2.530086027547796
+        },
+        "theirs": {
+          "value": [
+            -221.62942830590725,
+            221.62943783230088
+          ]
+        },
+        "localExploitabilityPctPot": 0.19828260403979592,
+        "reachMass": 9670.230296853906,
+        "maxColumnSumError": 1.2345000000024697e-7,
+        "elapsedMs": 189.8108749999992
+      },
+      "resultFile": "root-63.result.json"
+    }
+  ],
+  "payloadHash": "0fa306af5a2208f25f2eb29ae71291f9170848fa125852fe3d29d7aeb3080ce6"
+}

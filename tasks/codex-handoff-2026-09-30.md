@@ -185,3 +185,40 @@ b21f57c303be97ea8f7df5719871c0d1b0468e6d230233d32f6c12caacb7ab5f  test/session.t
 The v3 regression remains +16.081056725 chips for player zero and 0.009074631 chips
 exploitability. Diagnosed preflop artifacts reproduce, but reproduction does not validate
 their payoff model. The validation contract/held-out small-game work still precedes any PF4.
+
+## Continuation after Kat selected wider-range research
+
+The earlier blocked status is historical. Kat authorized the rivers-first sequence in
+[the P1 wider-range record](heads-up-play-p1-wide-feasibility.md), with physical devices last.
+Research results now include all 64 native estimates and one-thread quality solves, 32
+independent river grades, 18 paired browser timing jobs and 192 full-range browser quality
+observations. All quality runs reached 0.3% pot; all browser numerical hashes match native.
+
+Rivers: browser p95 66.8 / 188 / 65 ms (Chromium / Firefox / WebKit), maximum WASM high-water
+1,900,544 bytes. Turns: p95 4,525.3 / 52,061 / 4,580 ms, maximum WASM high-water 22,937,600
+bytes. Firefox's larger process overhead and much slower turns are not hidden behind an
+average browser multiplier. The simple timing envelope covers only 107/192 observations.
+The seven hash-bound reports and recomputed summary are under `tasks/artifacts/hu-play-p1-wide-*`.
+Summary payload: `6970a2e7ab470bccb640aa18bcd67491b655f03eadbbac4d58232639d9f3163a`.
+
+One prerequisite parser defect was fixed with serde_json `float_roundtrip`: valid exact-f32
+JSON weights previously moved by one f64 ULP during parsing and were rejected. Native/WASM
+regressions preserve strict validation, and raw decimal `0.03` is still rejected. Existing
+solver algorithms, input ranges and quality tolerances did not change. All 64 estimates,
+70 native numerical solves and 32 river grades reproduce locally; timing/RSS are observations,
+not byte-identical performance promises. The native/WASM referee grid remains unchanged.
+
+Proposed **unshipped** play profile: 640 hands/player, SPR ≤18, exact lean menu, float32,
+first-street export, 1,000 iterations/120-second watchdog, 32 MiB engine ceiling and bounded
+export. Keep the 128 MiB fixed overhead; total solver reservations 256 MiB desktop and
+192 MiB mobile/unknown, further lowered by device-memory hints. Every recorded case fits;
+the largest proposed reservation is 166,514,968 bytes. This is not phone certification.
+Production W4 admission remains 64 hands/player and SPR ≤10; `/play` is not shipped.
+
+Next: land this research/parser foundation only after isolated exact-commit verification
+and green CI, then implement the scoped production profile and real sources and run the
+unchanged P1 gates. The 12 original full-precision library result caches exist locally and
+may support a separate complete-column flop policy supplement; do not overwrite the frozen
+B4 files or invent omitted strategies. The real-source 1,000-hand replay/conservation/leak
+and river-referee gates remain required. The device checklist is ready in the record and
+is not a reason to wait. All protected trainer/session and paused-flop work remains untouched.

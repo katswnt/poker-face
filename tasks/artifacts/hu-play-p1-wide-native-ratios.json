@@ -1,0 +1,1971 @@
+{
+  "format": "poker-face-p1-full-range-native-observations",
+  "version": 1,
+  "measuredAt": "2026-09-30T23:27:08.323Z",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "ramBytes": 34359738368,
+    "platform": "darwin",
+    "osRelease": "25.4.0",
+    "node": "v24.10.0"
+  },
+  "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+  "nativeBinarySha256": "7d6211a74d4959de25ac4211e93498a0175662b218e1a1576403e9ac8ecc64ca",
+  "sourceAdmissionHash": "5708279f22c75c316a8d97dd4dfb1d857976127da11b3527f50e4c390cc807f9",
+  "mode": "--ratio",
+  "sourceEstimateHash": "005992de36d8542818cefb2093e0539633415066efc31437c995f66878cfa9ff",
+  "interpretation": "Sequential 1-thread full-range float32 research solves; native engine self-grades except independently graded complete rivers. Not production play or browser latency.",
+  "rows": [
+    {
+      "corpusIndex": 32,
+      "seed": 4,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "Ad",
+        "b363",
+        "c",
+        "5d"
+      ],
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "status": "measured",
+      "measurementSpotHash": "0434707b53771a5a2f0332ec57c2ff08e44e0902cb53d8446ce1b3e484cc42e1",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 1000,
+      "reached": false,
+      "exploitabilityChips": 0.0355072021484375,
+      "exploitabilityPctPot": 0.0027826960931377352,
+      "targetPctPot": 1e-9,
+      "wallMs": 49.98787500000003,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 35,
+        "exportMs": 0,
+        "totalMs": 36
+      },
+      "memory": {
+        "estimatedBytes": 194792,
+        "estimatedCompressedBytes": 174074,
+        "allocatedEstimateBytes": 194792,
+        "peakRssBytes": 3325952
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 55868,
+      "numericalHash": "fb7a21d116ff94148fb1cb88a5c566b92a7cb23825c83d6c48ea4ec9f97dc6ae",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 685.3829,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 77.49663,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 55.722626,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 6.2901077,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.280258,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 50,
+          "exploitability": 9.337608,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.7855797,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.5501747,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.7430649,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5649567,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 100,
+          "exploitability": 1.2957764,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 110,
+          "exploitability": 1.084446,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 120,
+          "exploitability": 0.9377556,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 130,
+          "exploitability": 0.83839417,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 140,
+          "exploitability": 0.73711395,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 150,
+          "exploitability": 0.63589096,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 160,
+          "exploitability": 0.5951042,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 170,
+          "exploitability": 0.56838226,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 180,
+          "exploitability": 0.54096985,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 190,
+          "exploitability": 0.49319458,
+          "elapsedMs": 7
+        },
+        {
+          "iteration": 200,
+          "exploitability": 0.46278,
+          "elapsedMs": 7
+        },
+        {
+          "iteration": 210,
+          "exploitability": 0.4210167,
+          "elapsedMs": 7
+        },
+        {
+          "iteration": 220,
+          "exploitability": 0.38710785,
+          "elapsedMs": 8
+        },
+        {
+          "iteration": 230,
+          "exploitability": 0.35650635,
+          "elapsedMs": 8
+        },
+        {
+          "iteration": 240,
+          "exploitability": 0.32779312,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 250,
+          "exploitability": 0.31061935,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 260,
+          "exploitability": 0.40975952,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 270,
+          "exploitability": 0.35979843,
+          "elapsedMs": 10
+        },
+        {
+          "iteration": 280,
+          "exploitability": 0.31999207,
+          "elapsedMs": 10
+        },
+        {
+          "iteration": 290,
+          "exploitability": 0.3010826,
+          "elapsedMs": 10
+        },
+        {
+          "iteration": 300,
+          "exploitability": 0.29853058,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 310,
+          "exploitability": 0.29489517,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 320,
+          "exploitability": 0.29445648,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 330,
+          "exploitability": 0.28097153,
+          "elapsedMs": 12
+        },
+        {
+          "iteration": 340,
+          "exploitability": 0.26475906,
+          "elapsedMs": 12
+        },
+        {
+          "iteration": 350,
+          "exploitability": 0.25672913,
+          "elapsedMs": 12
+        },
+        {
+          "iteration": 360,
+          "exploitability": 0.24538803,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 370,
+          "exploitability": 0.2376213,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 380,
+          "exploitability": 0.22668839,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 390,
+          "exploitability": 0.22509384,
+          "elapsedMs": 14
+        },
+        {
+          "iteration": 400,
+          "exploitability": 0.20980835,
+          "elapsedMs": 14
+        },
+        {
+          "iteration": 410,
+          "exploitability": 0.2006073,
+          "elapsedMs": 15
+        },
+        {
+          "iteration": 420,
+          "exploitability": 0.19338608,
+          "elapsedMs": 15
+        },
+        {
+          "iteration": 430,
+          "exploitability": 0.18506241,
+          "elapsedMs": 15
+        },
+        {
+          "iteration": 440,
+          "exploitability": 0.17266083,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 450,
+          "exploitability": 0.15861893,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 460,
+          "exploitability": 0.14824295,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 470,
+          "exploitability": 0.14011383,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 480,
+          "exploitability": 0.13169861,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 490,
+          "exploitability": 0.13183594,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 500,
+          "exploitability": 0.12575531,
+          "elapsedMs": 18
+        },
+        {
+          "iteration": 510,
+          "exploitability": 0.11764908,
+          "elapsedMs": 18
+        },
+        {
+          "iteration": 520,
+          "exploitability": 0.11495972,
+          "elapsedMs": 18
+        },
+        {
+          "iteration": 530,
+          "exploitability": 0.11098099,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 540,
+          "exploitability": 0.104091644,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 550,
+          "exploitability": 0.09964371,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 560,
+          "exploitability": 0.09737015,
+          "elapsedMs": 20
+        },
+        {
+          "iteration": 570,
+          "exploitability": 0.09498978,
+          "elapsedMs": 20
+        },
+        {
+          "iteration": 580,
+          "exploitability": 0.09129715,
+          "elapsedMs": 21
+        },
+        {
+          "iteration": 590,
+          "exploitability": 0.088127136,
+          "elapsedMs": 21
+        },
+        {
+          "iteration": 600,
+          "exploitability": 0.08469391,
+          "elapsedMs": 21
+        },
+        {
+          "iteration": 610,
+          "exploitability": 0.08065033,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 620,
+          "exploitability": 0.078323364,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 630,
+          "exploitability": 0.07617569,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 640,
+          "exploitability": 0.0736084,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 650,
+          "exploitability": 0.07108307,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 660,
+          "exploitability": 0.07063675,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 670,
+          "exploitability": 0.067993164,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 680,
+          "exploitability": 0.06402588,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 690,
+          "exploitability": 0.058452606,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 700,
+          "exploitability": 0.055915833,
+          "elapsedMs": 25
+        },
+        {
+          "iteration": 710,
+          "exploitability": 0.05614853,
+          "elapsedMs": 25
+        },
+        {
+          "iteration": 720,
+          "exploitability": 0.056079865,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 730,
+          "exploitability": 0.054626465,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 740,
+          "exploitability": 0.0525856,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 750,
+          "exploitability": 0.050930023,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 760,
+          "exploitability": 0.049648285,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 770,
+          "exploitability": 0.04842758,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 780,
+          "exploitability": 0.047786713,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 790,
+          "exploitability": 0.047000885,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 800,
+          "exploitability": 0.046310425,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 810,
+          "exploitability": 0.04512024,
+          "elapsedMs": 29
+        },
+        {
+          "iteration": 820,
+          "exploitability": 0.044101715,
+          "elapsedMs": 29
+        },
+        {
+          "iteration": 830,
+          "exploitability": 0.04374695,
+          "elapsedMs": 29
+        },
+        {
+          "iteration": 840,
+          "exploitability": 0.041305542,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 850,
+          "exploitability": 0.0390625,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 860,
+          "exploitability": 0.038459778,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 870,
+          "exploitability": 0.038093567,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 880,
+          "exploitability": 0.037403107,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 890,
+          "exploitability": 0.037570953,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 900,
+          "exploitability": 0.038425446,
+          "elapsedMs": 32
+        },
+        {
+          "iteration": 910,
+          "exploitability": 0.039276123,
+          "elapsedMs": 32
+        },
+        {
+          "iteration": 920,
+          "exploitability": 0.039440155,
+          "elapsedMs": 32
+        },
+        {
+          "iteration": 930,
+          "exploitability": 0.039096832,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 940,
+          "exploitability": 0.038402557,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 950,
+          "exploitability": 0.03731537,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 960,
+          "exploitability": 0.037078857,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 970,
+          "exploitability": 0.0370903,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 980,
+          "exploitability": 0.036697388,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 990,
+          "exploitability": 0.035892487,
+          "elapsedMs": 35
+        },
+        {
+          "iteration": 1000,
+          "exploitability": 0.035507202,
+          "elapsedMs": 35
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-32.result.json"
+    },
+    {
+      "corpusIndex": 42,
+      "seed": 99,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "Qh",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "status": "measured",
+      "measurementSpotHash": "b0a52774a32dedde211a86a1312b42828c443a682392e1a1e9aa7d7192296217",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 1000,
+      "reached": false,
+      "exploitabilityChips": 0.012989044189453125,
+      "exploitabilityPctPot": 0.002361644398082386,
+      "targetPctPot": 1e-9,
+      "wallMs": 115.54841699999997,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 99,
+        "exportMs": 0,
+        "totalMs": 100
+      },
+      "memory": {
+        "estimatedBytes": 236416,
+        "estimatedCompressedBytes": 198234,
+        "allocatedEstimateBytes": 236416,
+        "peakRssBytes": 3555328
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 90473,
+      "numericalHash": "452477011a3b2fe658c6ce44590f251aac45df3317d0db51d151960c67fbea8e",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 265.4792,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 38.013752,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 20,
+          "exploitability": 9.958351,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 30,
+          "exploitability": 2.8701382,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 40,
+          "exploitability": 1.2859173,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 50,
+          "exploitability": 0.90563774,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 60,
+          "exploitability": 0.7844696,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 70,
+          "exploitability": 0.68842316,
+          "elapsedMs": 8
+        },
+        {
+          "iteration": 80,
+          "exploitability": 0.51517487,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 90,
+          "exploitability": 0.46669197,
+          "elapsedMs": 10
+        },
+        {
+          "iteration": 100,
+          "exploitability": 0.37189865,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 110,
+          "exploitability": 0.36428833,
+          "elapsedMs": 12
+        },
+        {
+          "iteration": 120,
+          "exploitability": 0.36327934,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 130,
+          "exploitability": 0.31792068,
+          "elapsedMs": 14
+        },
+        {
+          "iteration": 140,
+          "exploitability": 0.27219582,
+          "elapsedMs": 15
+        },
+        {
+          "iteration": 150,
+          "exploitability": 0.24403763,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 160,
+          "exploitability": 0.22079277,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 170,
+          "exploitability": 0.2031784,
+          "elapsedMs": 18
+        },
+        {
+          "iteration": 180,
+          "exploitability": 0.18114662,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 190,
+          "exploitability": 0.16035843,
+          "elapsedMs": 20
+        },
+        {
+          "iteration": 200,
+          "exploitability": 0.14128876,
+          "elapsedMs": 21
+        },
+        {
+          "iteration": 210,
+          "exploitability": 0.13167381,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 220,
+          "exploitability": 0.124895096,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 230,
+          "exploitability": 0.11850166,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 240,
+          "exploitability": 0.10926247,
+          "elapsedMs": 25
+        },
+        {
+          "iteration": 250,
+          "exploitability": 0.10482597,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 260,
+          "exploitability": 0.17344093,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 270,
+          "exploitability": 0.15279388,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 280,
+          "exploitability": 0.14529228,
+          "elapsedMs": 29
+        },
+        {
+          "iteration": 290,
+          "exploitability": 0.13375092,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 300,
+          "exploitability": 0.12509727,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 310,
+          "exploitability": 0.11931801,
+          "elapsedMs": 32
+        },
+        {
+          "iteration": 320,
+          "exploitability": 0.11080551,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 330,
+          "exploitability": 0.09936714,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 340,
+          "exploitability": 0.095495224,
+          "elapsedMs": 35
+        },
+        {
+          "iteration": 350,
+          "exploitability": 0.09105873,
+          "elapsedMs": 36
+        },
+        {
+          "iteration": 360,
+          "exploitability": 0.08654976,
+          "elapsedMs": 37
+        },
+        {
+          "iteration": 370,
+          "exploitability": 0.08234596,
+          "elapsedMs": 38
+        },
+        {
+          "iteration": 380,
+          "exploitability": 0.077495575,
+          "elapsedMs": 39
+        },
+        {
+          "iteration": 390,
+          "exploitability": 0.07253456,
+          "elapsedMs": 40
+        },
+        {
+          "iteration": 400,
+          "exploitability": 0.069021225,
+          "elapsedMs": 41
+        },
+        {
+          "iteration": 410,
+          "exploitability": 0.06689072,
+          "elapsedMs": 42
+        },
+        {
+          "iteration": 420,
+          "exploitability": 0.06530762,
+          "elapsedMs": 43
+        },
+        {
+          "iteration": 430,
+          "exploitability": 0.06248665,
+          "elapsedMs": 44
+        },
+        {
+          "iteration": 440,
+          "exploitability": 0.05879593,
+          "elapsedMs": 45
+        },
+        {
+          "iteration": 450,
+          "exploitability": 0.05636406,
+          "elapsedMs": 46
+        },
+        {
+          "iteration": 460,
+          "exploitability": 0.0537014,
+          "elapsedMs": 47
+        },
+        {
+          "iteration": 470,
+          "exploitability": 0.05217743,
+          "elapsedMs": 48
+        },
+        {
+          "iteration": 480,
+          "exploitability": 0.050210953,
+          "elapsedMs": 48
+        },
+        {
+          "iteration": 490,
+          "exploitability": 0.048620224,
+          "elapsedMs": 49
+        },
+        {
+          "iteration": 500,
+          "exploitability": 0.047136307,
+          "elapsedMs": 50
+        },
+        {
+          "iteration": 510,
+          "exploitability": 0.0456028,
+          "elapsedMs": 51
+        },
+        {
+          "iteration": 520,
+          "exploitability": 0.0435009,
+          "elapsedMs": 52
+        },
+        {
+          "iteration": 530,
+          "exploitability": 0.04189682,
+          "elapsedMs": 53
+        },
+        {
+          "iteration": 540,
+          "exploitability": 0.040981293,
+          "elapsedMs": 54
+        },
+        {
+          "iteration": 550,
+          "exploitability": 0.03939247,
+          "elapsedMs": 55
+        },
+        {
+          "iteration": 560,
+          "exploitability": 0.03722763,
+          "elapsedMs": 56
+        },
+        {
+          "iteration": 570,
+          "exploitability": 0.034736633,
+          "elapsedMs": 57
+        },
+        {
+          "iteration": 580,
+          "exploitability": 0.033102036,
+          "elapsedMs": 58
+        },
+        {
+          "iteration": 590,
+          "exploitability": 0.03176689,
+          "elapsedMs": 59
+        },
+        {
+          "iteration": 600,
+          "exploitability": 0.030843735,
+          "elapsedMs": 60
+        },
+        {
+          "iteration": 610,
+          "exploitability": 0.030452728,
+          "elapsedMs": 61
+        },
+        {
+          "iteration": 620,
+          "exploitability": 0.030294418,
+          "elapsedMs": 62
+        },
+        {
+          "iteration": 630,
+          "exploitability": 0.030082703,
+          "elapsedMs": 63
+        },
+        {
+          "iteration": 640,
+          "exploitability": 0.029270172,
+          "elapsedMs": 64
+        },
+        {
+          "iteration": 650,
+          "exploitability": 0.028556824,
+          "elapsedMs": 65
+        },
+        {
+          "iteration": 660,
+          "exploitability": 0.02804184,
+          "elapsedMs": 66
+        },
+        {
+          "iteration": 670,
+          "exploitability": 0.027252197,
+          "elapsedMs": 67
+        },
+        {
+          "iteration": 680,
+          "exploitability": 0.026695251,
+          "elapsedMs": 68
+        },
+        {
+          "iteration": 690,
+          "exploitability": 0.026252747,
+          "elapsedMs": 69
+        },
+        {
+          "iteration": 700,
+          "exploitability": 0.02543068,
+          "elapsedMs": 70
+        },
+        {
+          "iteration": 710,
+          "exploitability": 0.02485466,
+          "elapsedMs": 71
+        },
+        {
+          "iteration": 720,
+          "exploitability": 0.024822235,
+          "elapsedMs": 72
+        },
+        {
+          "iteration": 730,
+          "exploitability": 0.024396896,
+          "elapsedMs": 73
+        },
+        {
+          "iteration": 740,
+          "exploitability": 0.023622513,
+          "elapsedMs": 74
+        },
+        {
+          "iteration": 750,
+          "exploitability": 0.023126602,
+          "elapsedMs": 75
+        },
+        {
+          "iteration": 760,
+          "exploitability": 0.023017883,
+          "elapsedMs": 76
+        },
+        {
+          "iteration": 770,
+          "exploitability": 0.02230835,
+          "elapsedMs": 77
+        },
+        {
+          "iteration": 780,
+          "exploitability": 0.021492004,
+          "elapsedMs": 77
+        },
+        {
+          "iteration": 790,
+          "exploitability": 0.021038055,
+          "elapsedMs": 78
+        },
+        {
+          "iteration": 800,
+          "exploitability": 0.020647049,
+          "elapsedMs": 79
+        },
+        {
+          "iteration": 810,
+          "exploitability": 0.020338058,
+          "elapsedMs": 80
+        },
+        {
+          "iteration": 820,
+          "exploitability": 0.020074844,
+          "elapsedMs": 81
+        },
+        {
+          "iteration": 830,
+          "exploitability": 0.019798279,
+          "elapsedMs": 82
+        },
+        {
+          "iteration": 840,
+          "exploitability": 0.019292831,
+          "elapsedMs": 83
+        },
+        {
+          "iteration": 850,
+          "exploitability": 0.018762589,
+          "elapsedMs": 84
+        },
+        {
+          "iteration": 860,
+          "exploitability": 0.018497467,
+          "elapsedMs": 85
+        },
+        {
+          "iteration": 870,
+          "exploitability": 0.018112183,
+          "elapsedMs": 86
+        },
+        {
+          "iteration": 880,
+          "exploitability": 0.017784119,
+          "elapsedMs": 87
+        },
+        {
+          "iteration": 890,
+          "exploitability": 0.01763153,
+          "elapsedMs": 88
+        },
+        {
+          "iteration": 900,
+          "exploitability": 0.017549515,
+          "elapsedMs": 89
+        },
+        {
+          "iteration": 910,
+          "exploitability": 0.016981125,
+          "elapsedMs": 90
+        },
+        {
+          "iteration": 920,
+          "exploitability": 0.016450882,
+          "elapsedMs": 91
+        },
+        {
+          "iteration": 930,
+          "exploitability": 0.015968323,
+          "elapsedMs": 92
+        },
+        {
+          "iteration": 940,
+          "exploitability": 0.015462875,
+          "elapsedMs": 93
+        },
+        {
+          "iteration": 950,
+          "exploitability": 0.014822006,
+          "elapsedMs": 94
+        },
+        {
+          "iteration": 960,
+          "exploitability": 0.014268875,
+          "elapsedMs": 95
+        },
+        {
+          "iteration": 970,
+          "exploitability": 0.014083862,
+          "elapsedMs": 96
+        },
+        {
+          "iteration": 980,
+          "exploitability": 0.013717651,
+          "elapsedMs": 97
+        },
+        {
+          "iteration": 990,
+          "exploitability": 0.013339996,
+          "elapsedMs": 98
+        },
+        {
+          "iteration": 1000,
+          "exploitability": 0.012989044,
+          "elapsedMs": 99
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-42.result.json"
+    },
+    {
+      "corpusIndex": 57,
+      "seed": 290,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Kc",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "status": "measured",
+      "measurementSpotHash": "75d5ca5b61f54a8096afd97f7858b57ba624f44193354e647e3ea5896c3c3c9f",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 1000,
+      "reached": false,
+      "exploitabilityChips": 0.0357513427734375,
+      "exploitabilityPctPot": 0.0028018293709590517,
+      "targetPctPot": 1e-9,
+      "wallMs": 71.64883299999997,
+      "timings": {
+        "buildMs": 0,
+        "allocateMs": 0,
+        "solveMs": 60,
+        "exportMs": 0,
+        "totalMs": 61
+      },
+      "memory": {
+        "estimatedBytes": 209652,
+        "estimatedCompressedBytes": 182672,
+        "allocatedEstimateBytes": 209652,
+        "peakRssBytes": 3391488
+      },
+      "sampledPeakRssBytes": null,
+      "exportedNodes": 21,
+      "resultJsonBytes": 86857,
+      "numericalHash": "b953bdfe0c7b2058c9d02e2eecc5c9b1f1025f907c423a778b0d4c42fe32b529",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 613.9155,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 111.68265,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 20,
+          "exploitability": 33.548767,
+          "elapsedMs": 1
+        },
+        {
+          "iteration": 30,
+          "exploitability": 15.10569,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.297447,
+          "elapsedMs": 2
+        },
+        {
+          "iteration": 50,
+          "exploitability": 2.7500992,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 60,
+          "exploitability": 1.7426453,
+          "elapsedMs": 3
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.1198044,
+          "elapsedMs": 4
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.3277664,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.0925751,
+          "elapsedMs": 5
+        },
+        {
+          "iteration": 100,
+          "exploitability": 0.8879013,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 110,
+          "exploitability": 0.89881134,
+          "elapsedMs": 6
+        },
+        {
+          "iteration": 120,
+          "exploitability": 0.7317352,
+          "elapsedMs": 7
+        },
+        {
+          "iteration": 130,
+          "exploitability": 0.6747513,
+          "elapsedMs": 8
+        },
+        {
+          "iteration": 140,
+          "exploitability": 0.5828247,
+          "elapsedMs": 8
+        },
+        {
+          "iteration": 150,
+          "exploitability": 0.51501465,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 160,
+          "exploitability": 0.4778366,
+          "elapsedMs": 9
+        },
+        {
+          "iteration": 170,
+          "exploitability": 0.4282608,
+          "elapsedMs": 10
+        },
+        {
+          "iteration": 180,
+          "exploitability": 0.4122467,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 190,
+          "exploitability": 0.390831,
+          "elapsedMs": 11
+        },
+        {
+          "iteration": 200,
+          "exploitability": 0.36943817,
+          "elapsedMs": 12
+        },
+        {
+          "iteration": 210,
+          "exploitability": 0.34568787,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 220,
+          "exploitability": 0.3312683,
+          "elapsedMs": 13
+        },
+        {
+          "iteration": 230,
+          "exploitability": 0.31920624,
+          "elapsedMs": 14
+        },
+        {
+          "iteration": 240,
+          "exploitability": 0.29811096,
+          "elapsedMs": 14
+        },
+        {
+          "iteration": 250,
+          "exploitability": 0.2747879,
+          "elapsedMs": 15
+        },
+        {
+          "iteration": 260,
+          "exploitability": 0.3687439,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 270,
+          "exploitability": 0.34629822,
+          "elapsedMs": 16
+        },
+        {
+          "iteration": 280,
+          "exploitability": 0.33394623,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 290,
+          "exploitability": 0.3037567,
+          "elapsedMs": 17
+        },
+        {
+          "iteration": 300,
+          "exploitability": 0.28431702,
+          "elapsedMs": 18
+        },
+        {
+          "iteration": 310,
+          "exploitability": 0.255661,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 320,
+          "exploitability": 0.25800323,
+          "elapsedMs": 19
+        },
+        {
+          "iteration": 330,
+          "exploitability": 0.25893402,
+          "elapsedMs": 20
+        },
+        {
+          "iteration": 340,
+          "exploitability": 0.25361633,
+          "elapsedMs": 20
+        },
+        {
+          "iteration": 350,
+          "exploitability": 0.2483139,
+          "elapsedMs": 21
+        },
+        {
+          "iteration": 360,
+          "exploitability": 0.2398529,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 370,
+          "exploitability": 0.22302246,
+          "elapsedMs": 22
+        },
+        {
+          "iteration": 380,
+          "exploitability": 0.20748901,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 390,
+          "exploitability": 0.1940155,
+          "elapsedMs": 23
+        },
+        {
+          "iteration": 400,
+          "exploitability": 0.17966461,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 410,
+          "exploitability": 0.1621933,
+          "elapsedMs": 24
+        },
+        {
+          "iteration": 420,
+          "exploitability": 0.15058899,
+          "elapsedMs": 25
+        },
+        {
+          "iteration": 430,
+          "exploitability": 0.14076233,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 440,
+          "exploitability": 0.1301651,
+          "elapsedMs": 26
+        },
+        {
+          "iteration": 450,
+          "exploitability": 0.12236786,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 460,
+          "exploitability": 0.11621857,
+          "elapsedMs": 27
+        },
+        {
+          "iteration": 470,
+          "exploitability": 0.11064148,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 480,
+          "exploitability": 0.10736084,
+          "elapsedMs": 28
+        },
+        {
+          "iteration": 490,
+          "exploitability": 0.10443115,
+          "elapsedMs": 29
+        },
+        {
+          "iteration": 500,
+          "exploitability": 0.10089111,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 510,
+          "exploitability": 0.095565796,
+          "elapsedMs": 30
+        },
+        {
+          "iteration": 520,
+          "exploitability": 0.0945282,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 530,
+          "exploitability": 0.09064484,
+          "elapsedMs": 31
+        },
+        {
+          "iteration": 540,
+          "exploitability": 0.088157654,
+          "elapsedMs": 32
+        },
+        {
+          "iteration": 550,
+          "exploitability": 0.08541107,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 560,
+          "exploitability": 0.08049774,
+          "elapsedMs": 33
+        },
+        {
+          "iteration": 570,
+          "exploitability": 0.077049255,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 580,
+          "exploitability": 0.0743103,
+          "elapsedMs": 34
+        },
+        {
+          "iteration": 590,
+          "exploitability": 0.070884705,
+          "elapsedMs": 35
+        },
+        {
+          "iteration": 600,
+          "exploitability": 0.06616974,
+          "elapsedMs": 36
+        },
+        {
+          "iteration": 610,
+          "exploitability": 0.063583374,
+          "elapsedMs": 36
+        },
+        {
+          "iteration": 620,
+          "exploitability": 0.062149048,
+          "elapsedMs": 37
+        },
+        {
+          "iteration": 630,
+          "exploitability": 0.061561584,
+          "elapsedMs": 37
+        },
+        {
+          "iteration": 640,
+          "exploitability": 0.060310364,
+          "elapsedMs": 38
+        },
+        {
+          "iteration": 650,
+          "exploitability": 0.059761047,
+          "elapsedMs": 38
+        },
+        {
+          "iteration": 660,
+          "exploitability": 0.058036804,
+          "elapsedMs": 39
+        },
+        {
+          "iteration": 670,
+          "exploitability": 0.056907654,
+          "elapsedMs": 40
+        },
+        {
+          "iteration": 680,
+          "exploitability": 0.05543518,
+          "elapsedMs": 40
+        },
+        {
+          "iteration": 690,
+          "exploitability": 0.056007385,
+          "elapsedMs": 41
+        },
+        {
+          "iteration": 700,
+          "exploitability": 0.1473999,
+          "elapsedMs": 42
+        },
+        {
+          "iteration": 710,
+          "exploitability": 0.081451416,
+          "elapsedMs": 43
+        },
+        {
+          "iteration": 720,
+          "exploitability": 0.08984375,
+          "elapsedMs": 43
+        },
+        {
+          "iteration": 730,
+          "exploitability": 0.08660126,
+          "elapsedMs": 44
+        },
+        {
+          "iteration": 740,
+          "exploitability": 0.08564758,
+          "elapsedMs": 44
+        },
+        {
+          "iteration": 750,
+          "exploitability": 0.07715607,
+          "elapsedMs": 45
+        },
+        {
+          "iteration": 760,
+          "exploitability": 0.07006836,
+          "elapsedMs": 45
+        },
+        {
+          "iteration": 770,
+          "exploitability": 0.069229126,
+          "elapsedMs": 46
+        },
+        {
+          "iteration": 780,
+          "exploitability": 0.063331604,
+          "elapsedMs": 47
+        },
+        {
+          "iteration": 790,
+          "exploitability": 0.060386658,
+          "elapsedMs": 47
+        },
+        {
+          "iteration": 800,
+          "exploitability": 0.05945587,
+          "elapsedMs": 48
+        },
+        {
+          "iteration": 810,
+          "exploitability": 0.059440613,
+          "elapsedMs": 48
+        },
+        {
+          "iteration": 820,
+          "exploitability": 0.058532715,
+          "elapsedMs": 49
+        },
+        {
+          "iteration": 830,
+          "exploitability": 0.056373596,
+          "elapsedMs": 50
+        },
+        {
+          "iteration": 840,
+          "exploitability": 0.05443573,
+          "elapsedMs": 50
+        },
+        {
+          "iteration": 850,
+          "exploitability": 0.05255127,
+          "elapsedMs": 51
+        },
+        {
+          "iteration": 860,
+          "exploitability": 0.051002502,
+          "elapsedMs": 51
+        },
+        {
+          "iteration": 870,
+          "exploitability": 0.049263,
+          "elapsedMs": 52
+        },
+        {
+          "iteration": 880,
+          "exploitability": 0.0473938,
+          "elapsedMs": 53
+        },
+        {
+          "iteration": 890,
+          "exploitability": 0.046035767,
+          "elapsedMs": 53
+        },
+        {
+          "iteration": 900,
+          "exploitability": 0.045555115,
+          "elapsedMs": 54
+        },
+        {
+          "iteration": 910,
+          "exploitability": 0.04484558,
+          "elapsedMs": 54
+        },
+        {
+          "iteration": 920,
+          "exploitability": 0.043434143,
+          "elapsedMs": 55
+        },
+        {
+          "iteration": 930,
+          "exploitability": 0.042236328,
+          "elapsedMs": 56
+        },
+        {
+          "iteration": 940,
+          "exploitability": 0.041748047,
+          "elapsedMs": 56
+        },
+        {
+          "iteration": 950,
+          "exploitability": 0.040992737,
+          "elapsedMs": 57
+        },
+        {
+          "iteration": 960,
+          "exploitability": 0.040496826,
+          "elapsedMs": 57
+        },
+        {
+          "iteration": 970,
+          "exploitability": 0.038772583,
+          "elapsedMs": 58
+        },
+        {
+          "iteration": 980,
+          "exploitability": 0.03794861,
+          "elapsedMs": 59
+        },
+        {
+          "iteration": 990,
+          "exploitability": 0.036834717,
+          "elapsedMs": 59
+        },
+        {
+          "iteration": 1000,
+          "exploitability": 0.035751343,
+          "elapsedMs": 60
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-57.result.json"
+    },
+    {
+      "corpusIndex": 18,
+      "seed": 23,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "8d"
+      ],
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "status": "measured",
+      "measurementSpotHash": "fe214c925d9016da6b43b2084f619b44944bc5fa0b357509d035e16f13bb7f9a",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 100,
+      "reached": false,
+      "exploitabilityChips": 4.498809814453125,
+      "exploitabilityPctPot": 0.16021402473123664,
+      "targetPctPot": 1e-9,
+      "wallMs": 640.8493749999998,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 626,
+        "exportMs": 0,
+        "totalMs": 628
+      },
+      "memory": {
+        "estimatedBytes": 5330088,
+        "estimatedCompressedBytes": 2892684,
+        "allocatedEstimateBytes": 5330088,
+        "peakRssBytes": 8585216
+      },
+      "sampledPeakRssBytes": 8290304,
+      "exportedNodes": 15,
+      "resultJsonBytes": 43351,
+      "numericalHash": "0f97085996b4439a7b64405b9ab619962c1f5f06c62517b46590abcbd9fba09e",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1599.8821,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 386.91025,
+          "elapsedMs": 57
+        },
+        {
+          "iteration": 20,
+          "exploitability": 195.57228,
+          "elapsedMs": 112
+        },
+        {
+          "iteration": 30,
+          "exploitability": 43.860977,
+          "elapsedMs": 167
+        },
+        {
+          "iteration": 40,
+          "exploitability": 20.117203,
+          "elapsedMs": 244
+        },
+        {
+          "iteration": 50,
+          "exploitability": 13.001968,
+          "elapsedMs": 308
+        },
+        {
+          "iteration": 60,
+          "exploitability": 9.229034,
+          "elapsedMs": 368
+        },
+        {
+          "iteration": 70,
+          "exploitability": 9.524994,
+          "elapsedMs": 428
+        },
+        {
+          "iteration": 80,
+          "exploitability": 6.6638794,
+          "elapsedMs": 487
+        },
+        {
+          "iteration": 90,
+          "exploitability": 5.311966,
+          "elapsedMs": 553
+        },
+        {
+          "iteration": 100,
+          "exploitability": 4.49881,
+          "elapsedMs": 616
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-18.result.json"
+    },
+    {
+      "corpusIndex": 25,
+      "seed": 32,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "status": "measured",
+      "measurementSpotHash": "f781c2393bdc705099317968abedcf6a2db256359a9880ddc8fb790344b8f103",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 100,
+      "reached": false,
+      "exploitabilityChips": 2.351855754852295,
+      "exploitabilityPctPot": 0.4276101372458718,
+      "targetPctPot": 1e-9,
+      "wallMs": 1785.2432919999997,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1765,
+        "exportMs": 0,
+        "totalMs": 1768
+      },
+      "memory": {
+        "estimatedBytes": 15510264,
+        "estimatedCompressedBytes": 8094688,
+        "allocatedEstimateBytes": 15510264,
+        "peakRssBytes": 19202048
+      },
+      "sampledPeakRssBytes": 18579456,
+      "exportedNodes": 15,
+      "resultJsonBytes": 113834,
+      "numericalHash": "fa69ed0b3c005415557950bf415dd961264df5a4319da85a3c25d247d21b5e92",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 873.74005,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 144.51685,
+          "elapsedMs": 184
+        },
+        {
+          "iteration": 20,
+          "exploitability": 66.94995,
+          "elapsedMs": 367
+        },
+        {
+          "iteration": 30,
+          "exploitability": 22.148905,
+          "elapsedMs": 543
+        },
+        {
+          "iteration": 40,
+          "exploitability": 10.783603,
+          "elapsedMs": 714
+        },
+        {
+          "iteration": 50,
+          "exploitability": 7.6313653,
+          "elapsedMs": 886
+        },
+        {
+          "iteration": 60,
+          "exploitability": 5.271638,
+          "elapsedMs": 1059
+        },
+        {
+          "iteration": 70,
+          "exploitability": 19.09478,
+          "elapsedMs": 1228
+        },
+        {
+          "iteration": 80,
+          "exploitability": 4.1626325,
+          "elapsedMs": 1396
+        },
+        {
+          "iteration": 90,
+          "exploitability": 3.5165021,
+          "elapsedMs": 1568
+        },
+        {
+          "iteration": 100,
+          "exploitability": 2.3518558,
+          "elapsedMs": 1733
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-25.result.json"
+    },
+    {
+      "corpusIndex": 29,
+      "seed": 36,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "2s"
+      ],
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "status": "measured",
+      "measurementSpotHash": "bde5832ee1cb1589ebb6ffde5aea905ce9b1e6ca8665763684de1410de264511",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 100,
+      "reached": false,
+      "exploitabilityChips": 1.2778325080871582,
+      "exploitabilityPctPot": 0.23233318328857422,
+      "targetPctPot": 1e-9,
+      "wallMs": 2757.989667,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2739,
+        "exportMs": 0,
+        "totalMs": 2743
+      },
+      "memory": {
+        "estimatedBytes": 21495672,
+        "estimatedCompressedBytes": 11133630,
+        "allocatedEstimateBytes": 21495672,
+        "peakRssBytes": 25231360
+      },
+      "sampledPeakRssBytes": 24477696,
+      "exportedNodes": 15,
+      "resultJsonBytes": 88872,
+      "numericalHash": "ada735511ddd6fb6c854e87b8fac067b29578566037e6e63c25d30787b49b55e",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 851.7345,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 113.53862,
+          "elapsedMs": 284
+        },
+        {
+          "iteration": 20,
+          "exploitability": 47.037945,
+          "elapsedMs": 558
+        },
+        {
+          "iteration": 30,
+          "exploitability": 12.544146,
+          "elapsedMs": 823
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.531761,
+          "elapsedMs": 1096
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.0404525,
+          "elapsedMs": 1360
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.9227257,
+          "elapsedMs": 1628
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.264709,
+          "elapsedMs": 1883
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.9823399,
+          "elapsedMs": 2149
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5389755,
+          "elapsedMs": 2416
+        },
+        {
+          "iteration": 100,
+          "exploitability": 1.2778325,
+          "elapsedMs": 2692
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-29.result.json"
+    }
+  ],
+  "payloadHash": "430422593deba367f6694fa674b0a3504e94378bf08035ca92e7b464a33afc66"
+}

@@ -122,6 +122,19 @@ unmeasured ladder.
 
 ---
 
+### User-directed P1 continuation (2026-09-30)
+
+After the initial admission failure, Kat authorized a rivers-first, cheapest-first
+[wider-range feasibility sequence](heads-up-play-p1-wide-feasibility.md): estimate the same
+64 full-range roots natively, solve on one thread, measure WASM/native ratios and actual
+Chromium/Firefox/WebKit peak memory, then propose measured desktop/mobile limits (including
+stack/pot) and repeat the unchanged P1 gates. Physical-device checks come **last**, with a
+checklist for Kat; their absence does not block this research. If turns do not fit phones,
+the decided fallback is live rivers everywhere, live turns on desktop and a turn-only mobile
+cache whose size/coverage must be measured. Do not replace the game or lower a quality gate.
+Earlier device-before-investigation wording is superseded by this explicit direction;
+unmeasured phone performance/safety must still be labelled unmeasured.
+
 ## Steps 1–4: browser solving (finish W1–W4)
 
 These already have detailed records; this section adds the done-definition.

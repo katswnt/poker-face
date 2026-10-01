@@ -1,0 +1,2777 @@
+{
+  "format": "poker-face-p1-full-range-estimates",
+  "version": 1,
+  "measuredAt": "2026-09-30T23:13:26.333Z",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "ramBytes": 34359738368,
+    "platform": "darwin",
+    "osRelease": "25.4.0",
+    "node": "v24.10.0"
+  },
+  "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+  "nativeBinarySha256": "7d6211a74d4959de25ac4211e93498a0175662b218e1a1576403e9ac8ecc64ca",
+  "sourceAdmissionHash": "5708279f22c75c316a8d97dd4dfb1d857976127da11b3527f50e4c390cc807f9",
+  "interpretation": "Native preflight storage/export estimates, not allocated strategy memory, solving, browser admission or measured peak RSS.",
+  "ratioCaseIndexes": [
+    32,
+    57,
+    42,
+    18,
+    25,
+    29
+  ],
+  "rows": [
+    {
+      "corpusIndex": 32,
+      "seed": 4,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "Ad",
+        "b363",
+        "c",
+        "5d"
+      ],
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-6a6cec76",
+        "spotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+        "estimatedBytes": 194792,
+        "estimatedCompressedBytes": 174074,
+        "hands": [
+          246,
+          259
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5050,
+          "edges": 20,
+          "jsonBytesUpperBound": 516136,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5055424
+        }
+      },
+      "wallMs": 6.247665999999981,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 33,
+      "seed": 5,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "x",
+        "x",
+        "Th"
+      ],
+      "sourceSpotHash": "c4cf0af38ba0d10dc8fce53d63cccefdaba2f8212cc6377ff8299143f0340b12",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-5f768628",
+        "spotHash": "c4cf0af38ba0d10dc8fce53d63cccefdaba2f8212cc6377ff8299143f0340b12",
+        "estimatedBytes": 224580,
+        "estimatedCompressedBytes": 191114,
+        "hands": [
+          487,
+          333
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8200,
+          "edges": 20,
+          "jsonBytesUpperBound": 793984,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7802368
+        }
+      },
+      "wallMs": 4.796832999999879,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 34,
+      "seed": 6,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "b363",
+        "c",
+        "6d"
+      ],
+      "sourceSpotHash": "cccdaf64bf75e52f052ee89fe350069ff92374f5b43ecf84d545630f7bc82aa3",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-520dc1b9",
+        "spotHash": "cccdaf64bf75e52f052ee89fe350069ff92374f5b43ecf84d545630f7bc82aa3",
+        "estimatedBytes": 197152,
+        "estimatedCompressedBytes": 175410,
+        "hands": [
+          280,
+          251
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5310,
+          "edges": 20,
+          "jsonBytesUpperBound": 542624,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5310592
+        }
+      },
+      "wallMs": 5.97520899999995,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 35,
+      "seed": 9,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "6h",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "0b5cd3997afc75692f3d0ce85433f387fc8bd93d312534138f708b0136aa5a7c",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-677f765d",
+        "spotHash": "0b5cd3997afc75692f3d0ce85433f387fc8bd93d312534138f708b0136aa5a7c",
+        "estimatedBytes": 221652,
+        "estimatedCompressedBytes": 189458,
+        "hands": [
+          451,
+          337
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7880,
+          "edges": 20,
+          "jsonBytesUpperBound": 780440,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7640768
+        }
+      },
+      "wallMs": 4.551791000000094,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 36,
+      "seed": 24,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "a9e701d2c940909c23c1bba68938ca0c2caa350b7cafbaa568139a27a535ea3a",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-10b7989e",
+        "spotHash": "a9e701d2c940909c23c1bba68938ca0c2caa350b7cafbaa568139a27a535ea3a",
+        "estimatedBytes": 227256,
+        "estimatedCompressedBytes": 192620,
+        "hands": [
+          490,
+          358
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8480,
+          "edges": 20,
+          "jsonBytesUpperBound": 837864,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8200000
+        }
+      },
+      "wallMs": 5.394792000000052,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 37,
+      "seed": 25,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d",
+        "x",
+        "x",
+        "3s"
+      ],
+      "sourceSpotHash": "00572a1e2bb5906f7ecee5b4c9fddce1cbd1fffde5e058e09812f2ddacac5a9f",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-59f1843a",
+        "spotHash": "00572a1e2bb5906f7ecee5b4c9fddce1cbd1fffde5e058e09812f2ddacac5a9f",
+        "estimatedBytes": 217284,
+        "estimatedCompressedBytes": 186974,
+        "hands": [
+          343,
+          395
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7380,
+          "edges": 20,
+          "jsonBytesUpperBound": 741864,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7248960
+        }
+      },
+      "wallMs": 4.7622499999999945,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 38,
+      "seed": 45,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "Qc",
+        "x",
+        "x",
+        "8d"
+      ],
+      "sourceSpotHash": "ed16088277a6a8f9c97bbeaa82471ef7a6c7c2001205f26bfa84339952961548",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-59af4264",
+        "spotHash": "ed16088277a6a8f9c97bbeaa82471ef7a6c7c2001205f26bfa84339952961548",
+        "estimatedBytes": 232668,
+        "estimatedCompressedBytes": 196120,
+        "hands": [
+          521,
+          374
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8950,
+          "edges": 20,
+          "jsonBytesUpperBound": 873552,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8563712
+        }
+      },
+      "wallMs": 5.220625000000155,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 39,
+      "seed": 48,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "5c",
+        "b363",
+        "c",
+        "8c"
+      ],
+      "sourceSpotHash": "61c45d215c0d217c02eccab423daa85c6e43a76815a9517f8dff16c520cdd03a",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-8a4c22fe",
+        "spotHash": "61c45d215c0d217c02eccab423daa85c6e43a76815a9517f8dff16c520cdd03a",
+        "estimatedBytes": 212548,
+        "estimatedCompressedBytes": 184330,
+        "hands": [
+          423,
+          269
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6920,
+          "edges": 20,
+          "jsonBytesUpperBound": 688984,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6749376
+        }
+      },
+      "wallMs": 4.873541999999816,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 40,
+      "seed": 77,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ah",
+        "x",
+        "x",
+        "5d"
+      ],
+      "sourceSpotHash": "9ad8bf96e486815a267ba3e0c777899921c1aac7463ed0cb9e8ba7b1dc6083b4",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-d0ec0205",
+        "spotHash": "9ad8bf96e486815a267ba3e0c777899921c1aac7463ed0cb9e8ba7b1dc6083b4",
+        "estimatedBytes": 208140,
+        "estimatedCompressedBytes": 181832,
+        "hands": [
+          349,
+          294
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6430,
+          "edges": 20,
+          "jsonBytesUpperBound": 642224,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6293760
+        }
+      },
+      "wallMs": 4.807999999999993,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 41,
+      "seed": 85,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kc"
+      ],
+      "sourceSpotHash": "0a3092bdbd4634ab94a96e8bdebc4daf6de3df4362b920cc2fba523e1d4b4303",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-a227ab4b",
+        "spotHash": "0a3092bdbd4634ab94a96e8bdebc4daf6de3df4362b920cc2fba523e1d4b4303",
+        "estimatedBytes": 223780,
+        "estimatedCompressedBytes": 190666,
+        "hands": [
+          495,
+          317
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8120,
+          "edges": 20,
+          "jsonBytesUpperBound": 782024,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7693376
+        }
+      },
+      "wallMs": 5.415750000000116,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 42,
+      "seed": 99,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "Qh",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-a149bed2",
+        "spotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+        "estimatedBytes": 236416,
+        "estimatedCompressedBytes": 198234,
+        "hands": [
+          544,
+          391
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 9350,
+          "edges": 20,
+          "jsonBytesUpperBound": 912904,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8945088
+        }
+      },
+      "wallMs": 5.129042000000027,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 43,
+      "seed": 103,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "x",
+        "Th",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "a25ff2ad59161abf919b025e8b81d7a7b6733faa7999abec8c6f5805ba3b4769",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-3e324448",
+        "spotHash": "a25ff2ad59161abf919b025e8b81d7a7b6733faa7999abec8c6f5805ba3b4769",
+        "estimatedBytes": 226856,
+        "estimatedCompressedBytes": 192854,
+        "hands": [
+          534,
+          301
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8350,
+          "edges": 20,
+          "jsonBytesUpperBound": 811112,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7964352
+        }
+      },
+      "wallMs": 5.0346250000000055,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 44,
+      "seed": 106,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "2d",
+        "x",
+        "x",
+        "8d"
+      ],
+      "sourceSpotHash": "d3084211d6b0d580df1fe0ee312f26b4cccb9b0008a27a0dfbf2a321b881feb9",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-5e1b8f1f",
+        "spotHash": "d3084211d6b0d580df1fe0ee312f26b4cccb9b0008a27a0dfbf2a321b881feb9",
+        "estimatedBytes": 228636,
+        "estimatedCompressedBytes": 193394,
+        "hands": [
+          481,
+          381
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8620,
+          "edges": 20,
+          "jsonBytesUpperBound": 817208,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8058048
+        }
+      },
+      "wallMs": 5.069916999999805,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 45,
+      "seed": 122,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "3s",
+        "b363",
+        "c",
+        "Js"
+      ],
+      "sourceSpotHash": "0e9c7553d07201c824d6732623690fb582e19c7e21622c1753a6d53eca50453d",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-070ca07e",
+        "spotHash": "0e9c7553d07201c824d6732623690fb582e19c7e21622c1753a6d53eca50453d",
+        "estimatedBytes": 205284,
+        "estimatedCompressedBytes": 180224,
+        "hands": [
+          343,
+          270
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6130,
+          "edges": 20,
+          "jsonBytesUpperBound": 617416,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6045376
+        }
+      },
+      "wallMs": 4.434792000000016,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 46,
+      "seed": 123,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "x",
+        "3h"
+      ],
+      "sourceSpotHash": "64c003aa47cb5c87ddac503411b913bbaa1371a6c6965cd90f76a294f8d0567e",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-5500d3b2",
+        "spotHash": "64c003aa47cb5c87ddac503411b913bbaa1371a6c6965cd90f76a294f8d0567e",
+        "estimatedBytes": 234744,
+        "estimatedCompressedBytes": 197290,
+        "hands": [
+          530,
+          387
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 9170,
+          "edges": 20,
+          "jsonBytesUpperBound": 888840,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8722624
+        }
+      },
+      "wallMs": 5.790959000000157,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 47,
+      "seed": 125,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "b182",
+        "c",
+        "9h",
+        "b603",
+        "c",
+        "Ks"
+      ],
+      "sourceSpotHash": "fdcdebe6a996e4a05fef52c97ad231b9e380ec97ba8831aca11389e88de6b520",
+      "stackPotRatio": 4.22877358490566,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-e81fd82c",
+        "spotHash": "fdcdebe6a996e4a05fef52c97ad231b9e380ec97ba8831aca11389e88de6b520",
+        "estimatedBytes": 208536,
+        "estimatedCompressedBytes": 182054,
+        "hands": [
+          346,
+          301
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6470,
+          "edges": 20,
+          "jsonBytesUpperBound": 655568,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6407168
+        }
+      },
+      "wallMs": 4.599249999999984,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 48,
+      "seed": 128,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d",
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "8037146c0f9f9398ced99acc3ecaaada1747bbe0adb5703181edd397735ba8be",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-8d65ea3c",
+        "spotHash": "8037146c0f9f9398ced99acc3ecaaada1747bbe0adb5703181edd397735ba8be",
+        "estimatedBytes": 230636,
+        "estimatedCompressedBytes": 194526,
+        "hands": [
+          509,
+          375
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8840,
+          "edges": 20,
+          "jsonBytesUpperBound": 872216,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8534720
+        }
+      },
+      "wallMs": 5.247500000000173,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 49,
+      "seed": 144,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h",
+        "x",
+        "x",
+        "6s"
+      ],
+      "sourceSpotHash": "f49b7b94da696dbe3cdff77fcbf5acc957bdd76b44147f7138a1964b898f8461",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-58fce0f9",
+        "spotHash": "f49b7b94da696dbe3cdff77fcbf5acc957bdd76b44147f7138a1964b898f8461",
+        "estimatedBytes": 221980,
+        "estimatedCompressedBytes": 189652,
+        "hands": [
+          489,
+          304
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7930,
+          "edges": 20,
+          "jsonBytesUpperBound": 753976,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7437376
+        }
+      },
+      "wallMs": 4.811500000000024,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 50,
+      "seed": 169,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "Jh",
+        "b363",
+        "c",
+        "Ts"
+      ],
+      "sourceSpotHash": "978c0a77d29a3d733dabd9382d49cd86a3ba669356af03e09fea473f2dfe7784",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-12d262d6",
+        "spotHash": "978c0a77d29a3d733dabd9382d49cd86a3ba669356af03e09fea473f2dfe7784",
+        "estimatedBytes": 205608,
+        "estimatedCompressedBytes": 180404,
+        "hands": [
+          334,
+          282
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6160,
+          "edges": 20,
+          "jsonBytesUpperBound": 621248,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6081024
+        }
+      },
+      "wallMs": 4.421790999999985,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 51,
+      "seed": 196,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "x",
+        "x",
+        "Ac",
+        "x",
+        "b363",
+        "c",
+        "8h"
+      ],
+      "sourceSpotHash": "70f9cb2227ed6d322dbb858f9caff8f6827e401139c3702e1c3e30413700a9e9",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-1e4c9f20",
+        "spotHash": "70f9cb2227ed6d322dbb858f9caff8f6827e401139c3702e1c3e30413700a9e9",
+        "estimatedBytes": 204500,
+        "estimatedCompressedBytes": 179778,
+        "hands": [
+          323,
+          281
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6040,
+          "edges": 20,
+          "jsonBytesUpperBound": 618968,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6042816
+        }
+      },
+      "wallMs": 4.749250000000075,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 52,
+      "seed": 200,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "b842",
+        "c",
+        "6d"
+      ],
+      "sourceSpotHash": "91af458c9e1312b131d1977efa600b3a5a5ad245f024c94403c61842b4087393",
+      "stackPotRatio": 2.886824324324324,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-e23e4ab3",
+        "spotHash": "91af458c9e1312b131d1977efa600b3a5a5ad245f024c94403c61842b4087393",
+        "estimatedBytes": 196584,
+        "estimatedCompressedBytes": 175050,
+        "hands": [
+          216,
+          307
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5230,
+          "edges": 20,
+          "jsonBytesUpperBound": 536000,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5244288
+        }
+      },
+      "wallMs": 4.572084000000132,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 53,
+      "seed": 258,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2h",
+        "x",
+        "x",
+        "Ac"
+      ],
+      "sourceSpotHash": "544ab72974127c256069bd734a5310f7774690327f281d99638d49fd1ccff2ac",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-336e49ce",
+        "spotHash": "544ab72974127c256069bd734a5310f7774690327f281d99638d49fd1ccff2ac",
+        "estimatedBytes": 200628,
+        "estimatedCompressedBytes": 177376,
+        "hands": [
+          323,
+          246
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5690,
+          "edges": 20,
+          "jsonBytesUpperBound": 580080,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5673472
+        }
+      },
+      "wallMs": 4.598291999999901,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 54,
+      "seed": 267,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6h",
+        "x",
+        "b842",
+        "c",
+        "8h"
+      ],
+      "sourceSpotHash": "47e353f0860b54629b9e7df49601f6e9801a25a76ea7671a1b57ca13b2210543",
+      "stackPotRatio": 2.886824324324324,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-d01d2590",
+        "spotHash": "47e353f0860b54629b9e7df49601f6e9801a25a76ea7671a1b57ca13b2210543",
+        "estimatedBytes": 195608,
+        "estimatedCompressedBytes": 174508,
+        "hands": [
+          244,
+          270
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5140,
+          "edges": 20,
+          "jsonBytesUpperBound": 528688,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5170816
+        }
+      },
+      "wallMs": 4.3588750000001255,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 55,
+      "seed": 276,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "8d",
+        "x",
+        "x",
+        "9c"
+      ],
+      "sourceSpotHash": "fd86ddaf3818f6850e5380bd828d4c94badd882692ee8fed6a661b8a3355f8de",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-7a0586c0",
+        "spotHash": "fd86ddaf3818f6850e5380bd828d4c94badd882692ee8fed6a661b8a3355f8de",
+        "estimatedBytes": 201196,
+        "estimatedCompressedBytes": 177910,
+        "hands": [
+          285,
+          283
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5680,
+          "edges": 20,
+          "jsonBytesUpperBound": 579184,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5664640
+        }
+      },
+      "wallMs": 4.3813749999999345,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 56,
+      "seed": 288,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Jc",
+        "x",
+        "x",
+        "Kd"
+      ],
+      "sourceSpotHash": "98790ddcf8f45d99cc05c7b976921e7e2bae6af24efa63a10c306d94301be4fc",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-de86f296",
+        "spotHash": "98790ddcf8f45d99cc05c7b976921e7e2bae6af24efa63a10c306d94301be4fc",
+        "estimatedBytes": 223780,
+        "estimatedCompressedBytes": 190666,
+        "hands": [
+          495,
+          317
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8120,
+          "edges": 20,
+          "jsonBytesUpperBound": 782064,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7693696
+        }
+      },
+      "wallMs": 5.318583999999873,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 57,
+      "seed": 290,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Kc",
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-27e62cfc",
+        "spotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+        "estimatedBytes": 209652,
+        "estimatedCompressedBytes": 182672,
+        "hands": [
+          307,
+          350
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6570,
+          "edges": 20,
+          "jsonBytesUpperBound": 664112,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6492160
+        }
+      },
+      "wallMs": 4.775583000000097,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 58,
+      "seed": 291,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Js",
+        "x",
+        "x",
+        "Ts"
+      ],
+      "sourceSpotHash": "b496989e79a1cdc47ff77b62eaece9054994ad7b0936aa61959b9e7579c46ea4",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-a813c941",
+        "spotHash": "b496989e79a1cdc47ff77b62eaece9054994ad7b0936aa61959b9e7579c46ea4",
+        "estimatedBytes": 230552,
+        "estimatedCompressedBytes": 194930,
+        "hands": [
+          522,
+          351
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 8730,
+          "edges": 20,
+          "jsonBytesUpperBound": 847096,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8315456
+        }
+      },
+      "wallMs": 5.142417000000023,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 59,
+      "seed": 302,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "Ah",
+        "b363",
+        "c",
+        "Jh"
+      ],
+      "sourceSpotHash": "3ddf0a2f1ac1c8d947790ab420c6da03c3b9690475ac26aed261e4d37aa1d15e",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-83b618c5",
+        "spotHash": "3ddf0a2f1ac1c8d947790ab420c6da03c3b9690475ac26aed261e4d37aa1d15e",
+        "estimatedBytes": 200648,
+        "estimatedCompressedBytes": 177600,
+        "hands": [
+          278,
+          284
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5620,
+          "edges": 20,
+          "jsonBytesUpperBound": 571352,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5592000
+        }
+      },
+      "wallMs": 4.3577090000001135,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 60,
+      "seed": 314,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Ac",
+        "x",
+        "b842",
+        "c",
+        "4s"
+      ],
+      "sourceSpotHash": "6bad18a71dd170d9229b37198c36dcdf6bde21e0f87af7cf10cea4b0ade1259b",
+      "stackPotRatio": 2.886824324324324,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-6a554945",
+        "spotHash": "6bad18a71dd170d9229b37198c36dcdf6bde21e0f87af7cf10cea4b0ade1259b",
+        "estimatedBytes": 196276,
+        "estimatedCompressedBytes": 174878,
+        "hands": [
+          221,
+          299
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5200,
+          "edges": 20,
+          "jsonBytesUpperBound": 535608,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5236160
+        }
+      },
+      "wallMs": 4.3237920000001395,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 61,
+      "seed": 345,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "x",
+        "x",
+        "2c",
+        "x",
+        "b363",
+        "c",
+        "3c"
+      ],
+      "sourceSpotHash": "7a8316222a7caac530c33df62cc1b66d792cc9baf430ebc91ee4ca94d24edd08",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-6dcd2321",
+        "spotHash": "7a8316222a7caac530c33df62cc1b66d792cc9baf430ebc91ee4ca94d24edd08",
+        "estimatedBytes": 198112,
+        "estimatedCompressedBytes": 175932,
+        "hands": [
+          208,
+          330
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5380,
+          "edges": 20,
+          "jsonBytesUpperBound": 553560,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5409728
+        }
+      },
+      "wallMs": 4.574624999999969,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 62,
+      "seed": 354,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "Qs",
+        "x",
+        "b363",
+        "c",
+        "7s"
+      ],
+      "sourceSpotHash": "e36ba4d3419f40e7be16bc3ede30cb9ae55941753d075aa875a1fbe27e4135d2",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-ec13ce10",
+        "spotHash": "e36ba4d3419f40e7be16bc3ede30cb9ae55941753d075aa875a1fbe27e4135d2",
+        "estimatedBytes": 204396,
+        "estimatedCompressedBytes": 179714,
+        "hands": [
+          301,
+          301
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6020,
+          "edges": 20,
+          "jsonBytesUpperBound": 612896,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5990912
+        }
+      },
+      "wallMs": 4.597250000000031,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 63,
+      "seed": 367,
+      "street": "river",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "6d",
+        "x",
+        "b363",
+        "c",
+        "Qc"
+      ],
+      "sourceSpotHash": "1c975ea81bb476b85cd835176877cf1335a09ca99acc59c53198f4db561381ea",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-river-d14f0a48",
+        "spotHash": "1c975ea81bb476b85cd835176877cf1335a09ca99acc59c53198f4db561381ea",
+        "estimatedBytes": 196556,
+        "estimatedCompressedBytes": 175076,
+        "hands": [
+          285,
+          240
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5250,
+          "edges": 20,
+          "jsonBytesUpperBound": 541032,
+          "nodes": 21,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5287872
+        }
+      },
+      "wallMs": 4.733874999999898,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 0,
+      "seed": 0,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "39bb9921fb4806890b5100df21c1b448dc00e4ec8c1bf8404544c830fa7e7733",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-b7a28588",
+        "spotHash": "39bb9921fb4806890b5100df21c1b448dc00e4ec8c1bf8404544c830fa7e7733",
+        "estimatedBytes": 15375336,
+        "estimatedCompressedBytes": 8025946,
+        "hands": [
+          574,
+          421
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6965,
+          "edges": 14,
+          "jsonBytesUpperBound": 849944,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8325632
+        }
+      },
+      "wallMs": 7.508250000000089,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 1,
+      "seed": 1,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "Js"
+      ],
+      "sourceSpotHash": "4e2f53fef28e15b9b1b260318f2d7cacabf2afe47b9c176d4679d03df21b3134",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-c6457418",
+        "spotHash": "4e2f53fef28e15b9b1b260318f2d7cacabf2afe47b9c176d4679d03df21b3134",
+        "estimatedBytes": 20138296,
+        "estimatedCompressedBytes": 10445286,
+        "hands": [
+          561,
+          424
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6895,
+          "edges": 14,
+          "jsonBytesUpperBound": 827840,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8134080
+        }
+      },
+      "wallMs": 7.33075000000008,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 2,
+      "seed": 2,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "4h"
+      ],
+      "sourceSpotHash": "e690324bd9e4674b6b6950e455199f939f876db34de11531b328308e90cf1164",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-c905459a",
+        "spotHash": "e690324bd9e4674b6b6950e455199f939f876db34de11531b328308e90cf1164",
+        "estimatedBytes": 21336376,
+        "estimatedCompressedBytes": 11052846,
+        "hands": [
+          595,
+          450
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7315,
+          "edges": 14,
+          "jsonBytesUpperBound": 871376,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8570688
+        }
+      },
+      "wallMs": 7.778874999999971,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 3,
+      "seed": 4,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "43a263ccf9e042aeb7b205eb8930d659233f1a62a75daec01b0f758298ae562a",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-dae8a0b9",
+        "spotHash": "43a263ccf9e042aeb7b205eb8930d659233f1a62a75daec01b0f758298ae562a",
+        "estimatedBytes": 18870040,
+        "estimatedCompressedBytes": 9802212,
+        "hands": [
+          536,
+          386
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6454,
+          "edges": 14,
+          "jsonBytesUpperBound": 758400,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7485824
+        }
+      },
+      "wallMs": 7.248416000000134,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 4,
+      "seed": 5,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "Ah"
+      ],
+      "sourceSpotHash": "0449783387cf8696c860be0fed3c35dd46bb108ca760a656df193dda8193a851",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-900c5280",
+        "spotHash": "0449783387cf8696c860be0fed3c35dd46bb108ca760a656df193dda8193a851",
+        "estimatedBytes": 14380416,
+        "estimatedCompressedBytes": 7519446,
+        "hands": [
+          545,
+          410
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6685,
+          "edges": 14,
+          "jsonBytesUpperBound": 799784,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 7865472
+        }
+      },
+      "wallMs": 7.423624999999902,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 5,
+      "seed": 6,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h"
+      ],
+      "sourceSpotHash": "b557d9123fe1eab2565aab60999c2913cc575214716de664b220d430a133223f",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-fa56cd26",
+        "spotHash": "b557d9123fe1eab2565aab60999c2913cc575214716de664b220d430a133223f",
+        "estimatedBytes": 14993000,
+        "estimatedCompressedBytes": 7831702,
+        "hands": [
+          573,
+          424
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6979,
+          "edges": 14,
+          "jsonBytesUpperBound": 819672,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8086400
+        }
+      },
+      "wallMs": 7.410791999999901,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 6,
+      "seed": 7,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "96e22af2c76b332634ddceae30a88000a2ae46d03800360516a31b49e515afc0",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-0651cb5e",
+        "spotHash": "96e22af2c76b332634ddceae30a88000a2ae46d03800360516a31b49e515afc0",
+        "estimatedBytes": 15117616,
+        "estimatedCompressedBytes": 7895146,
+        "hands": [
+          567,
+          438
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7035,
+          "edges": 14,
+          "jsonBytesUpperBound": 839736,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8258688
+        }
+      },
+      "wallMs": 7.3139159999998355,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 7,
+      "seed": 8,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "Qh"
+      ],
+      "sourceSpotHash": "d8874628bc8271de71a0fca16f15e028bc5f983cc20895b4927eca3a82b45c5c",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-81f61d69",
+        "spotHash": "d8874628bc8271de71a0fca16f15e028bc5f983cc20895b4927eca3a82b45c5c",
+        "estimatedBytes": 20310072,
+        "estimatedCompressedBytes": 10532310,
+        "hands": [
+          553,
+          440
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6951,
+          "edges": 14,
+          "jsonBytesUpperBound": 856864,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8378048
+        }
+      },
+      "wallMs": 8.017916999999898,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 8,
+      "seed": 9,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "6h"
+      ],
+      "sourceSpotHash": "8558a23249af4e537a9aee063f714e5c2325e0bb90e75d9e5ed97a1e632c9efc",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-cb827698",
+        "spotHash": "8558a23249af4e537a9aee063f714e5c2325e0bb90e75d9e5ed97a1e632c9efc",
+        "estimatedBytes": 21056888,
+        "estimatedCompressedBytes": 10911114,
+        "hands": [
+          587,
+          444
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7217,
+          "edges": 14,
+          "jsonBytesUpperBound": 860688,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8464576
+        }
+      },
+      "wallMs": 7.391542000000072,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 9,
+      "seed": 10,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "5c7db6bf4a2e8a868245911ad0853b4ed9f903ee8782f32499c5a372c663bd94",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-0d1bbff5",
+        "spotHash": "5c7db6bf4a2e8a868245911ad0853b4ed9f903ee8782f32499c5a372c663bd94",
+        "estimatedBytes": 13395728,
+        "estimatedCompressedBytes": 7018746,
+        "hands": [
+          363,
+          368
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5117,
+          "edges": 14,
+          "jsonBytesUpperBound": 650216,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6339200
+        }
+      },
+      "wallMs": 6.361625000000004,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 10,
+      "seed": 13,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "x",
+        "Kh"
+      ],
+      "sourceSpotHash": "e892362b6eb492bbcc008782ea28f3a30b24c570f52490040187ae769ae56399",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-9c174c2c",
+        "spotHash": "e892362b6eb492bbcc008782ea28f3a30b24c570f52490040187ae769ae56399",
+        "estimatedBytes": 21371640,
+        "estimatedCompressedBytes": 11070762,
+        "hands": [
+          601,
+          446
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7329,
+          "edges": 14,
+          "jsonBytesUpperBound": 888944,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8714176
+        }
+      },
+      "wallMs": 7.863166999999976,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 11,
+      "seed": 14,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "8h"
+      ],
+      "sourceSpotHash": "35115b13deb333e9139fbe5d75b812c1f0cdb1ccc2294d3fc98630009c675474",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-69911a10",
+        "spotHash": "35115b13deb333e9139fbe5d75b812c1f0cdb1ccc2294d3fc98630009c675474",
+        "estimatedBytes": 21188600,
+        "estimatedCompressedBytes": 10977822,
+        "hands": [
+          578,
+          459
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7259,
+          "edges": 14,
+          "jsonBytesUpperBound": 890384,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8710976
+        }
+      },
+      "wallMs": 7.845250000000078,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 12,
+      "seed": 15,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qs"
+      ],
+      "sourceSpotHash": "895e93699325877a024eefde3b04d99ee7521dc98b0dd0801a708ad63e09274e",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-7bd851d4",
+        "spotHash": "895e93699325877a024eefde3b04d99ee7521dc98b0dd0801a708ad63e09274e",
+        "estimatedBytes": 12705776,
+        "estimatedCompressedBytes": 6668232,
+        "hands": [
+          342,
+          350
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4844,
+          "edges": 14,
+          "jsonBytesUpperBound": 618240,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6025984
+        }
+      },
+      "wallMs": 6.072499999999991,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 13,
+      "seed": 16,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "9d"
+      ],
+      "sourceSpotHash": "4b5891d799aad830c8d4b5030d8b29b15b55dcb242a4d841b11ac7eb7a120ddb",
+      "stackPotRatio": 4.487562189054726,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-97eb5f45",
+        "spotHash": "4b5891d799aad830c8d4b5030d8b29b15b55dcb242a4d841b11ac7eb7a120ddb",
+        "estimatedBytes": 7967680,
+        "estimatedCompressedBytes": 4244984,
+        "hands": [
+          348,
+          326
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4718,
+          "edges": 14,
+          "jsonBytesUpperBound": 610928,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5940992
+        }
+      },
+      "wallMs": 5.939208000000008,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 14,
+      "seed": 18,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "3c6f6a6f14eda66d1a42ed8a4033e21993897f0993740a8df2601728da7a8511",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-4dfe2e61",
+        "spotHash": "3c6f6a6f14eda66d1a42ed8a4033e21993897f0993740a8df2601728da7a8511",
+        "estimatedBytes": 12000496,
+        "estimatedCompressedBytes": 6309912,
+        "hands": [
+          318,
+          334
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4564,
+          "edges": 14,
+          "jsonBytesUpperBound": 583448,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5688768
+        }
+      },
+      "wallMs": 6.293292000000065,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 15,
+      "seed": 19,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "6d"
+      ],
+      "sourceSpotHash": "d81a55a7092a81bf9b418030a27fdb2f5c11d921f761bd8ca1530c0e0c44b8bc",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-18bdaf99",
+        "spotHash": "d81a55a7092a81bf9b418030a27fdb2f5c11d921f761bd8ca1530c0e0c44b8bc",
+        "estimatedBytes": 20301432,
+        "estimatedCompressedBytes": 10527990,
+        "hands": [
+          562,
+          431
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6951,
+          "edges": 14,
+          "jsonBytesUpperBound": 824592,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8119872
+        }
+      },
+      "wallMs": 7.421291999999994,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 16,
+      "seed": 20,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6s"
+      ],
+      "sourceSpotHash": "a4a854143e9d2e7d49720282191acd1a076deac72eefb647ace1e6c7ab84b22c",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-abef4506",
+        "spotHash": "a4a854143e9d2e7d49720282191acd1a076deac72eefb647ace1e6c7ab84b22c",
+        "estimatedBytes": 6256952,
+        "estimatedCompressedBytes": 3371704,
+        "hands": [
+          351,
+          367
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5026,
+          "edges": 14,
+          "jsonBytesUpperBound": 630952,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6165952
+        }
+      },
+      "wallMs": 6.6770839999999225,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 17,
+      "seed": 22,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Td"
+      ],
+      "sourceSpotHash": "ef22602cf2b24cbfdb338453dea3986d6c2257474b1a182b6e6bc952b0105d0e",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-d75b9dba",
+        "spotHash": "ef22602cf2b24cbfdb338453dea3986d6c2257474b1a182b6e6bc952b0105d0e",
+        "estimatedBytes": 10306272,
+        "estimatedCompressedBytes": 5441056,
+        "hands": [
+          384,
+          380
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5348,
+          "edges": 14,
+          "jsonBytesUpperBound": 679520,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6622208
+        }
+      },
+      "wallMs": 6.246959000000061,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 18,
+      "seed": 23,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "8d"
+      ],
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "stackPotRatio": 3.070156695156695,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-defb8e8e",
+        "spotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+        "estimatedBytes": 5330088,
+        "estimatedCompressedBytes": 2892684,
+        "hands": [
+          267,
+          243
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 3570,
+          "edges": 14,
+          "jsonBytesUpperBound": 468456,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 4559808
+        }
+      },
+      "wallMs": 5.64020800000003,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 19,
+      "seed": 24,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d"
+      ],
+      "sourceSpotHash": "990fbe581ec2bf9b228a9f75bb60b10e033474f04e950c958e9772526ad3853d",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-b6202585",
+        "spotHash": "990fbe581ec2bf9b228a9f75bb60b10e033474f04e950c958e9772526ad3853d",
+        "estimatedBytes": 20430264,
+        "estimatedCompressedBytes": 10593258,
+        "hands": [
+          556,
+          443
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6993,
+          "edges": 14,
+          "jsonBytesUpperBound": 862296,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8430336
+        }
+      },
+      "wallMs": 7.421333999999888,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 20,
+      "seed": 25,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d"
+      ],
+      "sourceSpotHash": "a6906937b24031cd1486476b70839ae2ab9e9a23be5fdf3538b5bb710778a170",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-b3bf0694",
+        "spotHash": "a6906937b24031cd1486476b70839ae2ab9e9a23be5fdf3538b5bb710778a170",
+        "estimatedBytes": 13849040,
+        "estimatedCompressedBytes": 7248810,
+        "hands": [
+          346,
+          409
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5285,
+          "edges": 14,
+          "jsonBytesUpperBound": 676216,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6582528
+        }
+      },
+      "wallMs": 6.331334000000197,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 21,
+      "seed": 28,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "Kd"
+      ],
+      "sourceSpotHash": "6230e9a4c66fbd9383f38270151ed60155b95ac5562253fafe71eca496b786f0",
+      "stackPotRatio": 4.487562189054726,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-72f6e4af",
+        "spotHash": "6230e9a4c66fbd9383f38270151ed60155b95ac5562253fafe71eca496b786f0",
+        "estimatedBytes": 8158044,
+        "estimatedCompressedBytes": 4342580,
+        "hands": [
+          360,
+          331
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4837,
+          "edges": 14,
+          "jsonBytesUpperBound": 625312,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6081088
+        }
+      },
+      "wallMs": 6.14304200000015,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 22,
+      "seed": 29,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qh"
+      ],
+      "sourceSpotHash": "de06c09c467d45c0b8fc002ae09eeb04d1abf15ddd5eff378d536693216b0c74",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-3bd8a45d",
+        "spotHash": "de06c09c467d45c0b8fc002ae09eeb04d1abf15ddd5eff378d536693216b0c74",
+        "estimatedBytes": 11838544,
+        "estimatedCompressedBytes": 6227658,
+        "hands": [
+          316,
+          327
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4501,
+          "edges": 14,
+          "jsonBytesUpperBound": 576136,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5617024
+        }
+      },
+      "wallMs": 7.301458000000139,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 23,
+      "seed": 30,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "b363",
+        "c",
+        "9s"
+      ],
+      "sourceSpotHash": "6f311da95d1c676ec1477406afe94bb1e89d30d64fd8a5adb642d7bc4b86ea48",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-2867e551",
+        "spotHash": "6f311da95d1c676ec1477406afe94bb1e89d30d64fd8a5adb642d7bc4b86ea48",
+        "estimatedBytes": 17437680,
+        "estimatedCompressedBytes": 9073036,
+        "hands": [
+          535,
+          427
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 6734,
+          "edges": 14,
+          "jsonBytesUpperBound": 849592,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8274240
+        }
+      },
+      "wallMs": 7.776540999999952,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 24,
+      "seed": 31,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "sourceSpotHash": "3409105392b7f4f02b2bc8c37b15e828be7f176e382b5c1aa2f702eeeaa1acf2",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-02d31ca0",
+        "spotHash": "3409105392b7f4f02b2bc8c37b15e828be7f176e382b5c1aa2f702eeeaa1acf2",
+        "estimatedBytes": 16624968,
+        "estimatedCompressedBytes": 8662264,
+        "hands": [
+          579,
+          497
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7532,
+          "edges": 14,
+          "jsonBytesUpperBound": 946112,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 9214208
+        }
+      },
+      "wallMs": 7.919959000000063,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 25,
+      "seed": 32,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-7524efca",
+        "spotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+        "estimatedBytes": 15510264,
+        "estimatedCompressedBytes": 8094688,
+        "hands": [
+          580,
+          424
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7028,
+          "edges": 14,
+          "jsonBytesUpperBound": 855592,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8384064
+        }
+      },
+      "wallMs": 7.22829200000001,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 26,
+      "seed": 33,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "2c"
+      ],
+      "sourceSpotHash": "2a42154c5ef508941510e99b6926cba98a5c23cccc30d8b4356bfdc6b3b3c8e9",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-7bba6493",
+        "spotHash": "2a42154c5ef508941510e99b6926cba98a5c23cccc30d8b4356bfdc6b3b3c8e9",
+        "estimatedBytes": 15538024,
+        "estimatedCompressedBytes": 8109468,
+        "hands": [
+          590,
+          444
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7238,
+          "edges": 14,
+          "jsonBytesUpperBound": 854496,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8419456
+        }
+      },
+      "wallMs": 7.236832999999933,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 27,
+      "seed": 34,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2d"
+      ],
+      "sourceSpotHash": "725d28af4f81940ffc582f44d59dcbcd17331de4c02c3a11c721a785f673f957",
+      "stackPotRatio": 7.356583072100314,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-b39dbf4e",
+        "spotHash": "725d28af4f81940ffc582f44d59dcbcd17331de4c02c3a11c721a785f673f957",
+        "estimatedBytes": 13303728,
+        "estimatedCompressedBytes": 6972036,
+        "hands": [
+          364,
+          362
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 5082,
+          "edges": 14,
+          "jsonBytesUpperBound": 646056,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 6298560
+        }
+      },
+      "wallMs": 6.758041999999932,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 28,
+      "seed": 35,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "6s"
+      ],
+      "sourceSpotHash": "995ffeb229807eff31e6b4c96fd40958b3911de8958d4b591c7d29cc455ec53c",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-70376777",
+        "spotHash": "995ffeb229807eff31e6b4c96fd40958b3911de8958d4b591c7d29cc455ec53c",
+        "estimatedBytes": 21404632,
+        "estimatedCompressedBytes": 11087400,
+        "hands": [
+          588,
+          460
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7336,
+          "edges": 14,
+          "jsonBytesUpperBound": 898920,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8795456
+        }
+      },
+      "wallMs": 7.658874999999853,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 29,
+      "seed": 36,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "2s"
+      ],
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-aa5c3809",
+        "spotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+        "estimatedBytes": 21495672,
+        "estimatedCompressedBytes": 11133630,
+        "hands": [
+          600,
+          453
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7371,
+          "edges": 14,
+          "jsonBytesUpperBound": 878504,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8639488
+        }
+      },
+      "wallMs": 7.429374999999936,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 30,
+      "seed": 37,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "4d"
+      ],
+      "sourceSpotHash": "e0bbdc4fd20a9efab8e8bd7fca664063f7cf0938bd1d47515795a738b94ac788",
+      "stackPotRatio": 17.727272727272727,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-8402f26f",
+        "spotHash": "e0bbdc4fd20a9efab8e8bd7fca664063f7cf0938bd1d47515795a738b94ac788",
+        "estimatedBytes": 20728696,
+        "estimatedCompressedBytes": 10744746,
+        "hands": [
+          587,
+          428
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 7105,
+          "edges": 14,
+          "jsonBytesUpperBound": 864192,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 8469056
+        }
+      },
+      "wallMs": 7.5291249999997945,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    },
+    {
+      "corpusIndex": 31,
+      "seed": 38,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "6c"
+      ],
+      "sourceSpotHash": "38a41d1f68181cb804a16e87830a9137a45278306dd3d45ecb8ed6dc3f18300d",
+      "stackPotRatio": 3.070156695156695,
+      "estimate": {
+        "type": "estimate",
+        "spotId": "hu-turn-d86a15c9",
+        "spotHash": "38a41d1f68181cb804a16e87830a9137a45278306dd3d45ecb8ed6dc3f18300d",
+        "estimatedBytes": 6200456,
+        "estimatedCompressedBytes": 3340478,
+        "hands": [
+          289,
+          308
+        ],
+        "memoryCapBytes": 268435456,
+        "estimateExport": {
+          "basis": "public-tree-upper-bound",
+          "cells": 4179,
+          "edges": 14,
+          "jsonBytesUpperBound": 545448,
+          "nodes": 15,
+          "scope": "first-street",
+          "version": 1,
+          "workingBytesEstimate": 5303808
+        }
+      },
+      "wallMs": 5.647500000000036,
+      "command": [
+        "estimate"
+      ],
+      "strategyStorageAllocated": false,
+      "iterations": 0
+    }
+  ],
+  "payloadHash": "005992de36d8542818cefb2093e0539633415066efc31437c995f66878cfa9ff"
+}

@@ -13,7 +13,7 @@ Open these locally or on a deployment containing those routes.
 
 ## Current state
 
-Repository status as of 2026-09-29 (not a deployment verification): the river lab and
+Repository status as of 2026-09-30 (not a deployment verification): the river lab and
 comparisons, bounded TypeScript turn/flop solvers and saved explorers, and an offline bridge
 to the external Rust postflop-solver engine are implemented. The bridge adds wide-range
 CPU solves, checked on small games by our independent graders, and a saved 12-flop 100bb
@@ -22,8 +22,10 @@ The solvers remain separate from the heuristic four-player trainer.
 
 A new **simplified preflop model is research only**: it converges within its assumed
 payoff model, but its near-100% big-blind defence and future-betting valuation need further
-validation. Its ranges are **not used in the library or app**. Browser-native Rust solving
-and heads-up re-solving play have specifications and partial foundations, not shipped UIs.
+validation. Its ranges are **not used in the library or app**. `/solver/live` now provides
+bounded Rust/WASM turn and river solving in a Worker when its source-complete assets are
+prepared; without those assets it still offers a saved example. Heads-up re-solving play
+remains unfinished: `/play` is not shipped.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -36,7 +38,8 @@ and heads-up re-solving play have specifications and partial foundations, not sh
 | `/solver/flop` — three-street explorer | Six saved games, both public-card transitions, exact-hand values, range groups, source-bound links and downloadable inputs | Five small teaching ranges plus one synthetic 64-by-64 example; one opening size/street, no raises or custom browser flop solve |
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 | Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
-| Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; no live browser bridge solve |
+| `/solver/live` — bounded Rust/WASM lab | Guided turn/river inputs, preflight, real progress/cancel, root inspection and a saved example | Live solving needs prepared source-complete assets; 64 hands/player, float32, conservative memory/export limits; phones not yet validated |
+| Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; wider games remain offline |
 | Experimental preflop model (PF0–PF3) | BTN vs BB CFR+/DCFR, independent grading, exact-enumeration all-in inputs, fitted assumptions for future play | SB always folds; no rake; future betting approximated; flagged output is not promoted to the library or app (PF4 not done) |
 
 **Math drills (`/drills`).** Timed one-question drills for pot odds, minimum defence
@@ -721,9 +724,16 @@ already powers solver-backed drills. The active path does not depend on a collab
    No live flop, per-action EV or GPU training claim for this page.
    See the [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
    has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
-   or live policy source. The [P1 admission audit](tasks/heads-up-play-p1-admission.md) is
-   blocked: the current 64-hand browser cap cannot retain the required 99% of both ranges,
-   and saved policies do not cover every later board. No heavily pruned substitute is shipped.
+   or live policy source. The [initial P1 admission audit](tasks/heads-up-play-p1-admission.md)
+   failed: 64 hands cannot retain the required 99% of both ranges, and the saved slices do not
+   cover every later board. The [full-range feasibility study](tasks/heads-up-play-p1-wide-feasibility.md)
+   then solved all 64 frozen roots natively and in Chromium, Firefox and WebKit (192 browser
+   quality jobs), retaining every positive hand. All matched native output; all 32 rivers also
+   passed independent grading at ≤0.3% of the pot. Turn p95 on this M1 Pro was about 4.5–4.6 s
+   in Chromium/WebKit but 52.1 s in Firefox. These are private research-harness measurements,
+   not a shipped play source or phone certification. A stricter-mobile admission proposal is
+   recorded; production caps remain unchanged. Next are production sources, complete flop
+   policy coverage and the unchanged 1,000-hand replay/conservation, leak and referee gates.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.

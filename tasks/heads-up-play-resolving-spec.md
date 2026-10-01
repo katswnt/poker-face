@@ -10,6 +10,14 @@ BTN-vs-BB SRP flop library being generated from `leanSrpSpot` / `LEAN_SRP_TREE`
 the older native-server and ad-hoc size/range degradation drafts in §2.4–2.5 below:
 production solves use the bounded browser Worker, preserving at least 99% of each range.
 
+**P1 continuation, 2026-09-30:** the [wider-range feasibility study](heads-up-play-p1-wide-feasibility.md)
+has now solved the same 64 frozen full-range roots on one native thread and in all three
+desktop browser engines (192 quality jobs, exact native parity). All 32 rivers also pass
+independent ≤0.3%-pot grading. A separate measured play-profile proposal fits every observed
+case without pruning; it is not enabled in production. This supersedes "before solving"
+as the research status, not the outstanding production-source/replay/leak/latency gates.
+Physical-device checks are listed last per Kat's explicit continuation decision.
+
 ## Goal and non-goals
 
 The human plays heads-up hands against an AI whose postflop strategy comes from solver
@@ -218,6 +226,9 @@ B = bet, C = call):
       card appears, and swapping the human's hand on the same public line leaves every spot byte-identical.
 
 ### P1 — on-tree play from the library (human limited to tree sizes)
+- [x] Wider-range feasibility: 64 native full-range quality solves, 18 paired browser timing
+      jobs and 192 browser quality/memory observations; independent grades on 32 rivers.
+      This is a measured proposal, not production play or physical-device certification.
 - [x] Frozen necessary admission/coverage audit recorded: **failed**, not a P1 completion.
       No reached turn/river root in the 4,096-prefix cohort meets 99% retention within 64
       hands/player; missing-board fallbacks block the proposed ladder. See the P1 record.

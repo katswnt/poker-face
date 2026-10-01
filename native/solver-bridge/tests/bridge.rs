@@ -94,6 +94,24 @@ fn check_down() -> Value {
 }
 
 #[test]
+fn json_preserves_exact_float32_weights_before_strict_validation() {
+    // JSON.stringify(Math.fround(0.03)): the default serde_json fast parser used to
+    // move this exact f32-in-f64 value by one f64 ULP and reject a valid range.
+    let literal = "0.029999999329447746";
+    let parsed: f64 = serde_json::from_str(literal).unwrap();
+    assert_eq!(parsed, f64::from(0.03_f32));
+    let mut spot = river_spot(check_down(), &["AsAh"], &["3s3h"]);
+    spot["ranges"][0]["combos"][0]["weight"] = json!(f64::from(0.03_f32));
+    let bytes = serde_json::to_vec(&spot).unwrap();
+    let session = Session::new(&bytes).expect("exact f32 weights must survive JSON parsing");
+    assert!(!session.status().allocated);
+    assert_eq!(session.estimate()["hands"], json!([1, 1]));
+    // The parser fix must not weaken the contract: unrounded decimal 0.03 is NOT f32 exact.
+    spot["ranges"][0]["combos"][0]["weight"] = json!(0.03_f64);
+    assert!(Session::new(&serde_json::to_vec(&spot).unwrap()).is_err());
+}
+
+#[test]
 fn root_ev_is_net_chips_and_engine_ev_is_pot_share() {
     // AA beats 22... on this board 22 makes a set with the 2s; use 33 instead.
     let result = solve(river_spot(check_down(), &["AsAh"], &["3s3h"])).unwrap();

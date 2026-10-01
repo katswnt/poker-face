@@ -1,0 +1,3025 @@
+{
+  "format": "poker-face-p1-full-range-native-observations",
+  "version": 1,
+  "measuredAt": "2026-09-30T23:17:44.859Z",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "ramBytes": 34359738368,
+    "platform": "darwin",
+    "osRelease": "25.4.0",
+    "node": "v24.10.0"
+  },
+  "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+  "nativeBinarySha256": "7d6211a74d4959de25ac4211e93498a0175662b218e1a1576403e9ac8ecc64ca",
+  "sourceAdmissionHash": "5708279f22c75c316a8d97dd4dfb1d857976127da11b3527f50e4c390cc807f9",
+  "sourceEstimateHash": "005992de36d8542818cefb2093e0539633415066efc31437c995f66878cfa9ff",
+  "interpretation": "Sequential 1-thread full-range float32 research solves; native engine self-grades except independently graded complete rivers. Not production play or browser latency.",
+  "rows": [
+    {
+      "corpusIndex": 0,
+      "seed": 0,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "39bb9921fb4806890b5100df21c1b448dc00e4ec8c1bf8404544c830fa7e7733",
+      "status": "passed",
+      "measurementSpotHash": "78606d4578795498f79c11300217e6393c9a0e2b8c39cf5b5fff5722ff596af6",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 110,
+      "reached": true,
+      "exploitabilityChips": 1.4130613803863525,
+      "exploitabilityPctPot": 0.2569202509793368,
+      "targetPctPot": 0.3,
+      "wallMs": 1895.633625,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1873,
+        "exportMs": 0,
+        "totalMs": 1876
+      },
+      "memory": {
+        "estimatedBytes": 15375336,
+        "estimatedCompressedBytes": 8025946,
+        "allocatedEstimateBytes": 15375336,
+        "peakRssBytes": 19005440
+      },
+      "sampledPeakRssBytes": 18415616,
+      "exportedNodes": 15,
+      "resultJsonBytes": 91054,
+      "numericalHash": "bc61b8c7371620ec951c7dddffcb120a7e0aff996a536fcf5ab96594261d5f42",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 867.21704,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 129.60454,
+          "elapsedMs": 180
+        },
+        {
+          "iteration": 20,
+          "exploitability": 63.92334,
+          "elapsedMs": 351
+        },
+        {
+          "iteration": 30,
+          "exploitability": 19.395721,
+          "elapsedMs": 527
+        },
+        {
+          "iteration": 40,
+          "exploitability": 9.054574,
+          "elapsedMs": 695
+        },
+        {
+          "iteration": 50,
+          "exploitability": 5.039937,
+          "elapsedMs": 862
+        },
+        {
+          "iteration": 60,
+          "exploitability": 3.4084835,
+          "elapsedMs": 1022
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.4253907,
+          "elapsedMs": 1184
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.4972925,
+          "elapsedMs": 1355
+        },
+        {
+          "iteration": 90,
+          "exploitability": 2.0307808,
+          "elapsedMs": 1516
+        },
+        {
+          "iteration": 100,
+          "exploitability": 1.6615057,
+          "elapsedMs": 1676
+        },
+        {
+          "iteration": 110,
+          "exploitability": 1.4130614,
+          "elapsedMs": 1844
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-0.result.json"
+    },
+    {
+      "corpusIndex": 1,
+      "seed": 1,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "x",
+        "Js"
+      ],
+      "sourceSpotHash": "4e2f53fef28e15b9b1b260318f2d7cacabf2afe47b9c176d4679d03df21b3134",
+      "status": "passed",
+      "measurementSpotHash": "047a428686ebb936f6c2cb3edcbbfc845c3f15ab97619bc32ea763fc860cfbed",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.5811691284179688,
+      "exploitabilityPctPot": 0.2874852960759943,
+      "targetPctPot": 0.3,
+      "wallMs": 1989.1997499999998,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1971,
+        "exportMs": 0,
+        "totalMs": 1975
+      },
+      "memory": {
+        "estimatedBytes": 20138296,
+        "estimatedCompressedBytes": 10445286,
+        "allocatedEstimateBytes": 20138296,
+        "peakRssBytes": 23904256
+      },
+      "sampledPeakRssBytes": 23166976,
+      "exportedNodes": 15,
+      "resultJsonBytes": 81232,
+      "numericalHash": "331e21aa80cd02504661640509ae7dc8a92168768d30a240b832faab45a42f96",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 839.2466,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 132.62863,
+          "elapsedMs": 246
+        },
+        {
+          "iteration": 20,
+          "exploitability": 35.042793,
+          "elapsedMs": 463
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.671011,
+          "elapsedMs": 676
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.736744,
+          "elapsedMs": 890
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.7974777,
+          "elapsedMs": 1106
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.8127365,
+          "elapsedMs": 1316
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.0475397,
+          "elapsedMs": 1522
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.151329,
+          "elapsedMs": 1732
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5811691,
+          "elapsedMs": 1935
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-1.result.json"
+    },
+    {
+      "corpusIndex": 2,
+      "seed": 2,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "4h"
+      ],
+      "sourceSpotHash": "e690324bd9e4674b6b6950e455199f939f876db34de11531b328308e90cf1164",
+      "status": "passed",
+      "measurementSpotHash": "b698f8797fc73838150878ecfb94aa0c4ebfccf1da2770b62343d932ea573d4b",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.5094594955444336,
+      "exploitabilityPctPot": 0.27444718100807886,
+      "targetPctPot": 0.3,
+      "wallMs": 2516.7149170000002,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2498,
+        "exportMs": 0,
+        "totalMs": 2502
+      },
+      "memory": {
+        "estimatedBytes": 21336376,
+        "estimatedCompressedBytes": 11052846,
+        "allocatedEstimateBytes": 21336376,
+        "peakRssBytes": 25034752
+      },
+      "sampledPeakRssBytes": 24313856,
+      "exportedNodes": 15,
+      "resultJsonBytes": 87799,
+      "numericalHash": "ff6bc2606238f3da048fde298e22a348f0bfc9dd6e1b626ffa776a0c055ccdc2",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 846.2727,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 112.24788,
+          "elapsedMs": 301
+        },
+        {
+          "iteration": 20,
+          "exploitability": 51.038906,
+          "elapsedMs": 567
+        },
+        {
+          "iteration": 30,
+          "exploitability": 13.638261,
+          "elapsedMs": 844
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.4048247,
+          "elapsedMs": 1113
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.9873433,
+          "elapsedMs": 1380
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.8368716,
+          "elapsedMs": 1652
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.4977045,
+          "elapsedMs": 1912
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.9638901,
+          "elapsedMs": 2180
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5094595,
+          "elapsedMs": 2453
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-2.result.json"
+    },
+    {
+      "corpusIndex": 3,
+      "seed": 4,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "Ad"
+      ],
+      "sourceSpotHash": "43a263ccf9e042aeb7b205eb8930d659233f1a62a75daec01b0f758298ae562a",
+      "status": "passed",
+      "measurementSpotHash": "b8de3f6adabab83dbebec571ae7e7cd2647e8217a7453695e45e8930937379f5",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 1.476552963256836,
+      "exploitabilityPctPot": 0.2684641751376065,
+      "targetPctPot": 0.3,
+      "wallMs": 1637.7335000000003,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1619,
+        "exportMs": 0,
+        "totalMs": 1623
+      },
+      "memory": {
+        "estimatedBytes": 18870040,
+        "estimatedCompressedBytes": 9802212,
+        "allocatedEstimateBytes": 18870040,
+        "peakRssBytes": 22495232
+      },
+      "sampledPeakRssBytes": 22265856,
+      "exportedNodes": 15,
+      "resultJsonBytes": 80605,
+      "numericalHash": "d7318d38f239df8b3b57362d9417b0a4c1599b9ba3c4833f2a0236f2e6b9231b",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 886.5919,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 128.63849,
+          "elapsedMs": 222
+        },
+        {
+          "iteration": 20,
+          "exploitability": 38.63327,
+          "elapsedMs": 415
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.908215,
+          "elapsedMs": 607
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.364313,
+          "elapsedMs": 803
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.118864,
+          "elapsedMs": 1006
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.1796722,
+          "elapsedMs": 1204
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.353712,
+          "elapsedMs": 1389
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.476553,
+          "elapsedMs": 1585
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-3.result.json"
+    },
+    {
+      "corpusIndex": 4,
+      "seed": 5,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "Ah"
+      ],
+      "sourceSpotHash": "0449783387cf8696c860be0fed3c35dd46bb108ca760a656df193dda8193a851",
+      "status": "passed",
+      "measurementSpotHash": "5408bc00f71a263b8debc9e0d26a52b47e8d151ab0333abaa848b8044a71e2ae",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.3857312202453613,
+      "exploitabilityPctPot": 0.25195113095370203,
+      "targetPctPot": 0.3,
+      "wallMs": 1495.7608330000003,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1477,
+        "exportMs": 0,
+        "totalMs": 1481
+      },
+      "memory": {
+        "estimatedBytes": 14380416,
+        "estimatedCompressedBytes": 7519446,
+        "allocatedEstimateBytes": 14380416,
+        "peakRssBytes": 18071552
+      },
+      "sampledPeakRssBytes": 17547264,
+      "exportedNodes": 15,
+      "resultJsonBytes": 78825,
+      "numericalHash": "bff59233eaa3ab3b011b35fcca77ed123166fbde16ddea302fa66f9edd1a7589",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 856.00616,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 112.85379,
+          "elapsedMs": 177
+        },
+        {
+          "iteration": 20,
+          "exploitability": 48.88459,
+          "elapsedMs": 333
+        },
+        {
+          "iteration": 30,
+          "exploitability": 11.495473,
+          "elapsedMs": 492
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.0717645,
+          "elapsedMs": 652
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.1340842,
+          "elapsedMs": 814
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.3032358,
+          "elapsedMs": 980
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.8406844,
+          "elapsedMs": 1138
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.8843834,
+          "elapsedMs": 1300
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.3857312,
+          "elapsedMs": 1450
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-4.result.json"
+    },
+    {
+      "corpusIndex": 5,
+      "seed": 6,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ahth5c",
+      "path": [
+        "x",
+        "x",
+        "2h"
+      ],
+      "sourceSpotHash": "b557d9123fe1eab2565aab60999c2913cc575214716de664b220d430a133223f",
+      "status": "passed",
+      "measurementSpotHash": "82fa6f9a224145c9a480955f48467d595c631f340d5d44f0feca7dd929ff3255",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 1.4119040966033936,
+      "exploitabilityPctPot": 0.25670983574607154,
+      "targetPctPot": 0.3,
+      "wallMs": 1408.0487920000014,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1389,
+        "exportMs": 0,
+        "totalMs": 1393
+      },
+      "memory": {
+        "estimatedBytes": 14993000,
+        "estimatedCompressedBytes": 7831702,
+        "allocatedEstimateBytes": 14993000,
+        "peakRssBytes": 18694144
+      },
+      "sampledPeakRssBytes": 18055168,
+      "exportedNodes": 15,
+      "resultJsonBytes": 88677,
+      "numericalHash": "2a4db350b78913a637ea9199146679554830fef0f3c9f66cc06d862430d711aa",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 873.8545,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 182.1232,
+          "elapsedMs": 182
+        },
+        {
+          "iteration": 20,
+          "exploitability": 33.003193,
+          "elapsedMs": 407
+        },
+        {
+          "iteration": 30,
+          "exploitability": 11.073068,
+          "elapsedMs": 568
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.8687725,
+          "elapsedMs": 727
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.6323504,
+          "elapsedMs": 884
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.514304,
+          "elapsedMs": 1046
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.3734994,
+          "elapsedMs": 1202
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.4119041,
+          "elapsedMs": 1362
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-5.result.json"
+    },
+    {
+      "corpusIndex": 6,
+      "seed": 7,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-9h8h6c",
+      "path": [
+        "x",
+        "x",
+        "7h"
+      ],
+      "sourceSpotHash": "96e22af2c76b332634ddceae30a88000a2ae46d03800360516a31b49e515afc0",
+      "status": "passed",
+      "measurementSpotHash": "bcaebbcfe5c43239d756b2d434ad420e77a61fbd857d4c2e64e88f1671081160",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.2609195709228516,
+      "exploitabilityPctPot": 0.22925810380415484,
+      "targetPctPot": 0.3,
+      "wallMs": 1694.7914999999994,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1676,
+        "exportMs": 0,
+        "totalMs": 1680
+      },
+      "memory": {
+        "estimatedBytes": 15117616,
+        "estimatedCompressedBytes": 7895146,
+        "allocatedEstimateBytes": 15117616,
+        "peakRssBytes": 18907136
+      },
+      "sampledPeakRssBytes": 18268160,
+      "exportedNodes": 15,
+      "resultJsonBytes": 86576,
+      "numericalHash": "bc3f09814fc5f0953ba52a20405b58c52f6908cb65f293179e0725e3922704ac",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 823.1283,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 175.6523,
+          "elapsedMs": 210
+        },
+        {
+          "iteration": 20,
+          "exploitability": 45.90394,
+          "elapsedMs": 393
+        },
+        {
+          "iteration": 30,
+          "exploitability": 9.312788,
+          "elapsedMs": 570
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.1096897,
+          "elapsedMs": 752
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.287159,
+          "elapsedMs": 934
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.3890133,
+          "elapsedMs": 1122
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.268011,
+          "elapsedMs": 1300
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.7191162,
+          "elapsedMs": 1468
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.2609196,
+          "elapsedMs": 1644
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-6.result.json"
+    },
+    {
+      "corpusIndex": 7,
+      "seed": 8,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "Qh"
+      ],
+      "sourceSpotHash": "d8874628bc8271de71a0fca16f15e028bc5f983cc20895b4927eca3a82b45c5c",
+      "status": "passed",
+      "measurementSpotHash": "0359c63228b734b8b51af082cb922505a0696cca6d6c519dbd795671cdf5a80e",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 1.4858264923095703,
+      "exploitabilityPctPot": 0.27015027132901276,
+      "targetPctPot": 0.3,
+      "wallMs": 2102.827083,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2085,
+        "exportMs": 0,
+        "totalMs": 2089
+      },
+      "memory": {
+        "estimatedBytes": 20310072,
+        "estimatedCompressedBytes": 10532310,
+        "allocatedEstimateBytes": 20310072,
+        "peakRssBytes": 24133632
+      },
+      "sampledPeakRssBytes": 23429120,
+      "exportedNodes": 15,
+      "resultJsonBytes": 89609,
+      "numericalHash": "ff63e6334206e2abb285efe4e253737c4b06405afc9dd7c4540b3202c6567e91",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 877.8909,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 118.557175,
+          "elapsedMs": 283
+        },
+        {
+          "iteration": 20,
+          "exploitability": 46.69037,
+          "elapsedMs": 533
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.93641,
+          "elapsedMs": 793
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.161478,
+          "elapsedMs": 1045
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.2288914,
+          "elapsedMs": 1307
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.1802502,
+          "elapsedMs": 1555
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.3503113,
+          "elapsedMs": 1808
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.4858265,
+          "elapsedMs": 2045
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-7.result.json"
+    },
+    {
+      "corpusIndex": 8,
+      "seed": 9,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "6h"
+      ],
+      "sourceSpotHash": "8558a23249af4e537a9aee063f714e5c2325e0bb90e75d9e5ed97a1e632c9efc",
+      "status": "passed",
+      "measurementSpotHash": "f9491bf7130015019bb9cd1c6e03c0fc35c0a4601cfa54f2a51b7f4b32043a11",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 130,
+      "reached": true,
+      "exploitabilityChips": 1.3878860473632812,
+      "exploitabilityPctPot": 0.2523429177024148,
+      "targetPctPot": 0.3,
+      "wallMs": 3567.4582919999993,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 3548,
+        "exportMs": 0,
+        "totalMs": 3551
+      },
+      "memory": {
+        "estimatedBytes": 21056888,
+        "estimatedCompressedBytes": 10911114,
+        "allocatedEstimateBytes": 21056888,
+        "peakRssBytes": 24903680
+      },
+      "sampledPeakRssBytes": 24182784,
+      "exportedNodes": 15,
+      "resultJsonBytes": 112772,
+      "numericalHash": "6de2350bb6b219680200a746ffac3cf4b73b4d84dc978c65df44baf95bf08e48",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 843.04724,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 121.187485,
+          "elapsedMs": 302
+        },
+        {
+          "iteration": 20,
+          "exploitability": 56.315666,
+          "elapsedMs": 565
+        },
+        {
+          "iteration": 30,
+          "exploitability": 15.3831215,
+          "elapsedMs": 830
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.6622696,
+          "elapsedMs": 1106
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.9290104,
+          "elapsedMs": 1370
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.8199177,
+          "elapsedMs": 1633
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.2873573,
+          "elapsedMs": 1889
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.1069355,
+          "elapsedMs": 2160
+        },
+        {
+          "iteration": 90,
+          "exploitability": 2.717865,
+          "elapsedMs": 2427
+        },
+        {
+          "iteration": 100,
+          "exploitability": 3.9404068,
+          "elapsedMs": 2692
+        },
+        {
+          "iteration": 110,
+          "exploitability": 3.2705116,
+          "elapsedMs": 2957
+        },
+        {
+          "iteration": 120,
+          "exploitability": 1.9758072,
+          "elapsedMs": 3220
+        },
+        {
+          "iteration": 130,
+          "exploitability": 1.387886,
+          "elapsedMs": 3499
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-8.result.json"
+    },
+    {
+      "corpusIndex": 9,
+      "seed": 10,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "5c7db6bf4a2e8a868245911ad0853b4ed9f903ee8782f32499c5a372c663bd94",
+      "status": "passed",
+      "measurementSpotHash": "2e98ca327b74a00bcba3d7c415c0d58d259a5a9afaed1685d843d3173842046e",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 3.0919723510742188,
+      "exploitabilityPctPot": 0.24231758237258766,
+      "targetPctPot": 0.3,
+      "wallMs": 1125.2488330000015,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 1110,
+        "exportMs": 0,
+        "totalMs": 1113
+      },
+      "memory": {
+        "estimatedBytes": 13395728,
+        "estimatedCompressedBytes": 7018746,
+        "allocatedEstimateBytes": 13395728,
+        "peakRssBytes": 16695296
+      },
+      "sampledPeakRssBytes": 16121856,
+      "exportedNodes": 15,
+      "resultJsonBytes": 66436,
+      "numericalHash": "8c3f0491a2e988f506f6bb7ddff53ecf9e2f09601d87616d97e2af4e5b996876",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1470.2878,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 325.24683,
+          "elapsedMs": 140
+        },
+        {
+          "iteration": 20,
+          "exploitability": 155.69832,
+          "elapsedMs": 262
+        },
+        {
+          "iteration": 30,
+          "exploitability": 30.135872,
+          "elapsedMs": 384
+        },
+        {
+          "iteration": 40,
+          "exploitability": 13.490414,
+          "elapsedMs": 502
+        },
+        {
+          "iteration": 50,
+          "exploitability": 7.644493,
+          "elapsedMs": 621
+        },
+        {
+          "iteration": 60,
+          "exploitability": 5.579647,
+          "elapsedMs": 740
+        },
+        {
+          "iteration": 70,
+          "exploitability": 5.5630074,
+          "elapsedMs": 858
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.8908234,
+          "elapsedMs": 972
+        },
+        {
+          "iteration": 90,
+          "exploitability": 3.0919724,
+          "elapsedMs": 1088
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-9.result.json"
+    },
+    {
+      "corpusIndex": 10,
+      "seed": 13,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "x",
+        "Kh"
+      ],
+      "sourceSpotHash": "e892362b6eb492bbcc008782ea28f3a30b24c570f52490040187ae769ae56399",
+      "status": "passed",
+      "measurementSpotHash": "559c735c2a2236562dee27ededa5190554843699a10df4f4c25017c383971784",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.5245609283447266,
+      "exploitabilityPctPot": 0.27719289606267755,
+      "targetPctPot": 0.3,
+      "wallMs": 2372.9191249999967,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2353,
+        "exportMs": 0,
+        "totalMs": 2357
+      },
+      "memory": {
+        "estimatedBytes": 21371640,
+        "estimatedCompressedBytes": 11070762,
+        "allocatedEstimateBytes": 21371640,
+        "peakRssBytes": 25165824
+      },
+      "sampledPeakRssBytes": 24412160,
+      "exportedNodes": 15,
+      "resultJsonBytes": 86726,
+      "numericalHash": "41d201055208960edc4bb274d88645709d82d49387e955bd018ff223b2da63ae",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 873.6112,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 129.42532,
+          "elapsedMs": 280
+        },
+        {
+          "iteration": 20,
+          "exploitability": 40.419807,
+          "elapsedMs": 539
+        },
+        {
+          "iteration": 30,
+          "exploitability": 11.594478,
+          "elapsedMs": 796
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.8698006,
+          "elapsedMs": 1051
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.5756836,
+          "elapsedMs": 1303
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.626257,
+          "elapsedMs": 1557
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.8336945,
+          "elapsedMs": 1822
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.883915,
+          "elapsedMs": 2074
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5245609,
+          "elapsedMs": 2313
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-10.result.json"
+    },
+    {
+      "corpusIndex": 11,
+      "seed": 14,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "8h"
+      ],
+      "sourceSpotHash": "35115b13deb333e9139fbe5d75b812c1f0cdb1ccc2294d3fc98630009c675474",
+      "status": "passed",
+      "measurementSpotHash": "68bef35f7b1c4223174955bd7a7605b0015bc5ee7387e8d8e0098e2c2b670828",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.351428747177124,
+      "exploitabilityPctPot": 0.24571431766856802,
+      "targetPctPot": 0.3,
+      "wallMs": 2478.5243749999972,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2460,
+        "exportMs": 0,
+        "totalMs": 2463
+      },
+      "memory": {
+        "estimatedBytes": 21188600,
+        "estimatedCompressedBytes": 10977822,
+        "allocatedEstimateBytes": 21188600,
+        "peakRssBytes": 24936448
+      },
+      "sampledPeakRssBytes": 24150016,
+      "exportedNodes": 15,
+      "resultJsonBytes": 86805,
+      "numericalHash": "366948d8cac68a7cdbae618274571803381cc4ee745a058ce6cd9cb9db1167e9",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 847.1411,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 100.670456,
+          "elapsedMs": 279
+        },
+        {
+          "iteration": 20,
+          "exploitability": 39.109436,
+          "elapsedMs": 530
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.633683,
+          "elapsedMs": 787
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.0504975,
+          "elapsedMs": 1055
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.3394208,
+          "elapsedMs": 1332
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.458952,
+          "elapsedMs": 1591
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.9215307,
+          "elapsedMs": 1845
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.7307721,
+          "elapsedMs": 2094
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.3514287,
+          "elapsedMs": 2415
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-11.result.json"
+    },
+    {
+      "corpusIndex": 12,
+      "seed": 15,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qs"
+      ],
+      "sourceSpotHash": "895e93699325877a024eefde3b04d99ee7521dc98b0dd0801a708ad63e09274e",
+      "status": "passed",
+      "measurementSpotHash": "81a44616521d7ce30c507838f55e618f310fa6bbbdff6c42cffe630121f4b052",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 2.64935302734375,
+      "exploitabilityPctPot": 0.2076295475974726,
+      "targetPctPot": 0.3,
+      "wallMs": 1089.573166000002,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 1067,
+        "exportMs": 0,
+        "totalMs": 1070
+      },
+      "memory": {
+        "estimatedBytes": 12705776,
+        "estimatedCompressedBytes": 6668232,
+        "allocatedEstimateBytes": 12705776,
+        "peakRssBytes": 16023552
+      },
+      "sampledPeakRssBytes": 15433728,
+      "exportedNodes": 15,
+      "resultJsonBytes": 62286,
+      "numericalHash": "1538f8f7133f9fa79a43633fa09e0194201bbad9cdfc1dc1f9f809e54948faba",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1504.064,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 296.0508,
+          "elapsedMs": 141
+        },
+        {
+          "iteration": 20,
+          "exploitability": 127.71602,
+          "elapsedMs": 269
+        },
+        {
+          "iteration": 30,
+          "exploitability": 31.415829,
+          "elapsedMs": 399
+        },
+        {
+          "iteration": 40,
+          "exploitability": 11.345474,
+          "elapsedMs": 525
+        },
+        {
+          "iteration": 50,
+          "exploitability": 6.4867783,
+          "elapsedMs": 665
+        },
+        {
+          "iteration": 60,
+          "exploitability": 4.3648148,
+          "elapsedMs": 791
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.1218185,
+          "elapsedMs": 920
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.649353,
+          "elapsedMs": 1044
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-12.result.json"
+    },
+    {
+      "corpusIndex": 13,
+      "seed": 16,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "9d"
+      ],
+      "sourceSpotHash": "4b5891d799aad830c8d4b5030d8b29b15b55dcb242a4d841b11ac7eb7a120ddb",
+      "status": "passed",
+      "measurementSpotHash": "34dfebc8cdc0463fc6706035aba750c79b2c112081e422e96125a5b9c95bbccd",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 3.931793212890625,
+      "exploitabilityPctPot": 0.19561160263137436,
+      "targetPctPot": 0.3,
+      "wallMs": 707.6623749999999,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 690,
+        "exportMs": 0,
+        "totalMs": 693
+      },
+      "memory": {
+        "estimatedBytes": 7967680,
+        "estimatedCompressedBytes": 4244984,
+        "allocatedEstimateBytes": 7967680,
+        "peakRssBytes": 11354112
+      },
+      "sampledPeakRssBytes": 10846208,
+      "exportedNodes": 15,
+      "resultJsonBytes": 53267,
+      "numericalHash": "45de21b8bac77858839070f7f9a52675920cafe61db07789382ccb77778bd8c4",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1870.9233,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 277.61755,
+          "elapsedMs": 86
+        },
+        {
+          "iteration": 20,
+          "exploitability": 121.25455,
+          "elapsedMs": 170
+        },
+        {
+          "iteration": 30,
+          "exploitability": 30.831749,
+          "elapsedMs": 261
+        },
+        {
+          "iteration": 40,
+          "exploitability": 14.326912,
+          "elapsedMs": 346
+        },
+        {
+          "iteration": 50,
+          "exploitability": 8.931328,
+          "elapsedMs": 427
+        },
+        {
+          "iteration": 60,
+          "exploitability": 6.3237762,
+          "elapsedMs": 513
+        },
+        {
+          "iteration": 70,
+          "exploitability": 6.2424545,
+          "elapsedMs": 596
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.9317932,
+          "elapsedMs": 676
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-13.result.json"
+    },
+    {
+      "corpusIndex": 14,
+      "seed": 18,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "5h"
+      ],
+      "sourceSpotHash": "3c6f6a6f14eda66d1a42ed8a4033e21993897f0993740a8df2601728da7a8511",
+      "status": "passed",
+      "measurementSpotHash": "cd28640deeb270f79e0a0603bae2fe985520f1a9ab523413dda67fff95dbb4e3",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 3.0013229846954346,
+      "exploitabilityPctPot": 0.23521340005450117,
+      "targetPctPot": 0.3,
+      "wallMs": 891.1004589999975,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 876,
+        "exportMs": 0,
+        "totalMs": 878
+      },
+      "memory": {
+        "estimatedBytes": 12000496,
+        "estimatedCompressedBytes": 6309912,
+        "allocatedEstimateBytes": 12000496,
+        "peakRssBytes": 15319040
+      },
+      "sampledPeakRssBytes": 14778368,
+      "exportedNodes": 15,
+      "resultJsonBytes": 63276,
+      "numericalHash": "a61437904c6da45c3bab1bd47336dc55a1910c2571e52b1542909c75f897e1e4",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1534.47,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 258.27264,
+          "elapsedMs": 108
+        },
+        {
+          "iteration": 20,
+          "exploitability": 121.43999,
+          "elapsedMs": 202
+        },
+        {
+          "iteration": 30,
+          "exploitability": 32.271507,
+          "elapsedMs": 295
+        },
+        {
+          "iteration": 40,
+          "exploitability": 12.935173,
+          "elapsedMs": 391
+        },
+        {
+          "iteration": 50,
+          "exploitability": 7.750167,
+          "elapsedMs": 484
+        },
+        {
+          "iteration": 60,
+          "exploitability": 5.3069086,
+          "elapsedMs": 580
+        },
+        {
+          "iteration": 70,
+          "exploitability": 6.919304,
+          "elapsedMs": 673
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.9669392,
+          "elapsedMs": 764
+        },
+        {
+          "iteration": 90,
+          "exploitability": 3.001323,
+          "elapsedMs": 858
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-14.result.json"
+    },
+    {
+      "corpusIndex": 15,
+      "seed": 19,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "x",
+        "6d"
+      ],
+      "sourceSpotHash": "d81a55a7092a81bf9b418030a27fdb2f5c11d921f761bd8ca1530c0e0c44b8bc",
+      "status": "passed",
+      "measurementSpotHash": "02ff0622c056ca852e98b0f747493680d4e04bfcef320375580a11a6a48c48fa",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.3379783630371094,
+      "exploitabilityPctPot": 0.24326879327947445,
+      "targetPctPot": 0.3,
+      "wallMs": 2443.9140829999997,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2422,
+        "exportMs": 0,
+        "totalMs": 2425
+      },
+      "memory": {
+        "estimatedBytes": 20301432,
+        "estimatedCompressedBytes": 10527990,
+        "allocatedEstimateBytes": 20301432,
+        "peakRssBytes": 24133632
+      },
+      "sampledPeakRssBytes": 23920640,
+      "exportedNodes": 15,
+      "resultJsonBytes": 80663,
+      "numericalHash": "bd6a7e47b3ccad8fd38cdc9f680e35ff86057add1f92bfffdfc01bbd4f0e3cc2",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 863.3241,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 166.36194,
+          "elapsedMs": 304
+        },
+        {
+          "iteration": 20,
+          "exploitability": 36.23376,
+          "elapsedMs": 581
+        },
+        {
+          "iteration": 30,
+          "exploitability": 9.447138,
+          "elapsedMs": 842
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.4004645,
+          "elapsedMs": 1102
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.5006766,
+          "elapsedMs": 1365
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.57732,
+          "elapsedMs": 1618
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.543213,
+          "elapsedMs": 1870
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.7830982,
+          "elapsedMs": 2123
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.3379784,
+          "elapsedMs": 2379
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-15.result.json"
+    },
+    {
+      "corpusIndex": 16,
+      "seed": 20,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "6s"
+      ],
+      "sourceSpotHash": "a4a854143e9d2e7d49720282191acd1a076deac72eefb647ace1e6c7ab84b22c",
+      "status": "passed",
+      "measurementSpotHash": "9a59843493d479b5b4328f36ace3c29c2282834fd3a5809081e404b3d8563bfe",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 3.29287052154541,
+      "exploitabilityPctPot": 0.25806195309917007,
+      "targetPctPot": 0.3,
+      "wallMs": 495.2000000000007,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 477,
+        "exportMs": 0,
+        "totalMs": 479
+      },
+      "memory": {
+        "estimatedBytes": 6256952,
+        "estimatedCompressedBytes": 3371704,
+        "allocatedEstimateBytes": 6256952,
+        "peakRssBytes": 9486336
+      },
+      "sampledPeakRssBytes": 9109504,
+      "exportedNodes": 15,
+      "resultJsonBytes": 64756,
+      "numericalHash": "96eebc40f0e6114b51170812197bb9dc85c7e1589a838ec314ef435f0f87c531",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1516.0188,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 426.42007,
+          "elapsedMs": 66
+        },
+        {
+          "iteration": 20,
+          "exploitability": 111.78873,
+          "elapsedMs": 124
+        },
+        {
+          "iteration": 30,
+          "exploitability": 32.924698,
+          "elapsedMs": 182
+        },
+        {
+          "iteration": 40,
+          "exploitability": 10.445736,
+          "elapsedMs": 241
+        },
+        {
+          "iteration": 50,
+          "exploitability": 6.185707,
+          "elapsedMs": 298
+        },
+        {
+          "iteration": 60,
+          "exploitability": 4.3269567,
+          "elapsedMs": 355
+        },
+        {
+          "iteration": 70,
+          "exploitability": 7.119464,
+          "elapsedMs": 412
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.2928705,
+          "elapsedMs": 466
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-16.result.json"
+    },
+    {
+      "corpusIndex": 17,
+      "seed": 22,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Td"
+      ],
+      "sourceSpotHash": "ef22602cf2b24cbfdb338453dea3986d6c2257474b1a182b6e6bc952b0105d0e",
+      "status": "passed",
+      "measurementSpotHash": "bf7cd475f012f06662b0df260a8c9caa4e179ffb4d69f595f8b306c2f9f3689b",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 3.6837387084960938,
+      "exploitabilityPctPot": 0.2886942561517315,
+      "targetPctPot": 0.3,
+      "wallMs": 904.3833330000016,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 888,
+        "exportMs": 0,
+        "totalMs": 891
+      },
+      "memory": {
+        "estimatedBytes": 10306272,
+        "estimatedCompressedBytes": 5441056,
+        "allocatedEstimateBytes": 10306272,
+        "peakRssBytes": 13582336
+      },
+      "sampledPeakRssBytes": 13074432,
+      "exportedNodes": 15,
+      "resultJsonBytes": 64887,
+      "numericalHash": "89c6ff20728eabe29d0a0f07aadda391337b28d611f1ac1c4b1ca5e1857e158b",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1471.9402,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 309.9584,
+          "elapsedMs": 118
+        },
+        {
+          "iteration": 20,
+          "exploitability": 131.78026,
+          "elapsedMs": 227
+        },
+        {
+          "iteration": 30,
+          "exploitability": 32.696182,
+          "elapsedMs": 335
+        },
+        {
+          "iteration": 40,
+          "exploitability": 14.37883,
+          "elapsedMs": 443
+        },
+        {
+          "iteration": 50,
+          "exploitability": 8.601196,
+          "elapsedMs": 551
+        },
+        {
+          "iteration": 60,
+          "exploitability": 5.9224243,
+          "elapsedMs": 659
+        },
+        {
+          "iteration": 70,
+          "exploitability": 5.5132446,
+          "elapsedMs": 765
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.6837387,
+          "elapsedMs": 869
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-17.result.json"
+    },
+    {
+      "corpusIndex": 18,
+      "seed": 23,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-5h4c2d",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "8d"
+      ],
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "status": "passed",
+      "measurementSpotHash": "2ef082a64ddfd0291f17abd4db24ca17e2b18c15ece471fc3458b9a9cd3db4b3",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 6.66387939453125,
+      "exploitabilityPctPot": 0.2373176422553864,
+      "targetPctPot": 0.3,
+      "wallMs": 452.56916700000147,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 438,
+        "exportMs": 0,
+        "totalMs": 440
+      },
+      "memory": {
+        "estimatedBytes": 5330088,
+        "estimatedCompressedBytes": 2892684,
+        "allocatedEstimateBytes": 5330088,
+        "peakRssBytes": 8585216
+      },
+      "sampledPeakRssBytes": 8290304,
+      "exportedNodes": 15,
+      "resultJsonBytes": 42908,
+      "numericalHash": "64758e57b7a7375e650a08a1bd777d27dc49008dee7109c861b415ddd37a3feb",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1599.8821,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 386.91025,
+          "elapsedMs": 54
+        },
+        {
+          "iteration": 20,
+          "exploitability": 195.57228,
+          "elapsedMs": 107
+        },
+        {
+          "iteration": 30,
+          "exploitability": 43.860977,
+          "elapsedMs": 162
+        },
+        {
+          "iteration": 40,
+          "exploitability": 20.117203,
+          "elapsedMs": 214
+        },
+        {
+          "iteration": 50,
+          "exploitability": 13.001968,
+          "elapsedMs": 267
+        },
+        {
+          "iteration": 60,
+          "exploitability": 9.229034,
+          "elapsedMs": 320
+        },
+        {
+          "iteration": 70,
+          "exploitability": 9.524994,
+          "elapsedMs": 372
+        },
+        {
+          "iteration": 80,
+          "exploitability": 6.6638794,
+          "elapsedMs": 428
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-18.result.json"
+    },
+    {
+      "corpusIndex": 19,
+      "seed": 24,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "x",
+        "9d"
+      ],
+      "sourceSpotHash": "990fbe581ec2bf9b228a9f75bb60b10e033474f04e950c958e9772526ad3853d",
+      "status": "passed",
+      "measurementSpotHash": "3c0bbfea784a7401f3e37170fea28c21d7c8f81be7efcd53a05374deb42f1b1b",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 100,
+      "reached": true,
+      "exploitabilityChips": 1.4860918521881104,
+      "exploitabilityPctPot": 0.27019851857965643,
+      "targetPctPot": 0.3,
+      "wallMs": 2730.683791999996,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2712,
+        "exportMs": 0,
+        "totalMs": 2716
+      },
+      "memory": {
+        "estimatedBytes": 20430264,
+        "estimatedCompressedBytes": 10593258,
+        "allocatedEstimateBytes": 20430264,
+        "peakRssBytes": 24346624
+      },
+      "sampledPeakRssBytes": 23560192,
+      "exportedNodes": 15,
+      "resultJsonBytes": 93698,
+      "numericalHash": "9bdc850384573b13607636bb43854341b0132232a325354e1e1b834d29ec30b0",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 862.47864,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 128.81416,
+          "elapsedMs": 295
+        },
+        {
+          "iteration": 20,
+          "exploitability": 53.7862,
+          "elapsedMs": 610
+        },
+        {
+          "iteration": 30,
+          "exploitability": 13.648039,
+          "elapsedMs": 877
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.9634557,
+          "elapsedMs": 1139
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.565377,
+          "elapsedMs": 1396
+        },
+        {
+          "iteration": 60,
+          "exploitability": 3.710798,
+          "elapsedMs": 1658
+        },
+        {
+          "iteration": 70,
+          "exploitability": 6.586403,
+          "elapsedMs": 1908
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.379323,
+          "elapsedMs": 2168
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.7674847,
+          "elapsedMs": 2418
+        },
+        {
+          "iteration": 100,
+          "exploitability": 1.4860919,
+          "elapsedMs": 2669
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-19.result.json"
+    },
+    {
+      "corpusIndex": 20,
+      "seed": 25,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-khqdtc",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "9d"
+      ],
+      "sourceSpotHash": "a6906937b24031cd1486476b70839ae2ab9e9a23be5fdf3538b5bb710778a170",
+      "status": "passed",
+      "measurementSpotHash": "10e388a4b61eedbf19eb7b52b42f08dc0a3e6b4dc689032f3483943b2a5cdfd2",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 70,
+      "reached": true,
+      "exploitabilityChips": 3.6011714935302734,
+      "exploitabilityPctPot": 0.282223471279802,
+      "targetPctPot": 0.3,
+      "wallMs": 945.2072079999998,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 929,
+        "exportMs": 0,
+        "totalMs": 932
+      },
+      "memory": {
+        "estimatedBytes": 13849040,
+        "estimatedCompressedBytes": 7248810,
+        "allocatedEstimateBytes": 13849040,
+        "peakRssBytes": 17334272
+      },
+      "sampledPeakRssBytes": 16695296,
+      "exportedNodes": 15,
+      "resultJsonBytes": 65939,
+      "numericalHash": "d11af8bbb8362c2734bd4d88d5462cb3e1ad45fc01f405088ee7887e460bedbf",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1485.3247,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 396.0195,
+          "elapsedMs": 145
+        },
+        {
+          "iteration": 20,
+          "exploitability": 74.67583,
+          "elapsedMs": 275
+        },
+        {
+          "iteration": 30,
+          "exploitability": 19.212662,
+          "elapsedMs": 405
+        },
+        {
+          "iteration": 40,
+          "exploitability": 10.906782,
+          "elapsedMs": 533
+        },
+        {
+          "iteration": 50,
+          "exploitability": 6.828348,
+          "elapsedMs": 654
+        },
+        {
+          "iteration": 60,
+          "exploitability": 4.479246,
+          "elapsedMs": 777
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.6011715,
+          "elapsedMs": 907
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-20.result.json"
+    },
+    {
+      "corpusIndex": 21,
+      "seed": 28,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-7c6c5d",
+      "path": [
+        "b182",
+        "r730",
+        "c",
+        "Kd"
+      ],
+      "sourceSpotHash": "6230e9a4c66fbd9383f38270151ed60155b95ac5562253fafe71eca496b786f0",
+      "status": "passed",
+      "measurementSpotHash": "805c1fac06941e8332b07d00b7158d621096e2b7e84c048e7fd63f640e9fcd4e",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 4.660924911499023,
+      "exploitabilityPctPot": 0.23188681151736437,
+      "targetPctPot": 0.3,
+      "wallMs": 735.7051250000004,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 720,
+        "exportMs": 0,
+        "totalMs": 723
+      },
+      "memory": {
+        "estimatedBytes": 8158044,
+        "estimatedCompressedBytes": 4342580,
+        "allocatedEstimateBytes": 8158044,
+        "peakRssBytes": 11436032
+      },
+      "sampledPeakRssBytes": 10993664,
+      "exportedNodes": 15,
+      "resultJsonBytes": 56772,
+      "numericalHash": "d5c84a90290cf259358cc1ad8f3f823e617321fea62ca4057efc717c8d59b15c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1906.2546,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 347.68652,
+          "elapsedMs": 93
+        },
+        {
+          "iteration": 20,
+          "exploitability": 121.70213,
+          "elapsedMs": 182
+        },
+        {
+          "iteration": 30,
+          "exploitability": 31.461882,
+          "elapsedMs": 271
+        },
+        {
+          "iteration": 40,
+          "exploitability": 16.50144,
+          "elapsedMs": 358
+        },
+        {
+          "iteration": 50,
+          "exploitability": 9.956446,
+          "elapsedMs": 449
+        },
+        {
+          "iteration": 60,
+          "exploitability": 7.0357633,
+          "elapsedMs": 538
+        },
+        {
+          "iteration": 70,
+          "exploitability": 7.0038853,
+          "elapsedMs": 624
+        },
+        {
+          "iteration": 80,
+          "exploitability": 4.660925,
+          "elapsedMs": 706
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-21.result.json"
+    },
+    {
+      "corpusIndex": 22,
+      "seed": 29,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ad8c3s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "Qh"
+      ],
+      "sourceSpotHash": "de06c09c467d45c0b8fc002ae09eeb04d1abf15ddd5eff378d536693216b0c74",
+      "status": "passed",
+      "measurementSpotHash": "b25b678dde944c5cf696eba4d23d48cc16a1a62fe631d942940aaeabde02bbe8",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 3.206768035888672,
+      "exploitabilityPctPot": 0.25131410939566395,
+      "targetPctPot": 0.3,
+      "wallMs": 889.5558330000058,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 875,
+        "exportMs": 0,
+        "totalMs": 877
+      },
+      "memory": {
+        "estimatedBytes": 11838544,
+        "estimatedCompressedBytes": 6227658,
+        "allocatedEstimateBytes": 11838544,
+        "peakRssBytes": 15155200
+      },
+      "sampledPeakRssBytes": 14614528,
+      "exportedNodes": 15,
+      "resultJsonBytes": 61926,
+      "numericalHash": "7d0bb7547a1ce6002ec185835accf2a5a346d2308cf915206ca3cb8bf1eedc02",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1522.6714,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 349.4355,
+          "elapsedMs": 102
+        },
+        {
+          "iteration": 20,
+          "exploitability": 143.3292,
+          "elapsedMs": 191
+        },
+        {
+          "iteration": 30,
+          "exploitability": 31.735561,
+          "elapsedMs": 288
+        },
+        {
+          "iteration": 40,
+          "exploitability": 13.151665,
+          "elapsedMs": 387
+        },
+        {
+          "iteration": 50,
+          "exploitability": 6.747013,
+          "elapsedMs": 479
+        },
+        {
+          "iteration": 60,
+          "exploitability": 4.9351425,
+          "elapsedMs": 574
+        },
+        {
+          "iteration": 70,
+          "exploitability": 6.2883835,
+          "elapsedMs": 670
+        },
+        {
+          "iteration": 80,
+          "exploitability": 3.9256096,
+          "elapsedMs": 764
+        },
+        {
+          "iteration": 90,
+          "exploitability": 3.206768,
+          "elapsedMs": 857
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-22.result.json"
+    },
+    {
+      "corpusIndex": 23,
+      "seed": 30,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "b363",
+        "c",
+        "9s"
+      ],
+      "sourceSpotHash": "6f311da95d1c676ec1477406afe94bb1e89d30d64fd8a5adb642d7bc4b86ea48",
+      "status": "passed",
+      "measurementSpotHash": "a4c8d03c24a11dc36ca28ddd6f254674eff78c537e26397046011087595f82ec",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 110,
+      "reached": true,
+      "exploitabilityChips": 3.566878318786621,
+      "exploitabilityPctPot": 0.2795359184002054,
+      "targetPctPot": 0.3,
+      "wallMs": 2590.6205000000045,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2565,
+        "exportMs": 0,
+        "totalMs": 2569
+      },
+      "memory": {
+        "estimatedBytes": 17437680,
+        "estimatedCompressedBytes": 9073036,
+        "allocatedEstimateBytes": 17437680,
+        "peakRssBytes": 21282816
+      },
+      "sampledPeakRssBytes": 20512768,
+      "exportedNodes": 15,
+      "resultJsonBytes": 86352,
+      "numericalHash": "0d1e96cdfb3a63049751a10ad7b5a8c6d89568f2b619e4072175dc023d9bb746",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1474.3608,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 474.44083,
+          "elapsedMs": 248
+        },
+        {
+          "iteration": 20,
+          "exploitability": 185.64017,
+          "elapsedMs": 476
+        },
+        {
+          "iteration": 30,
+          "exploitability": 50.56115,
+          "elapsedMs": 702
+        },
+        {
+          "iteration": 40,
+          "exploitability": 25.467112,
+          "elapsedMs": 939
+        },
+        {
+          "iteration": 50,
+          "exploitability": 14.10494,
+          "elapsedMs": 1175
+        },
+        {
+          "iteration": 60,
+          "exploitability": 9.808253,
+          "elapsedMs": 1408
+        },
+        {
+          "iteration": 70,
+          "exploitability": 9.374711,
+          "elapsedMs": 1633
+        },
+        {
+          "iteration": 80,
+          "exploitability": 6.481977,
+          "elapsedMs": 1857
+        },
+        {
+          "iteration": 90,
+          "exploitability": 5.019031,
+          "elapsedMs": 2083
+        },
+        {
+          "iteration": 100,
+          "exploitability": 4.160758,
+          "elapsedMs": 2305
+        },
+        {
+          "iteration": 110,
+          "exploitability": 3.5668783,
+          "elapsedMs": 2526
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-23.result.json"
+    },
+    {
+      "corpusIndex": 24,
+      "seed": 31,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-8s8d3h",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "sourceSpotHash": "3409105392b7f4f02b2bc8c37b15e828be7f176e382b5c1aa2f702eeeaa1acf2",
+      "status": "passed",
+      "measurementSpotHash": "47d960b942dc8069759f530fad19f7ac90fc6dfda06541a201ec0004d509ded8",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 100,
+      "reached": true,
+      "exploitabilityChips": 1.6374483108520508,
+      "exploitabilityPctPot": 0.29771787470037286,
+      "targetPctPot": 0.3,
+      "wallMs": 2137.1407089999993,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2118,
+        "exportMs": 0,
+        "totalMs": 2122
+      },
+      "memory": {
+        "estimatedBytes": 16624968,
+        "estimatedCompressedBytes": 8662264,
+        "allocatedEstimateBytes": 16624968,
+        "peakRssBytes": 20365312
+      },
+      "sampledPeakRssBytes": 19660800,
+      "exportedNodes": 15,
+      "resultJsonBytes": 96008,
+      "numericalHash": "3d7ed590cc46090d1647c467c81edca60cfb87a47e4626b966f813c625abe2e0",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 871.59503,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 133.95602,
+          "elapsedMs": 234
+        },
+        {
+          "iteration": 20,
+          "exploitability": 65.30101,
+          "elapsedMs": 448
+        },
+        {
+          "iteration": 30,
+          "exploitability": 23.965742,
+          "elapsedMs": 661
+        },
+        {
+          "iteration": 40,
+          "exploitability": 12.422531,
+          "elapsedMs": 862
+        },
+        {
+          "iteration": 50,
+          "exploitability": 5.8499866,
+          "elapsedMs": 1075
+        },
+        {
+          "iteration": 60,
+          "exploitability": 3.8308125,
+          "elapsedMs": 1280
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.981271,
+          "elapsedMs": 1476
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.8075857,
+          "elapsedMs": 1679
+        },
+        {
+          "iteration": 90,
+          "exploitability": 2.0772057,
+          "elapsedMs": 1885
+        },
+        {
+          "iteration": 100,
+          "exploitability": 1.6374483,
+          "elapsedMs": 2084
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-24.result.json"
+    },
+    {
+      "corpusIndex": 25,
+      "seed": 32,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "5h"
+      ],
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "status": "passed",
+      "measurementSpotHash": "17e760dddb28c53e979cb422e04250c2b749c19e9bf0b0df90f726b676f9548b",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 120,
+      "reached": true,
+      "exploitabilityChips": 1.6362521648406982,
+      "exploitabilityPctPot": 0.2975003936073997,
+      "targetPctPot": 0.3,
+      "wallMs": 1986.2773749999978,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1964,
+        "exportMs": 0,
+        "totalMs": 1967
+      },
+      "memory": {
+        "estimatedBytes": 15510264,
+        "estimatedCompressedBytes": 8094688,
+        "allocatedEstimateBytes": 15510264,
+        "peakRssBytes": 19267584
+      },
+      "sampledPeakRssBytes": 18612224,
+      "exportedNodes": 15,
+      "resultJsonBytes": 114876,
+      "numericalHash": "09b0cd71ac04b0011c2648fad7a06ee5e63becb0831294078dc2a5bcb44eee3b",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 873.74005,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 144.51685,
+          "elapsedMs": 174
+        },
+        {
+          "iteration": 20,
+          "exploitability": 66.94995,
+          "elapsedMs": 335
+        },
+        {
+          "iteration": 30,
+          "exploitability": 22.148905,
+          "elapsedMs": 494
+        },
+        {
+          "iteration": 40,
+          "exploitability": 10.783603,
+          "elapsedMs": 655
+        },
+        {
+          "iteration": 50,
+          "exploitability": 7.6313653,
+          "elapsedMs": 816
+        },
+        {
+          "iteration": 60,
+          "exploitability": 5.271638,
+          "elapsedMs": 979
+        },
+        {
+          "iteration": 70,
+          "exploitability": 19.09478,
+          "elapsedMs": 1148
+        },
+        {
+          "iteration": 80,
+          "exploitability": 4.1626325,
+          "elapsedMs": 1302
+        },
+        {
+          "iteration": 90,
+          "exploitability": 3.5165021,
+          "elapsedMs": 1462
+        },
+        {
+          "iteration": 100,
+          "exploitability": 2.3518558,
+          "elapsedMs": 1622
+        },
+        {
+          "iteration": 110,
+          "exploitability": 1.86848,
+          "elapsedMs": 1779
+        },
+        {
+          "iteration": 120,
+          "exploitability": 1.6362522,
+          "elapsedMs": 1933
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-25.result.json"
+    },
+    {
+      "corpusIndex": 26,
+      "seed": 33,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-qs9s4s",
+      "path": [
+        "x",
+        "x",
+        "2c"
+      ],
+      "sourceSpotHash": "2a42154c5ef508941510e99b6926cba98a5c23cccc30d8b4356bfdc6b3b3c8e9",
+      "status": "passed",
+      "measurementSpotHash": "e09042bda6dcf78d2c27f2bac5eca57e4f6369abb2414640da7d350a4caa68f2",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 1.577257752418518,
+      "exploitabilityPctPot": 0.2867741368033669,
+      "targetPctPot": 0.3,
+      "wallMs": 1589.8962089999986,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1571,
+        "exportMs": 0,
+        "totalMs": 1574
+      },
+      "memory": {
+        "estimatedBytes": 15538024,
+        "estimatedCompressedBytes": 8109468,
+        "allocatedEstimateBytes": 15538024,
+        "peakRssBytes": 19398656
+      },
+      "sampledPeakRssBytes": 18743296,
+      "exportedNodes": 15,
+      "resultJsonBytes": 84747,
+      "numericalHash": "94fb8dbd8c3966b4bb3794044908f0cdbb91f3cf390ead73b4979e98af0c7622",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 861.1254,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 122.77819,
+          "elapsedMs": 220
+        },
+        {
+          "iteration": 20,
+          "exploitability": 39.52034,
+          "elapsedMs": 416
+        },
+        {
+          "iteration": 30,
+          "exploitability": 10.222447,
+          "elapsedMs": 605
+        },
+        {
+          "iteration": 40,
+          "exploitability": 5.255422,
+          "elapsedMs": 798
+        },
+        {
+          "iteration": 50,
+          "exploitability": 3.1767786,
+          "elapsedMs": 990
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.2315316,
+          "elapsedMs": 1172
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.474111,
+          "elapsedMs": 1364
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.5772578,
+          "elapsedMs": 1540
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-26.result.json"
+    },
+    {
+      "corpusIndex": 27,
+      "seed": 34,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-tc9d7s",
+      "path": [
+        "x",
+        "b363",
+        "c",
+        "2d"
+      ],
+      "sourceSpotHash": "725d28af4f81940ffc582f44d59dcbcd17331de4c02c3a11c721a785f673f957",
+      "status": "passed",
+      "measurementSpotHash": "d537817acc985c4f85cfd40504cf3a5dac79ee49c6a2585cdf6723ae8b903b7d",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 2.7973098754882812,
+      "exploitabilityPctPot": 0.21922491187212237,
+      "targetPctPot": 0.3,
+      "wallMs": 1048.4598340000011,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 1033,
+        "exportMs": 0,
+        "totalMs": 1036
+      },
+      "memory": {
+        "estimatedBytes": 13303728,
+        "estimatedCompressedBytes": 6972036,
+        "allocatedEstimateBytes": 13303728,
+        "peakRssBytes": 16629760
+      },
+      "sampledPeakRssBytes": 16023552,
+      "exportedNodes": 15,
+      "resultJsonBytes": 63252,
+      "numericalHash": "17c8dcc0c9b5b78e7a20debf8074b71542c733afd071b9f31a7e090faf4bdceb",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1473.8591,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 316.9821,
+          "elapsedMs": 142
+        },
+        {
+          "iteration": 20,
+          "exploitability": 132.33249,
+          "elapsedMs": 268
+        },
+        {
+          "iteration": 30,
+          "exploitability": 25.003235,
+          "elapsedMs": 395
+        },
+        {
+          "iteration": 40,
+          "exploitability": 10.786736,
+          "elapsedMs": 524
+        },
+        {
+          "iteration": 50,
+          "exploitability": 6.4143524,
+          "elapsedMs": 648
+        },
+        {
+          "iteration": 60,
+          "exploitability": 4.5645065,
+          "elapsedMs": 769
+        },
+        {
+          "iteration": 70,
+          "exploitability": 4.2162476,
+          "elapsedMs": 891
+        },
+        {
+          "iteration": 80,
+          "exploitability": 2.7973099,
+          "elapsedMs": 1011
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-27.result.json"
+    },
+    {
+      "corpusIndex": 28,
+      "seed": 35,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-ks7h2d",
+      "path": [
+        "x",
+        "x",
+        "6s"
+      ],
+      "sourceSpotHash": "995ffeb229807eff31e6b4c96fd40958b3911de8958d4b591c7d29cc455ec53c",
+      "status": "passed",
+      "measurementSpotHash": "7b275e619b949f409609fe968744d356c8c0b1abe66d65c2412c087a4cefb753",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.4661884307861328,
+      "exploitabilityPctPot": 0.2665797146883878,
+      "targetPctPot": 0.3,
+      "wallMs": 2385.944875000001,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2364,
+        "exportMs": 0,
+        "totalMs": 2367
+      },
+      "memory": {
+        "estimatedBytes": 21404632,
+        "estimatedCompressedBytes": 11087400,
+        "allocatedEstimateBytes": 21404632,
+        "peakRssBytes": 25214976
+      },
+      "sampledPeakRssBytes": 24428544,
+      "exportedNodes": 15,
+      "resultJsonBytes": 86915,
+      "numericalHash": "08816f78e874875b6d53bdedbe3b82d0d04dca6728a783a1d0589eb4b9a6b3cc",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 863.6298,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 126.210526,
+          "elapsedMs": 286
+        },
+        {
+          "iteration": 20,
+          "exploitability": 41.01426,
+          "elapsedMs": 533
+        },
+        {
+          "iteration": 30,
+          "exploitability": 12.398234,
+          "elapsedMs": 785
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.7922554,
+          "elapsedMs": 1040
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.1113214,
+          "elapsedMs": 1283
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.757731,
+          "elapsedMs": 1539
+        },
+        {
+          "iteration": 70,
+          "exploitability": 2.8483405,
+          "elapsedMs": 1794
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.9759016,
+          "elapsedMs": 2059
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.4661884,
+          "elapsedMs": 2320
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-28.result.json"
+    },
+    {
+      "corpusIndex": 29,
+      "seed": 36,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-td7d3c",
+      "path": [
+        "x",
+        "x",
+        "2s"
+      ],
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "status": "passed",
+      "measurementSpotHash": "f25737aa535f9be8b6bc3139c44720a4b5630eedc46a8b99e1615de295ba6d8c",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 90,
+      "reached": true,
+      "exploitabilityChips": 1.538975477218628,
+      "exploitabilityPctPot": 0.2798137231306596,
+      "targetPctPot": 0.3,
+      "wallMs": 2445.5582919999943,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 2425,
+        "exportMs": 0,
+        "totalMs": 2429
+      },
+      "memory": {
+        "estimatedBytes": 21495672,
+        "estimatedCompressedBytes": 11133630,
+        "allocatedEstimateBytes": 21495672,
+        "peakRssBytes": 25264128
+      },
+      "sampledPeakRssBytes": 25083904,
+      "exportedNodes": 15,
+      "resultJsonBytes": 88710,
+      "numericalHash": "5cfc1edc966fa2031ce78c953a7bce20ec59bd973dcb1f3541c5392b3a57027f",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 851.7345,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 113.53862,
+          "elapsedMs": 303
+        },
+        {
+          "iteration": 20,
+          "exploitability": 47.037945,
+          "elapsedMs": 576
+        },
+        {
+          "iteration": 30,
+          "exploitability": 12.544146,
+          "elapsedMs": 841
+        },
+        {
+          "iteration": 40,
+          "exploitability": 6.531761,
+          "elapsedMs": 1100
+        },
+        {
+          "iteration": 50,
+          "exploitability": 4.0404525,
+          "elapsedMs": 1348
+        },
+        {
+          "iteration": 60,
+          "exploitability": 2.9227257,
+          "elapsedMs": 1600
+        },
+        {
+          "iteration": 70,
+          "exploitability": 3.264709,
+          "elapsedMs": 1851
+        },
+        {
+          "iteration": 80,
+          "exploitability": 1.9823399,
+          "elapsedMs": 2119
+        },
+        {
+          "iteration": 90,
+          "exploitability": 1.5389755,
+          "elapsedMs": 2381
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-29.result.json"
+    },
+    {
+      "corpusIndex": 30,
+      "seed": 37,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "x",
+        "4d"
+      ],
+      "sourceSpotHash": "e0bbdc4fd20a9efab8e8bd7fca664063f7cf0938bd1d47515795a738b94ac788",
+      "status": "passed",
+      "measurementSpotHash": "d795cb0a5e8f14c89ce706d21288435ac473302e3e5949d632ee012eef969b92",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 130,
+      "reached": true,
+      "exploitabilityChips": 1.5068392753601074,
+      "exploitabilityPctPot": 0.27397077733820135,
+      "targetPctPot": 0.3,
+      "wallMs": 3476.8207909999983,
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 3458,
+        "exportMs": 0,
+        "totalMs": 3462
+      },
+      "memory": {
+        "estimatedBytes": 20728696,
+        "estimatedCompressedBytes": 10744746,
+        "allocatedEstimateBytes": 20728696,
+        "peakRssBytes": 24674304
+      },
+      "sampledPeakRssBytes": 23920640,
+      "exportedNodes": 15,
+      "resultJsonBytes": 106243,
+      "numericalHash": "02e1de8e79e6e85bd7368789b3b727007cb5aa4a028adc2482260e65f8c1e077",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 863.73816,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 249.05978,
+          "elapsedMs": 287
+        },
+        {
+          "iteration": 20,
+          "exploitability": 94.54639,
+          "elapsedMs": 556
+        },
+        {
+          "iteration": 30,
+          "exploitability": 25.528353,
+          "elapsedMs": 820
+        },
+        {
+          "iteration": 40,
+          "exploitability": 13.474317,
+          "elapsedMs": 1086
+        },
+        {
+          "iteration": 50,
+          "exploitability": 9.108827,
+          "elapsedMs": 1356
+        },
+        {
+          "iteration": 60,
+          "exploitability": 6.1785803,
+          "elapsedMs": 1618
+        },
+        {
+          "iteration": 70,
+          "exploitability": 7.8341045,
+          "elapsedMs": 1867
+        },
+        {
+          "iteration": 80,
+          "exploitability": 4.0093613,
+          "elapsedMs": 2123
+        },
+        {
+          "iteration": 90,
+          "exploitability": 2.9316254,
+          "elapsedMs": 2383
+        },
+        {
+          "iteration": 100,
+          "exploitability": 2.3332229,
+          "elapsedMs": 2642
+        },
+        {
+          "iteration": 110,
+          "exploitability": 1.9621706,
+          "elapsedMs": 2904
+        },
+        {
+          "iteration": 120,
+          "exploitability": 1.6840305,
+          "elapsedMs": 3163
+        },
+        {
+          "iteration": 130,
+          "exploitability": 1.5068393,
+          "elapsedMs": 3412
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-30.result.json"
+    },
+    {
+      "corpusIndex": 31,
+      "seed": 38,
+      "street": "turn",
+      "librarySpotId": "srp-btn-bb-jcjd4s",
+      "path": [
+        "x",
+        "b363",
+        "r1129",
+        "c",
+        "6c"
+      ],
+      "sourceSpotHash": "38a41d1f68181cb804a16e87830a9137a45278306dd3d45ecb8ed6dc3f18300d",
+      "status": "passed",
+      "measurementSpotHash": "a3d4cd1abf1828b865913365f9bb497dad96fe43842cac206ae0fe1c0734b5f6",
+      "precision": "float32",
+      "threads": 1,
+      "iterations": 80,
+      "reached": true,
+      "exploitabilityChips": 6.793876647949219,
+      "exploitabilityPctPot": 0.24194717407226562,
+      "targetPctPot": 0.3,
+      "wallMs": 477.19087500000023,
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 459,
+        "exportMs": 0,
+        "totalMs": 461
+      },
+      "memory": {
+        "estimatedBytes": 6200456,
+        "estimatedCompressedBytes": 3340478,
+        "allocatedEstimateBytes": 6200456,
+        "peakRssBytes": 9404416
+      },
+      "sampledPeakRssBytes": 9043968,
+      "exportedNodes": 15,
+      "resultJsonBytes": 50064,
+      "numericalHash": "7688d185845095abebd9a954bc63c6efe39c376e5ebf27210a41823e43a66d6c",
+      "convergence": [
+        {
+          "iteration": 0,
+          "exploitability": 1735.9954,
+          "elapsedMs": 0
+        },
+        {
+          "iteration": 10,
+          "exploitability": 517.62994,
+          "elapsedMs": 62
+        },
+        {
+          "iteration": 20,
+          "exploitability": 218.97908,
+          "elapsedMs": 121
+        },
+        {
+          "iteration": 30,
+          "exploitability": 51.818665,
+          "elapsedMs": 175
+        },
+        {
+          "iteration": 40,
+          "exploitability": 23.182991,
+          "elapsedMs": 229
+        },
+        {
+          "iteration": 50,
+          "exploitability": 14.126991,
+          "elapsedMs": 283
+        },
+        {
+          "iteration": 60,
+          "exploitability": 10.00946,
+          "elapsedMs": 340
+        },
+        {
+          "iteration": 70,
+          "exploitability": 10.759178,
+          "elapsedMs": 394
+        },
+        {
+          "iteration": 80,
+          "exploitability": 6.7938766,
+          "elapsedMs": 448
+        }
+      ],
+      "referee": null,
+      "resultFile": "root-31.result.json"
+    }
+  ],
+  "payloadHash": "9d8eac63e771c273d28945cae849cc3719cb5a6c1e0e57b49cdd3972c30b3777"
+}

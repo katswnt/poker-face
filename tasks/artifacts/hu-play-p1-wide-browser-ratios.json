@@ -1,0 +1,6374 @@
+{
+  "format": "poker-face-p1-full-range-browser-observations",
+  "version": 1,
+  "mode": "ratio",
+  "measuredAt": "2026-09-30T23:32:32.080Z",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "ramBytes": 34359738368,
+    "platform": "darwin",
+    "osRelease": "25.4.0",
+    "node": "v24.10.0"
+  },
+  "browserVersions": {
+    "chromium": "151.0.7922.34",
+    "firefox": "153.0",
+    "webkit": "26.5"
+  },
+  "buildHash": "81a3ac0ad450ca6d641b293dbc668d4fe4c736adb778b007fd39a12a321a9d8d",
+  "sourceHash": "742fca1b698b7f377ba2d3cca93192273cdc13664ee03e5c8420b7b7fc5cc1ec",
+  "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+  "nativeReportHashes": [
+    "430422593deba367f6694fa674b0a3504e94378bf08035ca92e7b464a33afc66"
+  ],
+  "method": {
+    "freshBrowserPerCase": true,
+    "freshWorkerPerCase": true,
+    "repeatsPerCase": 1,
+    "sampleIntervalMs": 20,
+    "parser": "Exact frozen-input allowlist in private loopback bundle; production parser unchanged; original W2 reservation/memory watchdog retained; 30-minute research timeout",
+    "wallTime": "page request to terminal event, including Worker/loading/build/solve/export/check/clone; excludes browser launch and fingerprinting",
+    "solveTime": "integer-ms engine session clock; browser yielding/finalization included, not pure CPU time; ratios are platform observations, not phone predictions",
+    "linearMemory": "monotonic WASM high-water sampled at events through finish/export; excludes JS and browser memory",
+    "rss": "sampled browser tree plus new same-bundle WebKit XPC companions; baseline/increment reported, shared pages may be double-counted, brief peaks may be missed; not PSS",
+    "samplingWindow": "includes result fingerprinting; sampler adds overhead",
+    "scope": "Frozen full-range local game only, not production play, whole-game safety, or physical-device certification"
+  },
+  "rows": [
+    {
+      "browser": "chromium",
+      "corpusIndex": 32,
+      "street": "river",
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "measurementSpotHash": "0434707b53771a5a2f0332ec57c2ff08e44e0902cb53d8446ce1b3e484cc42e1",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 313.1000003814697,
+      "peakLinearMemoryBytes": 1507328,
+      "reservedTotalBytes": 140777428,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 4.30000114440918,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 29.30000114440918,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 39.89999961853027,
+          "linearMemoryBytes": 1376256
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40.80000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 41.39999961853027,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 47.5,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 50.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 56.60000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 63.60000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 70.5,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 77.30000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 84.20000076293945,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 91.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 98.30000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 105.20000076293945,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 112.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 118.89999961853027,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 126.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 133.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 140,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 146.80000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 153.70000076293945,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 161.80000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 168.70000076293945,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 175.60000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 182.5,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 189.39999961853027,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 196.30000114440918,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 203.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 209,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 228.10000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 234.89999961853027,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 241.60000038146973,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 248.5,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 255.20000076293945,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 262,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 267.6000003814697,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 267.6000003814697,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 276,
+          "linearMemoryBytes": 1507328
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035507202,
+        "pctPot": 0.0027826960931377352,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 233,
+        "exportMs": 1,
+        "totalMs": 243
+      },
+      "exportedNodes": 21,
+      "numericalHash": "fb7a21d116ff94148fb1cb88a5c566b92a7cb23825c83d6c48ea4ec9f97dc6ae",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 278839296,
+      "sampledPeakBrowserRssBytes": 321847296,
+      "sampledIncrementRssBytes": 43008000,
+      "samples": 7,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 78.58404199999995,
+      "samplingWindowMs": 401.7822080000001,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 35,
+      "nativeWallMs": 49.98787500000003,
+      "solveSpeedRatio": {
+        "ratio": 6.6571428571428575,
+        "quantizationLower": 6.444444444444445,
+        "quantizationUpper": 6.882352941176471
+      },
+      "endToEndSpeedRatio": 6.2635189109653
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 32,
+      "street": "river",
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "measurementSpotHash": "0434707b53771a5a2f0332ec57c2ff08e44e0902cb53d8446ce1b3e484cc42e1",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 1290,
+      "peakLinearMemoryBytes": 1507328,
+      "reservedTotalBytes": 140777428,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 2,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 59,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 63,
+          "linearMemoryBytes": 1376256
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 64,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 65,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 100,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 135,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 168,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 202,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 235,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 267,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 299,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 333,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 368,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 401,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 434,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 467,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 500,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 532,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 565,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 597,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 631,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 663,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 695,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 731,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 763,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 796,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 828,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 861,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 893,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 925,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 958,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1096,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1123,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1166,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1191,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1223,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1247,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 1247,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 1257,
+          "linearMemoryBytes": 1507328
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035507202,
+        "pctPot": 0.0027826960931377352,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 1,
+        "allocateMs": 0,
+        "solveMs": 1190,
+        "exportMs": 1,
+        "totalMs": 1195
+      },
+      "exportedNodes": 21,
+      "numericalHash": "fb7a21d116ff94148fb1cb88a5c566b92a7cb23825c83d6c48ea4ec9f97dc6ae",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 982007808,
+      "sampledPeakBrowserRssBytes": 1074741248,
+      "sampledIncrementRssBytes": 92733440,
+      "samples": 18,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 227.21079199999986,
+      "samplingWindowMs": 1389.5762079999995,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 35,
+      "nativeWallMs": 49.98787500000003,
+      "solveSpeedRatio": {
+        "ratio": 34,
+        "quantizationLower": 33.02777777777778,
+        "quantizationUpper": 35.029411764705884
+      },
+      "endToEndSpeedRatio": 25.806258017569245
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 32,
+      "street": "river",
+      "sourceSpotHash": "e0faf6b97e086a3e40e427e6b786a184ffdb2675cc3a004855ca36bfbc66cb57",
+      "measurementSpotHash": "0434707b53771a5a2f0332ec57c2ff08e44e0902cb53d8446ce1b3e484cc42e1",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 249,
+      "peakLinearMemoryBytes": 1507328,
+      "reservedTotalBytes": 140777428,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 2,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 17,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 26,
+          "linearMemoryBytes": 1376256
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 34,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 36,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 39,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 42,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 44,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 45,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 52,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 59,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 65,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 72,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 79,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 85,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 92,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 98,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 106,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 113,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 119,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 125,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 132,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 139,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 146,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 153,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 160,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 167,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 174,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 181,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 188,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 195,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 202,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 208,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 215,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 221,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 221,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 229,
+          "linearMemoryBytes": 1507328
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035507202,
+        "pctPot": 0.0027826960931377352,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 199,
+        "exportMs": 1,
+        "totalMs": 209
+      },
+      "exportedNodes": 21,
+      "numericalHash": "fb7a21d116ff94148fb1cb88a5c566b92a7cb23825c83d6c48ea4ec9f97dc6ae",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 343261184,
+      "sampledPeakBrowserRssBytes": 395247616,
+      "sampledIncrementRssBytes": 51986432,
+      "samples": 6,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 73.4432080000006,
+      "samplingWindowMs": 340.1748750000006,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 35,
+      "nativeWallMs": 49.98787500000003,
+      "solveSpeedRatio": {
+        "ratio": 5.685714285714286,
+        "quantizationLower": 5.5,
+        "quantizationUpper": 5.882352941176471
+      },
+      "endToEndSpeedRatio": 4.981207942926156
+    },
+    {
+      "browser": "chromium",
+      "corpusIndex": 42,
+      "street": "river",
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "measurementSpotHash": "b0a52774a32dedde211a86a1312b42828c443a682392e1a1e9aa7d7192296217",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 337.5999984741211,
+      "peakLinearMemoryBytes": 1900544,
+      "reservedTotalBytes": 144774252,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 4.399999618530273,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 27.099998474121094,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 40.39999961853027,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 41.599998474121094,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 42.29999923706055,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 48.599998474121094,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 52.5,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 61.099998474121094,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 69.69999885559082,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 78.0999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 86.5999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 95.0999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 102.39999961853027,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 110.79999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 119.19999885559082,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 126.79999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 134,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 142.39999961853027,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 149.89999961853027,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 158.19999885559082,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 165.79999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 174.0999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 182.29999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 190.69999885559082,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 199,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 207.29999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 215.69999885559082,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 223.79999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 232.0999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 240.5999984741211,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 252.5,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 260.8999996185303,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 269.3999996185303,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 277.79999923706055,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 286.1999988555908,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 294.3999996185303,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 300.5,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 300.5,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 309.6999988555908,
+          "linearMemoryBytes": 1900544
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.012989044,
+        "pctPot": 0.002361644398082386,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 266,
+        "exportMs": 1,
+        "totalMs": 279
+      },
+      "exportedNodes": 21,
+      "numericalHash": "452477011a3b2fe658c6ce44590f251aac45df3317d0db51d151960c67fbea8e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 281493504,
+      "sampledPeakBrowserRssBytes": 318701568,
+      "sampledIncrementRssBytes": 37208064,
+      "samples": 7,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 76.3588749999999,
+      "samplingWindowMs": 402.912875,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 99,
+      "nativeWallMs": 115.54841699999997,
+      "solveSpeedRatio": {
+        "ratio": 2.686868686868687,
+        "quantizationLower": 2.65,
+        "quantizationUpper": 2.7244897959183674
+      },
+      "endToEndSpeedRatio": 2.921718940330625
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 42,
+      "street": "river",
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "measurementSpotHash": "b0a52774a32dedde211a86a1312b42828c443a682392e1a1e9aa7d7192296217",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 1984,
+      "peakLinearMemoryBytes": 1900544,
+      "reservedTotalBytes": 144774252,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 37,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 44,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 45,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 47,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 107,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 149,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 193,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 235,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 283,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 325,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 373,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 418,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 461,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 504,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 549,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 592,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 637,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 682,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 726,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 768,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 817,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 860,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 903,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 947,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 994,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1038,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1081,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1124,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1170,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1217,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1262,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1306,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1352,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1398,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1440,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1485,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1529,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1573,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1635,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1718,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1742,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1778,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1819,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1861,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1904,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1942,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 1942,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 1955,
+          "linearMemoryBytes": 1900544
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.012989044,
+        "pctPot": 0.002361644398082386,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 4,
+        "allocateMs": 0,
+        "solveMs": 1906,
+        "exportMs": 2,
+        "totalMs": 1915
+      },
+      "exportedNodes": 21,
+      "numericalHash": "452477011a3b2fe658c6ce44590f251aac45df3317d0db51d151960c67fbea8e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 980484096,
+      "sampledPeakBrowserRssBytes": 1073004544,
+      "sampledIncrementRssBytes": 92520448,
+      "samples": 29,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 140.60004200000185,
+      "samplingWindowMs": 2048.331166,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 99,
+      "nativeWallMs": 115.54841699999997,
+      "solveSpeedRatio": {
+        "ratio": 19.252525252525253,
+        "quantizationLower": 19.05,
+        "quantizationUpper": 19.459183673469386
+      },
+      "endToEndSpeedRatio": 17.17029148049688
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 42,
+      "street": "river",
+      "sourceSpotHash": "a2fa2725c6d6777f5a6a4527866e81ff0ca19b05d22754659ad3780a3c67b12e",
+      "measurementSpotHash": "b0a52774a32dedde211a86a1312b42828c443a682392e1a1e9aa7d7192296217",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 304,
+      "peakLinearMemoryBytes": 1900544,
+      "reservedTotalBytes": 144774252,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 18,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 28,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30,
+          "linearMemoryBytes": 1572864
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 38,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 42,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 46,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 50,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 53,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 57,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 65,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 74,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 82,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 91,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 100,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 108,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 117,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 124,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 133,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 141,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 149,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 158,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 166,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 175,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 183,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 192,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 200,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 208,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 217,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 225,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 233,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 241,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 250,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 259,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 267,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 273,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 273,
+          "linearMemoryBytes": 1638400
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 283,
+          "linearMemoryBytes": 1900544
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.012989044,
+        "pctPot": 0.002361644398082386,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 4,
+        "allocateMs": 0,
+        "solveMs": 250,
+        "exportMs": 2,
+        "totalMs": 263
+      },
+      "exportedNodes": 21,
+      "numericalHash": "452477011a3b2fe658c6ce44590f251aac45df3317d0db51d151960c67fbea8e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 344932352,
+      "sampledPeakBrowserRssBytes": 401473536,
+      "sampledIncrementRssBytes": 56541184,
+      "samples": 7,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 73.99400000000242,
+      "samplingWindowMs": 392.74275000000125,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 99,
+      "nativeWallMs": 115.54841699999997,
+      "solveSpeedRatio": {
+        "ratio": 2.525252525252525,
+        "quantizationLower": 2.49,
+        "quantizationUpper": 2.561224489795918
+      },
+      "endToEndSpeedRatio": 2.6309317591083925
+    },
+    {
+      "browser": "chromium",
+      "corpusIndex": 57,
+      "street": "river",
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "measurementSpotHash": "75d5ca5b61f54a8096afd97f7858b57ba624f44193354e647e3ea5896c3c3c9f",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 277.6000003814697,
+      "peakLinearMemoryBytes": 1769472,
+      "reservedTotalBytes": 142294560,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 0.5999984741210938,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 11.799999237060547,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 21.799999237060547,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22.599998474121094,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23.19999885559082,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28.19999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 31.599998474121094,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 39.099998474121094,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 46.79999923706055,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 54.599998474121094,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 62.099998474121094,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 69.5999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 77.0999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 83.5,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 90.89999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 98.29999923706055,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 105.69999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 113.19999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 120.69999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 128.19999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 135.5999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 142,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 149.39999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 156.89999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 164.29999923706055,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 170.89999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 178,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 185.5999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 193.0999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 200.5999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 208.19999885559082,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 214.79999923706055,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 222,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 229.29999923706055,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 236.5999984741211,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 243.89999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 249.39999961853027,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 249.5,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 258.0999984741211,
+          "linearMemoryBytes": 1769472
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035751343,
+        "pctPot": 0.0028018293709590517,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 233,
+        "exportMs": 1,
+        "totalMs": 244
+      },
+      "exportedNodes": 21,
+      "numericalHash": "b953bdfe0c7b2058c9d02e2eecc5c9b1f1025f907c423a778b0d4c42fe32b529",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 277774336,
+      "sampledPeakBrowserRssBytes": 318554112,
+      "sampledIncrementRssBytes": 40779776,
+      "samples": 6,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 73.22262500000215,
+      "samplingWindowMs": 329.4382079999996,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 60,
+      "nativeWallMs": 71.64883299999997,
+      "solveSpeedRatio": {
+        "ratio": 3.8833333333333333,
+        "quantizationLower": 3.80327868852459,
+        "quantizationUpper": 3.9661016949152543
+      },
+      "endToEndSpeedRatio": 3.8744525033850845
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 57,
+      "street": "river",
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "measurementSpotHash": "75d5ca5b61f54a8096afd97f7858b57ba624f44193354e647e3ea5896c3c3c9f",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 1370,
+      "peakLinearMemoryBytes": 1769472,
+      "reservedTotalBytes": 142294560,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 34,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 39,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 41,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 85,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 129,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 169,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 210,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 252,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 292,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 332,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 374,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 416,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 460,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 501,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 542,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 584,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 624,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 665,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 707,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 747,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 788,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 828,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 869,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 909,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 950,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 990,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1030,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1072,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1113,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1154,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1195,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1236,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1279,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1319,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1331,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 1331,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 1343,
+          "linearMemoryBytes": 1769472
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035751343,
+        "pctPot": 0.0028018293709590517,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 2,
+        "allocateMs": 0,
+        "solveMs": 1299,
+        "exportMs": 2,
+        "totalMs": 1305
+      },
+      "exportedNodes": 21,
+      "numericalHash": "b953bdfe0c7b2058c9d02e2eecc5c9b1f1025f907c423a778b0d4c42fe32b529",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 982499328,
+      "sampledPeakBrowserRssBytes": 1074380800,
+      "sampledIncrementRssBytes": 91881472,
+      "samples": 22,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 75.24433299999873,
+      "samplingWindowMs": 1427.9074590000018,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 60,
+      "nativeWallMs": 71.64883299999997,
+      "solveSpeedRatio": {
+        "ratio": 21.65,
+        "quantizationLower": 21.278688524590162,
+        "quantizationUpper": 22.033898305084747
+      },
+      "endToEndSpeedRatio": 19.1210371842344
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 57,
+      "street": "river",
+      "sourceSpotHash": "513ed0407522a710b135223f1fb04b5d287af7e657c4467d1b9685e39d51edc2",
+      "measurementSpotHash": "75d5ca5b61f54a8096afd97f7858b57ba624f44193354e647e3ea5896c3c3c9f",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 275,
+      "peakLinearMemoryBytes": 1769472,
+      "reservedTotalBytes": 142294560,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 2,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 18,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 28,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30,
+          "linearMemoryBytes": 1441792
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 36,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 43,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 46,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 49,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 52,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 59,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 67,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 75,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 83,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 90,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 97,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 105,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 113,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 120,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 127,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 134,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 142,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 150,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 157,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 165,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 172,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 179,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 187,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 194,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 202,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 209,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 217,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 225,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 232,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 240,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 246,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 246,
+          "linearMemoryBytes": 1507328
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 254,
+          "linearMemoryBytes": 1769472
+        }
+      ],
+      "iterations": 1000,
+      "exploitability": {
+        "chips": 0.035751343,
+        "pctPot": 0.0028018293709590517,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 1.2760000000000001e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 3,
+        "allocateMs": 0,
+        "solveMs": 223,
+        "exportMs": 2,
+        "totalMs": 233
+      },
+      "exportedNodes": 21,
+      "numericalHash": "b953bdfe0c7b2058c9d02e2eecc5c9b1f1025f907c423a778b0d4c42fe32b529",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 343900160,
+      "sampledPeakBrowserRssBytes": 396132352,
+      "sampledIncrementRssBytes": 52232192,
+      "samples": 6,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 78.28470799999923,
+      "samplingWindowMs": 330.791792,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 60,
+      "nativeWallMs": 71.64883299999997,
+      "solveSpeedRatio": {
+        "ratio": 3.716666666666667,
+        "quantizationLower": 3.639344262295082,
+        "quantizationUpper": 3.7966101694915255
+      },
+      "endToEndSpeedRatio": 3.838164398295226
+    },
+    {
+      "browser": "chromium",
+      "corpusIndex": 18,
+      "street": "turn",
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "measurementSpotHash": "fe214c925d9016da6b43b2084f619b44944bc5fa0b357509d035e16f13bb7f9a",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 978.0999984741211,
+      "peakLinearMemoryBytes": 6619136,
+      "reservedTotalBytes": 145622108,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 0.8999996185302734,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 13.700000762939453,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 24.899999618530273,
+          "linearMemoryBytes": 1703936
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 34.10000038146973,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 43.5,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 70.89999961853027,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 120.10000038146973,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 154.20000076293945,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 201.89999961853027,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 236.60000038146973,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 279.20000076293945,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 327.6000003814697,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 362.5,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 410.20000076293945,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 445.79999923706055,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 494,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 529.2000007629395,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 578,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 613.2999992370605,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 661.1000003814697,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 696,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 738.3999996185303,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 786.7000007629395,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 822,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 870.6000003814697,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 905.1000003814697,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 938,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 938,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 959.2999992370605,
+          "linearMemoryBytes": 6619136
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 4.49881,
+        "pctPot": 0.16021402473123664,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 2.808e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 4,
+        "allocateMs": 0,
+        "solveMs": 931,
+        "exportMs": 1,
+        "totalMs": 943
+      },
+      "exportedNodes": 15,
+      "numericalHash": "0f97085996b4439a7b64405b9ab619962c1f5f06c62517b46590abcbd9fba09e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 277905408,
+      "sampledPeakBrowserRssBytes": 321716224,
+      "sampledIncrementRssBytes": 43810816,
+      "samples": 16,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 72.34354099999837,
+      "samplingWindowMs": 1033.351999999999,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 626,
+      "nativeWallMs": 640.8493749999998,
+      "solveSpeedRatio": {
+        "ratio": 1.487220447284345,
+        "quantizationLower": 1.4832535885167464,
+        "quantizationUpper": 1.4912
+      },
+      "endToEndSpeedRatio": 1.5262556797751756
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 18,
+      "street": "turn",
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "measurementSpotHash": "fe214c925d9016da6b43b2084f619b44944bc5fa0b357509d035e16f13bb7f9a",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 11566,
+      "peakLinearMemoryBytes": 6619136,
+      "reservedTotalBytes": 145622108,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 42,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 59,
+          "linearMemoryBytes": 1703936
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 143,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 238,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 336,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 439,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 543,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 652,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 756,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 860,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 964,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1071,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1256,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1360,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1467,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1572,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1680,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1785,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1893,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1998,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2110,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2218,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2397,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2502,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2613,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2718,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2822,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2926,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3034,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3141,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3246,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3354,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3549,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3661,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3766,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3876,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3985,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4090,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4196,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4303,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4410,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4515,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4698,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4803,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4908,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5013,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5116,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5221,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5324,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5426,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5530,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5633,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5814,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5918,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6021,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6124,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6227,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6330,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6434,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6536,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6639,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6741,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6919,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7020,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7123,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7226,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7340,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7445,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7550,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7657,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7762,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7868,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8048,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8154,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8259,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8364,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8467,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8570,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8674,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8776,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8877,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8981,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9151,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9254,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9357,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9462,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9568,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9671,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9774,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9878,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9983,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10088,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10261,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10366,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10468,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10574,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10680,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10785,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10888,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10992,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11094,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11198,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11371,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 11372,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 11532,
+          "linearMemoryBytes": 6619136
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 4.49881,
+        "pctPot": 0.16021402473123664,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 2.808e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 15,
+        "allocateMs": 1,
+        "solveMs": 11467,
+        "exportMs": 3,
+        "totalMs": 11487
+      },
+      "exportedNodes": 15,
+      "numericalHash": "0f97085996b4439a7b64405b9ab619962c1f5f06c62517b46590abcbd9fba09e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 980729856,
+      "sampledPeakBrowserRssBytes": 1090699264,
+      "sampledIncrementRssBytes": 109969408,
+      "samples": 171,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 82.16400000000431,
+      "samplingWindowMs": 11672.780791000001,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 626,
+      "nativeWallMs": 640.8493749999998,
+      "solveSpeedRatio": {
+        "ratio": 18.317891373801917,
+        "quantizationLower": 18.28708133971292,
+        "quantizationUpper": 18.3488
+      },
+      "endToEndSpeedRatio": 18.047922727552013
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 18,
+      "street": "turn",
+      "sourceSpotHash": "caa7104753a4ebc9147bc5d39eab562fa3654132f2149392bac3370d1b3dd72d",
+      "measurementSpotHash": "fe214c925d9016da6b43b2084f619b44944bc5fa0b357509d035e16f13bb7f9a",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 983,
+      "peakLinearMemoryBytes": 6619136,
+      "reservedTotalBytes": 145622108,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 2,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 21,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 38,
+          "linearMemoryBytes": 1703936
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 48,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 58,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 87,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 129,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 159,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 196,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 239,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 268,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 316,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 351,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 399,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 435,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 483,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 518,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 567,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 602,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 645,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 694,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 731,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 779,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 815,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 864,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 899,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 940,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 940,
+          "linearMemoryBytes": 6619136
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 961,
+          "linearMemoryBytes": 6619136
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 4.49881,
+        "pctPot": 0.16021402473123664,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 2.808e-8,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 7,
+        "allocateMs": 1,
+        "solveMs": 919,
+        "exportMs": 2,
+        "totalMs": 937
+      },
+      "exportedNodes": 15,
+      "numericalHash": "0f97085996b4439a7b64405b9ab619962c1f5f06c62517b46590abcbd9fba09e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 343228416,
+      "sampledPeakBrowserRssBytes": 407535616,
+      "sampledIncrementRssBytes": 64307200,
+      "samples": 17,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 77.11533300000156,
+      "samplingWindowMs": 1085.7928749999992,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 626,
+      "nativeWallMs": 640.8493749999998,
+      "solveSpeedRatio": {
+        "ratio": 1.4680511182108626,
+        "quantizationLower": 1.4641148325358853,
+        "quantizationUpper": 1.472
+      },
+      "endToEndSpeedRatio": 1.5339017846432328
+    },
+    {
+      "browser": "chromium",
+      "corpusIndex": 25,
+      "street": "turn",
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "measurementSpotHash": "f781c2393bdc705099317968abedcf6a2db256359a9880ddc8fb790344b8f103",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 2465.300001144409,
+      "peakLinearMemoryBytes": 16908288,
+      "reservedTotalBytes": 159939244,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1.1000003814697266,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 17,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 33.10000038146973,
+          "linearMemoryBytes": 2031616
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 55.89999961853027,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 80.80000114440918,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 99.80000114440918,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 138.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 180,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 223.39999961853027,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 282.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 306.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 349.8000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 392.70000076293945,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 435.70000076293945,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 480,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 538.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 562.6000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 605.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 649.7000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 693.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 752.2000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 776,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 819.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 862.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 906,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 949.3999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1008.3999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1032.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1075.6000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1118.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1162,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1220.7000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1244.6000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1287.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1331.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1375.3999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1418.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1478.1000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1502.1000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1545.7000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1590.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1635.3000011444092,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1693.1000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1717.6000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1761,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1803.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1846.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1890.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1948.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1973.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2016.6000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2060.2000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2104,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2162.300001144409,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2187.2000007629395,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2229.8999996185303,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2273.800001144409,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2317.5,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2361,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2401.1000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 2401.1000003814697,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 2443.1000003814697,
+          "linearMemoryBytes": 16908288
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 2.3518558,
+        "pctPot": 0.4276101372458718,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 7,
+        "allocateMs": 2,
+        "solveMs": 2404,
+        "exportMs": 1,
+        "totalMs": 2423
+      },
+      "exportedNodes": 15,
+      "numericalHash": "fa69ed0b3c005415557950bf415dd961264df5a4319da85a3c25d247d21b5e92",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 280215552,
+      "sampledPeakBrowserRssBytes": 335478784,
+      "sampledIncrementRssBytes": 55263232,
+      "samples": 38,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 82.221209000003,
+      "samplingWindowMs": 2522.9340420000008,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 1765,
+      "nativeWallMs": 1785.2432919999997,
+      "solveSpeedRatio": {
+        "ratio": 1.3620396600566573,
+        "quantizationLower": 1.3607021517553795,
+        "quantizationUpper": 1.3633786848072562
+      },
+      "endToEndSpeedRatio": 1.3809322304650955
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 25,
+      "street": "turn",
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "measurementSpotHash": "f781c2393bdc705099317968abedcf6a2db256359a9880ddc8fb790344b8f103",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 31236,
+      "peakLinearMemoryBytes": 16908288,
+      "reservedTotalBytes": 159939244,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 2,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 44,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 78,
+          "linearMemoryBytes": 2031616
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 312,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 581,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 845,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1127,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1405,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1681,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1958,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2241,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2526,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2809,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3316,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3600,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3884,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4170,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4452,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4740,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5031,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5319,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5604,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5890,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6380,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6672,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6959,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7243,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7528,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7812,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8101,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8382,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8669,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8955,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9456,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9739,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10025,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10313,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10597,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10882,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11168,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11454,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11735,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 12019,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 12513,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 12791,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13072,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13356,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13638,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13931,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 14216,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 14596,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 14877,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15159,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15661,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15949,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 16232,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 16519,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 16801,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17088,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17373,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17661,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17947,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 18230,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 18735,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19022,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19305,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19586,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19866,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20147,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20426,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20708,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20991,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 21268,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 21761,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22040,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22319,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22601,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22880,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23159,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23440,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23719,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23999,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 24280,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 24757,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25033,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25315,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25591,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25869,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26151,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26431,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26705,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26988,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27268,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27745,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28024,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28302,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28579,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28858,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29136,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29415,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29693,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29972,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30251,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30746,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 30746,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 31203,
+          "linearMemoryBytes": 16908288
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 2.3518558,
+        "pctPot": 0.4276101372458718,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 30,
+        "allocateMs": 1,
+        "solveMs": 31115,
+        "exportMs": 6,
+        "totalMs": 31156
+      },
+      "exportedNodes": 15,
+      "numericalHash": "fa69ed0b3c005415557950bf415dd961264df5a4319da85a3c25d247d21b5e92",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 980058112,
+      "sampledPeakBrowserRssBytes": 1104756736,
+      "sampledIncrementRssBytes": 124698624,
+      "samples": 458,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 166.51350000000093,
+      "samplingWindowMs": 31325.526334000002,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 1765,
+      "nativeWallMs": 1785.2432919999997,
+      "solveSpeedRatio": {
+        "ratio": 17.628895184135978,
+        "quantizationLower": 17.618346545866366,
+        "quantizationUpper": 17.639455782312925
+      },
+      "endToEndSpeedRatio": 17.496774887755752
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 25,
+      "street": "turn",
+      "sourceSpotHash": "3765836333b1ca0a804e49f5b619ac1c9914aaad27592f3a03a5f00eab546353",
+      "measurementSpotHash": "f781c2393bdc705099317968abedcf6a2db256359a9880ddc8fb790344b8f103",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 2526,
+      "peakLinearMemoryBytes": 16908288,
+      "reservedTotalBytes": 159939244,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 3,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 22,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 41,
+          "linearMemoryBytes": 2031616
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 65,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 87,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 107,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 147,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 185,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 224,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 279,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 298,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 341,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 385,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 430,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 473,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 532,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 556,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 600,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 644,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 689,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 749,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 773,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 817,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 861,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 905,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 948,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1007,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1033,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1077,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1120,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1165,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1225,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1250,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1293,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1336,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1380,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1425,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1485,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1509,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1553,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1597,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1641,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1701,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1725,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1775,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1808,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1845,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1873,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1897,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1941,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1999,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2024,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2068,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2112,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2156,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2215,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2240,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2284,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2328,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2373,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2418,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2458,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 2458,
+          "linearMemoryBytes": 16908288
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 2501,
+          "linearMemoryBytes": 16908288
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 2.3518558,
+        "pctPot": 0.4276101372458718,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 13,
+        "allocateMs": 2,
+        "solveMs": 2454,
+        "exportMs": 2,
+        "totalMs": 2477
+      },
+      "exportedNodes": 15,
+      "numericalHash": "fa69ed0b3c005415557950bf415dd961264df5a4319da85a3c25d247d21b5e92",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 345849856,
+      "sampledPeakBrowserRssBytes": 421117952,
+      "sampledIncrementRssBytes": 75268096,
+      "samples": 39,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 150.45041700000002,
+      "samplingWindowMs": 2621.2283330000064,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 1765,
+      "nativeWallMs": 1785.2432919999997,
+      "solveSpeedRatio": {
+        "ratio": 1.3903682719546742,
+        "quantizationLower": 1.3890147225368064,
+        "quantizationUpper": 1.3917233560090703
+      },
+      "endToEndSpeedRatio": 1.414933197799687
+    },
+    {
+      "browser": "chromium",
+      "corpusIndex": 29,
+      "street": "turn",
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "measurementSpotHash": "bde5832ee1cb1589ebb6ffde5aea905ce9b1e6ca8665763684de1410de264511",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 3500.7000007629395,
+      "peakLinearMemoryBytes": 22937600,
+      "reservedTotalBytes": 166230492,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1.2000007629394531,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 13.899999618530273,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 30.399999618530273,
+          "linearMemoryBytes": 2097152
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 59.30000114440918,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 90.30000114440918,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 118.20000076293945,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 146.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 177.89999961853027,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 208.89999961853027,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 239.80000114440918,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 272.70000076293945,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 305.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 336.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 389.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 420.70000076293945,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 452.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 484.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 516.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 547.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 578.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 609.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 641.8000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 673.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 723.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 755.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 786.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 818.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 850.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 882.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 915,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 948.8000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 980.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1012.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1064.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1095.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1127.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1159.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1191.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1223.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1254.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1286.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1318.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1350.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1401.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1433.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1465.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1497.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1528.8000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1560.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1592.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1624.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1655.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1687.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1739.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1770.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1801.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1833.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1865.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1897.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1928.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1960,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1991.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2023.3000011444092,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2075.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2107.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2141.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2173.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2204.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2237.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2269,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2300.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2332.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2364.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2414.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2446.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2478.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2510,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2542.2000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2574.300001144409,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2605.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2637.300001144409,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2669.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2701.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2751.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2784,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2816,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2847.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2879.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2911.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2944,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2976,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3007.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3039.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3089.7000007629395,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3121.3999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3153.800001144409,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3186.300001144409,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3218,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3250.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3282,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3313.6000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3345.5,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3377.1000003814697,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3427.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 3427.8999996185303,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 3478.8999996185303,
+          "linearMemoryBytes": 22937600
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 1.2778325,
+        "pctPot": 0.23233318328857422,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 8,
+        "allocateMs": 2,
+        "solveMs": 3442,
+        "exportMs": 1,
+        "totalMs": 3462
+      },
+      "exportedNodes": 15,
+      "numericalHash": "ada735511ddd6fb6c854e87b8fac067b29578566037e6e63c25d30787b49b55e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 280592384,
+      "sampledPeakBrowserRssBytes": 342425600,
+      "sampledIncrementRssBytes": 61833216,
+      "samples": 54,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 77.91804200000479,
+      "samplingWindowMs": 3583.067750000002,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 2739,
+      "nativeWallMs": 2757.989667,
+      "solveSpeedRatio": {
+        "ratio": 1.2566630156991603,
+        "quantizationLower": 1.255839416058394,
+        "quantizationUpper": 1.2574872169466764
+      },
+      "endToEndSpeedRatio": 1.269294095858895
+    },
+    {
+      "browser": "firefox",
+      "corpusIndex": 29,
+      "street": "turn",
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "measurementSpotHash": "bde5832ee1cb1589ebb6ffde5aea905ce9b1e6ca8665763684de1410de264511",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 43676,
+      "peakLinearMemoryBytes": 22937600,
+      "reservedTotalBytes": 166230492,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 1,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 55,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 90,
+          "linearMemoryBytes": 2097152
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 411,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 791,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1171,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1571,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1955,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2337,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2761,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3154,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3556,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3955,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 4645,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5038,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5437,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 5831,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6229,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 6625,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7017,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7408,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 7799,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8268,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 8933,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9320,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 9710,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10101,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10489,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 10877,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11267,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 11656,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 12043,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 12462,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13136,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13523,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 13911,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 14298,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 14688,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15081,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15474,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 15864,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 16251,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 16637,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17313,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 17699,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 18088,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 18474,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 18860,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19246,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 19628,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20012,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20401,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 20802,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 21507,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 21902,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22293,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 22826,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23238,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 23640,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 24026,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 24414,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 24806,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25192,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 25870,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26258,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 26645,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27048,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27448,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 27845,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28231,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 28622,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29007,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 29393,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30043,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30507,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 30909,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 31304,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 31709,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 32117,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 32554,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 32989,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 33400,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 33849,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 34563,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 34996,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 35381,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 35766,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 36216,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 36634,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 37045,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 37518,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 37910,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 38304,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 38951,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 39334,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 39730,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40114,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40496,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 40878,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 41274,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 41657,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 42039,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 42423,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 43072,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 43072,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 43649,
+          "linearMemoryBytes": 22937600
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 1.2778325,
+        "pctPot": 0.23233318328857422,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 31,
+        "allocateMs": 2,
+        "solveMs": 43547,
+        "exportMs": 8,
+        "totalMs": 43592
+      },
+      "exportedNodes": 15,
+      "numericalHash": "ada735511ddd6fb6c854e87b8fac067b29578566037e6e63c25d30787b49b55e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 978354176,
+      "sampledPeakBrowserRssBytes": 1101250560,
+      "sampledIncrementRssBytes": 122896384,
+      "samples": 618,
+      "companionProcesses": 0,
+      "maxSampleGapMs": 217.8214580000058,
+      "samplingWindowMs": 43742.755915999995,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 2739,
+      "nativeWallMs": 2757.989667,
+      "solveSpeedRatio": {
+        "ratio": 15.89886820007302,
+        "quantizationLower": 15.892700729927007,
+        "quantizationUpper": 15.905040175310445
+      },
+      "endToEndSpeedRatio": 15.836172456551848
+    },
+    {
+      "browser": "webkit",
+      "corpusIndex": 29,
+      "street": "turn",
+      "sourceSpotHash": "c70739867b7e8b3432b31d0c8ae6853cb2b4278914a3ee300474b2afff1179d8",
+      "measurementSpotHash": "bde5832ee1cb1589ebb6ffde5aea905ce9b1e6ca8665763684de1410de264511",
+      "status": "result",
+      "error": null,
+      "admitted": true,
+      "terminalElapsedMs": 3661,
+      "peakLinearMemoryBytes": 22937600,
+      "reservedTotalBytes": 166230492,
+      "budgetBytes": 268435456,
+      "stages": [
+        {
+          "stage": "loading",
+          "elapsedMs": 4,
+          "linearMemoryBytes": null
+        },
+        {
+          "stage": "building",
+          "elapsedMs": 53,
+          "linearMemoryBytes": 1179648
+        },
+        {
+          "stage": "allocating",
+          "elapsedMs": 99,
+          "linearMemoryBytes": 2097152
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 138,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 172,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 199,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 230,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 258,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 285,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 313,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 340,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 375,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 408,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 462,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 495,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 528,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 560,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 592,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 625,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 658,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 689,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 722,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 754,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 806,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 838,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 870,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 902,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 934,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 966,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 999,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1031,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1064,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1096,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1148,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1181,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1214,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1246,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1278,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1309,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1341,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1373,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1405,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1437,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1490,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1522,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1555,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1587,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1619,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1652,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1685,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1717,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1749,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1781,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1840,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1881,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1917,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1951,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 1983,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2015,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2047,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2080,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2112,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2144,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2196,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2228,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2260,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2292,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2324,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2356,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2388,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2420,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2452,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2484,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2535,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2575,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2619,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2655,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2689,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2721,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2754,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2786,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2818,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2851,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2902,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2933,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2966,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 2998,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3030,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3063,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3095,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3127,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3159,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3190,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3241,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3274,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3306,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3338,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3371,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3403,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3435,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3467,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3499,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3532,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "solving",
+          "elapsedMs": 3584,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "exporting",
+          "elapsedMs": 3584,
+          "linearMemoryBytes": 22937600
+        },
+        {
+          "stage": "checking",
+          "elapsedMs": 3635,
+          "linearMemoryBytes": 22937600
+        }
+      ],
+      "iterations": 100,
+      "exploitability": {
+        "chips": 1.2778325,
+        "pctPot": 0.23233318328857422,
+        "convention": "half-sum-of-best-response-gains",
+        "target": 5.5000000000000004e-9,
+        "reached": false
+      },
+      "timings": {
+        "buildMs": 34,
+        "allocateMs": 3,
+        "solveMs": 3529,
+        "exportMs": 3,
+        "totalMs": 3580
+      },
+      "exportedNodes": 15,
+      "numericalHash": "ada735511ddd6fb6c854e87b8fac067b29578566037e6e63c25d30787b49b55e",
+      "workers": 1,
+      "terminated": 1,
+      "isolated": false,
+      "baselineRssBytes": 346144768,
+      "sampledPeakBrowserRssBytes": 424427520,
+      "sampledIncrementRssBytes": 78282752,
+      "samples": 52,
+      "companionProcesses": 3,
+      "maxSampleGapMs": 183.37995899999805,
+      "samplingWindowMs": 3717.9270000000106,
+      "exactNativeParity": true,
+      "passed": true,
+      "nativeSolveMs": 2739,
+      "nativeWallMs": 2757.989667,
+      "solveSpeedRatio": {
+        "ratio": 1.2884264330047464,
+        "quantizationLower": 1.2875912408759125,
+        "quantizationUpper": 1.289262235208181
+      },
+      "endToEndSpeedRatio": 1.3274161407509002
+    }
+  ],
+  "payloadHash": "30e705a01759b20e7bd18d4a531d9a82cd4a05c9c32ea67f39051be6e51533b2"
+}

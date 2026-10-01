@@ -87,6 +87,9 @@ jobs:
       - name: Reproduce P1 admission diagnosis (records a blocked play gate, not a playing policy)
         run: npm run audit:hu-play:admission
 
+      - name: Check full-range P1 observation hashes and recompute the measurement summary
+        run: npm run audit:hu-play:wide
+
       - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
         run: npm run audit:hu-play:gadget
 
@@ -146,7 +149,7 @@ jobs:
         run: npm run test:bridge
 
       - name: Drive solver-bridge through the Node runner, referee and slice-export tests
-        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts test/bridge-session-regression.test.ts
+        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts test/bridge-session-regression.test.ts test/hu-play-wide-feasibility.test.ts
 
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge
@@ -179,6 +182,8 @@ jobs:
           cargo +1.98.1 fmt --check --manifest-path native/solver-bridge-wasm/Cargo.toml
           cargo +1.98.1 clippy --release --locked --manifest-path native/solver-bridge-wasm/Cargo.toml --target wasm32-unknown-unknown -- -D warnings
       - run: npm run test:wasm
+      - name: Preserve exact float32-weight JSON inputs in native and WASM
+        run: node --import tsx --test test/bridge-float-input.test.ts
       - run: npm run audit:wasm
       - run: npm run audit:wasm -- --measure
       - run: npx playwright install --with-deps chromium firefox webkit
