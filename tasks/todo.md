@@ -3,6 +3,20 @@
 > **Current forward plan:** [Explainable solver lab roadmap](solver-lab-roadmap.md).
 > This file preserves the earlier repair history; the linked roadmap governs new solver work.
 
+## Up next after `/play` (P5): solver work in the trainer
+
+Plan: [trainer-solver-integration-plan.md](trainer-solver-integration-plan.md). Requires P5 and
+the in-progress trainer/session work to be landed first.
+
+- [ ] T1a: post-hand math quiz built from your own decisions (reuses `/drills`)
+- [ ] T1b: push/fold reference badge for short-stack blind spots (labelled heads-up chart)
+- [ ] T2a: exact opponent ranges from the trainer's rule-based policies (measure cost first)
+- [ ] T2b: exact EV of each option in heads-up turn/river pots vs the known opponent
+- [ ] T2c: measured "costly by X bb" grading in those spots; honest labels elsewhere
+- [ ] T2d: optional side-by-side equilibrium answer from the live solver
+- [ ] T3a: solver-backed opponents when a pot goes heads-up (after `/play`)
+- [ ] T3b: multiway pots stay rule-based until roadmap step 14
+
 Goal: turn the weaknesses a hiring manager's LLM would flag into either (a) fixed code
 that makes the README's claims true, or (b) honestly-documented, deliberate scope.
 
