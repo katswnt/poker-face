@@ -18,6 +18,15 @@ case without pruning; it is not enabled in production. This supersedes "before s
 as the research status, not the outstanding production-source/replay/leak/latency gates.
 Physical-device checks are listed last per Kat's explicit continuation decision.
 
+**P1 implementation continuation:** see the [production integration record](heads-up-play-p1-integration.md).
+Real public-only library/browser/native sources and the complete flop supplement now pass
+the 1,000-hand, independent grading, no-leak and Chromium latency gates. Release verification
+is pending; no `/play` UI is claimed. The browser is the production path, not the older native
+server draft below. `play-v1` preserves every positive hand (up to 640/player), the exact lean
+menu and SPR ≤18; 256 MiB desktop / 192 MiB mobile-or-unknown reservations, 1,000 iterations,
+120-second watchdog, float32 and the unchanged 0.3%-pot quality target. Full-range comparison
+needed no pruning; no unmeasured fallback is enabled. Physical phones remain unvalidated.
+
 ## Goal and non-goals
 
 The human plays heads-up hands against an AI whose postflop strategy comes from solver
@@ -232,10 +241,18 @@ B = bet, C = call):
 - [x] Frozen necessary admission/coverage audit recorded: **failed**, not a P1 completion.
       No reached turn/river root in the 4,096-prefix cohort meets 99% retention within 64
       hands/player; missing-board fallbacks block the proposed ladder. See the P1 record.
-- [ ] Scripted preflop + joint deal from library ranges; honest-label copy (test in `copy.test.ts` style).
-- [ ] Flop: sample from library slices. Turn/river: street-root re-solves with the lean menu (native).
-- [ ] Measure the turn/river cost model on the M1 Pro. Set budgets from the data, record them here.
-- [ ] Referee gate (2.7 #1) on sampled river re-solves; replay determinism test.
+- [x] Scripted preflop + joint deal from library ranges; explicit hand-written-range and 12-flop label.
+- [x] Flop: complete hash-bound policy supplement to the unchanged library. Turn/river:
+      full-range street-root re-solves with the lean menu; browser Worker for production,
+      native source for tests/local tools.
+- [x] Measured production Chromium M1 Pro public-request-to-policy latency: river p50/p95
+      71.9/77.6 ms, turn 2,309.4/4,368.1 ms. Frozen p95 budgets: **2 s river / 10 s turn**;
+      120 s hard watchdog and 0.3%-pot target remain. No certified predictor or phone promise.
+- [x] First 32 distinct production rivers independently graded ≤0.3% pot; 1,000/1,000 exact
+      conserved/deterministic replays; real-source hidden-card non-interference.
+- [x] Frozen 64-root full/browser-range comparison retains 100% and matches every per-hand EV;
+      independent complete turn/river grading median 0.2445% pot (unchanged ≤1% gate).
+- [ ] P1 exact-commit verification and all hosted CI jobs green (see integration record).
 
 ### P2 — live re-solve for off-tree river bets
 - [ ] Explicit-tree builder: lean menu at `s` plus the human's actual `a*`. Solve, use the AI's σ below `a*`.

@@ -39,7 +39,7 @@ export function createLiveClient(host: ClientHost, emit: (event: LiveEvent) => v
       if (disposed) throw new Error("Solver client is disposed.");
       retire(); const id = nextId++;
       try {
-        const spot = parseLiveSpot(request.spotJson);
+        const spot = parseLiveSpot(request.spotJson, request.profile);
         const worker = host.createWorker(), started = host.now();
         job = { id, worker, started, cancelling: false, request, timer: undefined };
         job.timer = host.setTimer(() => {

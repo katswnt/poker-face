@@ -89,8 +89,8 @@ function settle(state: HeadsUpHandState): HeadsUpHandState {
   return { ...state, result };
 }
 
-/** Run chance events and AI decisions until the human is to act or the hand is over. */
-export function advance(state: HeadsUpHandState, source: DecisionSource): HeadsUpHandState {
+/** Resolve chance/settlement only. Stops before either player's next decision. */
+export function advanceChance(state: HeadsUpHandState): HeadsUpHandState {
   let current = state;
   for (let guard = 0; guard < 200; guard++) {
     const p = current.public;
@@ -104,13 +104,25 @@ export function advance(state: HeadsUpHandState, source: DecisionSource): HeadsU
       };
       continue;
     }
-    if (p.toAct !== current.config.aiSeat) return current;
-    current = aiDecision(current, source);
+    return current;
   }
   fail("the hand did not finish");
 }
 
-function aiDecision(state: HeadsUpHandState, source: DecisionSource): HeadsUpHandState {
+/** Run chance events and AI decisions until the human is to act or the hand is over. */
+export function advance(state: HeadsUpHandState, source: DecisionSource): HeadsUpHandState {
+  let current = state;
+  for (let guard = 0; guard < 200; guard++) {
+    current = advanceChance(current);
+    if (current.result || current.public.toAct !== current.config.aiSeat) return current;
+    current = applyAiDecision(current, source);
+  }
+  fail("the hand did not finish");
+}
+
+/** One prepared AI decision; no chance events or asynchronous work. */
+export function applyAiDecision(state: HeadsUpHandState, source: DecisionSource): HeadsUpHandState {
+  if (state.result || state.public.status !== "betting" || state.public.toAct !== state.config.aiSeat) fail("it is not the AI's turn");
   const index = state.decisions.length;
   const request: DecisionRequest = {
     publicState: state.public, aiSeat: state.config.aiSeat, aiHand: state.deal.aiHand, ranges: state.ranges, index,
@@ -136,8 +148,8 @@ function aiDecision(state: HeadsUpHandState, source: DecisionSource): HeadsUpHan
   };
 }
 
-/** Apply the human's action (must be their turn and legal), then advance. */
-export function applyHumanAction(state: HeadsUpHandState, action: BridgeAction, source: DecisionSource): HeadsUpHandState {
+/** One prepared human decision; no chance events or automatic AI actions. */
+export function applyHumanActionOnly(state: HeadsUpHandState, action: BridgeAction, source: DecisionSource): HeadsUpHandState {
   const p = state.public;
   const human = (1 - state.config.aiSeat) as BridgePlayer;
   if (p.status !== "betting" || p.toAct !== human) fail("it is not the human's turn");
@@ -150,7 +162,12 @@ export function applyHumanAction(state: HeadsUpHandState, action: BridgeAction, 
     ranges: { ...state.ranges, human: applyStrategy(state.ranges.human, model) },
     humanActions: [...state.humanActions, action],
   };
-  return advance(next, source);
+  return next;
+}
+
+/** Apply the human's action (must be their turn and legal), then advance. */
+export function applyHumanAction(state: HeadsUpHandState, action: BridgeAction, source: DecisionSource): HeadsUpHandState {
+  return advance(applyHumanActionOnly(state, action, source), source);
 }
 
 export function handLog(state: HeadsUpHandState): HuHandLogV1 {

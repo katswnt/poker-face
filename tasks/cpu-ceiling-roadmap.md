@@ -135,6 +135,16 @@ cache whose size/coverage must be measured. Do not replace the game or lower a q
 Earlier device-before-investigation wording is superseded by this explicit direction;
 unmeasured phone performance/safety must still be labelled unmeasured.
 
+The feasibility/parser foundation landed as `70dfdc0` after isolated verification and all
+eight jobs in CI `36795159624` passed. The [P1 production integration record](heads-up-play-p1-integration.md)
+now documents complete flop columns, public-only browser/native sources and the unchanged
+production gates: 1,000 deterministic/conserved hands, 32 independently graded production
+rivers, 64 full-range complete-game grades (median 0.2445% pot), and Chromium p95 77.6 ms river /
+4.37 s turn. The measured full-range rung retains 100%; no pruning or unmeasured fallback is
+enabled. W4's general limits stay unchanged. P1 release isolation/CI is in progress; P2 may
+start only after that release is green. This supersedes the historical capacity blocker for
+these measured inputs, not the phone checklist or the local-vs-global safety caveat.
+
 ## Steps 1–4: browser solving (finish W1–W4)
 
 These already have detailed records; this section adds the done-definition.

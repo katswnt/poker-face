@@ -1,5 +1,6 @@
 import type { BridgeResultV1 } from "../contract";
 import type { BridgeEstimateV1, WasmEnvironment } from "../wasm-admission";
+import type { LiveProfile } from "./play-profile";
 
 export interface ExportReservation {
   version: 1; basis: "public-tree-upper-bound"; scope: "full" | "first-street";
@@ -27,7 +28,7 @@ export interface LiveEngine {
   provenance: { buildHash: string; sourceHash: string; sourceUrl: string; licenseUrl: string; engineCommit: string };
 }
 export type LiveCommand =
-  | { type: "estimate" | "solve"; id: number; spotJson: string; environment: WasmEnvironment; assetBase: string }
+  | { type: "estimate" | "solve"; id: number; spotJson: string; environment: WasmEnvironment; assetBase: string; profile?: LiveProfile }
   | { type: "cancel"; id: number };
 export type LiveEvent =
   | { type: "progress"; id: number; stage: "loading" | "building" | "allocating" | "solving" | "exporting" | "checking";

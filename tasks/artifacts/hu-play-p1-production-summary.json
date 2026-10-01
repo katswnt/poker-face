@@ -1,0 +1,39 @@
+{
+  "format": "poker-face-p1-production-summary",
+  "version": 1,
+  "evidenceHashes": [
+    "c7875c3d4da0a4a0da1c2f9412c7dc64de3cbc86add7c1d4bf77c0ad3f622cd9",
+    "30f38c9ed026e4f93f6e4dc72f84673ef98d8caa0918f22dd58fb6b99061aa2f",
+    "09a3d15e49e8dbebd3684e8c8b2babcfed078be98d125aa050d0d0ee1a462a1b"
+  ],
+  "hands": 1000,
+  "solves": 1342,
+  "productionRiverGrades": 32,
+  "productionRiverMaxPctPot": 0.2973269453720823,
+  "roots": 64,
+  "minimumRetainedReachMass": 1,
+  "maxPerHandEvDifferenceChips": 0,
+  "medianIndependentPctPot": 0.24449155821206292,
+  "maximumIndependentPctPot": 0.2977181206002056,
+  "latency": [
+    {
+      "browser": "chromium",
+      "street": "river",
+      "n": 32,
+      "p50Ms": 71.89999961853027,
+      "p95Ms": 77.5999984741211,
+      "maxMs": 96.5,
+      "chromiumP95BudgetMs": 2000
+    },
+    {
+      "browser": "chromium",
+      "street": "turn",
+      "n": 32,
+      "p50Ms": 2309.3999996185303,
+      "p95Ms": 4368.099998474121,
+      "maxMs": 4519.5,
+      "chromiumP95BudgetMs": 10000
+    }
+  ],
+  "limits": "Full-range local games only; scripted preflop, hand-written ranges, 12 saved flops. No phone certificate or global safety guarantee."
+}

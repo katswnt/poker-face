@@ -74,7 +74,7 @@ export interface HuRange {
 export type ActionDistribution = readonly { readonly action: BridgeAction; readonly probability: number }[];
 
 /** Where an AI decision came from (spec 2.2). Every variant names the spot it was read from. */
-export type DecisionProvenance =
+export type DecisionProvenance = (
   | {
     readonly source: "library";
     /** sha256 of the canonical library spot. */
@@ -105,6 +105,14 @@ export type DecisionProvenance =
     /** Pseudo-harmonic probability of mapping to `a`. */
     readonly probabilityA: number;
     readonly mappedTo: "a" | "b";
+  }) & {
+    /** Present on production P1 sources; absent in older P0 diagnostic logs. Fractions per bridge seat. */
+    readonly ladder?: {
+      readonly rung: "full" | "pruned" | "library" | "translation";
+      readonly prunedMass: readonly [number, number];
+      readonly profile: "play-v1" | null;
+      readonly policyEncoding: "float32-renormalized" | "per-mille";
+    };
   };
 
 /** One AI decision, as logged (spec 2.6). Contains nothing about the human's cards. */

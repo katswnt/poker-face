@@ -90,6 +90,11 @@ jobs:
       - name: Check full-range P1 observation hashes and recompute the measurement summary
         run: npm run audit:hu-play:wide
 
+      - name: Reproduce complete flop play policies and recompute production P1 gates
+        run: |
+          npm run audit:hu-play:library
+          npm run audit:hu-play:p1
+
       - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
         run: npm run audit:hu-play:gadget
 
@@ -154,6 +159,9 @@ jobs:
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge
 
+      - name: Exercise the real one-thread P1 source, complete hand and replay
+        run: node --import tsx --test test/hu-play-native-source.test.ts test/hu-play-scripted.test.ts
+
   # Single-threaded foundation, bounded Worker and prepared live UI. No shared memory/MT.
   bridge-wasm:
     runs-on: ubuntu-latest
@@ -189,6 +197,8 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run audit:wasm:browser -- chromium firefox webkit
       - run: npm run test:wasm:live
+      - name: P1 production Worker, policy sources, leak properties and independent turn referee
+        run: node --import tsx --test test/hu-play-worker.test.ts test/hu-play-resolve-source.test.ts test/hu-play-real-leak.test.ts test/hu-play-p1-corpus.test.ts test/bridge-turn-full-referee.test.ts
       - run: npm run profile:wasm:live
       - run: npm run audit:wasm:live -- chromium firefox webkit
       - run: npm run profile:wasm:browsers -- chromium firefox webkit

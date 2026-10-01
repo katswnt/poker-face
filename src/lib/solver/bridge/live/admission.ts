@@ -1,6 +1,7 @@
 import { validateBridgeSpot, type BridgeBetSize, type BridgeSpotV1 } from "../contract";
 import { parseBridgeEstimate, wasmBudget, type WasmEnvironment } from "../wasm-admission";
 import type { ExportReservation, LiveEstimate, LiveVerdict } from "./model";
+import { PLAY_LIMITS, requireLiveProfile, validatePlaySpot, type LiveProfile } from "./play-profile";
 
 /** W2 engineering limits, not a hardware safety certificate. Offline scripts retain capacity. */
 export const LIVE_LIMITS = Object.freeze({ inputBytes: 256 * 1024, rangeHands: 64, jsonDepth: 100,
@@ -8,7 +9,8 @@ export const LIVE_LIMITS = Object.freeze({ inputBytes: 256 * 1024, rangeHands: 6
   overheadBytes: 128 * 1024 ** 2, exportNodes: 100_000, jsonBytes: 32 * 1024 ** 2,
   chunkMs: 40, maxChunkIterations: 32, previewMs: 1000, cancelGraceMs: 250 });
 
-export function parseLiveSpot(json: string): BridgeSpotV1 {
+export function parseLiveSpot(json: string, profile: LiveProfile = "teaching-v1"): BridgeSpotV1 {
+  requireLiveProfile(profile);
   if (typeof json !== "string" || json.length > LIVE_LIMITS.inputBytes || new TextEncoder().encode(json).length > LIVE_LIMITS.inputBytes) {
     throw new Error("Browser spot input exceeds 256 KiB. Use the offline scripts for larger games.");
   }
@@ -21,6 +23,7 @@ export function parseLiveSpot(json: string): BridgeSpotV1 {
     if (value && typeof value === "object") for (const child of Object.values(value)) pending.push([child, depth + 1]);
   }
   const spot = validateBridgeSpot(raw);
+  if (profile === "play-v1") return validatePlaySpot(spot);
   if (spot.board.turn === null) throw new Error("Live flops use the saved library. Browser solving starts on the turn or river.");
   if (spot.ranges.some(r => r.combos.length > LIVE_LIMITS.rangeHands)) throw new Error("Browser preflight currently allows at most 64 hands per player.");
   if (spot.solve.compression !== "off") throw new Error("Browser solving currently requires compression off (the checked float32 path).");
@@ -69,10 +72,14 @@ export function parseLiveEstimate(raw: string, spot: BridgeSpotV1, hash: string)
   return { ...parsed, estimateExport: e };
 }
 
-export function admitBrowserSolve(estimate: LiveEstimate, environment: WasmEnvironment, preflightMemoryBytes: number): LiveVerdict {
+export function admitBrowserSolve(estimate: LiveEstimate, environment: WasmEnvironment, preflightMemoryBytes: number,
+  profile: LiveProfile = "teaching-v1"): LiveVerdict {
+  requireLiveProfile(profile);
   if (!Number.isSafeInteger(preflightMemoryBytes) || preflightMemoryBytes < 0) throw new Error("Invalid preflight memory measurement.");
   const e = estimate.estimateExport;
-  const budgetBytes = Math.min(LIVE_LIMITS.budgetBytes, wasmBudget(environment).bytes);
+  const desktop = ["desktop-chromium", "desktop-firefox", "desktop-safari"].includes(environment.profile);
+  const profileBudget = profile === "play-v1" ? (desktop ? PLAY_LIMITS.desktopBytes : PLAY_LIMITS.mobileBytes) : LIVE_LIMITS.budgetBytes;
+  const budgetBytes = Math.min(profileBudget, wasmBudget(environment).bytes);
   // Measured WASM preflight high-water memory in addition to the fixed reservation. There
   // is intentional double-counting: never assume a freed game table shrinks linear memory.
   const overheadBytes = LIVE_LIMITS.overheadBytes + preflightMemoryBytes;
@@ -80,6 +87,10 @@ export function admitBrowserSolve(estimate: LiveEstimate, environment: WasmEnvir
   const totalBytes = engineBytes + exportBytes + overheadBytes;
   if (!Number.isSafeInteger(totalBytes)) throw new Error("Browser memory reservation overflow.");
   const numbers = { budgetBytes, totalBytes, engineBytes, exportBytes, overheadBytes };
+  if (profile === "play-v1" && (engineBytes > PLAY_LIMITS.engineBytes || exportBytes > PLAY_LIMITS.exportBytes
+    || e.jsonBytesUpperBound > PLAY_LIMITS.jsonBytes)) {
+    return { ...numbers, ok: false, reason: "This game exceeds the measured play profile's engine or export limit. No strategy storage allocated." };
+  }
   if (e.nodes > LIVE_LIMITS.exportNodes || e.jsonBytesUpperBound > LIVE_LIMITS.jsonBytes) {
     return { ...numbers, ok: false, reason: "Result export is too large. Try first-street export, smaller ranges or the offline scripts. No strategy storage allocated." };
   }

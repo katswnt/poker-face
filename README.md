@@ -723,17 +723,22 @@ already powers solver-backed drills. The active path does not depend on a collab
    cap. Public asset deployment and physical-device memory validation remain separate checks.
    No live flop, per-action EV or GPU training claim for this page.
    See the [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
-   has P0 public state, hidden-card safeguards and deterministic replay, not a playable UI
-   or live policy source. The [initial P1 admission audit](tasks/heads-up-play-p1-admission.md)
-   failed: 64 hands cannot retain the required 99% of both ranges, and the saved slices do not
-   cover every later board. The [full-range feasibility study](tasks/heads-up-play-p1-wide-feasibility.md)
-   then solved all 64 frozen roots natively and in Chromium, Firefox and WebKit (192 browser
-   quality jobs), retaining every positive hand. All matched native output; all 32 rivers also
-   passed independent grading at ≤0.3% of the pot. Turn p95 on this M1 Pro was about 4.5–4.6 s
-   in Chromium/WebKit but 52.1 s in Firefox. These are private research-harness measurements,
-   not a shipped play source or phone certification. A stricter-mobile admission proposal is
-   recorded; production caps remain unchanged. Next are production sources, complete flop
-   policy coverage and the unchanged 1,000-hand replay/conservation, leak and referee gates.
+   now has an audited [P1 on-tree backend](tasks/heads-up-play-p1-integration.md), not a playable
+   `/play` UI yet. It combines complete policies for the 12 saved flops with full-range turn/
+   river solves through the browser Worker; the native source is for tests and local tools.
+   A separate, strict `play-v1` profile admits at most 640 hands/player and stack/pot 18 with
+   the measured lean menu, float32, 1,000 iterations and a 120-second watchdog. Its reservation
+   is 256 MiB on desktop and 192 MiB on mobile/unknown; `/solver/live` keeps its narrower limits.
+   The unchanged P1 gates passed: 1,000 complete seeded hands with conserved chips and identical
+   replays, 32 independently graded production rivers ≤0.3% pot, and all 64 frozen full-range
+   turn/river games independently graded (median 0.2445% pot). No hands were pruned; repeated
+   full/browser-range policies and per-hand EVs matched exactly. Production-source Chromium
+   p50/p95 was 71.9/77.6 ms on rivers and 2.31/4.37 s on turns on this M1 Pro—not phone promises.
+   The [earlier three-browser study](tasks/heads-up-play-p1-wide-feasibility.md) measured much
+   slower Firefox turns (p95 52.1 s). Physical phones remain unvalidated. Failed admission,
+   cancellation or missed quality targets never publish a playing policy; unmeasured fallback
+   rungs are not enabled. Next: off-tree river responses (P2), turn caching/nested solves (P3),
+   flop translation (P4), then the keyboard-accessible `/play` teaching UI (P5).
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.
@@ -741,8 +746,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    river spots; local re-solving does not establish global unexploitable play. This work can
    use clearly labelled hand-written ranges while preflop research stays separate.
 3. **Verification and reliability.** Keep our TypeScript engines as independent referees.
-   Broader turn-subgame grading needs player- and pot-dependent action menus that the
-   existing turn engines cannot express. CI now covers the older river and multiway audits;
+   The independent complete-turn export referee now checks full-range bridge games using
+   our own chip replay, card evaluation and hidden-information-respecting best responses,
+   cross-checked against the small turn engine and quadratic kernels. CI covers river and multiway audits;
    the expensive full wider-flop re-solve remains local-only, with the saved policy graded
    independently in CI. Expand physical-device, browser and assistive-technology coverage.
    A second richer TypeScript flop solver is not a prerequisite for the Rust/browser path;
@@ -945,7 +951,7 @@ src/
     multiway/               separate bounded three-/four-player river proofs
     bridge/                 postflop-solver spot contract, hashing, referee gates, library loader
   lib/drills/               drill generators, exact grading, review scheduler (no React)
-  lib/hu-play/              heads-up play P0: data contract and replay only, no UI yet
+  lib/hu-play/              P1: public-only library/browser/native policy sources, async play and replay; no UI yet
 native/solver-bridge/       optional Rust CLI wrapping pinned postflop-solver
 public/solver-data/bridge-v1/  saved 12-flop bridge library (hash-bound JSON)
 test/                       node:test suites that import the REAL lib/ (not copies)
@@ -1028,8 +1034,9 @@ fixed). Coverage:
 - **drills** — every generator's answer is checked a second way (break-even identities, full
   run-out and deck enumeration, the app's hand evaluator), plus grading, sessions and the review
   scheduler.
-- **heads-up play contract** — public-state derivation, reach, deterministic replay, and
-  checks that hole cards never reach a spot, cache key, request or pre-showdown log.
+- **heads-up play** — public-state derivation, exact played reach, complete flop policy columns,
+  bounded Worker sources, 1,000-hand conservation/replay audit, independent turn/river grades,
+  and checks that hole cards never reach a spot, cache key, request or pre-showdown log.
 - **browser smoke tests** — native Space activation for Deal and training-choice buttons,
   run against a production build in Chromium.
 

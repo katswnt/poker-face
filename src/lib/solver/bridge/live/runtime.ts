@@ -59,13 +59,13 @@ export function createLiveRuntime(host: LiveHost) {
     // Any exception inside WASM may be a trap/abort. Never call back into that instance.
     const wasm = <T,>(f: () => T): T => { try { return f(); } catch (error) { safeToFree = false; throw error; } };
     try {
-      const spot = parseLiveSpot(command.spotJson); timeout = spot.solve.timeoutMs;
+      const spot = parseLiveSpot(command.spotJson, command.profile); timeout = spot.solve.timeoutMs;
       const bytes = new TextEncoder().encode(canonicalSolverJson(spot)), hash = await host.hash(bytes); check();
       stage("loading"); const engine = await host.load(command.assetBase); check();
       stage("building"); await pause();
       session = wasm(() => engine.create(bytes)); check();
       const estimate = parseLiveEstimate(wasm(() => session!.estimate()), spot, hash);
-      const verdict = admitBrowserSolve(estimate, command.environment, engine.memoryBytes());
+      const verdict = admitBrowserSolve(estimate, command.environment, engine.memoryBytes(), command.profile);
       await pause(); emit({ type: "estimate", id, estimate, verdict, provenance: engine.provenance });
       if (command.type === "estimate" || !verdict.ok) return;
       const memoryCheck = () => {
@@ -86,6 +86,9 @@ export function createLiveRuntime(host: LiveHost) {
           const preview = parsePreview(wasm(() => session!.root_strategy()), spot, status.iterations);
           check(); emit({ type: "preview", id, preview }); previewAt = host.now();
         }
+      }
+      if (command.profile === "play-v1" && status.exploitability! > status.target) {
+        throw new Error("The play quality target was not reached within the iteration budget; no playing policy published.");
       }
       stage("exporting", status); await pause();
       const json = wasm(() => session!.finish()); memoryCheck(); check();
