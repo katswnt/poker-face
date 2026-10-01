@@ -93,6 +93,7 @@ export type DecisionProvenance = (
     readonly engineCommit: string;
     /** Which rung of the admission ladder ran (0 = full solve). */
     readonly degradation: number;
+    readonly quality?: import("../solver/bridge/live/river-quality").RiverPlayingQuality;
   }
   | {
     readonly source: "translation";
@@ -105,12 +106,27 @@ export type DecisionProvenance = (
     /** Pseudo-harmonic probability of mapping to `a`. */
     readonly probabilityA: number;
     readonly mappedTo: "a" | "b";
+    /** P2 extension: translation models the range, then the smaller response uses real chips. */
+    readonly reason?: "zero-support" | "solve-unavailable";
+    readonly mappedAction?: BridgeAction;
+    readonly draw?: number;
+    readonly mappingBasis?: "increment-after-call";
+    readonly omittedUnsupportedActions?: readonly BridgeAction[];
+    readonly responseSolve?: {
+      readonly spotHash: string;
+      readonly iterations: number;
+      readonly exploitabilityPctPot: number;
+      readonly bridgeVersion: string;
+      readonly engineCommit: string;
+      readonly precision: "float32";
+      readonly quality?: import("../solver/bridge/live/river-quality").RiverPlayingQuality;
+    };
   }) & {
     /** Present on production P1 sources; absent in older P0 diagnostic logs. Fractions per bridge seat. */
     readonly ladder?: {
       readonly rung: "full" | "pruned" | "library" | "translation";
       readonly prunedMass: readonly [number, number];
-      readonly profile: "play-v1" | null;
+      readonly profile: "play-v1" | "play-river-v1" | null;
       readonly policyEncoding: "float32-renormalized" | "per-mille";
     };
   };

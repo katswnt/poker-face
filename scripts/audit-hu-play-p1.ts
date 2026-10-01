@@ -9,9 +9,10 @@ import { fileURLToPath } from "node:url";
 import { loadP1ProductionRoots } from "./hu-play-p1-corpus";
 import { P1_FROZEN_ADMISSION_HASH, wideHash } from "./hu-play-wide-corpus";
 import { hashBridgeSpot } from "../src/lib/solver/bridge/contract-node";
+import { checkP1SuccessorEvidence, readP1Successor } from "./hu-play-p1-successor";
 
 interface Hashed { format: string; version: number; payloadHash: string }
-interface Hands extends Hashed {
+export interface Hands extends Hashed {
   seeds: { first: number; count: number };
   sourceSnapshot: { baseCommit: string; sourceFiles: { path: string; sha256: string }[] }; sourceSnapshotHash: string;
   hands: { seed: number; aiSeat: number; logHash: string; deterministicReplay: boolean; conserved: boolean;
@@ -19,7 +20,7 @@ interface Hands extends Hashed {
   solves: { seed: number; street: string; spotHash: string; numericalHash: string; iterations: number; reached: boolean; enginePctPot: number }[];
   riverGrades: { seed: number; spotHash: string; grade: { localExploitabilityPctPot: number; elapsedMs: number } }[];
 }
-interface Corpus extends Hashed {
+export interface Corpus extends Hashed {
   sourceAdmissionHash: string; medianIndependentExploitabilityPctPot: number;
   rows: { corpusIndex: number; seed: number; street: string; sourceSpotHash: string; playingSpotHash: string;
     numericalHash: string; completeNumericalHash: string; firstStreetHash: string; fullRangeHands: number[];
@@ -27,7 +28,7 @@ interface Corpus extends Hashed {
     aiPerHandEvDifferenceChips: number[]; iterations: number; enginePctPot: number; independentExploitabilityPctPot: number;
     grade: { exploitabilityPctPot?: number; localExploitabilityPctPot?: number; elapsedMs?: number }; passed: boolean }[];
 }
-interface Browser extends Hashed {
+export interface Browser extends Hashed {
   nativeReportHash: string; passed: boolean;
   rows: { browser: string; corpusIndex: number; street: string; passed: boolean; error: string | null;
     elapsedMs: number; numericalHash: string; exactNativeParity: boolean; workers: number; terminated: number; isolated: boolean;
@@ -45,10 +46,12 @@ function bound(report: Hashed, format: string) {
 export function checkP1Reports(hands: Hands, corpus: Corpus, browser: Browser) {
   bound(hands, "poker-face-p1-production-hands"); bound(corpus, "poker-face-p1-production-corpus"); bound(browser, "poker-face-p1-production-browser");
   assert.equal(wideHash(hands.sourceSnapshot), hands.sourceSnapshotHash, "Source snapshot hash");
+  let changed = false;
   for (const ref of hands.sourceSnapshot.sourceFiles) {
     assert.match(ref.path, /^(scripts|src)\/[a-zA-Z0-9/._-]+\.ts$/); assert.ok(!ref.path.includes(".."));
-    assert.equal(createHash("sha256").update(readFileSync(ref.path)).digest("hex"), ref.sha256, `Audited source changed: ${ref.path}`);
+    if (createHash("sha256").update(readFileSync(ref.path)).digest("hex") !== ref.sha256) changed = true;
   }
+  if (changed) checkP1SuccessorEvidence(readP1Successor(), [hands, corpus, browser], checkP1Reports);
   assert.deepEqual(hands.seeds, { first: 0, count: 1000 }); assert.equal(hands.hands.length, 1000);
   hands.hands.forEach((h, seed) => {
     assert.equal(h.seed, seed); assert.equal(h.aiSeat, seed % 2); assert.match(h.logHash, /^[a-f0-9]{64}$/);

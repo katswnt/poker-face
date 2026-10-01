@@ -1,0 +1,53 @@
+{
+  "format": "poker-face-p2-release-summary",
+  "version": 1,
+  "completed": 200,
+  "translations": 12,
+  "maxIndependentPctPot": 0.29998075664942775,
+  "browser": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "p50Ms": 111.40000057220459,
+      "p95Ms": 153.20000076293945,
+      "maxMs": 193.39999961853027,
+      "chromiumP95BudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": null
+    }
+  ],
+  "memory": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "p50Ms": 110.25000095367432,
+      "p95Ms": 155.70000076293945,
+      "maxMs": 251.4000015258789,
+      "chromiumP95BudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 2162688
+    },
+    {
+      "browser": "firefox",
+      "cases": 200,
+      "p50Ms": 205,
+      "p95Ms": 416,
+      "maxMs": 702,
+      "chromiumP95BudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 2162688
+    },
+    {
+      "browser": "webkit",
+      "cases": 200,
+      "p50Ms": 110.5,
+      "p95Ms": 152,
+      "maxMs": 195,
+      "chromiumP95BudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 2162688
+    }
+  ],
+  "safety": {
+    "casesWithPositiveMarginVsTranslation": 134,
+    "maxMarginVsTranslationChips": 2963.3788928507606,
+    "maxComposedExploitabilityPctPot": 23.399062636004224
+  },
+  "limits": "Scripted preflop, hand-written ranges, 12 saved flops. Local approximate games, not exact GTO or global safety. Desktop browser observations, not phone certification."
+}

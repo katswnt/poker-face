@@ -94,6 +94,61 @@ fn check_down() -> Value {
 }
 
 #[test]
+fn river_subgame_forced_prefix_is_not_a_decision_or_a_second_reach_update() {
+    let tree = json!({ "mode": "river-subgame-v1", "prefixLength": 1,
+        "root": { "kind": "player", "player": 0, "actions": [
+            { "action": { "type": "bet", "to": 50 }, "next": { "kind": "player", "player": 1, "actions": [
+                { "action": { "type": "fold" }, "next": { "kind": "terminal", "outcome": "fold" } },
+                { "action": { "type": "call" }, "next": { "kind": "terminal", "outcome": "showdown" } }
+            ] } }
+        ] } });
+    // The forced bettor cannot deviate to checking, even when its hand always loses.
+    let result = solve(river_spot(tree.clone(), &["3s3h"], &["AsAh"])).unwrap();
+    assert!(result.exploitability.chips < 0.01);
+    assert!((result.root.ev[0][0] + 100.0).abs() < 0.01);
+    assert!((result.root.ev[1][0] - 100.0).abs() < 0.01);
+    let ResultNode::Player { strategy, actions, .. } = &result.tree[0] else {
+        panic!()
+    };
+    assert_eq!(strategy, &vec![vec![Some(1.0)]]);
+    assert_eq!(actions.len(), 1);
+    let ResultNode::Player { committed, .. } = &result.tree[actions[0].child] else {
+        panic!()
+    };
+    assert_eq!(*committed, [50, 0]);
+    let mut wrong = river_spot(tree.clone(), &["3s3h"], &["AsAh"]);
+    wrong["board"]["river"] = Value::Null;
+    assert!(solve(wrong).is_err());
+    for length in [-1, 2, 9] {
+        let mut bad = river_spot(tree.clone(), &["3s3h"], &["AsAh"]);
+        bad["tree"]["prefixLength"] = json!(length);
+        assert!(solve(bad).is_err());
+    }
+}
+
+#[test]
+fn forced_all_in_raise_is_labelled_from_committed_chips_not_fold_availability() {
+    let tree = json!({ "mode": "river-subgame-v1", "prefixLength": 2,
+        "root": { "kind": "player", "player": 0, "actions": [
+            { "action": { "type": "bet", "to": 20 }, "next": { "kind": "player", "player": 1, "actions": [
+                { "action": { "type": "raise", "to": 50 }, "next": { "kind": "player", "player": 0, "actions": [
+                    { "action": { "type": "fold" }, "next": { "kind": "terminal", "outcome": "fold" } },
+                    { "action": { "type": "call" }, "next": { "kind": "terminal", "outcome": "showdown" } }
+                ] } }
+            ] } }
+        ] } });
+    let result = solve(river_spot(tree, &["3s3h"], &["AsAh"])).unwrap();
+    let ResultNode::Player { actions, .. } = &result.tree[1] else {
+        panic!()
+    };
+    assert_eq!(actions.len(), 1);
+    assert_eq!(
+        serde_json::to_value(actions[0].action).unwrap(),
+        json!({ "type": "raise", "to": 50 })
+    );
+}
+
+#[test]
 fn json_preserves_exact_float32_weights_before_strict_validation() {
     // JSON.stringify(Math.fround(0.03)): the default serde_json fast parser used to
     // move this exact f32-in-f64 value by one f64 ULP and reject a valid range.

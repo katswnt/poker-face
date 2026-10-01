@@ -15,6 +15,12 @@ export type PublicSolve = (spot: BridgeSpotV1, signal?: AbortSignal) => Promise<
 interface ResolvedRoot {
   request: HumanModelRequest; key: string; spot: BridgeSpotV1; result: BridgeResultV1; provenance: DecisionProvenance;
 }
+export interface ResolvedTreeSnapshot {
+  readonly rootRequest: HumanModelRequest;
+  readonly spot: BridgeSpotV1;
+  readonly result: BridgeResultV1;
+  readonly parentNode: number;
+}
 
 export function buildPlaySpot(request: HumanModelRequest): BridgeSpotV1 {
   preparationKey(request);
@@ -44,6 +50,22 @@ export class ResolvedPolicySource extends PreparedPolicySource {
   private root: ResolvedRoot | null = null;
   private generation = 0;
   constructor(private readonly solve: PublicSolve) { super(); }
+
+  /** Detached public evidence for P2's translation/safety comparison. No private decision
+   * request is accepted, and only the exact currently prepared river may inspect its tree.
+   */
+  publicTree(request: HumanModelRequest): ResolvedTreeSnapshot {
+    this.policy(request);
+    if (!this.root || request.publicState.street !== "river") throw new Error("A prepared river is required");
+    let parentNode = 0;
+    for (const event of request.publicState.events.slice(this.root.request.publicState.events.length)) {
+      const n = this.root.result.tree[parentNode];
+      if (event.kind !== "action" || n.kind !== "player") throw new Error("Invalid prepared river path");
+      const edge = n.actions.find(e => actionToken(e.action) === actionToken(event.action));
+      if (!edge) throw new Error("No prepared river action"); parentNode = edge.child;
+    }
+    return structuredClone({ rootRequest: this.root.request, spot: this.root.spot, result: this.root.result, parentNode });
+  }
 
   async prepare(request: HumanModelRequest, signal?: AbortSignal): Promise<void> {
     const key = preparationKey(request); signal?.throwIfAborted();

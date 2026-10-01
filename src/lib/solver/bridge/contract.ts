@@ -125,7 +125,17 @@ export interface BridgeExplicitTree {
   readonly root: BridgeExplicitNode;
 }
 
-export type BridgeTree = BridgeMenuTree | BridgeExplicitTree;
+/** River-only embedding of a mid-street subgame. The first prefixLength decisions have
+ * exactly one forced action; arriving ranges ALREADY include those actions' past reach.
+ * Below that prefix ordinary legal alternatives are mandatory. Chip totals are not rebased.
+ */
+export interface BridgeRiverSubgameTree {
+  readonly mode: "river-subgame-v1";
+  readonly prefixLength: number;
+  readonly root: BridgeExplicitNode;
+}
+
+export type BridgeTree = BridgeMenuTree | BridgeExplicitTree | BridgeRiverSubgameTree;
 
 export interface BridgeSolveOptions {
   /** Stop when the engine's self-reported exploitability ≤ this % of startingPot. */
@@ -638,10 +648,13 @@ function initialBettingState(board: BridgeBoard): BettingState {
   return { street: BRIDGE_STREETS.indexOf(streetsPlayed(board)[0]), actor: 0, closed: 0, streetPut: [0, 0], checks: 0 };
 }
 
-function validateExplicitTree(value: Record<string, unknown>, board: BridgeBoard, stack: number): BridgeExplicitTree {
-  record(value, ["mode", "root"], "tree");
+function validateExplicitTree(value: Record<string, unknown>, board: BridgeBoard, stack: number): BridgeExplicitTree | BridgeRiverSubgameTree {
+  const nested = value.mode === "river-subgame-v1";
+  record(value, nested ? ["mode", "prefixLength", "root"] : ["mode", "root"], "tree");
+  if (nested && board.river === null) fail("river-subgame-v1 requires a known river");
+  const prefixLength = nested ? whole(value.prefixLength, "tree.prefixLength", 0, 8) : 0;
   let nodes = 0;
-  const visit = (input: unknown, expected: NextState, path: string): BridgeExplicitNode => {
+  const visit = (input: unknown, expected: NextState, path: string, forced = 0): BridgeExplicitNode => {
     nodes += 1;
     if (nodes > BRIDGE_LIMITS.maxExplicitNodes) fail(`explicit tree exceeds ${BRIDGE_LIMITS.maxExplicitNodes} nodes`);
     if (!input || typeof input !== "object" || Array.isArray(input)) fail(`${path} must be a node object`);
@@ -660,6 +673,7 @@ function validateExplicitTree(value: Record<string, unknown>, board: BridgeBoard
     const state = expected.state;
     if (node.player !== state.actor) fail(`${path} must be player ${state.actor} to act; found ${String(node.player)}`);
     if (!Array.isArray(node.actions) || node.actions.length === 0) fail(`${path} needs at least one action`);
+    if (forced > 0 && node.actions.length !== 1) fail(`${path} forced prefix needs exactly one action`);
     const facing = state.streetPut[state.actor] < Math.max(...state.streetPut);
     const actions = node.actions.map((entry, index) => {
       const edge = record(entry, ["action", "next"], `${path}.actions[${index}]`);
@@ -667,7 +681,9 @@ function validateExplicitTree(value: Record<string, unknown>, board: BridgeBoard
       const illegal = actionIsLegal(state, stack, action);
       if (illegal) fail(`${path}.actions[${index}]: ${illegal}`);
       const label = action.type + ("to" in action ? action.to : "");
-      return { action, next: visit(edge.next, applyAction(state, stack, action), `${path}/${label}`) };
+      const next = applyAction(state, stack, action);
+      if (forced > 0 && next.kind !== "player") fail(`${path} forced prefix must continue to a player decision, not end the hand`);
+      return { action, next: visit(edge.next, next, `${path}/${label}`, Math.max(0, forced - 1)) };
     });
     for (let i = 1; i < actions.length; i += 1) {
       if (actionOrder(actions[i - 1].action) >= actionOrder(actions[i].action)) {
@@ -675,11 +691,12 @@ function validateExplicitTree(value: Record<string, unknown>, board: BridgeBoard
       }
     }
     const types = new Set(actions.map(a => a.action.type));
-    if (facing && !(types.has("fold") && types.has("call"))) fail(`${path} facing a bet must offer fold and call`);
-    if (!facing && !types.has("check")) fail(`${path} must offer check`);
+    if (forced === 0 && facing && !(types.has("fold") && types.has("call"))) fail(`${path} facing a bet must offer fold and call`);
+    if (forced === 0 && !facing && !types.has("check")) fail(`${path} must offer check`);
     return { kind: "player", player: state.actor, actions };
   };
-  return { mode: "explicit", root: visit(value.root, { kind: "player", state: initialBettingState(board) }, "tree.root") };
+  const root = visit(value.root, { kind: "player", state: initialBettingState(board) }, "tree.root", prefixLength);
+  return nested ? { mode: "river-subgame-v1", prefixLength, root } : { mode: "explicit", root };
 }
 
 function validateSolve(input: unknown): BridgeSolveOptions {
@@ -724,8 +741,8 @@ export function validateBridgeSpot(input: unknown): BridgeSpotV1 {
   if (!treeInput || typeof treeInput !== "object" || Array.isArray(treeInput)) fail("tree must be an object");
   const mode = (treeInput as { mode?: unknown }).mode;
   const tree = mode === "menu" ? validateMenuTree(treeInput as Record<string, unknown>, board)
-    : mode === "explicit" ? validateExplicitTree(treeInput as Record<string, unknown>, board, effectiveStack)
-      : fail("tree.mode must be menu or explicit");
+    : mode === "explicit" || mode === "river-subgame-v1" ? validateExplicitTree(treeInput as Record<string, unknown>, board, effectiveStack)
+      : fail("tree.mode must be menu, explicit or river-subgame-v1");
   return {
     format: BRIDGE_SPOT_FORMAT, version: 1, id: value.id, board, ranges, startingPot, effectiveStack, rake: 0,
     tree, solve: validateSolve(value.solve),

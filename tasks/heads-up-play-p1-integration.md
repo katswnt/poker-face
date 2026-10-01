@@ -2,7 +2,7 @@
 
 Started 2026-09-30 after `70dfdc0` passed exact-commit isolation checks and all eight
 jobs in CI [36795159624](https://github.com/katswnt/poker-face/actions/runs/36795159624).
-The wider-range study is landed; P1 play is **not yet shipped**.
+P1 sources landed as `ea47f6eef17782faa013ea41dad51978d85ca262`; this is not a `/play` UI release.
 
 ## Contract and sequence
 
@@ -109,7 +109,7 @@ Do not exclude the draft from typechecking. Verify a clean-scope commit instead.
 - [x] At least 20 independently graded production river roots at ≤0.3% pot.
 - [x] 1,000 complete seeded hands; exact conservation and deterministic replay.
 - [x] Measured production Chromium latency, with budgets and phone caveats.
-- [ ] Exact-commit full verification, push, all CI green.
+- [x] Exact-commit full verification, push, all CI green.
 
 ## Measurements and failures
 
@@ -197,12 +197,30 @@ Corpus and report tests also failed before their implementation and now check re
 
 ## Release verification
 
-In progress. No P2 implementation has begun; exact-commit isolation, push and hosted CI
-must complete first. The root worktree retains the paused draft's original nine tsc errors;
-none are excluded or repaired. Only an isolated owned-file commit is the release gate.
+Released as `ea47f6eef17782faa013ea41dad51978d85ca262`. All eight jobs in hosted
+[CI 36804916249](https://github.com/katswnt/poker-face/actions/runs/36804916249) were observed
+green before beginning P2. The root worktree retains the paused draft's original nine tsc
+errors; none are excluded or repaired. Only an isolated owned-file commit is the release gate.
 
 The staged candidate was exported to `/private/tmp/poker-p1-candidate.DAPibN` with copied
 (not symlinked) dependencies: **943/943 tests, zero skips**, Next route type generation plus
 tsc, lint, flop-supplement reproduction and P1 gate recomputation all passed. Trainer/session
 hashes are unchanged; reversing just the four README replacements reproduces its pre-edit
-backup exactly. Next is the separate exact-commit verification, not a claim it already passed.
+backup exactly.
+
+The exact commit was separately verified in `/private/tmp/poker-p1-commit.vj1LYk`, with
+copied dependencies and native/WASM rebuilt from pinned sources: 943/943 tests (zero skips),
+typecheck, lint, 17 Rust tests, fmt/clippy, saved-only and source-complete production builds;
+34 live-browser e2e passes (two intentional non-Chromium zoom-API skips, zero retries).
+Native/WASM referees and the 20-case parity grid had zero numerical delta at the unchanged
+0.0002-chip tolerance. Three-browser Worker lifecycle checks, complete turn-v2 and factorized
+audits, gadget study, preflop audit, river-v3 reproduction, B4 and flop supplement checks passed.
+
+Fresh end-to-end runs reproduced all 1,000 hand logs / 1,342 solves / 32 independent river
+grades and all 64 frozen roots (128 first-street solves plus 32 complete turn exports), with
+identical numerical results. The rebuilt production Worker also reproduced all 64 native
+numerical hashes, one Worker created and retired per root. That extra run measured p95
+79.7 ms river / 4,569.9 ms turn while the native replay ran concurrently; it is an additional
+observation, not a replacement for the isolated primary timing above. Rebuilt WASM was
+777,863 bytes, build hash `85375ff141155912656778615f1b7bdf3d15f238c916334209c86d9663f67304`.
+Numerical reproduction is exact; identical binary bytes across build paths are not claimed.

@@ -1,0 +1,20 @@
+{
+  "format": "poker-face-p1-successor-bundle",
+  "version": 1,
+  "bytes": 818915,
+  "sha256": "6bdaa3be8dc9086f5f62805252855b8dea74ebef85b0321344aab68d45efaf82",
+  "uncompressedSha256": "145e2ace3853ec20167a87d09d0ad419332eef392fca6292b704fb35301dc4c6",
+  "evidenceHash": "0a174e18499c4d52cc3fde9c9b076cfe9ceaaa98d1efc17fcbfa4307092a5305",
+  "originalCommit": "ea47f6eef17782faa013ea41dad51978d85ca262",
+  "originalReportHashes": [
+    "c7875c3d4da0a4a0da1c2f9412c7dc64de3cbc86add7c1d4bf77c0ad3f622cd9",
+    "30f38c9ed026e4f93f6e4dc72f84673ef98d8caa0918f22dd58fb6b99061aa2f",
+    "09a3d15e49e8dbebd3684e8c8b2babcfed078be98d125aa050d0d0ee1a462a1b"
+  ],
+  "successorReportHashes": [
+    "55249e47c13a1ca54c087c84050634ea17c42cd39c3380530c4c9647251285a1",
+    "fdfccd8e57c57ce6a44d1803be1115c6d652c81aa49e08f38fb3a330137eb2e6",
+    "5b7eaf0260fe32662492582a0a57ebe40e5248eefbc465afdab8eb223103e987"
+  ],
+  "currentSourceCount": 98
+}

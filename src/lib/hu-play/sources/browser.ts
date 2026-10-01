@@ -11,6 +11,7 @@ type Request = Omit<Exclude<LiveCommand, { type: "cancel" }>, "id">;
 interface SolverClient { start(request: Request): number; cancel(): void; dispose(): void }
 export interface BrowserResolveOptions {
   readonly assetBase: string; readonly environment: WasmEnvironment;
+  readonly profile?: "play-v1" | "play-river-v1";
   readonly onEvent?: (event: LiveEvent) => void;
   /** Dependency injection for tests/harnesses; the app uses the actual W2 browser factory. */
   readonly createClient?: (emit: (event: LiveEvent) => void) => SolverClient;
@@ -24,7 +25,8 @@ export class BrowserPublicSolver {
   async solve(spot: BridgeSpotV1, signal?: AbortSignal): Promise<BridgeResultV1> {
     if (this.disposed) throw new Error("Browser play source is disposed");
     signal?.throwIfAborted();
-    const spotJson = canonicalSolverJson(spot); parseLiveSpot(spotJson, "play-v1");
+    const profile = this.options.profile ?? "play-v1";
+    const spotJson = canonicalSolverJson(spot); parseLiveSpot(spotJson, profile);
     this.active?.stop(new Error("Public solve superseded by a newer request"));
     return new Promise((resolve, reject) => {
       let done = false, client: SolverClient | undefined;
@@ -49,7 +51,7 @@ export class BrowserPublicSolver {
           } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }
         });
         signal?.addEventListener("abort", abort, { once: true });
-        client.start({ type: "solve", profile: "play-v1", spotJson,
+        client.start({ type: "solve", profile, spotJson,
           assetBase: this.options.assetBase, environment: this.options.environment });
         if (signal?.aborted) abort();
       } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }

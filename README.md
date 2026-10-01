@@ -736,9 +736,18 @@ already powers solver-backed drills. The active path does not depend on a collab
    p50/p95 was 71.9/77.6 ms on rivers and 2.31/4.37 s on turns on this M1 Pro—not phone promises.
    The [earlier three-browser study](tasks/heads-up-play-p1-wide-feasibility.md) measured much
    slower Firefox turns (p95 52.1 s). Physical phones remain unvalidated. Failed admission,
-   cancellation or missed quality targets never publish a playing policy; unmeasured fallback
-   rungs are not enabled. Next: off-tree river responses (P2), turn caching/nested solves (P3),
-   flop translation (P4), then the keyboard-accessible `/play` teaching UI (P5).
+   cancellation or missed quality targets never publish a partial playing policy.
+   [P2 off-tree river responses](tasks/heads-up-play-p2-river.md) add the human's actual size
+   before solving. All 200 frozen cases complete and replay: 188 direct responses and 12
+   labelled translated-range responses solved at the real chip price. All 212 individual
+   solves pass independent ≤0.3%-pot grading; Chromium p95 is 153 ms, with exact native
+   strategy/log parity and three-browser memory observations. **Local quality is not safety:**
+   the composed strategy gives some human hands better best responses in 134/200 cases versus
+   nearest-size translation, and its worst measured local exploitability is 23.4% pot.
+   These are approximate strategies for the stated finite games, not exact GTO or globally
+   safe play. Reproduce the full-policy evidence with `npm run audit:hu-play:p2`.
+   Next: turn caching/nested solves (P3), flop translation (P4), then the keyboard-accessible
+   `/play` teaching UI (P5). No playable `/play` UI is shipped yet.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.
@@ -951,7 +960,7 @@ src/
     multiway/               separate bounded three-/four-player river proofs
     bridge/                 postflop-solver spot contract, hashing, referee gates, library loader
   lib/drills/               drill generators, exact grading, review scheduler (no React)
-  lib/hu-play/              P1: public-only library/browser/native policy sources, async play and replay; no UI yet
+  lib/hu-play/              P1/P2: public-only sources, on-tree play, off-tree river responses and replay; no UI yet
 native/solver-bridge/       optional Rust CLI wrapping pinned postflop-solver
 public/solver-data/bridge-v1/  saved 12-flop bridge library (hash-bound JSON)
 test/                       node:test suites that import the REAL lib/ (not copies)

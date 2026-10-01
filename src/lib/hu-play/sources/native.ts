@@ -21,9 +21,10 @@ export interface NativeResolveOptions {
 }
 
 /** Estimate only; cancellation/timeout kill this process before any solve is started. */
-export async function estimatePlayNative(spot: BridgeSpotV1, signal?: AbortSignal, binary = BRIDGE_BINARY): Promise<LiveEstimate> {
+export async function estimatePlayNative(spot: BridgeSpotV1, signal?: AbortSignal, binary = BRIDGE_BINARY,
+  profile: "play-v1" | "play-river-v1" = "play-v1"): Promise<LiveEstimate> {
   signal?.throwIfAborted();
-  const json = canonicalBridgeSpotJson(spot); parseLiveSpot(json, "play-v1");
+  const json = canonicalBridgeSpotJson(spot); parseLiveSpot(json, profile);
   const directory = mkdtempSync(join(tmpdir(), "poker-play-estimate-")), path = join(directory, "spot.json");
   try {
     writeFileSync(path, json, { flag: "wx" });
@@ -36,16 +37,20 @@ export async function estimatePlayNative(spot: BridgeSpotV1, signal?: AbortSigna
 
 export class NativeResolveSource extends ResolvedPolicySource {
   constructor(options: NativeResolveOptions = {}) {
-    super(async (spot, signal) => {
-      const estimate = await estimatePlayNative(spot, signal, options.binary);
-      // Native has no WASM linear-memory observation. This zero is NOT a browser memory
-      // measurement/admission certificate; the browser always adds its measured high-water.
-      const verdict = admitBrowserSolve(estimate, options.environment ?? { profile: "unknown" }, 0, "play-v1");
-      options.onEstimate?.(spot, estimate, verdict);
-      if (!verdict.ok) throw new Error(verdict.reason);
-      const run = await runBridgeSpot(spot, { threads: 1, signal, binary: options.binary });
-      signal?.throwIfAborted(); options.onResult?.(spot, run);
-      return run.result;
-    });
+    super((spot, signal) => solveNativePlay(spot, options, signal));
   }
+}
+
+/** Raw bounded run; the policy adapters separately enforce reached quality/precision.
+ * Native has no WASM high-water observation: its zero below is NOT a browser certificate.
+ */
+export async function solveNativePlay(spot: BridgeSpotV1, options: NativeResolveOptions = {}, signal?: AbortSignal,
+  profile: "play-v1" | "play-river-v1" = "play-v1") {
+  const estimate = await estimatePlayNative(spot, signal, options.binary, profile);
+  const verdict = admitBrowserSolve(estimate, options.environment ?? { profile: "unknown" }, 0, profile);
+  options.onEstimate?.(spot, estimate, verdict);
+  if (!verdict.ok) throw new Error(verdict.reason);
+  const run = await runBridgeSpot(spot, { threads: 1, signal, binary: options.binary });
+  signal?.throwIfAborted(); options.onResult?.(spot, run);
+  return run.result;
 }

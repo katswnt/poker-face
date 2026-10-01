@@ -21,7 +21,8 @@ Physical-device checks are listed last per Kat's explicit continuation decision.
 **P1 implementation continuation:** see the [production integration record](heads-up-play-p1-integration.md).
 Real public-only library/browser/native sources and the complete flop supplement now pass
 the 1,000-hand, independent grading, no-leak and Chromium latency gates. Release verification
-is pending; no `/play` UI is claimed. The browser is the production path, not the older native
+passed in isolated commit `ea47f6e`, with all eight jobs in CI `36804916249` green; no `/play` UI
+is claimed. The browser is the production path, not the older native
 server draft below. `play-v1` preserves every positive hand (up to 640/player), the exact lean
 menu and SPR ≤18; 256 MiB desktop / 192 MiB mobile-or-unknown reservations, 1,000 iterations,
 120-second watchdog, float32 and the unchanged 0.3%-pot quality target. Full-range comparison
@@ -252,12 +253,19 @@ B = bet, C = call):
       conserved/deterministic replays; real-source hidden-card non-interference.
 - [x] Frozen 64-root full/browser-range comparison retains 100% and matches every per-hand EV;
       independent complete turn/river grading median 0.2445% pot (unchanged ≤1% gate).
-- [ ] P1 exact-commit verification and all hosted CI jobs green (see integration record).
+- [x] P1 exact-commit verification and all hosted CI jobs green (see integration record).
 
 ### P2 — live re-solve for off-tree river bets
-- [ ] Explicit-tree builder: lean menu at `s` plus the human's actual `a*`. Solve, use the AI's σ below `a*`.
-- [ ] Admission + degradation ladder + translation fallback; provenance shows the rung.
-- [ ] Safety-margin audit (2.7 #2) on a seeded corpus of off-tree river bets.
+- [x] Explicit-tree builder: lean menu at `s` plus the human's actual `a*`. Solve, use the AI's σ below `a*`.
+- [x] Bounded full-range admission + labelled translated-range response fallback; provenance shows the rung.
+      No pruning or arbitrary menu reduction is enabled. Forced-prefix bookkeeping preserves real chip commitments.
+- [x] Safety-margin audit (2.7 #2) on 200 frozen off-tree river cases, independently graded/replayed.
+      See [P2 record](heads-up-play-p2-river.md): 188 direct / 12 translated responses, 212 individual
+      solves ≤0.3% pot, Chromium p95 153 ms. All three browsers have exact native parity and observed
+      peak WASM linear memory 2,162,688 bytes (not total browser memory or phone certification).
+      Positive human-hand BR margins occur in 134/200 cases versus nearest translation; the composed
+      profile reaches 23.4%-pot local exploitability. The raw solve grade is **not** a safety guarantee.
+- [ ] P2 exact-commit verification, push and every hosted CI job green.
 
 ### P3 — same for the turn
 - [ ] Turn nested re-solve (turn+river tree, first-street export; river re-solved at the river root).

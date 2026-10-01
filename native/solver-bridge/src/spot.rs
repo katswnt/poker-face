@@ -51,6 +51,12 @@ pub enum TreeSpec {
     Menu(Box<MenuTree>),
     #[serde(rename = "explicit")]
     Explicit { root: ExplicitNode },
+    #[serde(rename = "river-subgame-v1")]
+    RiverSubgameV1 {
+        #[serde(rename = "prefixLength")]
+        prefix_length: u32,
+        root: ExplicitNode,
+    },
 }
 
 #[derive(Debug, Deserialize)]

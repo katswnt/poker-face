@@ -278,6 +278,49 @@ fn explicit_edit(
     }
 }
 
+/// The forced prefix is bookkeeping, not a set of decisions. Ranges already include its
+/// historical reach. The remaining river game must retain check/fold/call alternatives.
+fn check_river_subgame(node: &ExplicitNode, state: Betting, forced: u32, count: &mut u32) -> Result<(), String> {
+    *count += 1;
+    if *count > 200_000 {
+        return Err("river subgame exceeds the explicit node bound".into());
+    }
+    match node {
+        ExplicitNode::Chance { .. } => Err("river subgame cannot contain chance".into()),
+        ExplicitNode::Terminal { .. } if forced > 0 => Err("forced prefix must end at a player decision".into()),
+        ExplicitNode::Terminal { .. } => Ok(()),
+        ExplicitNode::Player { player, actions } => {
+            if usize::from(*player) != state.actor || state.street != BoardState::River as u8 {
+                return Err("river subgame player or street differs from its prefix".into());
+            }
+            if forced > 0 {
+                if actions.len() != 1 || !matches!(actions[0].next, ExplicitNode::Player { .. }) {
+                    return Err("forced prefix needs one action continuing to a player decision".into());
+                }
+                if matches!(actions[0].action, ActionSpec::Fold | ActionSpec::Call) {
+                    return Err("forced prefix cannot end the hand".into());
+                }
+            } else {
+                let facing = state.put[state.actor] < state.put[1 - state.actor];
+                let has = |action| actions.iter().any(|edge| edge.action == action);
+                if (facing && !(has(ActionSpec::Fold) && has(ActionSpec::Call))) || (!facing && !has(ActionSpec::Check))
+                {
+                    return Err("river subgame must retain check or fold/call alternatives below its prefix".into());
+                }
+            }
+            for edge in actions {
+                check_river_subgame(
+                    &edge.next,
+                    advance(&state, edge.action),
+                    forced.saturating_sub(1),
+                    count,
+                )?;
+            }
+            Ok(())
+        }
+    }
+}
+
 pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree, String> {
     match &spot.tree {
         TreeSpec::Menu(menu) => {
@@ -288,7 +331,7 @@ pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree
             }
             Ok(tree)
         }
-        TreeSpec::Explicit { root } => {
+        TreeSpec::Explicit { root } | TreeSpec::RiverSubgameV1 { root, .. } => {
             let mut tree = ActionTree::new(base_config(spot, cards))?;
             let street = initial_state(cards) as u8;
             let state = Betting {
@@ -298,6 +341,12 @@ pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree
                 put: [0, 0],
                 checks: 0,
             };
+            if let TreeSpec::RiverSubgameV1 { prefix_length, .. } = &spot.tree {
+                if cards.river.is_none() || *prefix_length > 8 {
+                    return Err("river-subgame-v1 requires a river and prefixLength in [0, 8]".into());
+                }
+                check_river_subgame(root, state, *prefix_length, &mut 0)?;
+            }
             explicit_edit(&mut tree, root, state, spot.effective_stack as i32, false, "root")?;
             tree.back_to_root();
             // Second pass: the edited tree must now match without further edits.
@@ -573,7 +622,9 @@ impl Exporter {
             if strategy.len() != actions.len() * engine_hands {
                 return Err(format!("node {id}: strategy has unexpected length"));
             }
-            let facing = actions.contains(&Action::Fold);
+            // A forced historical raise has no fold alternative. Facing a wager is a
+            // chip-state fact, not a property of the remaining decision menu.
+            let facing = committed[player] < committed[1 - player];
             let rows = (0..actions.len())
                 .map(|a| {
                     self.order[player]

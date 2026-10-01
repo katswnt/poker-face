@@ -2,6 +2,7 @@ import { validateBridgeSpot, type BridgeBetSize, type BridgeSpotV1 } from "../co
 import { parseBridgeEstimate, wasmBudget, type WasmEnvironment } from "../wasm-admission";
 import type { ExportReservation, LiveEstimate, LiveVerdict } from "./model";
 import { PLAY_LIMITS, requireLiveProfile, validatePlaySpot, type LiveProfile } from "./play-profile";
+import { validateRiverPlaySpot } from "./river-profile";
 
 /** W2 engineering limits, not a hardware safety certificate. Offline scripts retain capacity. */
 export const LIVE_LIMITS = Object.freeze({ inputBytes: 256 * 1024, rangeHands: 64, jsonDepth: 100,
@@ -24,8 +25,10 @@ export function parseLiveSpot(json: string, profile: LiveProfile = "teaching-v1"
   }
   const spot = validateBridgeSpot(raw);
   if (profile === "play-v1") return validatePlaySpot(spot);
+  if (profile === "play-river-v1") return validateRiverPlaySpot(spot);
   if (spot.board.turn === null) throw new Error("Live flops use the saved library. Browser solving starts on the turn or river.");
   if (spot.ranges.some(r => r.combos.length > LIVE_LIMITS.rangeHands)) throw new Error("Browser preflight currently allows at most 64 hands per player.");
+  if (spot.tree.mode === "river-subgame-v1") throw new Error("Forced river prefixes require the play-river-v1 profile.");
   if (spot.solve.compression !== "off") throw new Error("Browser solving currently requires compression off (the checked float32 path).");
   if (spot.solve.maxIterations > LIVE_LIMITS.maxIterations || spot.solve.timeoutMs > LIVE_LIMITS.timeoutMs) {
     throw new Error("Browser solves are limited to 10,000 iterations and 120 seconds.");
@@ -78,7 +81,7 @@ export function admitBrowserSolve(estimate: LiveEstimate, environment: WasmEnvir
   if (!Number.isSafeInteger(preflightMemoryBytes) || preflightMemoryBytes < 0) throw new Error("Invalid preflight memory measurement.");
   const e = estimate.estimateExport;
   const desktop = ["desktop-chromium", "desktop-firefox", "desktop-safari"].includes(environment.profile);
-  const profileBudget = profile === "play-v1" ? (desktop ? PLAY_LIMITS.desktopBytes : PLAY_LIMITS.mobileBytes) : LIVE_LIMITS.budgetBytes;
+  const profileBudget = profile !== "teaching-v1" ? (desktop ? PLAY_LIMITS.desktopBytes : PLAY_LIMITS.mobileBytes) : LIVE_LIMITS.budgetBytes;
   const budgetBytes = Math.min(profileBudget, wasmBudget(environment).bytes);
   // Measured WASM preflight high-water memory in addition to the fixed reservation. There
   // is intentional double-counting: never assume a freed game table shrinks linear memory.
@@ -87,7 +90,7 @@ export function admitBrowserSolve(estimate: LiveEstimate, environment: WasmEnvir
   const totalBytes = engineBytes + exportBytes + overheadBytes;
   if (!Number.isSafeInteger(totalBytes)) throw new Error("Browser memory reservation overflow.");
   const numbers = { budgetBytes, totalBytes, engineBytes, exportBytes, overheadBytes };
-  if (profile === "play-v1" && (engineBytes > PLAY_LIMITS.engineBytes || exportBytes > PLAY_LIMITS.exportBytes
+  if (profile !== "teaching-v1" && (engineBytes > PLAY_LIMITS.engineBytes || exportBytes > PLAY_LIMITS.exportBytes
     || e.jsonBytesUpperBound > PLAY_LIMITS.jsonBytes)) {
     return { ...numbers, ok: false, reason: "This game exceeds the measured play profile's engine or export limit. No strategy storage allocated." };
   }
