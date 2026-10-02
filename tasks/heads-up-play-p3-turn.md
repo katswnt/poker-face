@@ -1,7 +1,7 @@
 # P3 — nested turn solving and a reusable turn cache
 
-Status: measured implementation complete; exact-commit release verification pending, not
-yet pushed. Prospective contract written before P3
+Status: shipped as `bc4e5e5` after exact-commit isolation and all eight jobs in hosted
+CI `36950939510` passed. P4 may start. Prospective contract written before P3
 behavior changes or timing results. Depends on shipped P2 `1d581d8` (all eight jobs in
 CI `36906885269` green). The binding gates remain in `cpu-ceiling-roadmap.md` and
 `heads-up-play-resolving-spec.md`; nothing below substitutes for them.
@@ -82,7 +82,8 @@ bounded solves; this is not a new game or a substitute for the required live-tur
 - [x] 1,000 deterministic conserved hands; public-only leak invariants (draft-source
   measurement complete; exact-commit/CI checks below still required).
 - [x] P1/P2 regression/successor evidence, preserving every historical artifact.
-- [ ] Exact-commit isolated checks, push and green CI.
+- [x] Exact-commit isolated checks and push.
+- [x] Every hosted CI job green before P4 starts: run `36950939510`, commit `bc4e5e5`.
 
 Measured results, commands, owned paths and known limitations are appended as obtained;
 unchecked items are not claimed complete.
@@ -527,6 +528,63 @@ first 1,000 production hands without adapting the warm-up set; produce P1/P2 suc
 proofs, then complete exact-commit isolation and CI. Deployment must use the exact verified
 engine/cache identity (or record a miss); cross-build binary equivalence is not assumed.
 No cache data pack has been published and no P3 commit/push has occurred.
+
+### Exact-commit release verification — `bc4e5e5`
+
+The exact commit `bc4e5e50fad833bfbe4d5e6417c4b5712c17a77a` was checked in
+`/private/tmp/poker-p3-exact.a8eVYm`, an independent clean clone with **physically copied**
+`node_modules`, no protected draft and no type-check exclusions. Native and WASM engines
+were rebuilt from that checkout with the pinned toolchains. The tree was still clean
+after every check below. Only then was the commit pushed to `origin/main`.
+
+- **1,023/1,023 unit tests, zero skips**, 546.108 s; `next typegen`/tsc and full lint pass.
+- **21 Rust tests**, native/WASM fmt and Clippy pass.
+- P1/P2/P3 evidence, full flop play/library, bridge/library/referee, gadget, preflop-model,
+  river-v3/factorized/exchange, turn-vector/v2/explorer, flop-reference/source/library/explorer,
+  exact equity-matrix and saved live-example audits pass without artifact changes.
+- Fresh native/WASM referee parity has zero numerical deltas, retaining the independent
+  0.0002-chip tolerance. Real Worker parity/cancellation/cleanup passes in Chromium,
+  Firefox and WebKit.
+- Both saved-only and prepared-asset Next production builds pass. Saved-only Playwright:
+  **82 passed, four intentional live-asset skips**, 52.9 s. Prepared three-browser
+  Playwright: **34 passed, two intentional non-Chromium zoom-API skips**, 28.2 s.
+  **No retries**. Narrow and desktop screenshots were visually inspected; overflow and
+  keyboard checks passed. These runs overlapped correctness work, not new timing studies.
+- Fresh **native and Node/WASM each re-solve all 200 cases / 327 accepted requests** with
+  every numerical cell and full reducer log identical. Each also reproduces all four
+  complete turn references and independently re-grades them. No frozen input or artifact
+  was rewritten to match a new binary identity.
+
+Fresh native report: `/private/tmp/poker-p3-exact-native-reproduction/report.json`,
+SHA-256 payload `be0e25ffa7f9046b7725437478c88c8160b544dcec1650e45bd3835929be12af`.
+Fresh WASM report: `/private/tmp/poker-p3-exact-wasm-reproduction/report.json`,
+SHA-256 payload `47c5fff16e9e80b078c164354f99dcf0aafbb266aeb9741b71a8245a5123bc29`.
+All local release logs use `/private/tmp/poker-p3-exact-*.log`.
+The ignored safeguard archive `build/p3-safeguard-2026-10-01/fresh-exact-reproduction.tar.gz`
+preserves both complete fresh captures; SHA-256
+`93489a482619aab4a5bfaec612915c018105ce0afc60ab7f501c55132a9ed6cf`.
+
+Clean build identities:
+
+- Engine source: `a2852d8ab1701a796d7f32b71be37092082cd622a264dd5c60854684c0a068d2`
+  (unchanged from the measured corpus).
+- Build: `4c0295c516eec5a9a5fa54b4e4f58dd3a4c93855c5038547c6fcc3f95dcf5adf`.
+- WASM: **796,056 bytes**, SHA-256
+  `8dfd16b4632a5c4ceef64396b1e156a06e6fc1bf2f7e7686e98734af891700f9`.
+- Native binary: `9bad89c0ab7415b6e664acf6f447db7affa763ae48d912d404b6f64617dc32b5`.
+- Prepared corresponding-source archive:
+  `e033a7974d179d0194ce8a89588e719ae06705636f0697a356a4faaf9aae19b8`.
+
+These are local release-test assets, **not a Vercel deployment**. P5's clean release
+rebuild and deployed engine/source checks remain required. All 16 protected preimages
+still match the safeguard manifest after removing only P3's README paragraph. No trainer,
+session or configurable-flop draft was staged. The separate data-reuse note stays untracked.
+
+Hosted run [36950939510](https://github.com/katswnt/poker-face/actions/runs/36950939510)
+completed successfully on the exact commit: **all eight jobs observed green before P4
+began**. This includes the full verification job, native bridge, WASM/browser job and five
+multiway audit jobs. No hosted retry or gate change was needed. CI's action-runtime/image
+deprecation notices are maintenance notes, not failed gates.
 
 ### Explicit files currently owned by P3
 

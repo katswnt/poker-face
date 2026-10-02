@@ -1,0 +1,133 @@
+{
+  "format": "poker-face-p4-release-summary",
+  "version": 1,
+  "completed": 200,
+  "translatedCases": 200,
+  "passiveCases": 57,
+  "passiveResponses": 57,
+  "acceptedSolves": 159,
+  "rivers": 52,
+  "maxRiverPctPot": 0.29933009868348176,
+  "completeTurns": 4,
+  "completeTurnPctPot": [
+    0.24281900161857856,
+    0.2996106714755989,
+    0.000988453685640038,
+    0.21453354020745974
+  ],
+  "hands": 1000,
+  "browser": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "noSolveCases": 93,
+      "flop": {
+        "count": 200,
+        "p50Ms": 32.39999961853027,
+        "p95Ms": 37,
+        "maxMs": 40
+      },
+      "turn": {
+        "count": 107,
+        "p50Ms": 115.39999961853027,
+        "p95Ms": 2441.8999996185303,
+        "maxMs": 3134.8999996185303
+      },
+      "river": {
+        "count": 52,
+        "p50Ms": 52.54999923706055,
+        "p95Ms": 62.60000038146973,
+        "maxMs": 66.10000038146973
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": null
+    }
+  ],
+  "memory": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "noSolveCases": 93,
+      "flop": {
+        "count": 200,
+        "p50Ms": 32.19999885559082,
+        "p95Ms": 36.60000038146973,
+        "maxMs": 38.10000038146973
+      },
+      "turn": {
+        "count": 107,
+        "p50Ms": 116.69999885559082,
+        "p95Ms": 2432.5,
+        "maxMs": 3137.7999992370605
+      },
+      "river": {
+        "count": 52,
+        "p50Ms": 52.500000953674316,
+        "p95Ms": 62.10000038146973,
+        "maxMs": 64.19999885559082
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 22937600
+    },
+    {
+      "browser": "firefox",
+      "cases": 200,
+      "noSolveCases": 93,
+      "flop": {
+        "count": 200,
+        "p50Ms": 40,
+        "p95Ms": 47,
+        "maxMs": 49
+      },
+      "turn": {
+        "count": 107,
+        "p50Ms": 1039,
+        "p95Ms": 29931,
+        "maxMs": 37665
+      },
+      "river": {
+        "count": 52,
+        "p50Ms": 101.5,
+        "p95Ms": 152,
+        "maxMs": 167
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 22937600
+    },
+    {
+      "browser": "webkit",
+      "cases": 200,
+      "noSolveCases": 93,
+      "flop": {
+        "count": 200,
+        "p50Ms": 36,
+        "p95Ms": 41,
+        "maxMs": 43
+      },
+      "turn": {
+        "count": 107,
+        "p50Ms": 108,
+        "p95Ms": 2508,
+        "maxMs": 3251
+      },
+      "river": {
+        "count": 52,
+        "p50Ms": 41,
+        "p95Ms": 50,
+        "maxMs": 51
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 22937600
+    }
+  ],
+  "latencyGate": {
+    "browser": "chromium",
+    "turnP95Ms": 10000,
+    "riverP95Ms": 2000
+  },
+  "limits": "Scripted preflop, hand-written ranges, 12 saved flops. Approximate local strategies, not exact GTO or globally safe. Atypical sizes can exploit composed play. Passive saved-street extension is a rule, not a solver-derived response. No saved EV at translated prices; physical phones unvalidated."
+}

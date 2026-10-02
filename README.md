@@ -754,7 +754,16 @@ already powers solver-backed drills. The active path does not depend on a collab
    all 62 reached rivers pass independent ≤0.3%-pot grading; this is still local quality,
    not a global safety guarantee. Audit with `npm run audit:hu-play:p3`. The optional turn
    cache is unfinished and unpublished; live solving passed without it.
-   Next: flop translation (P4), then the keyboard-accessible `/play` teaching UI (P5),
+   [P4 flop translation](tasks/heads-up-play-p4-flop.md) keeps actual chip prices while
+   mapping unusual bets to the saved policy, then re-solves the actual next street.
+   All 200 frozen parent/action cases replay, and 1,000 on-tree hands keep identical logs
+   and ledgers. Chromium p95 is 2.44 s for reached turn solves and 62.6 ms for rivers;
+   all 52 reached rivers and four complete sampled turn games pass ≤0.3%-pot grading.
+   In 57 cases the mapped saved street has ended: the AI uses an explicitly labelled
+   passive call rule, **not a solver-derived response**. Translated decisions never show
+   saved EVs at the new prices. These are exploitable approximations, not exact GTO or
+   global safety. Audit with `npm run audit:hu-play:p4`.
+   Next: the keyboard-accessible `/play` teaching UI (P5),
    including decision math, the exploitability warning and a verified clean-build deployment.
    No playable `/play` UI is shipped yet.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,

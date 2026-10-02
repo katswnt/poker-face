@@ -101,6 +101,9 @@ jobs:
       - name: Replay all frozen P3 turns and independently recompute complete grades and browser gates
         run: npm run audit:hu-play:p3
 
+      - name: Replay all frozen P4 flops and independently recompute continuation and browser gates
+        run: npm run audit:hu-play:p4
+
       - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
         run: npm run audit:hu-play:gadget
 
@@ -215,6 +218,8 @@ jobs:
         run: node --import tsx --test test/hu-play-river-tree.test.ts test/hu-play-river-worker.test.ts test/hu-play-river-quality.test.ts test/hu-play-nested-source.test.ts test/hu-play-river-play-source.test.ts test/hu-play-play-hand.test.ts
       - name: P3 native-WASM turn parity, Worker cancellation and complete-hand composition
         run: node --import tsx --test test/hu-play-turn-tree.test.ts test/hu-play-turn-worker.test.ts test/hu-play-nested-turn-source.test.ts test/hu-play-turn-play-source.test.ts test/hu-play-heads-up-source.test.ts test/hu-play-turn-cache.test.ts test/hu-play-p3-reproduction.test.ts
+      - name: P4 translated flop, real-chip composition and fresh-build numerical identity
+        run: node --import tsx --test test/hu-play-flop-source.test.ts test/hu-play-translated-heads-up.test.ts test/hu-play-p4-reproduction.test.ts
       - run: npm run profile:wasm:live
       - run: npm run audit:wasm:live -- chromium firefox webkit
       - run: npm run profile:wasm:browsers -- chromium firefox webkit

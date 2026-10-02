@@ -1,16 +1,19 @@
 # Heads-up play vs a solver-backed AI with live subgame re-solving — spec (draft, 2026-09-25)
 
-Status: P0 (contract, no solving) built in `src/lib/hu-play/`, tests `test/hu-play-*.test.ts`;
-P1's [admission audit](heads-up-play-p1-admission.md) is blocked before solving (2026-09-30).
-No production ladder or playable UI is shipped. Depends on the postflop-solver bridge
+Current status (2026-10-01): W1–W4 and the P0–P3 backend are shipped and CI-verified.
+P4's production flop-translation candidate passes its frozen numerical/browser gates;
+full release checks remain open. P5 `/play` is not shipped. The earlier P1
+[admission failure](heads-up-play-p1-admission.md) is preserved as historical evidence,
+not a current blocker for the measured full-range profile. Depends on the postflop-solver bridge
 (`tasks/postflop-solver-bridge-plan.md`, `-spec.md`, `src/lib/solver/bridge/*`) and the lean
 BTN-vs-BB SRP flop library being generated from `leanSrpSpot` / `LEAN_SRP_TREE`
 (`src/lib/solver/bridge/fixtures.ts`). Browser W1–W4 have since landed; see
 `postflop-solver-wasm-spec.md`. The CPU-ceiling roadmap's Architecture decision supersedes
 the older native-server and ad-hoc size/range degradation drafts in §2.4–2.5 below:
-production solves use the bounded browser Worker, preserving at least 99% of each range.
+production solves use the bounded browser Worker. The current measured rung retains
+every positive hand; no reach-pruning approximation is enabled.
 
-**P1 continuation, 2026-09-30:** the [wider-range feasibility study](heads-up-play-p1-wide-feasibility.md)
+**Historical P1 research checkpoint, 2026-09-30:** the [wider-range feasibility study](heads-up-play-p1-wide-feasibility.md)
 has now solved the same 64 frozen full-range roots on one native thread and in all three
 desktop browser engines (192 quality jobs, exact native parity). All 32 rivers also pass
 independent ≤0.3%-pot grading. A separate measured play-profile proposal fits every observed
@@ -274,13 +277,19 @@ B = bet, C = call):
       See [P3 record](heads-up-play-p3-turn.md): 200/200 cases, Chromium p95 4.26 s,
       1,000 conserved/replayed hands, 62 independent river and four complete turn grades.
       Three-browser parity/lifecycle passes; Firefox turn p95 51.8 s is not a speed promise.
-- [ ] P3 exact-commit verification, push and every hosted CI job green.
+- [x] P3 exact-commit verification, push and every hosted CI job green: `bc4e5e5`,
+      run `36950939510`; 1,023 isolated tests, complete fresh native/WASM reproduction.
 - Optional optimization (Kat, 2026-10-01): offline cache warm-up for common turn lines;
       measure coverage, download cost and latency if cheap. Not a P4/P5 blocker after
       the live corpus passes; unfinished coverage must stay labelled unfinished.
 
 ### P4 — flop translation + safe re-solve study
-- [ ] Flop off-tree via pseudo-harmonic translation, real-chip settlement, next-street re-solve.
+- [x] Flop off-tree via pseudo-harmonic translation, real-chip settlement, next-street re-solve.
+      [P4 candidate record](heads-up-play-p4-flop.md): 200 frozen cases, 1,000 identical
+      on-tree replays, 52 independent river and four complete turn grades, and exact
+      three-browser parity. 57 cases use a labelled passive call rule, not a saved solve.
+      Chromium turn p95 2.44 s; Firefox observer p95 29.9 s is not a speed promise.
+- [ ] P4 exact-commit isolated verification, explicit-file release, push and all CI jobs green.
 - [x] Independent toy-scale whole-game study for translation, unsafe, unsafe-at-parent,
       Resolve and Max-margin. See [frozen P4 study](heads-up-play-p4-study.md): one added
       opponent bet in the river-v3 demo and one river branch of the turn-v2 referee.
@@ -288,7 +297,8 @@ B = bet, C = call):
       **not** against an abstraction that has no response to the new action.
 - [x] Resolve and Max-margin adapters on the existing TS compact river CFR+ engine,
       with independent per-hand BR checks, analytic/rare-hand/blocker tests, and no Rust changes.
-      This does not complete P4: production flop translation depends on the blocked P1 ladder.
+      This does not complete P4: production flop translation remains separate.
+      The former P1 capacity blocker is resolved; P1–P3 are now shipped and verified.
       A postflop-solver gadget fork remains a decision for Kat, not authorized here.
 
 ### P5 — UI

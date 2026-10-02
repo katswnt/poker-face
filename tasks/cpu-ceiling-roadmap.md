@@ -180,13 +180,20 @@ replay, range-retention, source-identity or latency gate:
   implementation; restricted push/fold games do not validate or unlock the gated PF4 model.
 
 P3's current record is [turn solving and optional cache](heads-up-play-p3-turn.md).
-Its measured candidate passes the frozen 200-case live corpus (Chromium turn p95
+P3 shipped as `bc4e5e5`, with all eight jobs in CI `36950939510` green after
+exact-commit isolation (1,023 tests) and complete fresh native/WASM reproduction.
+It passes the frozen 200-case live corpus (Chromium turn p95
 4.26 s), 1,000 conserved full-hand replays and three-browser numerical/lifecycle checks.
 Firefox observer turn p95 is 51.8 s, not a 10-second performance promise. The optional
-partial cache is not needed for these gates. Exact-commit release checks and green CI
-remain required before P4 starts.
+partial cache is not needed for these gates. P4 may now start; `/play` is not shipped yet.
 
 These already have detailed records; this section adds the done-definition.
+
+P4's [production flop-translation candidate](heads-up-play-p4-flop.md) now passes the
+frozen 200 parent/action cases, exact 1,000-hand on-tree reduction, independently graded
+continuations and three-browser parity. Its 57 passive rule responses are labelled,
+not represented as saved solver decisions. The source-bound evidence is generated and
+validated locally; full release verification and CI are still pending. P5 has not started.
 
 ### Step 1 — W1 single-thread WASM build (commit it)
 - Land W1 exactly as owned in `tasks/postflop-solver-w1-st.md` ("Owned W1 files"), no `target/`.
