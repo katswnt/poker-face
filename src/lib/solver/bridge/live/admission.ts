@@ -3,6 +3,7 @@ import { parseBridgeEstimate, wasmBudget, type WasmEnvironment } from "../wasm-a
 import type { ExportReservation, LiveEstimate, LiveVerdict } from "./model";
 import { PLAY_LIMITS, requireLiveProfile, validatePlaySpot, type LiveProfile } from "./play-profile";
 import { validateRiverPlaySpot } from "./river-profile";
+import { validateTurnPlaySpot } from "./turn-profile";
 
 /** W2 engineering limits, not a hardware safety certificate. Offline scripts retain capacity. */
 export const LIVE_LIMITS = Object.freeze({ inputBytes: 256 * 1024, rangeHands: 64, jsonDepth: 100,
@@ -26,9 +27,11 @@ export function parseLiveSpot(json: string, profile: LiveProfile = "teaching-v1"
   const spot = validateBridgeSpot(raw);
   if (profile === "play-v1") return validatePlaySpot(spot);
   if (profile === "play-river-v1") return validateRiverPlaySpot(spot);
+  if (profile === "play-turn-v1") return validateTurnPlaySpot(spot);
   if (spot.board.turn === null) throw new Error("Live flops use the saved library. Browser solving starts on the turn or river.");
   if (spot.ranges.some(r => r.combos.length > LIVE_LIMITS.rangeHands)) throw new Error("Browser preflight currently allows at most 64 hands per player.");
   if (spot.tree.mode === "river-subgame-v1") throw new Error("Forced river prefixes require the play-river-v1 profile.");
+  if (spot.tree.mode === "turn-subgame-v1") throw new Error("Forced turn prefixes require the play-turn-v1 profile.");
   if (spot.solve.compression !== "off") throw new Error("Browser solving currently requires compression off (the checked float32 path).");
   if (spot.solve.maxIterations > LIVE_LIMITS.maxIterations || spot.solve.timeoutMs > LIVE_LIMITS.timeoutMs) {
     throw new Error("Browser solves are limited to 10,000 iterations and 120 seconds.");

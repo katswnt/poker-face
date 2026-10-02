@@ -11,7 +11,7 @@ type Request = Omit<Exclude<LiveCommand, { type: "cancel" }>, "id">;
 interface SolverClient { start(request: Request): number; cancel(): void; dispose(): void }
 export interface BrowserResolveOptions {
   readonly assetBase: string; readonly environment: WasmEnvironment;
-  readonly profile?: "play-v1" | "play-river-v1";
+  readonly profile?: "play-v1" | "play-river-v1" | "play-turn-v1";
   readonly onEvent?: (event: LiveEvent) => void;
   /** Dependency injection for tests/harnesses; the app uses the actual W2 browser factory. */
   readonly createClient?: (emit: (event: LiveEvent) => void) => SolverClient;

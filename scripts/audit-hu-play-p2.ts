@@ -3,7 +3,7 @@
  */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -48,13 +48,15 @@ interface SafetyReport extends Observed {
   safetyContract: { path: string; text: string; sha256: string };
 }
 export interface P2Evidence {
-  format: "poker-face-p2-evidence"; version: 1; currentSources: Source[];
+  format: "poker-face-p2-evidence"; version: 1 | 2; currentSources: Source[];
+  parentEvidenceHash?: string;
   inputs: Hashed & { cases: FrozenCase[] };
   baselines: (Solve & { corpusIndex: number })[];
   cases: { seed: number; solves: Solve[] }[];
   nativeReports: NativeReport[]; safety: SafetyReport; browser: BrowserReport; memory: BrowserReport;
 }
 export const P2_EVIDENCE_STEM = "tasks/artifacts/hu-play-p2-river";
+export const P2_P3_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p2-p3-successor";
 const digest = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex");
 function bound(r: Hashed, format: string) {
   assert.equal(r.format, format); assert.equal(r.version, 1); const { payloadHash, ...payload } = r;
@@ -78,19 +80,42 @@ export async function p2PipelineSources(): Promise<Source[]> {
   const paths = new Set([...p1PipelineSources().map(r => r.path), ...Object.keys(built.metafile.inputs)]);
   return [...paths].sort().map(path => ({ path, sha256: digest(readFileSync(path)) }));
 }
-export function readP2Evidence(): P2Evidence {
-  const meta = JSON.parse(readFileSync(`${P2_EVIDENCE_STEM}.json`, "utf8"));
-  assert.equal(meta.format, "poker-face-p2-evidence-bundle"); assert.equal(meta.version, 1);
-  const compressed = readFileSync(`${P2_EVIDENCE_STEM}.json.gz`); assert.equal(compressed.length, meta.bytes);
+function readP2Archive(stem: string, version: 1 | 2): P2Evidence {
+  const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
+  assert.equal(meta.format, "poker-face-p2-evidence-bundle"); assert.equal(meta.version, version);
+  const compressed = readFileSync(`${stem}.json.gz`); assert.equal(compressed.length, meta.bytes);
   assert.equal(digest(compressed), meta.sha256);
   const plain = gunzipSync(compressed, { maxOutputLength: 512 * 1024 ** 2 });
   assert.equal(digest(plain), meta.uncompressedSha256); const evidence = JSON.parse(plain.toString("utf8"));
-  assert.equal(wideHash(evidence), meta.evidenceHash); return evidence;
+  assert.equal(wideHash(evidence), meta.evidenceHash); assert.equal(evidence.version, version); return evidence;
+}
+
+export function currentP2EvidenceStem() {
+  return existsSync(`${P2_P3_SUCCESSOR_STEM}.json`) ? P2_P3_SUCCESSOR_STEM : P2_EVIDENCE_STEM;
+}
+export function readHistoricalP2Evidence() { return readP2Archive(P2_EVIDENCE_STEM, 1); }
+export function readP2Evidence(): P2Evidence {
+  const stem = currentP2EvidenceStem(); return readP2Archive(stem, stem === P2_EVIDENCE_STEM ? 1 : 2);
+}
+export function checkP2SuccessorParent(e: P2Evidence) {
+  if (e.version === 1) { assert.equal(e.parentEvidenceHash, undefined); return; }
+  assert.equal(e.version, 2); const historical = readHistoricalP2Evidence();
+  assert.equal(e.parentEvidenceHash, wideHash(historical), "P2 historical parent evidence hash");
+  assert.deepEqual(e.inputs, historical.inputs, "P2 frozen inputs must remain unchanged");
+  const baselineIdentity = (record: P2Evidence) => record.baselines.map(b => ({ corpusIndex: b.corpusIndex,
+    spot: b.spot, numericalHash: wideHash(mathProjection(b.result)) }));
+  const caseIdentity = (record: P2Evidence) => record.cases.map(c => ({ seed: c.seed, solves: c.solves.map(s => ({
+    spot: s.spot, numericalHash: wideHash(mathProjection(s.result)) })) }));
+  assert.deepEqual(baselineIdentity(e), baselineIdentity(historical), "P2 frozen baseline numerical hashes");
+  assert.deepEqual(caseIdentity(e), caseIdentity(historical), "P2 frozen playing-policy numerical hashes");
+  assert.ok(e.nativeReports.length); assert.deepEqual(nativeIdentity(e.nativeReports.at(-1)!),
+    nativeIdentity(historical.nativeReports.at(-1)!), "P2 historical mathematical/log identities");
 }
 
 export async function checkP2Evidence(e: P2Evidence) {
-  assert.equal(e.format, "poker-face-p2-evidence"); assert.equal(e.version, 1);
+  assert.equal(e.format, "poker-face-p2-evidence");
   assert.equal(e.cases.length, 200, "Every one of the 200 cases must remain");
+  checkP2SuccessorParent(e);
   assert.deepEqual(e.currentSources, await p2PipelineSources(), "P2 source closure changed; new reproduction evidence required");
   bound(e.inputs, "poker-face-p2-river-inputs"); assert.equal(e.inputs.payloadHash, "4f2a1442b882460371645954ce69ae700324d7427a3271d013d505a156f6325c");
   assert.equal(e.inputs.cases.length, 200); assert.equal(e.baselines.length, 32); assert.ok(e.nativeReports.length >= 1);
@@ -156,7 +181,7 @@ export async function checkP2Evidence(e: P2Evidence) {
   };
   const browser = verifyBrowser(e.browser, ["chromium"], false), memory = verifyBrowser(e.memory, ["chromium", "firefox", "webkit"], true);
   assert.equal(e.browser.buildHash, e.memory.buildHash); assert.equal(e.browser.engineSourceHash, e.memory.engineSourceHash);
-  return { format: "poker-face-p2-release-summary", version: 1, completed: 200, translations, maxIndependentPctPot, browser, memory,
+  return { format: "poker-face-p2-release-summary", version: e.version, completed: 200, translations, maxIndependentPctPot, browser, memory,
     safety: { casesWithPositiveMarginVsTranslation: safetyMaxima.filter(n => n > .0002).length,
       maxMarginVsTranslationChips: Math.max(...safetyMaxima), maxComposedExploitabilityPctPot: Math.max(...e.safety.rows.map(r => r.grades.actual.exploitabilityPctPot)) },
     limits: "Scripted preflop, hand-written ranges, 12 saved flops. Local approximate games, not exact GTO or global safety. Desktop browser observations, not phone certification." };
@@ -165,7 +190,7 @@ export async function checkP2Evidence(e: P2Evidence) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2); assert.deepEqual(args, ["--check"]);
   void checkP2Evidence(readP2Evidence()).then(summary => {
-    assert.deepEqual(summary, JSON.parse(readFileSync(`${P2_EVIDENCE_STEM}-summary.json`, "utf8")));
+    assert.deepEqual(summary, JSON.parse(readFileSync(`${currentP2EvidenceStem()}-summary.json`, "utf8")));
     console.log(JSON.stringify(summary, null, 2));
   }).catch(e => { console.error(e); process.exitCode = 1; });
 }

@@ -1,0 +1,105 @@
+{
+  "format": "poker-face-p3-release-summary",
+  "version": 1,
+  "completed": 200,
+  "direct": 135,
+  "translations": 65,
+  "acceptedSolves": 327,
+  "rivers": 62,
+  "maxRiverPctPot": 0.2972137230985798,
+  "completeTurns": 4,
+  "completeTurnPctPot": [
+    0.2914645698042081,
+    0.21096305385380856,
+    0.27105437813145344,
+    0.2927196189610093
+  ],
+  "hands": 1000,
+  "browser": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "turn": {
+        "count": 200,
+        "p50Ms": 1342.4000005722046,
+        "p95Ms": 4255.699998855591,
+        "maxMs": 7357.39999961853
+      },
+      "river": {
+        "count": 62,
+        "p50Ms": 48.94999980926514,
+        "p95Ms": 63.79999923706055,
+        "maxMs": 73.89999961853027
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": null
+    }
+  ],
+  "memory": [
+    {
+      "browser": "chromium",
+      "cases": 200,
+      "turn": {
+        "count": 200,
+        "p50Ms": 1349.6999998092651,
+        "p95Ms": 4465.5,
+        "maxMs": 7521.5
+      },
+      "river": {
+        "count": 62,
+        "p50Ms": 47.94999980926514,
+        "p95Ms": 65.79999923706055,
+        "maxMs": 70.10000038146973
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 31129600
+    },
+    {
+      "browser": "firefox",
+      "cases": 200,
+      "turn": {
+        "count": 200,
+        "p50Ms": 15335.5,
+        "p95Ms": 51838,
+        "maxMs": 98205
+      },
+      "river": {
+        "count": 62,
+        "p50Ms": 87,
+        "p95Ms": 161,
+        "maxMs": 247
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 31129600
+    },
+    {
+      "browser": "webkit",
+      "cases": 200,
+      "turn": {
+        "count": 200,
+        "p50Ms": 1344,
+        "p95Ms": 4396,
+        "maxMs": 7564
+      },
+      "river": {
+        "count": 62,
+        "p50Ms": 36.5,
+        "p95Ms": 49,
+        "maxMs": 55
+      },
+      "turnBudgetMs": 10000,
+      "riverBudgetMs": 2000,
+      "observedPeakLinearMemoryBytes": 31129600
+    }
+  ],
+  "cacheRequired": false,
+  "latencyGate": {
+    "browser": "chromium",
+    "turnP95Ms": 10000,
+    "riverP95Ms": 2000
+  },
+  "limits": "Scripted preflop, hand-written ranges, 12 saved flops. Approximate local strategies, not exact GTO or globally safe. Atypical sizes can exploit composed play. Optional cache unpublished; physical phones unvalidated."
+}

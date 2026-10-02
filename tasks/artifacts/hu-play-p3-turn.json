@@ -1,0 +1,12 @@
+{
+  "format": "poker-face-p3-evidence-bundle",
+  "version": 1,
+  "bytes": 34921234,
+  "sha256": "dd9b5648c3bebd6958f9b69bc6d8d676952376eeade1041c24c8b1870253c51b",
+  "uncompressedBytes": 127796397,
+  "uncompressedSha256": "48c1cf091f42c17c79f9a40eb90f0ca810f051ef4b00afcb3716d9e198defc03",
+  "evidenceHash": "ccd478fea488cb1e20dab6b1c4937317d73222c7da814f085836d04d377f9bc3",
+  "inputsHash": "bec208a7e32ba99f8b99ab4b115d277dac4438a94932d0d08635dc6a3a1b7e3c",
+  "currentSourceHash": "be6280953163c6d358416d8ca176f48e352a5985ff64524a69210da6b407dfdd",
+  "nativeReportHash": "6c99322f1c965a4ed42592f77701f41957f44ccab555ab517ec81cc133e5c31d"
+}

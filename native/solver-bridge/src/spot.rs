@@ -57,6 +57,12 @@ pub enum TreeSpec {
         prefix_length: u32,
         root: ExplicitNode,
     },
+    #[serde(rename = "turn-subgame-v1")]
+    TurnSubgameV1 {
+        #[serde(rename = "prefixLength")]
+        prefix_length: u32,
+        root: ExplicitNode,
+    },
 }
 
 #[derive(Debug, Deserialize)]

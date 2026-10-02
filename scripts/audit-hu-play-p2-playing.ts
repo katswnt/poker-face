@@ -34,7 +34,7 @@ async function main() {
     "native/solver-bridge/src/lib.rs", "native/solver-bridge/src/spot.rs", "native/solver-bridge/Cargo.lock",
     "src/lib/solver/bridge/referee.ts", "src/lib/solver/river/cards.ts", "src/lib/solver/postflop/vector/kernels.ts",
     "src/lib/solver/bridge/contract.ts", "src/lib/solver/bridge/river-hand-values.ts",
-    ...["hand", "async-hand", "play-hand", "types", "public-state", "reach", "rng", "resolve-spot", "river-tree", "river-menu", "river-translation"].map(n => `src/lib/hu-play/${n}.ts`),
+    ...["hand", "async-hand", "play-hand", "types", "public-state", "reach", "rng", "resolve-spot", "river-tree", "river-menu", "river-translation", "subgame-identity"].map(n => `src/lib/hu-play/${n}.ts`),
     ...["policy", "resolved", "native", "browser", "nested-river", "river-play"].map(n => `src/lib/hu-play/sources/${n}.ts`),
     ...["admission", "play-profile", "river-profile", "river-quality", "runtime", "client"].map(n => `src/lib/solver/bridge/live/${n}.ts`)];
   const sourceFiles = sourcePaths.map(path => ({ path, sha256: createHash("sha256").update(readFileSync(path)).digest("hex") }));

@@ -2,7 +2,7 @@
 import { validateBridgeSpot, type BridgeAction, type BridgeSpotV1 } from "../solver/bridge/contract";
 import type { HumanModelRequest } from "./hand";
 import { derivePublicState } from "./public-state";
-import { fnv1a } from "./rng";
+import { subgameIdentity } from "./subgame-identity";
 import { preparationKey } from "./sources/policy";
 import { buildPlaySpot } from "./sources/resolved";
 import { buildExpandedRiverTree, buildLeanRiverTree } from "./river-menu";
@@ -26,7 +26,7 @@ export function buildNestedRiverSpot(request: HumanModelRequest, actual: BridgeA
     const e = p.events[i]; if (e.kind !== "action") throw new Error("River prefix contains chance");
     tree = { kind: "player", player: e.player, actions: [{ action: e.action, next: tree }] };
   }
-  return validateBridgeSpot({ ...base, id: `hu-nested-river-${fnv1a(JSON.stringify([p.events, actual])).toString(16)}`,
+  return validateBridgeSpot({ ...base, id: `hu-nested-river-${subgameIdentity(p.events, actual)}`,
     tree: { mode: "river-subgame-v1", prefixLength: p.streetActions, root: tree } });
 }
 
@@ -47,6 +47,6 @@ export function buildRiverResponseSpot(request: HumanModelRequest): BridgeSpotV1
     const e = p.events[i]; if (e.kind !== "action") throw new Error("River response prefix contains chance");
     tree = { kind: "player", player: e.player, actions: [{ action: e.action, next: tree }] };
   }
-  return validateBridgeSpot({ ...base, id: `hu-translated-river-${fnv1a(JSON.stringify(p.events)).toString(16)}`,
+  return validateBridgeSpot({ ...base, id: `hu-translated-river-${subgameIdentity(p.events)}`,
     tree: { mode: "river-subgame-v1", prefixLength: p.streetActions, root: tree } });
 }

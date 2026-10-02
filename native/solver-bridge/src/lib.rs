@@ -321,6 +321,57 @@ fn check_river_subgame(node: &ExplicitNode, state: Betting, forced: u32, count: 
     }
 }
 
+/// A turn prefix cannot cross chance. After the one river chance boundary, reuse the
+/// strict river checks with no forced actions. explicit_edit independently checks every
+/// amount, terminal and chance against the engine's real betting rules, including all-ins.
+fn check_turn_subgame(node: &ExplicitNode, state: Betting, forced: u32, count: &mut u32) -> Result<(), String> {
+    *count += 1;
+    if *count > 200_000 {
+        return Err("turn subgame exceeds the explicit node bound".into());
+    }
+    match node {
+        ExplicitNode::Chance { next } => {
+            if forced > 0 || state.street != BoardState::River as u8 {
+                return Err("turn subgame chance must follow a closed turn, never a forced prefix".into());
+            }
+            check_river_subgame(next, state, 0, count)
+        }
+        ExplicitNode::Terminal { .. } if forced > 0 => Err("forced prefix must end at a turn decision".into()),
+        ExplicitNode::Terminal { .. } => Ok(()),
+        ExplicitNode::Player { player, actions } => {
+            if usize::from(*player) != state.actor || state.street != BoardState::Turn as u8 {
+                return Err("turn subgame player or street differs from its prefix; river needs chance".into());
+            }
+            if forced > 0 {
+                if actions.len() != 1 || !matches!(actions[0].next, ExplicitNode::Player { .. }) {
+                    return Err("forced prefix needs one action continuing to a turn decision".into());
+                }
+                if matches!(actions[0].action, ActionSpec::Fold | ActionSpec::Call)
+                    || advance(&state, actions[0].action).street != state.street
+                {
+                    return Err("forced prefix cannot end the turn".into());
+                }
+            } else {
+                let facing = state.put[state.actor] < state.put[1 - state.actor];
+                let has = |action| actions.iter().any(|edge| edge.action == action);
+                if (facing && !(has(ActionSpec::Fold) && has(ActionSpec::Call))) || (!facing && !has(ActionSpec::Check))
+                {
+                    return Err("turn subgame must retain check or fold/call alternatives below its prefix".into());
+                }
+            }
+            for edge in actions {
+                check_turn_subgame(
+                    &edge.next,
+                    advance(&state, edge.action),
+                    forced.saturating_sub(1),
+                    count,
+                )?;
+            }
+            Ok(())
+        }
+    }
+}
+
 pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree, String> {
     match &spot.tree {
         TreeSpec::Menu(menu) => {
@@ -331,7 +382,7 @@ pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree
             }
             Ok(tree)
         }
-        TreeSpec::Explicit { root } | TreeSpec::RiverSubgameV1 { root, .. } => {
+        TreeSpec::Explicit { root } | TreeSpec::RiverSubgameV1 { root, .. } | TreeSpec::TurnSubgameV1 { root, .. } => {
             let mut tree = ActionTree::new(base_config(spot, cards))?;
             let street = initial_state(cards) as u8;
             let state = Betting {
@@ -346,6 +397,14 @@ pub fn build_action_tree(spot: &Spot, cards: &CheckedCards) -> Result<ActionTree
                     return Err("river-subgame-v1 requires a river and prefixLength in [0, 8]".into());
                 }
                 check_river_subgame(root, state, *prefix_length, &mut 0)?;
+            }
+            if let TreeSpec::TurnSubgameV1 { prefix_length, .. } = &spot.tree {
+                if cards.turn.is_none() || cards.river.is_some() || *prefix_length > 8 {
+                    return Err(
+                        "turn-subgame-v1 requires a known turn, undealt river and prefixLength in [0, 8]".into(),
+                    );
+                }
+                check_turn_subgame(root, state, *prefix_length, &mut 0)?;
             }
             explicit_edit(&mut tree, root, state, spot.effective_stack as i32, false, "root")?;
             tree.back_to_root();

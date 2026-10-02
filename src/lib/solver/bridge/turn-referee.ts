@@ -52,9 +52,25 @@ export function compileBridgeTurnRanges(input: BridgeSpotV1): VectorRanges {
 }
 
 export function gradeBridgeTurn(input: BridgeSpotV1, raw: BridgeResultV1, kernel: "vector" | "naive" = "vector") {
+  if (input.solve.exportScope !== "full") throw new Error("Turn grade requires a complete export, never truncated continuations");
+  return gradeCompleteTurn(input, raw, kernel);
+}
+
+/** A first-street export is complete only when no river betting continuation exists.
+ * This separate entry never upgrades a truncated chance node to a complete strategy.
+ * The ordinary complete-export referee above retains its original strict contract.
+ */
+export function gradeTerminalTurnExport(input: BridgeSpotV1, raw: BridgeResultV1, kernel: "vector" | "naive" = "vector") {
+  if (input.tree.mode !== "turn-subgame-v1" || raw.tree.some(n => n.kind === "chance")) {
+    throw new Error("Terminal turn quality requires a complete policy with no chance continuation or truncation");
+  }
+  return gradeCompleteTurn(input, raw, kernel);
+}
+
+function gradeCompleteTurn(input: BridgeSpotV1, raw: BridgeResultV1, kernel: "vector" | "naive") {
   const spot = validateBridgeSpot(input), result = checkBridgeResult(raw, spot, raw.spotHash);
   if (kernel !== "vector" && kernel !== "naive") throw new Error("Unknown terminal kernel");
-  if (spot.solve.exportScope !== "full" || result.tree.some(n => n.kind === "chance" && n.truncated)) throw new Error("Turn grade requires a complete export, never truncated continuations");
+  if (result.tree.some(n => n.kind === "chance" && n.truncated)) throw new Error("Turn grade requires a complete export, never truncated continuations");
   if (result.tree.length > 200000) throw new Error("Turn referee public-node bound exceeded");
   const ranges = compileBridgeTurnRanges(spot), nodes = result.tree;
   const riverAt = Int16Array.from(nodes.map(n => n.board.length === 4 ? -1 : ranges.rivers.indexOf(n.board[4])));

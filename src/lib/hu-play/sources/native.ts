@@ -22,7 +22,7 @@ export interface NativeResolveOptions {
 
 /** Estimate only; cancellation/timeout kill this process before any solve is started. */
 export async function estimatePlayNative(spot: BridgeSpotV1, signal?: AbortSignal, binary = BRIDGE_BINARY,
-  profile: "play-v1" | "play-river-v1" = "play-v1"): Promise<LiveEstimate> {
+  profile: "play-v1" | "play-river-v1" | "play-turn-v1" = "play-v1"): Promise<LiveEstimate> {
   signal?.throwIfAborted();
   const json = canonicalBridgeSpotJson(spot); parseLiveSpot(json, profile);
   const directory = mkdtempSync(join(tmpdir(), "poker-play-estimate-")), path = join(directory, "spot.json");
@@ -45,7 +45,7 @@ export class NativeResolveSource extends ResolvedPolicySource {
  * Native has no WASM high-water observation: its zero below is NOT a browser certificate.
  */
 export async function solveNativePlay(spot: BridgeSpotV1, options: NativeResolveOptions = {}, signal?: AbortSignal,
-  profile: "play-v1" | "play-river-v1" = "play-v1") {
+  profile: "play-v1" | "play-river-v1" | "play-turn-v1" = "play-v1") {
   const estimate = await estimatePlayNative(spot, signal, options.binary, profile);
   const verdict = admitBrowserSolve(estimate, options.environment ?? { profile: "unknown" }, 0, profile);
   options.onEstimate?.(spot, estimate, verdict);

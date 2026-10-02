@@ -51,18 +51,18 @@ export class ResolvedPolicySource extends PreparedPolicySource {
   private generation = 0;
   constructor(private readonly solve: PublicSolve) { super(); }
 
-  /** Detached public evidence for P2's translation/safety comparison. No private decision
-   * request is accepted, and only the exact currently prepared river may inspect its tree.
+  /** Detached public evidence for translation/safety comparisons. No private decision
+   * request is accepted; only the exact currently prepared turn or river can inspect it.
    */
   publicTree(request: HumanModelRequest): ResolvedTreeSnapshot {
     this.policy(request);
-    if (!this.root || request.publicState.street !== "river") throw new Error("A prepared river is required");
+    if (!this.root || (request.publicState.street !== "turn" && request.publicState.street !== "river")) throw new Error("A prepared turn or river is required");
     let parentNode = 0;
     for (const event of request.publicState.events.slice(this.root.request.publicState.events.length)) {
       const n = this.root.result.tree[parentNode];
-      if (event.kind !== "action" || n.kind !== "player") throw new Error("Invalid prepared river path");
+      if (event.kind !== "action" || n.kind !== "player") throw new Error("Invalid prepared street path");
       const edge = n.actions.find(e => actionToken(e.action) === actionToken(event.action));
-      if (!edge) throw new Error("No prepared river action"); parentNode = edge.child;
+      if (!edge) throw new Error("No prepared street action"); parentNode = edge.child;
     }
     return structuredClone({ rootRequest: this.root.request, spot: this.root.spot, result: this.root.result, parentNode });
   }

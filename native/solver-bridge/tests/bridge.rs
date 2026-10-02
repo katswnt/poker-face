@@ -93,6 +93,92 @@ fn check_down() -> Value {
             { "action": { "type": "check" }, "next": { "kind": "terminal", "outcome": "showdown" } } ] } } ] } })
 }
 
+fn forced_turn(bet: i32) -> Value {
+    let after_call = if bet == 50 {
+        json!({ "kind": "terminal", "outcome": "showdown" })
+    } else {
+        json!({ "kind": "chance", "next": check_down()["root"] })
+    };
+    let tree = json!({ "mode": "turn-subgame-v1", "prefixLength": 1,
+        "root": { "kind": "player", "player": 0, "actions": [
+            { "action": { "type": "bet", "to": bet }, "next": { "kind": "player", "player": 1, "actions": [
+                { "action": { "type": "fold" }, "next": { "kind": "terminal", "outcome": "fold" } },
+                { "action": { "type": "call" }, "next": after_call }
+            ] } }
+        ] } });
+    let mut spot = river_spot(tree, &["3s3h"], &["AsAh"]);
+    spot["board"]["river"] = Value::Null;
+    spot
+}
+
+#[test]
+fn turn_subgame_forces_only_past_actions_and_enumerates_every_compatible_river() {
+    let result = solve(forced_turn(20)).expect("turn subgame must be supported");
+    let ResultNode::Player { strategy, actions, .. } = &result.tree[0] else {
+        panic!()
+    };
+    assert_eq!(strategy, &vec![vec![Some(1.0)]]);
+    let ResultNode::Player { committed, actions, .. } = &result.tree[actions[0].child] else {
+        panic!()
+    };
+    assert_eq!(*committed, [20, 0]);
+    let ResultNode::Chance {
+        children, truncated, ..
+    } = &result.tree[actions[1].child]
+    else {
+        panic!()
+    };
+    assert!(!truncated);
+    assert_eq!(children.len(), 44); // 52 minus four board and four private cards, not one placeholder.
+    assert!(result.exploitability.chips < 0.01);
+    // AA wins 42/44 rivers, 33 wins the two remaining threes. IP always calls for 20.
+    let expected = 70.0 * (42.0 - 2.0) / 44.0;
+    assert!((f64::from(result.root.ev[1][0]) - expected).abs() < 0.001);
+    let mut first = forced_turn(20);
+    first["solve"]["exportScope"] = json!("first-street");
+    let exported = solve(first).unwrap();
+    assert_eq!(exported.root.ev, result.root.ev);
+    assert_eq!(exported.exploitability.chips, result.exploitability.chips);
+    assert!(exported
+        .tree
+        .iter()
+        .any(|n| matches!(n, ResultNode::Chance { truncated: true, .. })));
+}
+
+#[test]
+fn turn_subgame_rejects_wrong_board_prefix_street_boundaries_and_hidden_river_alternatives() {
+    let good = forced_turn(20);
+    let mut bad = good.clone();
+    bad["board"]["river"] = json!("9d");
+    assert!(solve(bad).is_err());
+    for length in [0, 2, 9] {
+        let mut bad = good.clone();
+        bad["tree"]["prefixLength"] = json!(length);
+        assert!(solve(bad).is_err());
+    }
+    let mut bad = good.clone();
+    let response = &mut bad["tree"]["root"]["actions"][0]["next"];
+    response["actions"][1]["next"] = check_down()["root"].clone();
+    assert!(solve(bad).is_err());
+    let mut bad = good.clone();
+    bad["tree"]["root"]["actions"][0]["next"]["actions"][1]["next"]["next"] = json!({
+        "kind": "player", "player": 0, "actions": [{ "action": { "type": "bet", "to": 30 }, "next": {
+            "kind": "player", "player": 1, "actions": [
+                { "action": { "type": "fold" }, "next": { "kind": "terminal", "outcome": "fold" } },
+                { "action": { "type": "call" }, "next": { "kind": "terminal", "outcome": "showdown" } }
+            ]
+        } }]
+    });
+    assert!(solve(bad).is_err()); // no check below the prefix, even on the river
+    let allin = solve(forced_turn(50)).unwrap();
+    assert!(!allin.tree.iter().any(|n| matches!(n, ResultNode::Chance { .. })));
+    let mut bad = forced_turn(50);
+    bad["tree"]["root"]["actions"][0]["next"]["actions"][1]["next"] = json!({
+        "kind": "chance", "next": check_down()["root"]
+    });
+    assert!(solve(bad).is_err());
+}
+
 #[test]
 fn river_subgame_forced_prefix_is_not_a_decision_or_a_second_reach_update() {
     let tree = json!({ "mode": "river-subgame-v1", "prefixLength": 1,

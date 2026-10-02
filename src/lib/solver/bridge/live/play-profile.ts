@@ -5,7 +5,7 @@
 import type { BridgeBoard, BridgeMenuTree, BridgeSpotV1, BridgeStreetMenu } from "../contract";
 import { canonicalSolverJson } from "../../toy/artifact";
 
-export type LiveProfile = "teaching-v1" | "play-v1" | "play-river-v1";
+export type LiveProfile = "teaching-v1" | "play-v1" | "play-river-v1" | "play-turn-v1";
 export const PLAY_LIMITS = Object.freeze({
   rangeHands: 640, stackPotRatio: 18, maxIterations: 1000, timeoutMs: 120_000,
   targetPctPot: .3, engineBytes: 32 * 1024 ** 2, exportBytes: 16 * 1024 ** 2,
@@ -13,7 +13,7 @@ export const PLAY_LIMITS = Object.freeze({
 });
 
 export function requireLiveProfile(profile: unknown): asserts profile is LiveProfile {
-  if (profile !== "teaching-v1" && profile !== "play-v1" && profile !== "play-river-v1") throw new Error("Unknown browser solver profile.");
+  if (profile !== "teaching-v1" && profile !== "play-v1" && profile !== "play-river-v1" && profile !== "play-turn-v1") throw new Error("Unknown browser solver profile.");
 }
 
 /** Exact continuation of the existing lean SRP menu; fresh objects prevent shared mutation. */

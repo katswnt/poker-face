@@ -1,7 +1,8 @@
 # P2: off-tree river decisions
 
 Started after P1 `ea47f6e` passed isolated verification and all eight hosted CI jobs in
-run `36804916249`. P2 is not shipped. The binding gates remain roadmap step 6 and play
+run `36804916249`. P2 shipped as `1d581d8`, with all eight jobs in CI `36906885269` green.
+The binding gates remain roadmap step 6 and play
 spec §2.4 / §2.7. No change to ranges, game, quality tolerance or phone claims.
 
 ## Implementation contract
@@ -55,7 +56,7 @@ spec §2.4 / §2.7. No change to ranges, game, quality tolerance or phone claims
 - [x] Bounded Worker admission and measured translation fallback.
 - [x] Frozen ≥200-case audit, all complete within budget or labelled fallback.
 - [x] Per-case local grades, AI value difference and per-hand human safety margins.
-- [ ] P1 successor regression evidence, complete isolated exact-commit gates, push, all CI green.
+- [x] P1 successor regression evidence, complete isolated exact-commit gates, push, all CI green.
 
 ## Ownership
 
@@ -345,3 +346,39 @@ npm run prepare:wasm:live
 POKER_FACE_LIVE_REQUIRED=1 npm run build
 POKER_FACE_LIVE_REQUIRED=1 npx playwright test --config playwright.live.config.ts --retries=0
 ```
+
+### Exact commit verification: `1d581d8`
+
+Commit `1d581d8aeed8b5d0735ab3544ec1ab412e550ef8` was tested in the separate detached
+worktree `/private/tmp/poker-p2-commit.4TJGiI`, with copied dependencies and freshly built
+native/WASM binaries. All **973 tests passed, zero skipped**; typecheck, lint, 19 Rust tests,
+fmt and native/WASM Clippy passed. All audit commands above passed. The 20-case native/WASM
+grid had zero numerical deltas at the unchanged 0.0002-chip referee tolerance. Three-browser
+Worker lifecycle checks passed against the new build. Both saved-only and prepared-asset
+production builds passed; the serial saved-only e2e run passed 82 tests with four intentional
+asset-required skips, and the prepared three-browser run passed 34 with two intentional
+non-Chromium zoom-API skips. No automatic retries were used.
+
+The first sandboxed unit/referee attempt hit `spawn EPERM` in the existing process-memory
+monitor; the unchanged full suite and referee passed with the required process permission.
+An initial browser run concurrent with heavy solver verification timed out in the real-zoom
+test and the 320px comparison solve. Its traces are retained at
+`/private/tmp/poker-p2-exact-e2e-first-attempt`; the entire suite then passed serially, without
+changing tests, timeouts or gates. Representative mobile/desktop screenshots were inspected.
+
+Fresh exact-commit native reproduction `/private/tmp/poker-p2-exact-playing-01` completed
+all 200 cases / 212 solves with identical strategy hashes, independent grades, iterations and
+completed-log hashes to the frozen release evidence. The actual production Worker in
+`/private/tmp/poker-p2-exact-browser-01` matched every result and retired all 212 Workers:
+Chromium p50 **108.7 ms**, p95 **149.4 ms**, maximum **186.4 ms**. This is additional desktop
+reproduction, not a new phone claim or replacement of the original timing corpus.
+
+Fresh WASM: 787,058 bytes; build hash
+`0de0978ce6ce3e0687aff17afe17f21da995cd73b8bb5d8d9ff9440f8b5d23bf`; unchanged engine source
+hash `d038bf3f744eed1da3e12672a78a3c9738e8cfea8d7df069cad5cfc65053d4c2`.
+The prepared assets include their complete AGPL source archive. The isolated tree remains
+clean; only the documented protected trainer/session and paused draft work remains in the
+primary tree. The exact commit is pushed to `origin/main`; all eight jobs in
+[CI 36906885269](https://github.com/katswnt/poker-face/actions/runs/36906885269) were observed
+green before P3 began. The final job had a slow browser dependency installation, then passed
+its browser smoke suite. P3 may now proceed; the local-vs-global safety caveat is unchanged.

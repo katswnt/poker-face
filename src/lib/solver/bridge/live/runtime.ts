@@ -4,6 +4,7 @@ import { admitBrowserSolve, LIVE_LIMITS, parseLiveEstimate, parseLiveSpot } from
 import type { LiveCommand, LiveEngine, LiveEvent, LivePreview, LiveSession, LiveStatus } from "./model";
 
 import { requireRiverPlayingResult } from "./river-quality";
+import { requireTurnPlayingResult } from "./turn-quality";
 
 export interface LiveHost {
   emit(event: LiveEvent): void;
@@ -89,7 +90,7 @@ export function createLiveRuntime(host: LiveHost) {
           check(); emit({ type: "preview", id, preview }); previewAt = host.now();
         }
       }
-      if ((command.profile === "play-v1" || command.profile === "play-river-v1") && status.exploitability! > status.target) {
+      if ((command.profile === "play-v1" || command.profile === "play-river-v1" || command.profile === "play-turn-v1") && status.exploitability! > status.target) {
         throw new Error("The play quality target was not reached within the iteration budget; no playing policy published.");
       }
       stage("exporting", status); await pause();
@@ -103,6 +104,7 @@ export function createLiveRuntime(host: LiveHost) {
         || result.counts.exportedNodes !== result.tree.length || result.tree.length > estimate.estimateExport.nodes
         || result.slices !== undefined) throw new Error("Final result does not match the completed session.");
       if (command.profile === "play-river-v1") requireRiverPlayingResult(result, spot, hash);
+      if (command.profile === "play-turn-v1") requireTurnPlayingResult(result, spot, hash);
       // A cancellation queued during synchronous export/check must beat result publication.
       await pause(); emit({ type: "result", id, result, elapsedMs: elapsed(), provenance: engine.provenance });
     } catch (error) {

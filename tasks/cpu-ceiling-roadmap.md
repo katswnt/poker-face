@@ -145,7 +145,46 @@ enabled. W4's general limits stay unchanged. P1 landed as `ea47f6e` after exact-
 and all eight jobs in CI `36804916249` passed; P2 may now start. This supersedes the historical capacity blocker for
 these measured inputs, not the phone checklist or the local-vs-global safety caveat.
 
+P2 off-tree river sources landed as `1d581d8` after exact-commit isolation (973 tests,
+19 Rust tests, native/WASM and artifact audits, both production builds and browser suites)
+and all eight jobs in [CI 36906885269](https://github.com/katswnt/poker-face/actions/runs/36906885269)
+passed. The [P2 record](heads-up-play-p2-river.md) preserves every frozen case, fallback and
+positive safety margin: 200/200 continuations, 212 independently graded solves, exact native/
+Worker replay, Chromium p95 153.2 ms (149.4 ms in the fresh exact-commit reproduction).
+Composed-policy local exploitability reaches 23.4% pot; the small individual-solve grades
+are not a global safety certificate. P3 may start; `/play` is still not shipped.
+
 ## Steps 1–4: browser solving (finish W1–W4)
+
+### User-directed release amendments (2026-10-01)
+
+Kat approved this order: safeguard the unfinished P3 files and frozen inputs, validate
+the frozen 200-case live-turn corpus first, then P4 flop translation and P5 `/play`.
+These instructions supersede the earlier mandatory-cache wording, not any mathematical,
+replay, range-retention, source-identity or latency gate:
+
+- If the frozen corpus passes live (Chromium turn p95 ≤10 s, plus the unchanged quality
+  and correctness gates), the turn cache is an **optional measured optimization**. Record
+  coverage, transfer/storage cost and lookup latency if inexpensive; an unfinished cache
+  must not block P4/P5. Never describe a partially generated cache as full coverage.
+- P5 includes deployment to Vercel. Rebuild native/WASM assets from the exact clean
+  release checkout; reject stale local assets, including source-whitespace mismatches.
+  Verify the deployed WASM/glue/manifest hashes and the deployed corresponding AGPL
+  source archive against that build. Record the commit, deployment URL and hashes.
+- `/play` must visibly warn that unusual bet sizes can exploit this AI, citing P2's
+  measured **23.4%-of-subgame-pot composed-policy local exploitability**. This is a
+  measured audit result, not a player's expected win rate or a bound for every hand.
+  The per-decision pot-odds/MDF/bluff-share/equity/provenance panel is required, not optional.
+- After P5, the next user-facing work is push/fold drills and equity-vs-range drills,
+  followed by hand-review mode for `/play`. Write their validation contracts before
+  implementation; restricted push/fold games do not validate or unlock the gated PF4 model.
+
+P3's current record is [turn solving and optional cache](heads-up-play-p3-turn.md).
+Its measured candidate passes the frozen 200-case live corpus (Chromium turn p95
+4.26 s), 1,000 conserved full-hand replays and three-browser numerical/lifecycle checks.
+Firefox observer turn p95 is 51.8 s, not a 10-second performance promise. The optional
+partial cache is not needed for these gates. Exact-commit release checks and green CI
+remain required before P4 starts.
 
 These already have detailed records; this section adds the done-definition.
 
@@ -224,8 +263,10 @@ Gates:
 ### Step 7 — P3: turn re-solves
 Deliverables:
 - Turn nested re-solve (turn+river tree, first-street export; river re-solved at its root).
-- Offline cache warm-up for common turn lines from the library flops (hash-bound chunks, same
-  pattern as B4), plus the hit-rate and latency report.
+- Optional offline cache warm-up for common turn lines from the library flops (hash-bound
+  chunks, same pattern as B4), plus measured hit rate, download cost and lookup latency
+  if pursued. Per the 2026-10-01 amendment, this does not block P4/P5 when the frozen
+  200-case live-turn corpus passes the unchanged gates.
 Gates: P1's determinism, conservation and leak gates hold; turn latency p95 is recorded and
 within the budget set in P1, or the step records why not and what the ladder does instead.
 
@@ -254,15 +295,23 @@ Deliverables:
   local ledger and note it.
 - Honest-copy tests in the `copy.test.ts` style: scripted preflop, hand-written ranges, 12 flops,
   not exact GTO, local re-solving is not a global guarantee, AGPL source link.
+- Visible warning on `/play`: unusual bet sizes can exploit the AI; cite the measured
+  P2 composed-policy result of 23.4% of the subgame pot, with its scope and units.
+- Clean-checkout native/WASM rebuild and Vercel deployment, with the deployed engine
+  and corresponding AGPL source archive/hash checked against the exact release build.
 Gates:
 - e2e: play a full hand by keyboard; off-tree bet; cancel during thinking; 320/390/1280px with
   no overflow; the math panel's numbers independently recomputed in unit tests.
 - A 200-hand seeded bot-vs-scripted-human run through the real UI state layer: no errors,
   conservation holds, ledger matches.
 - README: one accurate `/play` hunk and roadmap status updates.
+- Deployed `/play` smoke checks pass. Record the Vercel deployment identity/URL, release
+  commit, engine/source/build hashes and fetched source-archive checksum; the public
+  source link must work and serve the source used for that deployed engine.
 
 **Definition of done for this run:** steps 1–9 committed and pushed as separate verified
-commits, CI green on the final commit, each milestone's doc updated, and a closing handoff
+commits, CI green on the final commit, P5 deployed and source/build identity verified,
+each milestone's doc updated, and a closing handoff
 (`tasks/codex-handoff-<date>.md`) listing what shipped, measured numbers, open gates, and the
 remaining untouched trainer/session work and configurable-flop draft.
 

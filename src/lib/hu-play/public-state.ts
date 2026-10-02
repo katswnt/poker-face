@@ -12,6 +12,7 @@
  */
 import type { BridgeAction, BridgeBoard, BridgePlayer, BridgeStreet } from "../solver/bridge/contract";
 import { isRiverCard, type RiverCard } from "../solver/river/cards";
+import { canonicalSolverJson } from "../solver/toy/artifact";
 import { HU_PUBLIC_STATE_FORMAT, type HeadsUpPublicState, type HuPublicEvent } from "./types";
 
 export interface HuPublicSetup {
@@ -204,7 +205,7 @@ export function validatePublicState(input: unknown): HeadsUpPublicState {
     minimumBet: value.minimumBet as number, flop,
   }, events);
   for (const key of PUBLIC_KEYS) {
-    if (JSON.stringify(value[key]) !== JSON.stringify(derived[key])) fail(`${key} disagrees with the event list`);
+    if (canonicalSolverJson(value[key]) !== canonicalSolverJson(derived[key])) fail(`${key} disagrees with the event list`);
   }
   return derived;
 }

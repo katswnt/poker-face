@@ -265,11 +265,19 @@ B = bet, C = call):
       peak WASM linear memory 2,162,688 bytes (not total browser memory or phone certification).
       Positive human-hand BR margins occur in 134/200 cases versus nearest translation; the composed
       profile reaches 23.4%-pot local exploitability. The raw solve grade is **not** a safety guarantee.
-- [ ] P2 exact-commit verification, push and every hosted CI job green.
+- [x] P2 exact-commit verification, push and every hosted CI job green: `1d581d8`, run `36906885269`.
 
 ### P3 — same for the turn
-- [ ] Turn nested re-solve (turn+river tree, first-street export; river re-solved at the river root).
-- [ ] Offline cache warm-up for common turn lines; hit-rate and latency report.
+- [x] Turn nested re-solve (turn+river tree, first-street export; river re-solved at the river root).
+- [x] Frozen 200-case live-turn corpus passes unchanged quality/correctness gates and
+      Chromium p95 ≤10 s; cache generation does not substitute for this measurement.
+      See [P3 record](heads-up-play-p3-turn.md): 200/200 cases, Chromium p95 4.26 s,
+      1,000 conserved/replayed hands, 62 independent river and four complete turn grades.
+      Three-browser parity/lifecycle passes; Firefox turn p95 51.8 s is not a speed promise.
+- [ ] P3 exact-commit verification, push and every hosted CI job green.
+- Optional optimization (Kat, 2026-10-01): offline cache warm-up for common turn lines;
+      measure coverage, download cost and latency if cheap. Not a P4/P5 blocker after
+      the live corpus passes; unfinished coverage must stay labelled unfinished.
 
 ### P4 — flop translation + safe re-solve study
 - [ ] Flop off-tree via pseudo-harmonic translation, real-chip settlement, next-street re-solve.
@@ -286,7 +294,17 @@ B = bet, C = call):
 ### P5 — UI
 - [ ] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state.
 - [ ] Hand history + "why the AI did that" (2.8), keyboard-accessible, e2e test.
+- [ ] Required per-decision math panel: pot odds, MDF, polar bluff share, equity against
+      the AI's current range, and provenance. Independently recomputed tests; explain
+      formula assumptions and show not-applicable states rather than invented numbers.
+- [ ] Visible on-page unusual-bet-size exploitability warning, citing P2's measured
+      23.4%-of-subgame-pot composed local exploitability (not an expected win rate).
 - [ ] Session ledger reusing `session.ts` `settleChipResult`.
+- [ ] Rebuild WASM from the clean release checkout, deploy to Vercel, and verify the
+      deployed manifest/engine hashes and corresponding AGPL source archive/hash.
+
+Next after P5 (Kat, 2026-10-01): push/fold drills and equity-vs-range drills, then
+`/play` hand review. Separate prospective validation contracts; PF4 remains gated.
 
 ## 4. Safety caveat (headline)
 

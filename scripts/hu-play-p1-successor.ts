@@ -14,12 +14,14 @@ import type { Hands, Corpus, Browser } from "./audit-hu-play-p1";
 export type P1Reports = [Hands, Corpus, Browser];
 interface Source { path: string; sha256: string }
 export interface P1SuccessorEvidence {
-  format: "poker-face-p1-successor"; version: 1; originalCommit: string;
+  format: "poker-face-p1-successor"; version: 1 | 2; originalCommit: string;
+  parentEvidenceHash?: string;
   originalReportHashes: string[]; originalSources: (Source & { text: string })[];
   currentSources: Source[]; successor: P1Reports;
 }
 const digest = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex");
 export const P1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p1-p2-successor";
+export const P1_P3_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p1-p3-successor";
 export const P1_RELEASE_COMMIT = "ea47f6eef17782faa013ea41dad51978d85ca262";
 
 export function p1PipelineSources(): Source[] {
@@ -67,7 +69,7 @@ export function p1CorpusIdentity(r: Corpus) {
 
 export function checkP1SuccessorEvidence(e: P1SuccessorEvidence, original: P1Reports,
   verifyCurrentReports: (hands: Hands, corpus: Corpus, browser: Browser) => unknown) {
-  assert.equal(e.format, "poker-face-p1-successor"); assert.equal(e.version, 1); assert.equal(e.originalCommit, P1_RELEASE_COMMIT);
+  assert.equal(e.format, "poker-face-p1-successor"); checkP1SuccessorParent(e); assert.equal(e.originalCommit, P1_RELEASE_COMMIT);
   assert.deepEqual(e.originalReportHashes, original.map(r => r.payloadHash), "Historical report hash binding");
   const refs = original[0].sourceSnapshot.sourceFiles;
   assert.deepEqual(e.originalSources.map(({ text, ...ref }) => { void text; return ref; }), refs, "Historical source list");
@@ -82,13 +84,27 @@ export function checkP1SuccessorEvidence(e: P1SuccessorEvidence, original: P1Rep
   assert.deepEqual(p1CorpusIdentity(e.successor[1]), p1CorpusIdentity(original[1]), "P1 full-game numerical identities must remain identical");
 }
 
-export function readP1Successor(): P1SuccessorEvidence {
-  const meta = JSON.parse(readFileSync(`${P1_SUCCESSOR_STEM}.json`, "utf8"));
-  assert.equal(meta.format, "poker-face-p1-successor-bundle"); assert.equal(meta.version, 1);
-  const bytes = readFileSync(`${P1_SUCCESSOR_STEM}.json.gz`); assert.equal(bytes.length, meta.bytes);
+export function checkP1SuccessorParent(e: P1SuccessorEvidence) {
+  if (e.version === 1) { assert.equal(e.parentEvidenceHash, undefined); return; }
+  assert.equal(e.version, 2);
+  const historical = readHistoricalP1Successor();
+  assert.equal(e.parentEvidenceHash, wideHash(historical), "P1 historical parent evidence hash");
+  assert.deepEqual(e.originalReportHashes, historical.originalReportHashes, "P1 historical reports remain immutable");
+  assert.deepEqual(e.originalSources, historical.originalSources, "P1 historical source archive remains immutable");
+}
+
+function readArchive(stem: string, version: 1 | 2): P1SuccessorEvidence {
+  const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
+  assert.equal(meta.format, "poker-face-p1-successor-bundle"); assert.equal(meta.version, version);
+  const bytes = readFileSync(`${stem}.json.gz`); assert.equal(bytes.length, meta.bytes);
   assert.equal(digest(bytes), meta.sha256, "Successor archive hash");
   const plain = gunzipSync(bytes, { maxOutputLength: 32 * 1024 ** 2 });
   assert.equal(digest(plain), meta.uncompressedSha256, "Successor uncompressed hash");
-  const evidence = JSON.parse(plain.toString("utf8")); assert.equal(wideHash(evidence), meta.evidenceHash);
+  const evidence = JSON.parse(plain.toString("utf8")); assert.equal(wideHash(evidence), meta.evidenceHash); assert.equal(evidence.version, version);
   return evidence;
+}
+
+export function readHistoricalP1Successor(): P1SuccessorEvidence { return readArchive(P1_SUCCESSOR_STEM, 1); }
+export function readP1Successor(): P1SuccessorEvidence {
+  return existsSync(`${P1_P3_SUCCESSOR_STEM}.json`) ? readArchive(P1_P3_SUCCESSOR_STEM, 2) : readHistoricalP1Successor();
 }

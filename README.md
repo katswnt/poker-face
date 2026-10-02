@@ -746,8 +746,17 @@ already powers solver-backed drills. The active path does not depend on a collab
    nearest-size translation, and its worst measured local exploitability is 23.4% pot.
    These are approximate strategies for the stated finite games, not exact GTO or globally
    safe play. Reproduce the full-policy evidence with `npm run audit:hu-play:p2`.
-   Next: turn caching/nested solves (P3), flop translation (P4), then the keyboard-accessible
-   `/play` teaching UI (P5). No playable `/play` UI is shipped yet.
+   [P3 nested turn responses](tasks/heads-up-play-p3-turn.md) pass all 200 frozen custom-turn
+   cases (135 direct, 65 labelled translated-range responses), with exact native/Worker
+   replay and 1,000 conserved full-hand replays. Chromium turn p95 is 4.26 s; the separate
+   three-browser observation records WebKit at 4.40 s and Firefox at 51.8 s. These are
+   laptop measurements, not phone promises. Four complete sampled turn strategies and
+   all 62 reached rivers pass independent ≤0.3%-pot grading; this is still local quality,
+   not a global safety guarantee. Audit with `npm run audit:hu-play:p3`. The optional turn
+   cache is unfinished and unpublished; live solving passed without it.
+   Next: flop translation (P4), then the keyboard-accessible `/play` teaching UI (P5),
+   including decision math, the exploitability warning and a verified clean-build deployment.
+   No playable `/play` UI is shipped yet.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.
