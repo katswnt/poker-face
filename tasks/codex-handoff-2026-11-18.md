@@ -1,5 +1,9 @@
 # CPU-ceiling handoff — 2026-11-18
 
+**Historical checkpoint:** the authentication and deployment gates below were closed
+on November 19. Continue from the [closing handoff](codex-handoff-2026-11-19.md),
+which records the deployed release and source verification.
+
 Resumed at Kat's request. **P5 is not complete until the deployed build and its AGPL
 source have been verified.** This file supersedes the October 4 pause instructions;
 the older handoffs retain their historical evidence. No post-P5 milestone has started.
@@ -98,27 +102,92 @@ memory telemetry. Fresh report hash:
 `35e65bafce2172b312cbb9228354c02b4292669ce665f23c7013d746bdda52bc`;
 sorted numerical-policy hash:
 `105662b68999e1592c545683bc3bed50671d8b0dd5bb7c9894839fc83b524f2f`.
-Original checked-in evidence was not replaced. Exact-release results remain to be recorded.
+Original checked-in evidence was not replaced. Exact-commit results are recorded next.
+
+## P5 code pushed; deployment still open
+
+Pushed **`22f513e61e3579deb0fa16de2de361c7377a3041`** to `origin/main` after verifying
+that exact commit in `/private/tmp/poker-p5-exact.boqiiugt`, with copied dependencies,
+unchanged tsconfig and fresh native/WASM engines. This is the release checkout;
+the development candidate and stale primary assets must not be used for deployment.
+
+Exact-commit results:
+
+- **1,060/1,060 unit tests**, zero skips/failures, **173.334 seconds**; tsc/lint passed.
+- **21/21 Rust tests**, native/WASM format and clippy; **33 standalone solver audits**;
+  four native/WASM referee/probe cases with exact math parity, independent discrepancies
+  below 0.0002 chips; W1/W2 three-browser parity/lifecycle harnesses all passed.
+- Both builds passed. Prepared full app **96/96**, three-browser P5 **28 pass / 2 explicit
+  zoom-API skips**, W4 **34 / 2**. Saved-only full app **87 / 9**, P5 **13 / 17**, W4 **22 / 14**.
+  The first saved-only run omitted the explicit refusal flag; a supplementary saved-only
+  build/test run with `POKER_FACE_LIVE_SAVED_ONLY=1` passed all six disabled-control
+  assertions in the three engines. The tested prepared build/assets were restored unchanged.
+  No retries or relaxed gates; skips are not passes.
+- Fresh native capture: **200/200**, **301 accepted attempts / 295 games**, all numerical
+  policy cells, hand logs, decision hashes, request sequence and ledger exactly match the
+  original evidence. Fresh report hash:
+  `c37e62fd6d0c50231ff14616e11e08580eae86976f9bdcd2ff0076a6d76cf699`.
+  Numerical-policy hash remains `105662b68999e1592c545683bc3bed50671d8b0dd5bb7c9894839fc83b524f2f`.
+
+The [P5 record](heads-up-play-p5-ui.md#exact-commit-verification-and-push--2026-11-18)
+lists the exact commands/identities. Durable evidence, raw capture, all logs/screenshots,
+verification helpers and source-complete prepared assets are in
+`build/p5-resume-2026-11-18/exact-22f513e/`. Its `verification.json` binds the six completed
+local verification phases to `22f513e`. The exact checkout remains clean.
+
+Prepared, not yet deployed:
+
+- Build: `ed25d3e95b8a4a63b35837a09d467fb23146b1f701510b335e9ac67b5f57d8e3`.
+- Source: `a2852d8ab1701a796d7f32b71be37092082cd622a264dd5c60854684c0a068d2`.
+- WASM: **796,120 bytes**, SHA-256 `44a9d687dc9f208bd6d112797189becb36e47d518fcfaa5cde681d47a114d2e3`.
+- AGPL archive: `b459519b9bfe75e01e3d1836c43b078102689c678f5b757651798f71eb9db5e5`.
+
+[CI 44440812002](https://github.com/katswnt/poker-face/actions/runs/44440812002) completed
+with **all eight jobs green**, observed directly for `22f513e`. It finished November 18
+locally (02:26:13 UTC November 19). `exact-22f513e/ci.json` preserves run/commit identity,
+all job conclusions and timestamps. The CI P5 three-browser gate and 200-hand replay passed.
 
 ## Remaining release gates / resume order
 
-1. Candidate audits and fresh reproduction passed. Preserve all cases, quality gates
-   and numerical results through exact-commit verification.
-2. Commit only P5's explicit files and README blob from the isolated copy. Test that
-   exact commit in a new checkout with copied dependencies: full units, tsc, lint,
-   Rust/native/WASM, audits/reproduction, both builds and browser gates. Push only after
-   success; observe all eight hosted CI jobs green. Never stage the primary README whole.
-3. Deploy only assets freshly rebuilt from that clean P5 release commit to the existing
-   Vercel `poker-face` project. Fetch and compare deployed manifest, glue, WASM and source
+1. Code, exact-commit checks, push and all eight CI jobs are done. Preserve that verified
+   commit and the source-complete assets. No post-P5 work has started.
+2. After the pending Vercel passkey check, verify CLI identity and deploy only the assets rebuilt from that clean release
+   checkout to the existing project. Keep the existing `.vercel/project.json` binding;
+   do not create a temporary/replacement project or request credentials in chat.
+3. Fetch and compare the deployed manifest, glue, WASM and source
    archive bytes/hashes; smoke-test `/play`; record URL, deployment identity and hashes.
 4. Record final release/deployment identities. Only then mark P5 and steps 1–9 complete.
    Next: live EV export/grading, then push/fold and equity-vs-range drills, then hand review.
 
-**External dependency:** Vercel CLI 62.1.0 `whoami` reports an invalid token again.
-Kat was asked asynchronously to run `npx vercel@62.1.0 login` locally and confirm success.
-October 4's successful login is historical, not proof of current authentication. No
-credentials are requested in chat; no new project or deployment has been created.
-Independent release checks continue while login is pending.
+**External dependency:** CLI 62.1.0 rejected the old token and then reported logged out.
+Safari is still signed into the existing `katswnt` account. Started an authorized CLI login;
+the manual device-code flow worked after the prefilled page kept its button disabled.
+Vercel then required **Verify Your Identity → Use Passkey**, and the browser requested
+**Unlock 1Password to sign in**. Kat was asked to complete this prompt. This supersedes
+the earlier request to start a separate login command. Do not request or inspect vault
+contents, passwords or recovery codes. If the device request expires, start a fresh
+`npx vercel@62.1.0 login` and complete the normal verification; do not bypass it.
+
+No new project or agent-issued prepared deployment was created. The dashboard shows an
+automatic Git deployment for `22f513e`; it has not been accepted as the required prepared
+release. Deployment/source-byte verification is still open. The post-push annotations in this
+handoff, the P5 record, resolving spec and roadmap are local documentation changes;
+the 38-file P5 implementation commit itself is pushed. Keep these annotations for the
+closing release record; never combine their staging with the protected files below.
+
+Deployment continuation, **not run yet**: from the clean `22f513e` checkout, copy only
+the primary `.vercel/project.json` binding, confirm CLI `whoami`, then use CLI 62.1.0
+`pull --yes --environment=production`, `build --prod` with
+`POKER_FACE_LIVE_REQUIRED=1`, and `deploy --prebuilt --prod --archive=tgz`.
+Use the existing project; inspect the build output before uploading. The
+[official prebuilt workflow](https://vercel.com/docs/cli/deploying-from-cli) and
+[production build instructions](https://vercel.com/docs/cli/build) were checked.
+Record the returned deployment URL/identity. The retained `p5-verify-deployment.cjs`
+helper, run from the clean checkout with the public deployment origin as its argument,
+compares current.json, manifest, glue, WASM, notices and source archive byte-for-byte
+with local assets and checks the page's matching build/source link and warning.
+Then smoke-test an actual hand and a live turn/cancel/retry on deployed `/play`.
+Never weaken deployment protection or substitute the Git-triggered saved-only build.
 
 Physical iOS Safari / Android Chrome measurements remain open and do not block the
 approved desktop path. Once deployed: full hand, narrow-screen controls, turn/river

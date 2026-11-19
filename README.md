@@ -13,7 +13,7 @@ Open these locally or on a deployment containing those routes.
 
 ## Current state
 
-Repository status as of 2026-11-18 (not a deployment verification): the river lab and
+Verified production status as of 2026-11-19: the river lab and
 comparisons, bounded TypeScript turn/flop solvers and saved explorers, and an offline bridge
 to the external Rust postflop-solver engine are implemented. The bridge adds wide-range
 CPU solves, checked on small games by our independent graders, and a saved 12-flop 100bb
@@ -26,7 +26,10 @@ validation. Its ranges are **not used in the library or app**. `/solver/live` no
 bounded Rust/WASM turn and river solving in a Worker when its source-complete assets are
 prepared; without those assets it still offers a saved example. `/play` now implements
 heads-up practice with saved flop policies and browser turn/river re-solving. It requires
-prepared engine assets; deployment verification is tracked in the [P5 release record](tasks/heads-up-play-p5-ui.md).
+prepared engine assets, now deployed at [Play the solver-backed AI](https://pokerface.katswint.com/play).
+The [P5 release record](tasks/heads-up-play-p5-ui.md#verified-production-deployment--2026-11-19)
+binds the deployed engine and downloadable AGPL source to clean release `22f513e`;
+all 28 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -790,8 +793,10 @@ already powers solver-backed drills. The active path does not depend on a collab
    decision math and the visible exploitability warning. Its frozen 200-hand controller
    corpus completed and replayed exactly: 301 accepted native solves, 295 distinct games.
    That is a correctness/replay test, not a strength or browser-latency benchmark.
-   The release still requires exact-commit checks, green CI and a verified clean-build
-   Vercel deployment; see the record for actual release identities, not inferred completion.
+   W1–W4 and P1–P5 are shipped. P5 release `22f513e` passed exact-commit isolation,
+   all eight CI jobs and deployed three-browser checks. Its clean-build Vercel engine
+   and corresponding AGPL source match byte for byte; see the
+   [closing handoff](tasks/codex-handoff-2026-11-19.md) for identities and remaining limits.
    Next after P5: live EV export/grading, push/fold and equity-vs-range drills, then hand review.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
@@ -1005,7 +1010,7 @@ src/
     multiway/               separate bounded three-/four-player river proofs
     bridge/                 postflop-solver spot contract, hashing, referee gates, library loader
   lib/drills/               drill generators, exact grading, review scheduler (no React)
-  lib/hu-play/              P1/P2: public-only sources, on-tree play, off-tree river responses and replay; no UI yet
+  lib/hu-play/              public-only sources, flop translation, live turn/river play, replay and /play teaching
 native/solver-bridge/       optional Rust CLI wrapping pinned postflop-solver
 public/solver-data/bridge-v1/  saved 12-flop bridge library (hash-bound JSON)
 test/                       node:test suites that import the REAL lib/ (not copies)

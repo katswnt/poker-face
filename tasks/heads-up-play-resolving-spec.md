@@ -1,8 +1,9 @@
 # Heads-up play vs a solver-backed AI with live subgame re-solving — spec (draft, 2026-09-25)
 
-Current status (2026-10-01): W1–W4 and the P0–P3 backend are shipped and CI-verified.
-P4 production flop translation is shipped as `735c901`, with all eight jobs in CI
-`36960266510` green after exact-commit verification. P5 `/play` is not shipped. The earlier P1
+Current status (2026-11-19): W1–W4 and P0–P5 are shipped. P5 `/play` release `22f513e`
+passed exact-commit verification, all eight jobs in CI `44440812002`, and verified
+production deployment with 28 passing three-browser checks (two explicit zoom-API skips).
+The [closing handoff](codex-handoff-2026-11-19.md) records deployed engine/source identity. The earlier P1
 [admission failure](heads-up-play-p1-admission.md) is preserved as historical evidence,
 not a current blocker for the measured full-range profile. Depends on the postflop-solver bridge
 (`tasks/postflop-solver-bridge-plan.md`, `-spec.md`, `src/lib/solver/bridge/*`) and the lean
@@ -311,9 +312,9 @@ exact range-equity/provenance panel and every release gate still apply.
       A postflop-solver gadget fork remains a decision for Kat, not authorized here.
 
 ### P5 — UI
-- [x] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state (local candidate; not released).
+- [x] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state (release `22f513e`, production deployment verified November 19).
 - [x] Hand history + "why the AI did that" (2.8, October 4 scope amendment), keyboard-accessible,
-      with saved-model grades and explicit unavailable live grades; three-browser candidate e2e passed November 18.
+      with saved-model grades and explicit unavailable live grades; three-browser exact-release and deployed e2e passed.
 - [x] Required per-decision math panel: pot odds, MDF, polar bluff share, equity against
       the AI's current range, and provenance. Independently recomputed tests; explain
       formula assumptions and show not-applicable states rather than invented numbers.
@@ -321,16 +322,22 @@ exact range-equity/provenance panel and every release gate still apply.
       23.4%-of-subgame-pot composed local exploitability (not an expected win rate).
 - [x] Local completed-hand ledger using the audited `scriptedSettlement`; the roadmap's
       permitted local-ledger alternative preserves the protected `session.ts` WIP.
-- [ ] Rebuild WASM from the clean release checkout, deploy to Vercel, and verify the
+- [x] Exact-commit isolation with copied dependencies, full tests/audits/reproduction,
+      both builds, three-browser gates and explicit-file push: `22f513e`.
+- [x] Observe all eight hosted CI jobs green for `22f513e`: run `44440812002`,
+      completed successfully November 18 (02:26:13 UTC November 19).
+- [x] Rebuild WASM from the clean release checkout, deploy to Vercel, and verify the
       deployed manifest/engine hashes and corresponding AGPL source archive/hash.
 
-These checked UI items describe implementation, not a completed P5 deployment. See
-[the P5 record](heads-up-play-p5-ui.md) and [November 18 handoff](codex-handoff-2026-11-18.md):
-1,060 passing candidate tests including saved grades, 200 preserved complete/replayed
+P5 deployment is verified. See [the P5 record](heads-up-play-p5-ui.md) and
+[November 19 handoff](codex-handoff-2026-11-19.md):
+1,060 passing exact-commit tests including saved grades, 200 freshly reproduced/replayed
 hands, 96 prepared full-app browser tests, and three-browser P5 checks (28 pass, two
 explicit non-Chromium zoom-API skips). Both builds, saved-only refusal, tsc and lint pass.
-Work resumed November 18; exact-release checks, hosted CI and verified deployment remain.
-Vercel login needs renewal. Live EV export/grading is the explicitly approved follow-up.
+Code `22f513e` is pushed and all eight hosted CI jobs passed. The deployed manifest,
+glue, WASM, notices and corresponding source archive match the clean release byte for byte.
+All 28 applicable deployed P5 browser tests pass; two non-Chromium zoom-API checks skip.
+Live EV export/grading is the explicitly approved follow-up.
 
 Next after P5 (Kat, 2026-10-01): push/fold drills and equity-vs-range drills, then
 `/play` hand review. Separate prospective validation contracts; PF4 remains gated.

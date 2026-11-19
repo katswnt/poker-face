@@ -2,7 +2,9 @@
 
 Prospective contract, 2026-10-01. Starts only after P4 `735c901` and all eight jobs
 in CI `36960266510` passed. Implements step 9 of the CPU-ceiling roadmap, including
-Kat's deployment and mandatory teaching-panel amendments. Not shipped yet.
+Kat's deployment and mandatory teaching-panel amendments. **Shipped as `22f513e`;
+production deployment verified 2026-11-19.** Historical checkpoints below retain their
+original status; the final deployment record supersedes their open-release instructions.
 
 ## Scope and implementation
 
@@ -346,3 +348,127 @@ these candidate numbers are not a release claim.
 **Authentication reopened:** CLI 62.1.0 `whoami` now reports “The specified token is not
 valid.” Kat was asked asynchronously to run `npx vercel@62.1.0 login`. No credentials
 were printed or requested in chat; no deployment attempted. Local verification continues.
+
+## Exact-commit verification and push — 2026-11-18
+
+P5 code is committed and pushed as **`22f513e61e3579deb0fa16de2de361c7377a3041`**,
+using exactly the 38 owned paths above. README's staged blob contained only P5 changes;
+its remaining worktree diff is exactly the original trainer additions/deletions. All
+15 protected non-README hashes remain unchanged. No tsconfig exclusion was introduced.
+
+Verified the exact commit at `/private/tmp/poker-p5-exact.boqiiugt`, with real copied
+node_modules and fresh native/WASM builds, before push:
+
+- **1,060/1,060 unit tests**, zero skips/failures/cancellations, **173.334 seconds**.
+  Typecheck, warning-free lint, **21/21 Rust tests**, both crate format checks and clippy passed.
+- **33 standalone audits** passed: all 24 listed in the candidate record, plus math,
+  Kuhn, Leduc, river v1/v2/compact/scorekeeper and turn v1/compact. W1 parity and W2
+  production-Worker lifecycle checks passed Chromium/Firefox/WebKit. Native/WASM math
+  matches exactly on the four referee/probe cases; independent differences remain
+  below the unchanged **0.0002-chip** tolerance.
+- Saved-only and prepared production builds passed. Prepared full app **96/96**;
+  P5 three-browser **28 pass / 2 explicit zoom-API skips**; W4 **34 / 2**. No retries.
+  Saved-only full app **87 / 9**, P5 **13 / 17**, W4 **22 / 14** (passes/skips).
+- The first saved-only run omitted `POKER_FACE_LIVE_SAVED_ONLY=1`, so it did not execute
+  the explicit disabled-control assertions. A further saved-only build ran those tests
+  with that flag in all three browsers: **3/3 P5 and 3/3 W4**, zero skips/retries. The
+  previously tested prepared build/assets were then restored unchanged. No assertion,
+  timeout or quality gate was weakened. Skips are never counted as passes.
+- Fresh one-thread native capture and independent replay/comparison again passed
+  **200/200 hands, 301 accepted attempts, 295 distinct games**. Every exported numerical
+  cell, hand log, decision hash, request sequence and ledger entry matches the original.
+  Fresh report hash `c37e62fd6d0c50231ff14616e11e08580eae86976f9bdcd2ff0076a6d76cf699`;
+  numerical-policy hash remains
+  `105662b68999e1592c545683bc3bed50671d8b0dd5bb7c9894839fc83b524f2f`.
+
+The exact checkout remains clean. Durable logs, commands, raw capture, comparison helper,
+screenshots and the complete prepared distribution are under
+`build/p5-resume-2026-11-18/exact-22f513e/`; `verification.json` binds them to this commit.
+
+Clean-release asset identities (locally verified November 18; deployed and checked November 19):
+
+| Identity | Value |
+|---|---|
+| Build | `ed25d3e95b8a4a63b35837a09d467fb23146b1f701510b335e9ac67b5f57d8e3` |
+| Source | `a2852d8ab1701a796d7f32b71be37092082cd622a264dd5c60854684c0a068d2` |
+| WASM SHA-256 | `44a9d687dc9f208bd6d112797189becb36e47d518fcfaa5cde681d47a114d2e3` |
+| WASM bytes | 796,120 |
+| Source archive SHA-256 | `b459519b9bfe75e01e3d1836c43b078102689c678f5b757651798f71eb9db5e5` |
+
+[Hosted CI 44440812002](https://github.com/katswnt/poker-face/actions/runs/44440812002)
+completed successfully with **all eight jobs green**, observed directly for `22f513e`.
+Run completed November 18 locally (02:26:13 UTC November 19). The saved `ci.json` contains
+the exact run/commit, all eight job identities and completion times. The hosted P5
+three-browser gate and 200-hand audit both passed. Reviewed the exact-release WebKit
+320px screenshot and Chromium real-200%-zoom screenshot as well as the candidate images.
+
+**Deployment authentication gate:** CLI 62.1.0 reported logged out, but Safari retains
+the existing `katswnt` Vercel account and `poker-face` project. Started the previously
+authorized CLI login. Its prefilled device-code page left Allow Access disabled; the
+normal manual-code flow enabled it. After confirming this self-initiated CLI request,
+Vercel required **Verify Your Identity → Use Passkey**, and 1Password required unlocking.
+Kat was asked to complete that prompt; no password/recovery code was requested in chat,
+no vault contents were inspected, and no authentication protection was bypassed.
+The earlier request to start another login command is superseded by this pending prompt.
+
+No agent-issued prepared deployment, temporary project or replacement project was created.
+The dashboard shows a Git-triggered deployment for the pushed commit; that is not the
+required source-complete prepared release and has not been accepted as P5 deployment evidence.
+P5 remains incomplete until the required Vercel deployment, public smoke and deployed
+engine/source byte checks pass. Do not deploy stale primary assets. Post-push annotations
+in this record/spec/roadmap/handoff remain local for the closing release record.
+
+
+## Verified production deployment — 2026-11-19
+
+Kat completed Vercel authorization. CLI 62.1.0 `whoami` confirmed `katswnt`.
+The existing project `prj_8UShl6kVnEvFt520xt1vTTKP2kjj` was retained. No new project,
+plan change, authentication bypass or deployment-protection change was needed.
+This closes the historical authentication/deployment gate above.
+
+- Release commit: `22f513e61e3579deb0fa16de2de361c7377a3041` (clean exact checkout,
+  copied node_modules; native/WASM rebuilt there, not copied from stale primary assets).
+- Production: [pokerface.katswint.com/play](https://pokerface.katswint.com/play).
+- Immutable deployment: [poker-face-2fu7i7l3d-kat-swints-projects.vercel.app](https://poker-face-2fu7i7l3d-kat-swints-projects.vercel.app).
+- Deployment ID: `dpl_HEnua5L5HjMq57U6fpKuzWj9dqDs`, Ready, production, created
+  2026-11-19 17:37:21 UTC. Vercel inspection confirms the canonical production alias.
+- Pinned CLI commands in the clean release checkout: `pull --yes --environment=production`,
+  `POKER_FACE_LIVE_REQUIRED=1 npx --yes vercel@62.1.0 build --prod`, then
+  `npx --yes vercel@62.1.0 deploy --prebuilt --prod --archive=tgz`.
+  Source remained clean. Packaging used Next 16.3.3 / Node 24.10.0 and the existing
+  project's Node 24.x setting. The compressed upload was approximately 102 MB.
+- Public fetch at 17:38:02 UTC: current pointer, manifest, JS glue, WASM, licence notices
+  and corresponding AGPL archive all HTTP 200 and **byte-for-byte identical** to the
+  clean build. `/play` identifies that build, links that archive and displays the
+  measured 23.4%-of-subgame-pot warning. This is independent of the upload result.
+- Deployed P5 Playwright suite: **28 passed, two explicit non-Chromium real-zoom-API
+  skips, zero failures/retries**. Existing assertions/timeouts unchanged, no local server.
+  All three engines completed the keyboard/off-menu hand with conserved ledger, live
+  turn cancellation/retry without charging twice, missing-engine refusal/recovery,
+  saved-EV teaching, source download, labelled inputs and 320/390/1280px layouts.
+  Chromium additionally passed real 200% zoom. Desktop browser emulation does not
+  establish physical-phone performance or safety.
+
+| Public file | Bytes | SHA-256 |
+|---|---:|---|
+| `current.json` | 493 | `6a91c533ff8f49707089a88efb49a16aa285adc0fa7c30ee8ce28c869526d574` |
+| `manifest.json` | 287,681 | `f8c32ddc5674b244f96a59e0e045e98e3fd405991fcc3126f46439cd2fe81652` |
+| `solver_bridge_wasm.js` | 12,345 | `87195a67b9da89d28bd5a47297f3b5018f20a25eb3bbf011c7f53bdc8716661f` |
+| `solver_bridge_wasm_bg.wasm` | 796,120 | `44a9d687dc9f208bd6d112797189becb36e47d518fcfaa5cde681d47a114d2e3` |
+| `LICENSES.txt` | 436,641 | `3433266e057c04c5ddd72ca6b3eb83593fe712d70f6057a22a2446ea58347379` |
+| corresponding source `.tar.gz` | 4,806,831 | `b459519b9bfe75e01e3d1836c43b078102689c678f5b757651798f71eb9db5e5` |
+
+Build/source identities are in the preceding table. Logs, exact remote test configuration,
+JSON results, screenshots and byte-verification helper/output are retained in ignored
+`build/p5-release-2026-11-19/`; prior complete release evidence remains in
+`build/p5-resume-2026-11-18/exact-22f513e/`. The remote configuration points to the
+unchanged `e2e/play.spec.ts`, sets the public baseURL, three desktop engines, one worker,
+180-second test timeout and zero retries; it omits the local webServer.
+
+P5's release gates are met. Closing documentation owns only README status/architecture
+hunks, this record, the resolving spec, CPU roadmap and November 18/19 handoffs.
+The docs commit must pass isolated full tests, typecheck, lint and relevant audits before
+push, with all hosted CI jobs observed green. It does not change the deployed app/engine
+release `22f513e`. After any Git-triggered docs deployment settles, retain/re-promote
+this prepared production deployment and recheck public bytes: a default Git build lacks
+the ignored prepared assets. Never replace this with a saved-only build by accident.

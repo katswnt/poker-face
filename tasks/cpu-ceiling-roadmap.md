@@ -196,16 +196,20 @@ not represented as saved solver decisions. Shipped as `735c901` after exact-comm
 verification (1,042 tests, full fresh native/WASM reproduction) and all eight jobs in
 CI `36960266510` green. P5 may now start; `/play` is not shipped yet.
 
-The [P5 local candidate](heads-up-play-p5-ui.md) was resumed November 18. It passes
-1,060/1,060 unit tests, the preserved 200-hand controller replay, 96 prepared full-app
-browser tests and required prepared three-browser page checks (28 pass, two explicit
-non-Chromium zoom-API skips). Saved-only refusal checks, both builds, tsc and lint pass.
+The [P5 code](heads-up-play-p5-ui.md) was pushed as `22f513e` on November 18 after
+exact-commit isolation with copied dependencies: 1,060/1,060 unit tests, 33 standalone
+audits, fresh 200-hand reproduction (all 295 numerical policies unchanged), 96 prepared
+full-app browser tests and three-browser P5 checks (28 pass, two explicit non-Chromium
+zoom-API skips). Explicit saved-only refusal checks, both builds, tsc and lint pass.
 Kat's October 4 decision remains: ship original saved-policy grades with explicit
-unavailable live EV grades; live EV export/grading is follow-up work. Exact-commit
-verification, push/green CI and deployment are still release gates; see the
-[current handoff](codex-handoff-2026-11-18.md). Vercel authentication has expired again;
-Kat was asked to renew login locally while independent release work continues.
-No numerical gate is waived. P5 is not complete without verified deployment.
+unavailable live EV grades; live EV export/grading is follow-up work. All eight jobs in
+[CI 44440812002](https://github.com/katswnt/poker-face/actions/runs/44440812002) passed;
+production deployment was verified November 19. All 28 applicable deployed P5 checks
+pass across Chromium/Firefox/WebKit (two explicit zoom-API skips, zero retries).
+The deployed manifest, glue, WASM, licence notices and AGPL source archive match
+the clean release byte for byte. No numerical gate was waived. **Steps 1–9 are complete.**
+See the [closing handoff](codex-handoff-2026-11-19.md) for deployment identity, evidence,
+physical-device checks still open and the untouched trainer/configurable-flop work.
 
 ### Step 1 — W1 single-thread WASM build (commit it)
 - Land W1 exactly as owned in `tasks/postflop-solver-w1-st.md` ("Owned W1 files"), no `target/`.
