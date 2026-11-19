@@ -305,6 +305,56 @@ Nothing was excluded from type-checking or relaxed to pass. Next: the explicit 3
 commit below, fresh exact-commit isolation with copied dependencies, then push and all
 eight hosted CI jobs green before P5. No P5 implementation has begun.
 
+### Exact-commit verification and release — 2026-10-01
+
+P4 commit **`735c901614705a5491f89ad7d016ceaeb88ed03d`** contains only the 35
+explicit paths below, including just the P4 README hunk. Its fresh detached checkout
+is `/private/tmp/poker-p4-exact.GdkqIQ`; dependencies were **copied**, not symlinked.
+Native and WASM engines were rebuilt there using Rust 1.98.1 and wasm-bindgen 0.2.104.
+The checkout remained clean throughout verification; no file was excluded from tsc.
+
+- Full suite: **1,042/1,042**, zero failures/skips, **553.124 s**. Command:
+  `node --import tsx --test --test-concurrency=1 test/*.test.ts`.
+- `npm run typecheck`, `npm run lint`, 21 Rust tests, both crates' format checks and
+  native/WASM Clippy with `-D warnings` pass.
+- The 19-audit regression batch passes: play library/P1/P2/P3/P4/wide/gadget,
+  bridge library, preflop, river v3/factorized/exchange, turn vector/v2/explorer,
+  flop source/library/explorer, and exact equity matrix. Existing artifacts unchanged.
+- Native bridge referee, native/WASM numerical parity and saved WASM example reproduce.
+  Numerical native/WASM differences are zero; the independent referee's unchanged
+  bound is 0.0002 chips. Tiny complete-flop reproduction passes in **47.127 s**, sampled
+  combined RSS **1,049,542,656 bytes**, below the unchanged 2 GiB gate.
+- Three-browser WASM parity and real Worker cancellation/lifecycle checks pass.
+- Both saved-only and prepared-asset production builds pass. Saved-only Playwright:
+  **82 passed / 4 intentional asset-dependent skips**, **49.0 s**. Required prepared
+  Chromium/Firefox/WebKit suite: **34 passed / 2 non-Chromium zoom skips**, **31.6 s**.
+  Both use zero retries; flags are respectively `POKER_FACE_LIVE_SAVED_ONLY=1` and
+  `POKER_FACE_LIVE_REQUIRED=1`. Mobile/desktop screenshots inspected: no clipping.
+- Fresh native **and** WASM reproduction each passes **200 cases / 159 solves / four
+  complete turn references**, with exact numerical cells, full logs and ledgers.
+  This is correctness reproduction, not replacement latency measurement.
+
+Fresh build identity:
+
+- Source: `a2852d8ab1701a796d7f32b71be37092082cd622a264dd5c60854684c0a068d2`.
+- Build: `99bf65181f48d92da4930763b1b392b86b50fe9b9196deb1f9807c9776dc7d2b`.
+- WASM: **796,060 bytes**, SHA-256
+  `8e296a321d963d5ed54e52b6c06912ec82de6844ebee8e36f897329c158eca3e`.
+- Native binary: `9bad89c0ab7415b6e664acf6f447db7affa763ae48d912d404b6f64617dc32b5`.
+- Native reproduction report: `64ea9558ba3729031eae58cc8f58b19d227ddc26ffe63c5fd51e33285e321686`.
+- WASM reproduction report: `c195ba62af01423fae3b65a9d747a45476519ca686de466f1f67bdd3b956eb58`.
+
+Raw reproductions remain in `/private/tmp/poker-p4-exact-{native,wasm}-reproduction`.
+Logs/reports are also safeguarded under ignored
+`build/p4-safeguard-2026-10-01/exact-735c901/`. All 15 protected non-README files retain
+their P3 safeguard hashes. The unrelated README hunks remain unstaged and unchanged.
+
+Pushed to `origin/main`. **All eight jobs** in
+[CI 36960266510](https://github.com/katswnt/poker-face/actions/runs/36960266510) were
+observed green before starting P5. The CI response is saved in the ignored safeguard.
+This release annotation accompanies P5 because it records verification of the exact
+P4 commit. No production gadget safety or physical-device guarantee is claimed.
+
 ## Reproduction commands
 
 Run in a clean checkout with dependencies copied or installed, not symlinked. Build

@@ -1,8 +1,8 @@
 # Heads-up play vs a solver-backed AI with live subgame re-solving — spec (draft, 2026-09-25)
 
 Current status (2026-10-01): W1–W4 and the P0–P3 backend are shipped and CI-verified.
-P4's production flop-translation candidate passes its frozen numerical/browser gates;
-full release checks remain open. P5 `/play` is not shipped. The earlier P1
+P4 production flop translation is shipped as `735c901`, with all eight jobs in CI
+`36960266510` green after exact-commit verification. P5 `/play` is not shipped. The earlier P1
 [admission failure](heads-up-play-p1-admission.md) is preserved as historical evidence,
 not a current blocker for the measured full-range profile. Depends on the postflop-solver bridge
 (`tasks/postflop-solver-bridge-plan.md`, `-spec.md`, `src/lib/solver/bridge/*`) and the lean
@@ -224,6 +224,13 @@ B = bet, C = call):
 - **Human grade:** EV loss of the human's action vs the solve's best action for their hand,
   labelled "vs this solver model of the AI's range" and never called "GTO-correct".
 
+**P5 scope amendment (Kat, 2026-10-04):** ship with original saved-policy EVs and human
+action grades where exported, explicitly unavailable live/translated EV grades, then
+add live EV export/grading as follow-up work. Do not expand the engine for this release.
+Saved values/grades describe the original policy, not the composed AI after re-solving;
+off-menu actions are not assigned a made-up grade. The mandatory price/MDF/bluff-share/
+exact range-equity/provenance panel and every release gate still apply.
+
 ## 3. Milestones
 
 ### P0 — contract (no solving)
@@ -289,7 +296,9 @@ B = bet, C = call):
       on-tree replays, 52 independent river and four complete turn grades, and exact
       three-browser parity. 57 cases use a labelled passive call rule, not a saved solve.
       Chromium turn p95 2.44 s; Firefox observer p95 29.9 s is not a speed promise.
-- [ ] P4 exact-commit isolated verification, explicit-file release, push and all CI jobs green.
+- [x] P4 exact-commit isolated verification (1,042 tests), explicit-file release, push and
+      all eight CI jobs green: `735c901`, run `36960266510`. Fresh native and WASM each
+      reproduce every frozen case and four complete turn references exactly.
 - [x] Independent toy-scale whole-game study for translation, unsafe, unsafe-at-parent,
       Resolve and Max-margin. See [frozen P4 study](heads-up-play-p4-study.md): one added
       opponent bet in the river-v3 demo and one river branch of the turn-v2 referee.
@@ -302,16 +311,26 @@ B = bet, C = call):
       A postflop-solver gadget fork remains a decision for Kat, not authorized here.
 
 ### P5 — UI
-- [ ] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state.
-- [ ] Hand history + "why the AI did that" (2.8), keyboard-accessible, e2e test.
-- [ ] Required per-decision math panel: pot odds, MDF, polar bluff share, equity against
+- [x] `/play` heads-up table: seat choice, size slider in chips (off-tree allowed from P2), "AI thinking" state (local candidate; not released).
+- [x] Hand history + "why the AI did that" (2.8, October 4 scope amendment), keyboard-accessible,
+      with saved-model grades and explicit unavailable live grades; three-browser candidate e2e passed November 18.
+- [x] Required per-decision math panel: pot odds, MDF, polar bluff share, equity against
       the AI's current range, and provenance. Independently recomputed tests; explain
       formula assumptions and show not-applicable states rather than invented numbers.
-- [ ] Visible on-page unusual-bet-size exploitability warning, citing P2's measured
+- [x] Visible on-page unusual-bet-size exploitability warning, citing P2's measured
       23.4%-of-subgame-pot composed local exploitability (not an expected win rate).
-- [ ] Session ledger reusing `session.ts` `settleChipResult`.
+- [x] Local completed-hand ledger using the audited `scriptedSettlement`; the roadmap's
+      permitted local-ledger alternative preserves the protected `session.ts` WIP.
 - [ ] Rebuild WASM from the clean release checkout, deploy to Vercel, and verify the
       deployed manifest/engine hashes and corresponding AGPL source archive/hash.
+
+These checked UI items describe implementation, not a completed P5 deployment. See
+[the P5 record](heads-up-play-p5-ui.md) and [November 18 handoff](codex-handoff-2026-11-18.md):
+1,060 passing candidate tests including saved grades, 200 preserved complete/replayed
+hands, 96 prepared full-app browser tests, and three-browser P5 checks (28 pass, two
+explicit non-Chromium zoom-API skips). Both builds, saved-only refusal, tsc and lint pass.
+Work resumed November 18; exact-release checks, hosted CI and verified deployment remain.
+Vercel login needs renewal. Live EV export/grading is the explicitly approved follow-up.
 
 Next after P5 (Kat, 2026-10-01): push/fold drills and equity-vs-range drills, then
 `/play` hand review. Separate prospective validation contracts; PF4 remains gated.

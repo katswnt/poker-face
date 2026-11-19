@@ -13,7 +13,7 @@ Open these locally or on a deployment containing those routes.
 
 ## Current state
 
-Repository status as of 2026-09-30 (not a deployment verification): the river lab and
+Repository status as of 2026-11-18 (not a deployment verification): the river lab and
 comparisons, bounded TypeScript turn/flop solvers and saved explorers, and an offline bridge
 to the external Rust postflop-solver engine are implemented. The bridge adds wide-range
 CPU solves, checked on small games by our independent graders, and a saved 12-flop 100bb
@@ -24,8 +24,9 @@ A new **simplified preflop model is research only**: it converges within its ass
 payoff model, but its near-100% big-blind defence and future-betting valuation need further
 validation. Its ranges are **not used in the library or app**. `/solver/live` now provides
 bounded Rust/WASM turn and river solving in a Worker when its source-complete assets are
-prepared; without those assets it still offers a saved example. Heads-up re-solving play
-remains unfinished: `/play` is not shipped.
+prepared; without those assets it still offers a saved example. `/play` now implements
+heads-up practice with saved flop policies and browser turn/river re-solving. It requires
+prepared engine assets; deployment verification is tracked in the [P5 release record](tasks/heads-up-play-p5-ui.md).
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -39,8 +40,30 @@ remains unfinished: `/play` is not shipped.
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 | Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
 | `/solver/live` — bounded Rust/WASM lab | Guided turn/river inputs, preflight, real progress/cancel, root inspection and a saved example | Live solving needs prepared source-complete assets; 64 hands/player, float32, conservative memory/export limits; phones not yet validated |
+| `/play` — heads-up practice | Seat/seed choice, legal typed bet sizes, real Worker progress/cancel/retry, hand history, decision math and an in-memory completed-hand ledger | Scripted preflop, hand-written ranges, 12 saved flops; exploitable local re-solving, not exact GTO; live action EV grades unavailable |
 | Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; wider games remain offline |
 | Experimental preflop model (PF0–PF3) | BTN vs BB CFR+/DCFR, independent grading, exact-enumeration all-in inputs, fitted assumptions for future play | SB always folds; no rake; future betting approximated; flagged output is not promoted to the library or app (PF4 not done) |
+
+**Heads-up practice (`/play`).** Start in a scripted 100bb BTN-open/BB-call formation,
+choose either seat, and enter legal chip sizes—including sizes outside the saved menu.
+Flops use the saved library and labelled action translation; admitted turn/river decisions
+run in separate browser Workers. Inspect pot odds, minimum defence (MDF), polar bluff share,
+exactly enumerated all-in equity against the AI's reaching range, and each decision's source.
+The AI's actual hand and hand-specific mix stay hidden until the hand ends. Saved action
+EVs and human-action gaps concern the **original saved policy**, not the later re-solving
+AI; live/translated EV grades are explicitly unavailable. Equity is not substituted for EV.
+
+**Unusual bet sizes can exploit this AI.** The P2 audit measured composed-policy local
+exploitability as high as **23.4% of the subgame pot**. That is neither expected winnings
+nor a global bound. Preflop is scripted, ranges are hand-written, and flops are limited to
+12 saved boards; approximate strategies for these finite games are **not exact GTO**.
+Local re-solving is not a global guarantee. Phone performance remains unvalidated, and
+Firefox turns can take tens of seconds. No partial policy or silently trimmed range is
+substituted after a failed solve. Completed-hand nets include the external dead small blind
+and sum to +0.5bb per hand, not zero; the ledger lasts only until reload/navigation.
+Use `npm run audit:hu-play:p5` to replay the frozen 200-hand UI-controller evidence.
+Prepared builds show the matching downloadable AGPL engine source and build/archive hashes;
+without those assets `/play` refuses play rather than using a stub AI.
 
 **Math drills (`/drills`).** Timed one-question drills for pot odds, minimum defence
 frequency, polar bluff share, outs → equity, counting outs on a real flop, combo counting with
@@ -723,8 +746,8 @@ already powers solver-backed drills. The active path does not depend on a collab
    cap. Public asset deployment and physical-device memory validation remain separate checks.
    No live flop, per-action EV or GPU training claim for this page.
    See the [WASM plan](tasks/postflop-solver-wasm-spec.md). The [heads-up play plan](tasks/heads-up-play-resolving-spec.md)
-   now has an audited [P1 on-tree backend](tasks/heads-up-play-p1-integration.md), not a playable
-   `/play` UI yet. It combines complete policies for the 12 saved flops with full-range turn/
+   has an audited [P1 on-tree backend](tasks/heads-up-play-p1-integration.md), now connected
+   to the [P5 `/play` UI](tasks/heads-up-play-p5-ui.md). It combines complete policies for the 12 saved flops with full-range turn/
    river solves through the browser Worker; the native source is for tests and local tools.
    A separate, strict `play-v1` profile admits at most 640 hands/player and stack/pot 18 with
    the measured lean menu, float32, 1,000 iterations and a 120-second watchdog. Its reservation
@@ -763,12 +786,16 @@ already powers solver-backed drills. The active path does not depend on a collab
    passive call rule, **not a solver-derived response**. Translated decisions never show
    saved EVs at the new prices. These are exploitable approximations, not exact GTO or
    global safety. Audit with `npm run audit:hu-play:p4`.
-   Next: the keyboard-accessible `/play` teaching UI (P5),
-   including decision math, the exploitability warning and a verified clean-build deployment.
-   No playable `/play` UI is shipped yet.
+   [P5's `/play` UI](tasks/heads-up-play-p5-ui.md) adds keyboard-accessible play, mandatory
+   decision math and the visible exploitability warning. Its frozen 200-hand controller
+   corpus completed and replayed exactly: 301 accepted native solves, 295 distinct games.
+   That is a correctness/replay test, not a strength or browser-latency benchmark.
+   The release still requires exact-commit checks, green CI and a verified clean-build
+   Vercel deployment; see the record for actual release identities, not inferred completion.
+   Next after P5: live EV export/grading, push/fold and equity-vs-range drills, then hand review.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
-   per-hand protection checks do not apply to the Rust/browser path or unblock `/play`.
+   per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.
    Keep flops in the saved library and re-solve only admitted turn/
    river spots; local re-solving does not establish global unexploitable play. This work can
    use clearly labelled hand-written ranges while preflop research stays separate.

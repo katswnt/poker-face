@@ -104,6 +104,9 @@ jobs:
       - name: Replay all frozen P4 flops and independently recompute continuation and browser gates
         run: npm run audit:hu-play:p4
 
+      - name: Replay all 200 frozen hands through the P5 UI state layer and verify the ledger
+        run: npm run audit:hu-play:p5
+
       - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
         run: npm run audit:hu-play:gadget
 
@@ -232,6 +235,11 @@ jobs:
           POKER_FACE_LIVE_REQUIRED: "1"
       - name: Exercise the production Next Worker, UI, source links and keyboard controls
         run: npx playwright test --config playwright.live.config.ts
+        env:
+          POKER_FACE_LIVE_REQUIRED: "1"
+
+      - name: Play real hands with required Workers, cancellation, math and source links in three browsers
+        run: npx playwright test --config playwright.play.config.ts
         env:
           POKER_FACE_LIVE_REQUIRED: "1"
 

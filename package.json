@@ -87,6 +87,7 @@
     "audit:hu-play:p3": "node --import tsx scripts/audit-hu-play-p3.ts --check",
     "reproduce:hu-play:p3": "node --import tsx scripts/reproduce-hu-play-p3.ts",
     "audit:hu-play:p4": "node --import tsx scripts/audit-hu-play-p4.ts --check",
+    "audit:hu-play:p5": "node --import tsx scripts/audit-hu-play-p5.ts --check",
     "reproduce:hu-play:p4": "node --import tsx scripts/reproduce-hu-play-p4.ts",
     "audit:hu-play:gadget": "node --import tsx scripts/audit-gadget-study.ts --check",
     "audit:wasm": "node --import tsx scripts/audit-bridge-wasm.ts",

@@ -189,11 +189,23 @@ partial cache is not needed for these gates. P4 may now start; `/play` is not sh
 
 These already have detailed records; this section adds the done-definition.
 
-P4's [production flop-translation candidate](heads-up-play-p4-flop.md) now passes the
+P4's [production flop translation](heads-up-play-p4-flop.md) passes the
 frozen 200 parent/action cases, exact 1,000-hand on-tree reduction, independently graded
 continuations and three-browser parity. Its 57 passive rule responses are labelled,
-not represented as saved solver decisions. The source-bound evidence is generated and
-validated locally; full release verification and CI are still pending. P5 has not started.
+not represented as saved solver decisions. Shipped as `735c901` after exact-commit
+verification (1,042 tests, full fresh native/WASM reproduction) and all eight jobs in
+CI `36960266510` green. P5 may now start; `/play` is not shipped yet.
+
+The [P5 local candidate](heads-up-play-p5-ui.md) was resumed November 18. It passes
+1,060/1,060 unit tests, the preserved 200-hand controller replay, 96 prepared full-app
+browser tests and required prepared three-browser page checks (28 pass, two explicit
+non-Chromium zoom-API skips). Saved-only refusal checks, both builds, tsc and lint pass.
+Kat's October 4 decision remains: ship original saved-policy grades with explicit
+unavailable live EV grades; live EV export/grading is follow-up work. Exact-commit
+verification, push/green CI and deployment are still release gates; see the
+[current handoff](codex-handoff-2026-11-18.md). Vercel authentication has expired again;
+Kat was asked to renew login locally while independent release work continues.
+No numerical gate is waived. P5 is not complete without verified deployment.
 
 ### Step 1 — W1 single-thread WASM build (commit it)
 - Land W1 exactly as owned in `tasks/postflop-solver-w1-st.md` ("Owned W1 files"), no `target/`.

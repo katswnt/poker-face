@@ -505,6 +505,7 @@ function Header() {
         <Link href="/">← Trainer</Link>
         <Link href="/solver">Push/fold explorer</Link>
         <Link href="/solver/lab">Explainable solver lab</Link>
+        <a href="/play">Play the AI</a>
       </nav>
       <p className={styles.eyebrow}>Instant poker math</p>
       <h1>Poker math drills</h1>

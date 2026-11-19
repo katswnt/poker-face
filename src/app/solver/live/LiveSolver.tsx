@@ -90,7 +90,7 @@ export default function LiveSolver({ example, deployment }: { example: SavedLive
     <a href="#live-result" className={styles.skip}>Skip to completed result</a>
     <header className={styles.header}>
       <nav className={styles.nav} aria-label="Solver navigation"><Link href="/">← Poker Face</Link><Link href="/solver/lab">Leduc lab</Link>
-        <Link href="/solver/river">River teaching lab</Link><Link href="/solver/flop">Saved flop library</Link><Link href="/drills">Drills</Link></nav>
+        <Link href="/solver/river">River teaching lab</Link><Link href="/solver/flop">Saved flop library</Link><Link href="/drills">Drills</Link><a href="/play">Play the AI</a></nav>
       <p className={styles.eyebrow}>Two players · turn or river · local browser solve</p>
       <h1>Live Turn &amp; River Solver</h1>
       <p className={styles.intro}>Start with a checked example. Then change the cards, possible hands or bet sizes and solve a small game of your own.</p>
