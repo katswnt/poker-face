@@ -107,7 +107,8 @@
     "reproduce:bridge:library": "node --import tsx scripts/build-bridge-library.ts --reproduce",
     "solve:preflop": "node --import tsx scripts/solve-preflop.ts --write",
     "audit:preflop": "node --import tsx scripts/solve-preflop.ts --check",
-    "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts"
+    "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts",
+    "verify:release": "node scripts/verify-live-release.mjs"
   },
   "dependencies": {
     "next": "16.3.3",

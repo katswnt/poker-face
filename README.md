@@ -1245,6 +1245,39 @@ The diagnostic runs controlled model changes and delete-one-flop sensitivity che
 Those are not recommended replacement assumptions, held-out validation or a new library.
 The existing `solve:preflop` command rewrites research artifacts; it is not needed for review.
 
+### Production releases with the live engine
+
+Production uses explicit, verified releases. Git pushes to `main` do not deploy through
+Vercel; preview branches keep automatic saved-only builds. This prevents a documentation
+push from replacing live play with a build that omits the ignored engine assets.
+
+Use a clean checkout of the tested release commit. Build native/WASM with the pinned
+Rust and wasm-bindgen versions, then prepare the source-complete assets. The Vercel build
+wrapper refuses missing or stale assets, another commit's engine, a dirty checkout, or
+an archive that differs from the corresponding source. Ordinary `npm run build` remains
+available for saved-only local/CI builds.
+
+```bash
+cargo +1.98.1 build --release --locked --manifest-path native/solver-bridge/Cargo.toml
+npm run build:wasm
+npm run prepare:wasm:live
+npm run verify:release
+npx --yes vercel@62.1.0 pull --yes --environment=production
+POKER_FACE_LIVE_REQUIRED=1 npx --yes vercel@62.1.0 build --prod
+# After exact-commit tests, audits, browser checks and green CI:
+npx --yes vercel@62.1.0 deploy --prebuilt --prod --archive=tgz
+npm run verify:release -- --origin https://pokerface.katswint.com
+```
+
+Use the existing project binding, not a replacement project. The final command checks
+public engine/source bytes and the matching links on `/play` and `/solver/live`.
+It does not substitute for playing a hand, testing cancellation, or the mathematical
+release gates. Record the deployment identity and verification output. See the
+[release safeguard record](tasks/post-p5-release-and-live-ev.md).
+
+JetBrains Mono is bundled locally with its SIL Open Font License and pinned upstream
+[provenance](public/fonts/jetbrains-mono/provenance.json), so builds do not fetch Google Fonts.
+
 ## Accessibility
 
 Interactive controls preserve native keyboard behavior; history rows are keyboard-operable

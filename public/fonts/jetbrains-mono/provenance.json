@@ -1,0 +1,15 @@
+{
+  "family": "JetBrains Mono",
+  "version": "2.304",
+  "upstreamCommit": "cd5227bd1f61dff3bbd6c814ceaf7ffd95e947d9",
+  "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/cd5227bd1f61dff3bbd6c814ceaf7ffd95e947d9/fonts/variable/JetBrainsMono%5Bwght%5D.ttf",
+  "upstreamGitBlob": "b60e77f5dbf5505436c1904cb7a9ac4111ee76d0",
+  "sha256": "662a196d58f1183bf2d77428b6d5283fe3f45161ab021bea4036bc98e5cac016",
+  "bytes": 303144,
+  "license": "SIL Open Font License 1.1",
+  "licenseUrl": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/cd5227bd1f61dff3bbd6c814ceaf7ffd95e947d9/OFL.txt",
+  "licenseSha256": "60d55f23c6ce05a81099a762cb67ca2c9b6ea251c7912720998b4c89ebfd4faa",
+  "modifications": "None; file renamed locally. Font contents are the unmodified upstream variable font.",
+  "upstreamLicenseSha256": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad",
+  "licenseNormalization": "Trailing whitespace removed; copyright and licence wording unchanged."
+}
