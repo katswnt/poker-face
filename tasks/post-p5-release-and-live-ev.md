@@ -1,6 +1,8 @@
 # After P5: production safeguard, then live decision values
 
 Authorized by Kat on 2026-11-19. Baseline: `a9cbce9`; production app/engine: `22f513e`.
+Current status: **R1 shipped as `b509656`**, all eight CI jobs green, deployed and verified
+on November 19. E1 is next; its implementation has not started.
 W1–W4/P1–P5 remain complete. Preserve the trainer/session work and paused configurable-
 flop draft exactly. Follow the CPU roadmap's isolated verification, explicit staging,
 fail-first tests, unchanged mathematical gates and honest-copy rules for each milestone.
@@ -31,13 +33,13 @@ R1 gates, set before implementation:
 
 - [x] Tests fail first for absent, stale, corrupted and mismatched prepared/source data;
   valid data and saved-only preview builds pass. Production refuses before invoking Next.
-- [ ] Real clean distribution/archive passes; tampering is detected. No source, strategy,
+- [x] Real clean distribution/archive passes; tampering is detected. No engine source, strategy,
   admission, tolerance or frozen solver artifact changes.
-- [ ] Isolated exact commit with copied node_modules: full unit suite, typecheck, lint,
+- [x] Isolated exact commit with copied node_modules: full unit suite, typecheck, lint,
   bridge/WASM, saved example, river v3 and heads-up P1–P5 audits; production build.
-- [ ] Explicit-files commit/push; all eight hosted CI jobs green. Verify the main push
+- [x] Explicit-files commit/push; all eight hosted CI jobs green. Verify the main push
   does not create a replacement production build and the known live identity remains.
-- [ ] Exercise the guarded prepared Vercel build and release; verify public bytes and
+- [x] Exercise the guarded prepared Vercel build and release; verify public bytes and
   real-hand/cancel/retry smoke; record identities and measured results below.
 
 Owned R1 paths: `vercel.json`, `scripts/build-vercel.mjs`,
@@ -130,3 +132,74 @@ and licence presence. All seven release tests and the previously failing preview
 The amended exact commit must repeat full verification and full prepared app/P5 browser
 checks, including narrow screens and real 200% zoom, before pushing. No dependency upgrade,
 font mock, bundler switch, reduced test coverage or loosened gate is used.
+
+### R1 exact-commit verification — `b509656`
+
+The amended implementation was tested in `/private/tmp/poker-r1-exact-0cgb3iwk`, a clean
+checkout of `b5096562a775ba459d5c03ca5ed3527b39810d94` with **copied** dependencies.
+Native and WASM assets were rebuilt there with Rust 1.98.1 and wasm-bindgen 0.2.104.
+
+- **1,067/1,067** unit tests passed, zero failures/skips (106.807 s); typecheck and lint pass.
+- All 12 audits pass: bridge, WASM, saved live example, river v3, heads-up library,
+  P1–P5, wide-range evidence and gadget study. Native/WASM numerical deltas are zero
+  on all four referee games. The independent comparisons remain within **0.0002 chips**.
+- River v3 reproduces unchanged: player-zero value **16.081056725 chips**, best-response
+  gains **0.014993444 / 0.003155818**, exploitability **0.009074631 chips**.
+- Saved-only preview build passes; saved-only app suite: **87 pass / 9 explicit
+  asset-required skips**, 51.6 s. Production without prepared assets refuses before Next.
+- Prepared production build passes with an intentionally unusable HTTP(S) proxy, exercising
+  the local-font build. Prepared app suite: **96/96**, 58.6 s. Three-browser `/play`:
+  **28 pass / 2 explicit non-Chromium zoom-API skips**, reported 1.3 min. Three-browser
+  live solver: **34 pass / 2 same zoom-API skips**, 25.0 s. All runs used zero retries.
+- The 320px WebKit hand and real Chromium 200% zoom screenshots were inspected; controls,
+  tables, source links and visible focus remain readable without horizontal overflow.
+- The pinned Vercel production build invokes `scripts/build-vercel.mjs` successfully.
+  Its six packaged public engine/source assets equal the prepared files byte for byte.
+  Re-running `verify:release` after packaging passes; the source checkout stays clean.
+
+The explicit-files commit was pushed to main. All eight hosted jobs in
+[CI 44593644359](https://github.com/katswnt/poker-face/actions/runs/44593644359)
+passed on that exact commit before the explicit deployment began. The main push created no new
+Vercel production entry in the observed deployment list, and the public descriptor still
+matches the verified P5 release byte for byte. This records the observation, not a promise
+that Vercel configuration can never be changed later.
+
+Local evidence, including complete logs and screenshots, is preserved under ignored
+`build/post-p5-2026-11-19/R1-exact-b509656/`; `R1-current.json` records the pending gates.
+All 15 protected non-README hashes still match the P3 safeguard, and the trainer's
+uncommitted README hunks are unchanged. No E1 implementation has started.
+
+### R1 production deployment — 2026-11-19
+
+After all eight CI jobs passed, the prepared package was deployed with Vercel CLI 62.1.0
+to the existing project. No project, plan or protection setting changed.
+
+- Release commit: `b5096562a775ba459d5c03ca5ed3527b39810d94`.
+- Deployment: `dpl_6GCZ5TAmbEt6DxGrQuWisArCzzLn`, created 19:31:17 UTC, Ready/production.
+- Immutable URL: <https://poker-face-h76mgf0jl-kat-swints-projects.vercel.app>.
+- Public page: <https://pokerface.katswint.com/play>.
+- Build SHA-256: `3f7aab9c726b4e6cc2b26aee7ab467adc899968449f268afa4992d820c50532c`.
+- Engine source SHA-256: `a2852d8ab1701a796d7f32b71be37092082cd622a264dd5c60854684c0a068d2`
+  (unchanged from P5).
+- WASM: **795,913 bytes**, SHA-256
+  `35667bc135731b0ddbfb962201732e8b9dfa9b06dcacf03bedf510e3fe9d1801`.
+- Corresponding AGPL source archive: **4,806,956 bytes**, SHA-256
+  `eec4d42e3ce2800966a4af9b2f3a1f94e339145bd7adda048278a11cabcc4f49`.
+
+`node scripts/verify-live-release.mjs --origin https://pokerface.katswint.com` passed at
+**19:32:06.827 UTC**. All six fetched asset lengths/hashes equal the prepared distribution;
+both `/play` and `/solver/live` link its archive and display its build hash. The visible
+23.4%-of-subgame-pot warning is retained. Different clean checkout/build metadata can
+change binary/archive bytes; this is verified source correspondence and numerical parity,
+not a claim that builds in different paths are bit-identical.
+
+The full deployed play suite passed **28 tests**, with **two explicit non-Chromium
+zoom-API skips**, **zero failures/flakes/retries**, in **146.505 s**. This includes source
+links and honest copy, 320/390/1280px layouts, saved-policy grades, invalid inputs,
+keyboard completion with an off-menu bet, real turn Worker cancellation/retry, missing
+engine recovery, and real Chromium 200% zoom. Deployed 320px WebKit and 200% zoom
+screenshots were also inspected. Physical phone performance remains unvalidated.
+
+R1's release gates are complete. `R1-ci.json`, `R1-current.json`, the public verification
+JSON and the deployed Playwright report/screenshots are preserved in the ignored evidence
+directory. The next milestone is E1's prospective validation contract and fail-first tests.

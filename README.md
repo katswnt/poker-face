@@ -27,9 +27,10 @@ bounded Rust/WASM turn and river solving in a Worker when its source-complete as
 prepared; without those assets it still offers a saved example. `/play` now implements
 heads-up practice with saved flop policies and browser turn/river re-solving. It requires
 prepared engine assets, now deployed at [Play the solver-backed AI](https://pokerface.katswint.com/play).
-The [P5 release record](tasks/heads-up-play-p5-ui.md#verified-production-deployment--2026-11-19)
-binds the deployed engine and downloadable AGPL source to clean release `22f513e`;
-all 28 applicable deployed three-browser checks passed (two explicit zoom-API skips).
+The [R1 release record](tasks/post-p5-release-and-live-ev.md#r1-production-deployment--2026-11-19)
+binds the current deployed engine and downloadable AGPL source to clean release `b509656`.
+It preserves P5's solver results and adds guarded, explicit production releases. All eight
+CI jobs and 28 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
