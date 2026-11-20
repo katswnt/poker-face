@@ -10,11 +10,13 @@ import { gunzipSync } from "node:zlib";
 import ts from "typescript";
 import { wideHash } from "./hu-play-wide-corpus";
 import type { Hands, Corpus, Browser } from "./audit-hu-play-p1";
+import { checkE1ParentSources, type E1Parent } from "./hu-play-e1-successor";
 
 export type P1Reports = [Hands, Corpus, Browser];
 interface Source { path: string; sha256: string }
 export interface P1SuccessorEvidence {
-  format: "poker-face-p1-successor"; version: 1 | 2; originalCommit: string;
+  format: "poker-face-p1-successor"; version: 1 | 2 | 3; originalCommit: string;
+  e1Parent?: E1Parent;
   parentEvidenceHash?: string;
   originalReportHashes: string[]; originalSources: (Source & { text: string })[];
   currentSources: Source[]; successor: P1Reports;
@@ -22,6 +24,7 @@ export interface P1SuccessorEvidence {
 const digest = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex");
 export const P1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p1-p2-successor";
 export const P1_P3_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p1-p3-successor";
+export const P1_E1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p1-e1-successor";
 export const P1_RELEASE_COMMIT = "ea47f6eef17782faa013ea41dad51978d85ca262";
 
 export function p1PipelineSources(): Source[] {
@@ -42,7 +45,8 @@ export function p1PipelineSources(): Source[] {
   };
   for (const p of ["scripts/audit-hu-play-p1-hands.ts", "scripts/measure-hu-play-p1-corpus.ts", "scripts/profile-hu-play-p1-browser.ts",
     "scripts/hu-play-p1-profile-page.ts", "scripts/audit-hu-play-p1.ts", "scripts/hu-play-p1-successor.ts",
-    "scripts/capture-hu-play-p1-successor.ts", "src/lib/solver/bridge/live/worker.ts", "scripts/build-bridge-wasm.mjs"]) visit(p);
+    "scripts/capture-hu-play-p1-successor.ts", "scripts/prepare-hu-play-e1-inputs.ts", "scripts/capture-hu-play-e1.ts",
+    "src/lib/solver/bridge/live/worker.ts", "scripts/build-bridge-wasm.mjs"]) visit(p);
   for (const dir of ["native/solver-bridge", "native/solver-bridge-wasm"]) {
     for (const name of ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml"]) visit(join(dir, name));
     if (existsSync(join(dir, "rustfmt.toml"))) visit(join(dir, "rustfmt.toml"));
@@ -86,14 +90,19 @@ export function checkP1SuccessorEvidence(e: P1SuccessorEvidence, original: P1Rep
 
 export function checkP1SuccessorParent(e: P1SuccessorEvidence) {
   if (e.version === 1) { assert.equal(e.parentEvidenceHash, undefined); return; }
-  assert.equal(e.version, 2);
-  const historical = readHistoricalP1Successor();
+  assert.ok(e.version === 2 || e.version === 3);
+  const historical = e.version === 3 ? readPreE1P1Successor() : readHistoricalP1Successor();
+  if (e.version === 3) {
+    assert.ok(e.e1Parent, "E1 parent source archive required");
+    assert.equal(e.e1Parent.evidenceHash, wideHash(historical), "E1 parent hash");
+    checkE1ParentSources(e.e1Parent.sources, historical.currentSources);
+  } else assert.equal(e.e1Parent, undefined);
   assert.equal(e.parentEvidenceHash, wideHash(historical), "P1 historical parent evidence hash");
   assert.deepEqual(e.originalReportHashes, historical.originalReportHashes, "P1 historical reports remain immutable");
   assert.deepEqual(e.originalSources, historical.originalSources, "P1 historical source archive remains immutable");
 }
 
-function readArchive(stem: string, version: 1 | 2): P1SuccessorEvidence {
+function readArchive(stem: string, version: 1 | 2 | 3): P1SuccessorEvidence {
   const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
   assert.equal(meta.format, "poker-face-p1-successor-bundle"); assert.equal(meta.version, version);
   const bytes = readFileSync(`${stem}.json.gz`); assert.equal(bytes.length, meta.bytes);
@@ -105,6 +114,8 @@ function readArchive(stem: string, version: 1 | 2): P1SuccessorEvidence {
 }
 
 export function readHistoricalP1Successor(): P1SuccessorEvidence { return readArchive(P1_SUCCESSOR_STEM, 1); }
+export function readPreE1P1Successor(): P1SuccessorEvidence { return readArchive(P1_P3_SUCCESSOR_STEM, 2); }
 export function readP1Successor(): P1SuccessorEvidence {
+  if (existsSync(`${P1_E1_SUCCESSOR_STEM}.json`)) return readArchive(P1_E1_SUCCESSOR_STEM, 3);
   return existsSync(`${P1_P3_SUCCESSOR_STEM}.json`) ? readArchive(P1_P3_SUCCESSOR_STEM, 2) : readHistoricalP1Successor();
 }

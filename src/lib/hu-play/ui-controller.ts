@@ -100,6 +100,12 @@ export class PlayController {
   private remember(q: HumanModelRequest, policy: NodePolicy, generation: number) {
     if (generation !== this.generation || this.disposed) return;
     const key = keyOf(q), old = this.observed.get(key), actor = q.publicState.toAct === q.aiSeat ? "ai" : "human";
+    // Preparing an off-menu or zero-support action may replace the solve at this SAME
+    // public decision. Retain what the learner saw, including missing values, the menu,
+    // provenance and equity range. The observer still records the actual preparation mode.
+    // Legacy saved-only observations keep their existing behavior.
+    if (old?.actor === "human" && actor === "human"
+      && (old.actionEvBasis === "local-solved-policy" || policy.actionEvBasis === "local-solved-policy")) return;
     let strategy: ActionDistribution | null = old?.strategy ?? null, evs = old?.actionEvs ?? null;
     if (actor === "human" && this.hand) {
       // A human's real hand can be outside the model after a deviation. That does not

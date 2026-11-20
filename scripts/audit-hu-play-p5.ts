@@ -1,7 +1,7 @@
 /** Recheck P5's frozen UI corpus using preserved policies. This is replay, not a fresh solve. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync, gunzipSync } from "node:zlib";
@@ -16,29 +16,54 @@ import { requirePlayingResult } from "../src/lib/hu-play/sources/resolved";
 import { requireTurnPlayingResult } from "../src/lib/solver/bridge/live/turn-quality";
 import { requireRiverPlayingResult } from "../src/lib/solver/bridge/live/river-quality";
 import { P5_UI_CORPUS, p5HumanAction } from "./hu-play-p5-human";
+import { checkE1ParentSources, checkE1UiIdentity, type E1Parent, type E1Source } from "./hu-play-e1-successor";
+import { p4PipelineSources } from "./audit-hu-play-p4";
 
-interface Frozen {corpus:typeof P5_UI_CORPUS;corpusHash:string;sourceFiles:{path:string;sha256:string}[];sourceHash:string}
+interface Frozen {corpus:typeof P5_UI_CORPUS;corpusHash:string;sourceFiles:{path:string;sha256:string}[];sourceHash:string;
+  e1?:{decisionValues:true;sourceFiles:E1Source[];engineSourceHash:string;wasmBuildHash:string;nativeBinarySha256:string}}
 interface Row {seed:number;humanSeat:0|1;passed:true;log:ReturnType<PlayController["completedLog"]>;
   logHash:string;decisionsHash:string;ledger:PlayLedgerRow;streets:string[]}
 interface Report {format:string;version:number;payloadHash:string;frozen:Frozen;passed:boolean;rows:Row[];
   replayRows:{seed:number;passed:boolean}[];attempts:{seed:number;spotHash:string;accepted:boolean;error?:string}[];ledger:PlayLedgerRow[]}
-export interface P5Evidence {format:"poker-face-p5-ui-evidence";version:1;report:Report;solves:{spot:BridgeSpotV1;result:BridgeResultV1}[]}
+export interface P5Evidence {format:"poker-face-p5-ui-evidence";version:1|2;e1Parent?:E1Parent;currentSources?:E1Source[];report:Report;solves:{spot:BridgeSpotV1;result:BridgeResultV1}[]}
 export const P5_STEM="tasks/artifacts/hu-play-p5-ui";
+export const P5_E1_SUCCESSOR_STEM="tasks/artifacts/hu-play-p5-e1-successor";
+export const currentP5EvidenceStem=()=>existsSync(`${P5_E1_SUCCESSOR_STEM}.json`)?P5_E1_SUCCESSOR_STEM:P5_STEM;
 const digest=(bytes:Uint8Array|string)=>createHash("sha256").update(bytes).digest("hex");
 export const p5Hash=(value:unknown)=>digest(canonicalSolverJson(value));
 
-export function readP5Evidence():P5Evidence {
-  const meta=JSON.parse(readFileSync(`${P5_STEM}.json`,"utf8"));
-  assert.equal(meta.format,"poker-face-p5-ui-evidence-bundle");assert.equal(meta.version,1);
-  const compressed=readFileSync(`${P5_STEM}.json.gz`);assert.equal(compressed.length,meta.bytes);
+function readP5Archive(stem:string,version:1|2):P5Evidence {
+  const meta=JSON.parse(readFileSync(`${stem}.json`,"utf8"));
+  assert.equal(meta.format,"poker-face-p5-ui-evidence-bundle");assert.equal(meta.version,version);
+  const compressed=readFileSync(`${stem}.json.gz`);assert.equal(compressed.length,meta.bytes);
   assert.equal(digest(compressed),meta.sha256,"P5 compressed evidence hash");
   const plain=gunzipSync(compressed,{maxOutputLength:128*1024**2});
   assert.equal(plain.length,meta.uncompressedBytes);assert.equal(digest(plain),meta.uncompressedSha256);
-  return JSON.parse(plain.toString("utf8"));
+  const e=JSON.parse(plain.toString("utf8"));assert.equal(e.version,version);return e;
+}
+export function readPreE1P5Evidence(){return readP5Archive(P5_STEM,1);}
+export function readP5Evidence(){const stem=currentP5EvidenceStem();return readP5Archive(stem,stem===P5_STEM?1:2);}
+
+export async function p5PipelineSources():Promise<E1Source[]> {
+  const bundle=await build({entryPoints:["scripts/audit-hu-play-p5.ts","scripts/audit-hu-play-p5-playing.ts",
+    "src/app/play/DecisionMath.tsx","src/lib/hu-play/ui-browser.ts","scripts/bridge-decision-value-oracle.ts"],
+    outdir:"/unused-e1-source-closure",bundle:true,platform:"node",format:"esm",packages:"external",write:false,metafile:true});
+  const paths=new Set([...(await p4PipelineSources()).map(s=>s.path),...Object.keys(bundle.metafile.inputs)]);
+  return [...paths].sort().map(path=>({path,sha256:digest(readFileSync(path))}));
 }
 
 export async function checkP5Evidence(e:P5Evidence) {
-  assert.equal(e.format,"poker-face-p5-ui-evidence");assert.equal(e.version,1);
+  assert.equal(e.format,"poker-face-p5-ui-evidence");assert.ok(e.version===1||e.version===2);
+  if(e.version===2) {
+    const parent=readPreE1P5Evidence();assert.ok(e.e1Parent,"E1 parent source archive required");
+    assert.equal(e.e1Parent.evidenceHash,p5Hash(parent),"E1 P5 parent hash");
+    checkE1ParentSources(e.e1Parent.sources,parent.report.frozen.sourceFiles);
+    assert.deepEqual(e.currentSources,await p5PipelineSources(),"E1 P5 full source closure changed");
+    const captured=e.report.frozen.e1;assert.ok(captured&&captured.decisionValues===true,"Enabled capture required");
+    assert.deepEqual(captured.sourceFiles,e.currentSources,"E1 source closure must be frozen before UI hands");
+    for(const hash of [captured.engineSourceHash,captured.wasmBuildHash,captured.nativeBinarySha256])assert.match(hash,/^[a-f0-9]{64}$/);
+    checkE1UiIdentity(e,parent);
+  }else{assert.equal(e.e1Parent,undefined);assert.equal(e.currentSources,undefined);assert.equal(e.report.frozen.e1,undefined);}
   const {payloadHash,...payload}=e.report, r=e.report;
   assert.equal(p5Hash(payload),payloadHash,"P5 measured report hash");
   assert.equal(r.format,"poker-face-p5-ui-hands");assert.equal(r.version,1);assert.equal(r.passed,true);
@@ -115,7 +140,7 @@ async function main() {
     writeFileSync(`${P5_STEM}-summary.json`,canonicalSolverJson(summary)+"\n",{flag:"wx"});console.log(summary);
   }else {
     assert.deepEqual(args,["--check"]);const summary=await checkP5Evidence(readP5Evidence());
-    assert.equal(canonicalSolverJson(summary)+"\n",readFileSync(`${P5_STEM}-summary.json`,"utf8"));console.log(summary);
+    assert.equal(canonicalSolverJson(summary)+"\n",readFileSync(`${currentP5EvidenceStem()}-summary.json`,"utf8"));console.log(summary);
   }
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(e=>{console.error(e);process.exitCode=1;});

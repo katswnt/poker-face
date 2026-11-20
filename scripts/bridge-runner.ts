@@ -45,7 +45,7 @@ export interface BridgeRun {
 
 export async function runBridgeSpot(input: BridgeSpotV1, options: {
   timeoutMs?: number; signal?: AbortSignal; threads?: number; rssLimitBytes?: number;
-  onProgress?: (progress: BridgeProgress) => void; binary?: string; slices?: BridgeSlicePlanV1;
+  onProgress?: (progress: BridgeProgress) => void; binary?: string; slices?: BridgeSlicePlanV1; decisionValues?: boolean;
 } = {}): Promise<BridgeRun> {
   const started = performance.now();
   const spot = validateBridgeSpot(input), spotHash = hashBridgeSpot(spot);
@@ -65,7 +65,7 @@ export async function runBridgeSpot(input: BridgeSpotV1, options: {
   const planPath = join(directory, "slices.json");
   if (plan) writeFileSync(planPath, plan.json);
   const args = ["solve", spotPath, "--out", outPath, ...(options.threads ? ["--threads", String(options.threads)] : []),
-    ...(plan ? ["--slices", planPath] : [])];
+    ...(plan ? ["--slices", planPath] : []), ...(options.decisionValues ? ["--decision-values"] : [])];
 
   try {
     return await new Promise<BridgeRun>((resolveRun, reject) => {
@@ -107,6 +107,7 @@ export async function runBridgeSpot(input: BridgeSpotV1, options: {
           if (statSync(outPath).size > MAX_RESULT_BYTES) throw new Error("Bridge result exceeds 2 GiB");
           const result = checkBridgeResult(JSON.parse(readFileSync(outPath, "utf8")), spot, spotHash);
           if ((result.slices?.planHash ?? null) !== (plan?.hash ?? null)) throw new Error("Bridge result slices do not match the slice plan");
+          if ((result.decisionValues !== undefined) !== (options.decisionValues === true)) throw new Error("Bridge decision values do not match the request");
           settled = true; cleanup();
           resolveRun({ result, spotHash, elapsedMs: performance.now() - started, sampledPeakRssBytes, rssLimitBytes, slicePlanHash: plan?.hash ?? null });
         } catch (error) { fail(error instanceof Error ? error : new Error(String(error))); }

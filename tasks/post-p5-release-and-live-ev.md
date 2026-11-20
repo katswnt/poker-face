@@ -2,7 +2,10 @@
 
 Authorized by Kat on 2026-11-19. Baseline: `a9cbce9`; production app/engine: `22f513e`.
 Current status: **R1 shipped as `b509656`**, all eight CI jobs green, deployed and verified
-on November 19. E1 is next; its implementation has not started.
+on November 19. E1 candidate verification is complete, including all 1,101 tests and
+source-bound browser evidence. No E1 commit or deployment yet; exact-commit, CI and
+public-release gates remain.
+See `tasks/live-decision-ev-spec.md` for the frozen contract and current measurements.
 W1–W4/P1–P5 remain complete. Preserve the trainer/session work and paused configurable-
 flop draft exactly. Follow the CPU roadmap's isolated verification, explicit staging,
 fail-first tests, unchanged mathematical gates and honest-copy rules for each milestone.
@@ -203,3 +206,18 @@ screenshots were also inspected. Physical phone performance remains unvalidated.
 R1's release gates are complete. `R1-ci.json`, `R1-current.json`, the public verification
 JSON and the deployed Playwright report/screenshots are preserved in the ignored evidence
 directory. The next milestone is E1's prospective validation contract and fail-first tests.
+
+
+### E1 candidate checkpoint — 2026-11-19
+
+Implementation and fail-first tests live in an isolated checkout with copied dependencies.
+No E1 commit or deployment yet. The independent tiny-game checks, immutable human
+model snapshots, actual Worker boundaries and responsive live-value panel have passed
+focused checks. The 200-case native turn corpus passes with export both off and on,
+with exact unchanged old mathematical results and full logs on all 327 accepted solves.
+The separate off-menu river audit still measures 23.399062636% composed exploitability.
+That warning remains visible; live action grades do not certify the composed opponent.
+
+The source-bound legacy successors, enabled browser performance/memory corpus, full
+exact-commit suite, CI and deployed source verification remain release gates. Full details
+and preserved failure/measurement locations are in the E1 spec. No protected work changed.

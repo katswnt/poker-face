@@ -7,7 +7,7 @@ import type { TeachingEvent } from "@/lib/hu-play/teaching-worker";
 import type { FlopDescription } from "@/lib/hu-play/sources/flop-play";
 import type { BridgeAction } from "@/lib/solver/bridge/contract";
 import { actionToken } from "@/lib/hu-play/public-state";
-import { gradeSavedDecision } from "@/lib/hu-play/decision-grade";
+import { gradePlayDecision } from "@/lib/hu-play/decision-grade";
 import type { HeadsUpPublicState } from "@/lib/hu-play/types";
 import styles from "./play.module.css";
 
@@ -29,7 +29,7 @@ export default function DecisionMath({decision:d,controller,complete,aiHand,hist
     return () => { c.dispose(); if(client.current===c) client.current=null; };
   },[controller,d.key,attempt]);
   const price=decisionPrice(d.public), p=d.provenance;
-  const grade=gradeSavedDecision(d,history);
+  const grade=gradePlayDecision(d,history), localValues=d.actionEvBasis==="local-solved-policy";
   const flop="flop" in p ? p.flop as FlopDescription : null;
   const quality=p.source==="resolve" ? p : p.source==="translation" ? p.responseSolve : null;
   const pending=equity===null || equity.type==="progress";
@@ -73,25 +73,29 @@ export default function DecisionMath({decision:d,controller,complete,aiHand,hist
         {d.actor==="ai" && <p>AI hand: {aiHand}. It draws from this mix; the most frequent action is not mandatory.</p>}
         <table><caption>Approximate strategy at this decision</caption><thead><tr><th scope="col">Action</th><th scope="col">Frequency</th><th scope="col">Action EV (bb)</th></tr></thead>
           <tbody>{d.strategy.map((row,i)=><tr key={actionToken(row.action)}><th scope="row">{actionName(row.action)}</th><td>{pct(row.probability)}</td>
-            <td>{d.actionEvs?.[i]===null || d.actionEvs?.[i]===undefined ? "Not exported" : (d.actionEvs[i]!/100).toFixed(3)}</td></tr>)}</tbody></table>
+            <td>{d.actionEvs?.[i]===null || d.actionEvs?.[i]===undefined ? localValues ? "Unavailable" : "Not exported" : (d.actionEvs[i]!/100).toFixed(3)}</td></tr>)}</tbody></table>
         <p className={styles.note}>{d.actionEvBasis==="original-saved-policy"
           ? "EVs belong to the original saved policy, rounded to 0.1 chip. They are not values of this composed AI after later re-solving. No live-play grade is inferred from them."
+          : localValues ? "EV means expected chips returned from here minus chips still to pay. Earlier contributions are already spent. These values follow this local solved strategy. This does not predict the AI after later re-solving. The strategy is approximate, for this particular finite game."
           : "Action EVs were not exported for this decision. Equity is not substituted for action value."}</p>
       </> : <p>Your actual hand has no usable column in this model at this decision. No strategy or action value is invented.</p>}
     {d.actor==="human" && <>
-      <h3>Your action vs the original saved model</h3>
+      <h3>{localValues ? "Your action vs the local model shown before you acted" : "Your action vs the original saved model"}</h3>
       {grade.status==="ready" ? <>
-        <p>You chose {actionName(grade.action)}. Saved-model EV gap: {(grade.gapChips/100).toFixed(3)} bb
+        <p>You chose {actionName(grade.action)}. {grade.basis==="local-solved-policy" ? "Local-model" : "Saved-model"} EV gap: {(grade.gapChips/100).toFixed(3)} bb
           {" "}({grade.gapChips.toFixed(1)} chips).</p>
         <p>Best listed EV: {(grade.bestEvChips/100).toFixed(3)} bb ({grade.bestActions.map(actionName).join(" or ")});
           {" "}your action: {(grade.selectedEvChips/100).toFixed(3)} bb. The gap is best minus chosen.</p>
-        <p className={styles.note}>This compares actions against the original saved policy, not the later re-solving AI.
+        {grade.basis==="local-solved-policy" ? <p className={styles.note}>This compares choices using the local model shown before your action.
+          Values and gaps are displayed to 0.1 chip (0.001 bb). Display rounding is separate from numerical, solver-convergence and range errors;
+          the local exploitability number does not bound the error for each hand. A zero gap is not a claim that an action is GTO-correct.
+          Gaps are not added into a session score.</p> : <p className={styles.note}>This compares actions against the original saved policy, not the later re-solving AI.
           Rounding alone can change the gap by up to 0.1 chip (0.001 bb); that is not a bound on solver or model error.
-          A zero gap is not a claim that an action is GTO-correct. Gaps are not added into a session score.</p>
-      </> : grade.status==="pending" ? <p>Choose an action first to see its saved-model EV gap.</p>
-        : <p>EV grade unavailable: {grade.reason==="off-menu" ? "your chosen size is outside this saved menu."
+          A zero gap is not a claim that an action is GTO-correct. Gaps are not added into a session score.</p>}
+      </> : grade.status==="pending" ? <p>Choose an action first to see its {localValues ? "local-model" : "saved-model"} EV gap.</p>
+        : <p>EV grade unavailable: {grade.reason==="off-menu" ? localValues ? "your chosen size is outside this original local menu." : "your chosen size is outside this saved menu."
           : grade.reason==="history-mismatch" ? "this decision does not match the current hand history."
-          : "a complete original saved-policy EV row is not available here. Live and translated decisions are not graded."}
+          : "a complete action-value row from this decision’s model is not available here. Translated decisions are not graded."}
           {" "}Equity and action frequency are not substitutes for action EV.</p>}
     </>}
     <h3>Where this decision came from</h3>

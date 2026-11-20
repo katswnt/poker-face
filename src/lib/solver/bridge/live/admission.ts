@@ -4,6 +4,7 @@ import type { ExportReservation, LiveEstimate, LiveVerdict } from "./model";
 import { PLAY_LIMITS, requireLiveProfile, validatePlaySpot, type LiveProfile } from "./play-profile";
 import { validateRiverPlaySpot } from "./river-profile";
 import { validateTurnPlaySpot } from "./turn-profile";
+import { canonicalSolverJson } from "../../toy/artifact";
 
 /** W2 engineering limits, not a hardware safety certificate. Offline scripts retain capacity. */
 export const LIVE_LIMITS = Object.freeze({ inputBytes: 256 * 1024, rangeHands: 64, jsonDepth: 100,
@@ -59,7 +60,7 @@ export function parseLiveSpot(json: string, profile: LiveProfile = "teaching-v1"
   return spot;
 }
 
-export function parseLiveEstimate(raw: string, spot: BridgeSpotV1, hash: string): LiveEstimate {
+export function parseLiveEstimate(raw: string, spot: BridgeSpotV1, hash: string, decisionValues = false): LiveEstimate {
   const value = JSON.parse(raw), parsed = parseBridgeEstimate(value);
   if (parsed.spotId !== spot.id || parsed.spotHash !== hash) throw new Error("Preflight belongs to a different spot.");
   if (parsed.memoryCapBytes !== spot.solve.memoryCapBytes || parsed.hands.some((n, p) => n !== spot.ranges[p].combos.length)) {
@@ -74,6 +75,25 @@ export function parseLiveEstimate(raw: string, spot: BridgeSpotV1, hash: string)
   }
   if (e.nodes < 1 || e.jsonBytesUpperBound < 4096 || e.workingBytesEstimate < 8 * e.jsonBytesUpperBound) {
     throw new Error("Invalid export reservation.");
+  }
+  if (decisionValues !== (e.decisionValueCells !== undefined)
+    || (decisionValues && (!Number.isSafeInteger(e.decisionValueCells) || e.decisionValueCells !== e.cells))) {
+    throw new Error("Decision-value export reservation does not match the request.");
+  }
+  if (decisionValues) {
+    // Mirror the documented reservation contract, not measurements of arbitrary JS heaps.
+    // An old engine cannot acknowledge the flag while returning its old smaller estimate.
+    const hands = parsed.hands[0] + parsed.hands[1];
+    const inputBytes = new TextEncoder().encode(canonicalSolverJson(spot)).length;
+    const minimumJson = 4096 + 1024 * e.nodes + 32 * e.cells + 128 * e.edges + 256 * hands
+      + 8 * inputBytes + 128 * (Math.floor(spot.solve.maxIterations / 10) + 2)
+      + 1024 + 32 * e.cells + 64 * e.nodes;
+    const minimumWorking = 8 * e.jsonBytesUpperBound + 4096 * e.nodes + 64 * e.cells + 1024 * hands
+      + 64 * e.cells + 128 * e.nodes;
+    if (!Number.isSafeInteger(minimumJson) || !Number.isSafeInteger(minimumWorking)
+      || e.jsonBytesUpperBound < minimumJson || e.workingBytesEstimate < minimumWorking) {
+      throw new Error("Decision-value export reservation omits required data or working copies.");
+    }
   }
   return { ...parsed, estimateExport: e };
 }

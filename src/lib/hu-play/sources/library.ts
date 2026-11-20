@@ -29,7 +29,7 @@ export class LibraryPolicySource extends PreparedPolicySource {
       const n = this.flop.nodes.find(n => n.path === path);
       if (!n || n.committed.some((v, i) => v !== p.closed + p.streetPut[i])) throw new Error("No exact saved flop decision");
       const policy = nodePolicy(request, { player: n.player, hands: this.flop.hands[n.player], actions: n.actions.map(fromToken),
-        rows: n.strategy, encoding: "per-mille", provenance,
+        rows: n.strategy, encoding: "per-mille", provenance, actionEvBasis: "original-saved-policy",
         actionEvRows: n.actionEv.map(row => row.map(v => v === null ? null : v / 10)) });
       signal?.throwIfAborted(); this.prepared = { key, policy }; return;
     }
@@ -44,7 +44,7 @@ export class LibraryPolicySource extends PreparedPolicySource {
     const n = this.saved.get(chunkKey)!.nodes.find(n => n.path === path);
     if (!n || n.committed.some((v, i) => v !== p.closed + p.streetPut[i])) throw new Error("No exact saved decision on this line");
     const policy = nodePolicy(request, { player: n.player, hands: n.live[n.player].map(h => this.spot.ranges[n.player].combos[h].combo),
-      actions: n.actions.map(fromToken), rows: n.strategy, encoding: "per-mille", provenance,
+      actions: n.actions.map(fromToken), rows: n.strategy, encoding: "per-mille", provenance, actionEvBasis: "original-saved-policy",
       actionEvRows: n.actionEv.map(row => row.map(v => v === null ? null : v / 10)) });
     signal?.throwIfAborted(); this.prepared = { key, policy };
   }

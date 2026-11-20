@@ -222,3 +222,97 @@ test("actual production runtime agrees exactly with an uninterrupted WASM solve"
     assert.ok(Object.values(compareBridgeResults(expected, final.result)).every(n => n === 0));
   }
 });
+
+function teachingFake() {
+  const f = fake();
+  Object.assign(f.session, { enable_decision_values() {
+    f.calls.push("values");
+    Object.assign(f.estimate.estimateExport, { decisionValueCells: f.estimate.estimateExport.cells,
+      jsonBytesUpperBound: 1_000_000, workingBytesEstimate: 10_000_000 });
+  } });
+  const finish = f.session.finish;
+  f.session.finish = () => JSON.stringify({ ...JSON.parse(finish()), decisionValues: {
+    format: "poker-face-bridge-decision-values", version: 1, spotHash: f.estimate.spotHash,
+    units: "chips", convention: "payout-minus-future-contributions", basis: "local-solved-policy", nodes: [],
+  } });
+  return f;
+}
+const teachingRequest = () => ({ ...request(), decisionValues: true });
+
+test("requested decision-value capability runs before estimate and is reserved before allocation", async () => {
+  const f = teachingFake(); await createLiveRuntime(f.host).handle(teachingRequest());
+  assert.equal(f.events.at(-1)?.type, "result", JSON.stringify(f.events.at(-1)));
+  assert.deepEqual(f.calls.slice(0, 5), ["load", "create", "values", "estimate", "allocate"]);
+  const refused = teachingFake();
+  Object.assign(refused.session, { enable_decision_values() {
+    refused.calls.push("values"); Object.assign(refused.estimate.estimateExport, { decisionValueCells: 1000,
+      jsonBytesUpperBound: 20_000_000, workingBytesEstimate: 300_000_000 });
+  } });
+  await createLiveRuntime(refused.host).handle(teachingRequest());
+  const last = refused.events.at(-1); assert.equal(last?.type, "estimate");
+  if (last?.type === "estimate") assert.equal(last.verdict.ok, false);
+  assert.ok(!refused.calls.includes("allocate"));
+});
+
+test("missing teaching capability or inconsistent reservation fails before allocation", async () => {
+  for (const kind of ["missing", "unreserved", "count", "bytes"] as const) {
+    const f = fake();
+    if (kind !== "missing") Object.assign(f.session, { enable_decision_values() {
+      f.calls.push("values");
+      if (kind !== "unreserved") Object.assign(f.estimate.estimateExport, { decisionValueCells: kind === "count" ? 999 : 1000 });
+    } });
+    await createLiveRuntime(f.host).handle(teachingRequest());
+    const last = f.events.at(-1); assert.equal(last?.type, "error", kind);
+    if (last?.type === "error") assert.match(last.message, /decision.value|reservation/i);
+    assert.ok(!f.calls.includes("allocate"), kind); assert.ok(!f.calls.includes("finish"), kind);
+  }
+});
+
+test("teaching request and final payload must agree exactly; bad flags fail before loading", async () => {
+  for (const kind of ["missing", "unsolicited", "wrong-model"] as const) {
+    const f = teachingFake(), finish = f.session.finish;
+    if (kind !== "unsolicited") f.session.finish = () => {
+      const result = JSON.parse(finish());
+      if (kind === "missing") delete result.decisionValues; else result.decisionValues.spotHash = "0".repeat(64);
+      return JSON.stringify(result);
+    };
+    await createLiveRuntime(f.host).handle(kind === "unsolicited" ? request() : teachingRequest());
+    assert.equal(f.events.at(-1)?.type, "error", kind); assert.ok(!f.events.some(e => e.type === "result"));
+  }
+  const f = teachingFake();
+  await createLiveRuntime(f.host).handle(Object.assign(request(), { decisionValues: "true" }));
+  assert.equal(f.events.at(-1)?.type, "error"); assert.deepEqual(f.calls, ["close"]);
+});
+
+test("cancel during decision-value export or checking never publishes teaching data", async () => {
+  for (const where of ["finish", "checking"] as const) {
+    const f = teachingFake(), runtime = createLiveRuntime(f.host);
+    if (where === "finish") {
+      const finish = f.session.finish;
+      f.session.finish = () => { const json = finish(); void runtime.handle({ type: "cancel", id: 1 }); return json; };
+    } else {
+      const emit = f.host.emit;
+      f.host.emit = e => { emit(e); if (e.type === "progress" && e.stage === "checking") void runtime.handle({ type: "cancel", id: 1 }); };
+    }
+    await runtime.handle(teachingRequest()); assert.equal(f.events.at(-1)?.type, "cancelled");
+    assert.ok(!f.events.some(e => e.type === "result")); assert.ok(f.calls.includes("free"));
+  }
+});
+
+test("real Worker runtime reserves and publishes the same teaching values as uninterrupted WASM", {
+  skip: wasmAvailable ? false : "run npm run build:wasm",
+}, async () => {
+  const { bindings, memory } = await loadWasm();
+  for (const id of ["referee-river-v3-demo", "referee-turn-v2-dry-value"] as const) {
+    const s = spot(id), expected = runWasmSpot(bindings, s, 7, { decisionValues: true }), events: LiveEvent[] = [];
+    const runtime = createLiveRuntime({ emit: e => events.push(e), now: () => performance.now(), yield: async () => {}, hash,
+      load: async () => ({ create: bytes => new bindings.SolverSession(bytes), memoryBytes: () => memory.buffer.byteLength, provenance }), close: () => {} });
+    await runtime.handle({ ...request(s), decisionValues: true });
+    const final = events.at(-1); assert.equal(final?.type, "result", JSON.stringify(final));
+    if (final?.type !== "result") throw new Error("No teaching result");
+    assert.deepEqual(final.result.decisionValues, expected.decisionValues);
+    assert.ok(Object.values(compareBridgeResults(expected, final.result)).every(n => n === 0));
+    const estimate = events.find(e => e.type === "estimate");
+    assert.ok(estimate?.type === "estimate" && estimate.estimate.estimateExport.decisionValueCells! > 0);
+  }
+});

@@ -9,7 +9,7 @@ import { actionToken, applyPublicEvent, isStreetRoot } from "../public-state";
 import { applyStrategy } from "../reach";
 import { buildResolveSpot } from "../resolve-spot";
 import type { DecisionProvenance } from "../types";
-import { nodePolicy, preparationKey, PreparedPolicySource } from "./policy";
+import { localDecisionValueInput, nodePolicy, preparationKey, PreparedPolicySource } from "./policy";
 
 export type PublicSolve = (spot: BridgeSpotV1, signal?: AbortSignal) => Promise<BridgeResultV1>;
 interface ResolvedRoot {
@@ -98,7 +98,8 @@ export class ResolvedPolicySource extends PreparedPolicySource {
         || n.board.join() !== [...p.board.flop, p.board.turn, p.board.river].filter(Boolean).join()
         || n.committed.some((c, i) => c !== expected.publicState.streetPut[i])) throw new Error("Resolved public node does not match actual chip state");
       return nodePolicy(expected, { player: n.player, hands: root!.result.hands[n.player], actions: n.actions.map(a => a.action),
-        rows: n.strategy, encoding: "float32", provenance: root!.provenance });
+        rows: n.strategy, encoding: "float32", provenance: root!.provenance,
+        ...localDecisionValueInput(root!.result, n.id, root!.provenance) });
     };
     for (const event of p.events.slice(base.events.length)) {
       if (event.kind !== "action") throw new Error("Prepare a new root after a board card");

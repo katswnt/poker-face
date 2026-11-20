@@ -12,6 +12,7 @@ interface SolverClient { start(request: Request): number; cancel(): void; dispos
 export interface BrowserResolveOptions {
   readonly assetBase: string; readonly environment: WasmEnvironment;
   readonly profile?: "play-v1" | "play-river-v1" | "play-turn-v1";
+  readonly decisionValues?: boolean;
   readonly onEvent?: (event: LiveEvent) => void;
   /** Dependency injection for tests/harnesses; the app uses the actual W2 browser factory. */
   readonly createClient?: (emit: (event: LiveEvent) => void) => SolverClient;
@@ -47,11 +48,16 @@ export class BrowserPublicSolver {
             if (event.type === "error") finish(new Error(event.message));
             else if (event.type === "cancelled") finish(new Error("Public solve cancelled; no playing policy published"));
             else if (event.type === "estimate" && !event.verdict.ok) finish(new Error(event.verdict.reason));
-            else if (event.type === "result") finish(null, event.result);
+            else if (event.type === "result") {
+              if ((event.result.decisionValues !== undefined) !== (this.options.decisionValues === true)) {
+                finish(new Error("Decision-value result does not match the requested teaching capability"));
+              } else finish(null, event.result);
+            }
           } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }
         });
         signal?.addEventListener("abort", abort, { once: true });
         client.start({ type: "solve", profile, spotJson,
+          ...(this.options.decisionValues ? { decisionValues: true } : {}),
           assetBase: this.options.assetBase, environment: this.options.environment });
         if (signal?.aborted) abort();
       } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }

@@ -221,6 +221,17 @@ export type BridgeResultNode =
     readonly folder: BridgePlayer | null;
   };
 
+export interface BridgeDecisionValues {
+  readonly format: "poker-face-bridge-decision-values";
+  readonly version: 1;
+  readonly spotHash: string;
+  readonly units: "chips";
+  readonly convention: "payout-minus-future-contributions";
+  readonly basis: "local-solved-policy";
+  /** Exactly one entry per exported player node, in tree order. Rows are action-major. */
+  readonly nodes: readonly { readonly nodeId: number; readonly actionEv: readonly (readonly (number | null)[])[] }[];
+}
+
 export interface BridgeResultV1 {
   readonly format: typeof BRIDGE_RESULT_FORMAT;
   readonly version: 1;
@@ -273,6 +284,8 @@ export interface BridgeResultV1 {
   readonly counts: { readonly exportedNodes: number };
   /** Present only when the solve was given a slice plan (bridge extension, B3/B4). */
   readonly slices?: BridgeSlices;
+  /** Optional final teaching export; does not change the solved game or strategy. */
+  readonly decisionValues?: BridgeDecisionValues;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -829,7 +842,7 @@ export function checkBridgeResult(result: unknown, spot: BridgeSpotV1, spotHash:
       for (let h = 0; h < hands; h += 1) {
         const column = node.strategy.map(row => row[h]);
         if (column.every(p => p === null)) continue;
-        if (column.some(p => p === null || p < -1e-6 || p > 1 + 1e-6)) bad(`node ${id} hand ${h} has invalid probabilities`);
+        if (column.some(p => p === null || !Number.isFinite(p) || p < -1e-6 || p > 1 + 1e-6)) bad(`node ${id} hand ${h} has invalid probabilities`);
         const sum = (column as number[]).reduce((s, p) => s + p, 0);
         if (Math.abs(sum - 1) > 1e-4) bad(`node ${id} hand ${h} probabilities sum to ${sum}`);
       }
@@ -837,7 +850,34 @@ export function checkBridgeResult(result: unknown, spot: BridgeSpotV1, spotHash:
   });
   if (!Number.isFinite(value.exploitability?.chips) || !Number.isSafeInteger(value.iterations)) bad("missing exploitability/iterations");
   if (value.slices !== undefined) checkSlices(value.slices, value.hands, bad);
+  if (value.decisionValues !== undefined) checkDecisionValues(value, spot, bad);
   return value;
+}
+
+function checkDecisionValues(result: BridgeResultV1, spot: BridgeSpotV1, bad: (message: string) => never): void {
+  const value = result.decisionValues;
+  const fail = (message: string) => bad(`decision values: ${message}`);
+  if (!value || value.format !== "poker-face-bridge-decision-values" || value.version !== 1
+    || value.spotHash !== result.spotHash || value.units !== "chips"
+    || value.convention !== "payout-minus-future-contributions" || value.basis !== "local-solved-policy"
+    || result.engine.precision !== "float32" || !spot.board.turn || result.slices !== undefined) {
+    fail("unsupported convention, scope or identity");
+  }
+  const players = result.tree.filter(n => n.kind === "player");
+  if (!Array.isArray(value!.nodes) || value!.nodes.length !== players.length) fail("incomplete node coverage");
+  const hands = result.hands.map(r => r.map(parseBridgeCombo));
+  players.forEach((node, i) => {
+    const entry = value!.nodes[i];
+    if (!entry || entry.nodeId !== node.id || !Array.isArray(entry.actionEv)
+      || entry.actionEv.length !== node.actions.length || !entry.actionEv.length
+      || entry.actionEv.some(row => !Array.isArray(row) || row.length !== hands[node.player].length
+        || row.some(v => v !== null && (typeof v !== "number" || !Number.isFinite(v))))) fail(`node ${node.id} shape or values`);
+    for (let h = 0; h < hands[node.player].length; h++) {
+      const column = entry.actionEv.map(row => row[h]);
+      if (column.some(v => v === null) && !column.every(v => v === null)) fail(`node ${node.id} has a partial hand mask`);
+      if (hands[node.player][h].some(c => node.board.includes(c)) && column.some(v => v !== null)) fail(`node ${node.id} has a board-blocked value`);
+    }
+  });
 }
 
 function checkSlices(slices: BridgeSlices, hands: BridgeResultV1["hands"], bad: (message: string) => never): void {

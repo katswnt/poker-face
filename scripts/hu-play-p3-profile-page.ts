@@ -8,18 +8,19 @@ import { sha256 } from "../src/lib/solver/bridge/live/loader";
 import { canonicalSolverJson } from "../src/lib/solver/toy/artifact";
 import { mathProjection } from "./hu-play-wide-measurement";
 import { playTurnCase, type TurnOffTreeCase } from "./hu-play-p3-playing-case";
+import type { MeasuredLiveEvent } from "./bridge-live-profile.worker";
 
 const profileOf = (s: BridgeSpotV1) => s.tree.mode === "turn-subgame-v1" ? "play-turn-v1" as const
   : s.tree.mode === "river-subgame-v1" ? "play-river-v1" as const : "play-v1" as const;
-async function run(c: TurnOffTreeCase, root: HumanModelRequest, baseline: BridgeResultV1, assetBase: string, measured: boolean) {
-  const events: (LiveEvent & { observedLinearMemoryBytes?: number | null })[] = [];
+async function run(c: TurnOffTreeCase, root: HumanModelRequest, baseline: BridgeResultV1, assetBase: string, measured: boolean, decisionValues = false) {
+  const events: (LiveEvent & Partial<Pick<MeasuredLiveEvent, "observedLinearMemoryBytes" | "observedExport" | "observedWorkerHeapBytes">>)[] = [];
   const results: BridgeResultV1[] = [], runners = new Map<ReturnType<typeof profileOf>, BrowserPublicSolver>();
   const attempts: { spotHash: string; street: "turn" | "river"; accepted: boolean; error: string | null; elapsedMs: number }[] = [];
   let workers = 0, terminated = 0;
   const runnerFor = (profile: ReturnType<typeof profileOf>) => {
     let runner = runners.get(profile);
     if (!runner) {
-      runner = new BrowserPublicSolver({ assetBase, profile, environment: { profile: "unknown" }, onEvent: e => { events.push(e); },
+      runner = new BrowserPublicSolver({ assetBase, profile, decisionValues, environment: { profile: "unknown" }, onEvent: e => { events.push(e); },
         createClient: emit => createLiveClient({ now: () => performance.now(),
           setTimer: (callback, ms) => setTimeout(callback, ms), clearTimer: id => clearTimeout(id as number), createWorker: () => {
             workers++; const worker = new Worker(measured ? "/measured-worker.mjs" : "/play-worker.mjs", { type: "module" });
@@ -46,12 +47,18 @@ async function run(c: TurnOffTreeCase, root: HumanModelRequest, baseline: Bridge
   const hash = (v: unknown) => sha256(new TextEncoder().encode(canonicalSolverJson(v) + "\n"));
   const statusBytes = events.flatMap(e => e.type === "progress" && e.status ? [e.status.linearMemoryBytes] : []);
   const observedBytes = events.flatMap(e => typeof e.observedLinearMemoryBytes === "number" ? [e.observedLinearMemoryBytes] : []);
+  const workerHeaps = events.flatMap(e => typeof e.observedWorkerHeapBytes === "number" ? [e.observedWorkerHeapBytes] : []);
   return { passed: !!completed && error === null, error, elapsedMs: completed?.elapsedMs ?? failedElapsedMs,
     responseElapsedMs: completed?.responseElapsedMs ?? null, logHash: completed?.logHash ?? null,
     provenance: completed?.provenance ?? null, workers, terminated, isolated: globalThis.crossOriginIsolated,
     publicSolveKeys: attempts.map(a => a.spotHash), attempts,
     solves: await Promise.all(results.map(async r => ({ spotHash: r.spotHash, numericalHash: await hash(mathProjection(r)),
-      iterations: r.iterations, rawExploitability: r.exploitability }))),
+      iterations: r.iterations, rawExploitability: r.exploitability,
+      ...(decisionValues ? { teaching: { decisionValueHash: await hash(r.decisionValues),
+        reencodedJsonBytes: new TextEncoder().encode(JSON.stringify(r)).length, timings: r.timings } } : {}) }))),
+    ...(decisionValues ? { exportObservations: events.flatMap(e => e.type === "result" && e.observedExport
+      ? [{ spotHash: e.result.spotHash, ...e.observedExport }] : []),
+      observedWorkerHeapBytes: workerHeaps.length ? Math.max(...workerHeaps) : null } : {}),
     estimates: events.flatMap(e => e.type === "estimate" ? [{ estimate: e.estimate, verdict: e.verdict }] : []),
     maxStatusLinearMemoryBytes: statusBytes.length ? Math.max(...statusBytes) : null,
     observedPeakLinearMemoryBytes: measured && observedBytes.length ? Math.max(...observedBytes) : null,

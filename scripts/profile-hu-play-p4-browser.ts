@@ -31,11 +31,11 @@ async function main() {
   assert.ok(!options.has("--measured") || ["true", "false"].includes(options.get("--measured")!));
   const measured = options.get("--measured") === "true", input = resolve(options.get("--inputs")!);
   const meta = JSON.parse(readFileSync(join(input, "inputs.json"), "utf8"));
-  assert.equal(meta.format, "poker-face-p4-flop-inputs-bundle"); assert.equal(meta.version, 1); assert.equal(meta.cases, 200);
+  assert.equal(meta.format, "poker-face-p4-flop-inputs-bundle"); assert.ok([1, 2].includes(meta.version)); assert.equal(meta.cases, 200);
   const zipped = readFileSync(join(input, "inputs.json.gz")); assert.equal(zipped.length, meta.bytes); assert.equal(digest(zipped), meta.sha256);
   const plain = gunzipSync(zipped, { maxOutputLength: 128 * 1024 ** 2 });
   assert.equal(plain.length, meta.plainBytes); assert.equal(digest(plain), meta.inputsHash);
-  const frozen = JSON.parse(plain.toString("utf8")); assert.equal(frozen.version, 1);
+  const frozen = JSON.parse(plain.toString("utf8")); assert.equal(frozen.version, meta.version);
   const cases: FlopOffTreeCase[] = frozen.cases; assert.equal(cases.length, 200);
   for (const ref of frozen.selectionSources) assert.equal(digest(readFileSync(ref.path)), ref.sha256, `Frozen source changed: ${ref.path}`);
   const native = JSON.parse(readFileSync(join(options.get("--native")!, "report.json"), "utf8")), { payloadHash, ...payload } = native;

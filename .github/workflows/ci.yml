@@ -107,6 +107,9 @@ jobs:
       - name: Replay all 200 frozen hands through the P5 UI state layer and verify the ledger
         run: npm run audit:hu-play:p5
 
+      - name: Verify enabled live values, unchanged policies, independent action values and browser gates
+        run: npm run audit:hu-play:e1
+
       - name: Reproduce and independently grade the TypeScript gadget study (not a Rust play guarantee)
         run: npm run audit:hu-play:gadget
 
@@ -210,6 +213,8 @@ jobs:
       - run: npm run test:wasm
       - name: Preserve exact float32-weight JSON inputs in native and WASM
         run: node --import tsx --test test/bridge-float-input.test.ts
+      - name: Independently verify live action values with both real engines and immutable teaching models
+        run: node --import tsx --test test/bridge-decision-values.test.ts test/bridge-live-observation.test.ts test/hu-play-live-values.test.ts test/hu-play-live-value-sources.test.ts test/hu-play-live-value-snapshot.test.ts test/hu-play-browser-source.test.ts
       - run: npm run audit:wasm
       - run: npm run audit:wasm -- --measure
       - run: npx playwright install --with-deps chromium firefox webkit

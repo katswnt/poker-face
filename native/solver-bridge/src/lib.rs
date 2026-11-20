@@ -14,7 +14,7 @@ use spot::{
     ActionSpec, BetSizeSpec, CheckedCards, Compression, ExplicitNode, ExportScope, MenuTree, SizeMenu, Spot,
     StreetMenu, TreeSpec,
 };
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 #[cfg(not(all(feature = "wasm", target_arch = "wasm32")))]
 use std::time::Instant;
 #[cfg(all(feature = "wasm", target_arch = "wasm32"))]
@@ -574,6 +574,25 @@ pub struct Counts {
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
+pub struct DecisionValueNode {
+    pub node_id: usize,
+    pub action_ev: Vec<Vec<Option<f32>>>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DecisionValues {
+    pub format: &'static str,
+    pub version: u32,
+    pub spot_hash: String,
+    pub units: &'static str,
+    pub convention: &'static str,
+    pub basis: &'static str,
+    pub nodes: Vec<DecisionValueNode>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct BridgeResult {
     pub format: &'static str,
     pub version: u32,
@@ -592,6 +611,9 @@ pub struct BridgeResult {
     /// Present only when the solve was given a slice plan (`--slices`).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub slices: Option<slices::Slices>,
+    /// Teaching values of this finalized local policy, never of the later composed AI.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub decision_values: Option<DecisionValues>,
 }
 
 pub fn card_name(card: Card) -> String {
@@ -608,6 +630,10 @@ pub(crate) struct Exporter {
     pub(crate) hands: [Vec<(Card, Card)>; 2],
     pub(crate) scope: ExportScope,
     pub(crate) nodes: Vec<Option<ResultNode>>,
+    pub(crate) decision_values: Option<Vec<DecisionValueNode>>,
+    /// Boolean support survives arbitrarily small positive products. It is NOT a reach
+    /// probability and never enters strategy generation or expected-value computation.
+    pub(crate) value_support: Option<[Vec<bool>; 2]>,
 }
 
 impl Exporter {
@@ -681,6 +707,57 @@ impl Exporter {
             if strategy.len() != actions.len() * engine_hands {
                 return Err(format!("node {id}: strategy has unexpected length"));
             }
+            if let Some(values) = &mut self.decision_values {
+                // Capture at THIS node, before recursive export moves the engine cursor.
+                game.cache_normalized_weights();
+                let detail = game.expected_values_detail(player);
+                let normalized = game.normalized_weights(player);
+                if detail.len() != strategy.len() || normalized.len() != engine_hands {
+                    return Err(format!("node {id}: decision value shape differs"));
+                }
+                let support = self.value_support.as_ref().expect("teaching support");
+                let mut by_card = [0usize; 52];
+                let mut possible = HashSet::new();
+                for (e, &(c1, c2)) in self.hands[1 - player].iter().enumerate() {
+                    if support[1 - player][e] && board_mask & ((1 << c1) | (1 << c2)) == 0 {
+                        possible.insert((c1, c2));
+                        by_card[c1 as usize] += 1;
+                        by_card[c2 as usize] += 1;
+                    }
+                }
+                let available: Vec<bool> = self.hands[player]
+                    .iter()
+                    .enumerate()
+                    .map(|(e, &(c1, c2))| {
+                        support[player][e]
+                            && board_mask & ((1 << c1) | (1 << c2)) == 0
+                            && possible.len() + usize::from(possible.contains(&(c1, c2)))
+                                > by_card[c1 as usize] + by_card[c2 as usize]
+                    })
+                    .collect();
+                for (e, &live) in available.iter().enumerate() {
+                    if live && (!normalized[e].is_finite() || normalized[e] <= 0.0) {
+                        return Err(format!("node {id}: positive compatible reach cannot be normalized (float32 underflow or invalid mass); no teaching result"));
+                    }
+                }
+                let action_ev = (0..actions.len())
+                    .map(|a| {
+                        self.order[player]
+                            .iter()
+                            .map(|&e| {
+                                if !available[e] {
+                                    Ok(None)
+                                } else if normalized[e].is_finite() && detail[a * engine_hands + e].is_finite() {
+                                    Ok(Some(detail[a * engine_hands + e]))
+                                } else {
+                                    Err(format!("node {id}: non-finite decision value or compatible reach"))
+                                }
+                            })
+                            .collect::<Result<Vec<_>, String>>()
+                    })
+                    .collect::<Result<Vec<_>, String>>()?;
+                values.push(DecisionValueNode { node_id: id, action_ev });
+            }
             // A forced historical raise has no fold alternative. Facing a wager is a
             // chip-state fact, not a property of the remaining decision menu.
             let facing = committed[player] < committed[1 - player];
@@ -710,7 +787,14 @@ impl Exporter {
                 _ => "river",
             };
             let mut out = Vec::with_capacity(actions.len());
+            let parent_support = self.value_support.as_ref().map(|s| s[player].clone());
             for (index, action) in actions.iter().enumerate() {
+                if let Some(parent) = &parent_support {
+                    let support = &mut self.value_support.as_mut().expect("teaching support")[player];
+                    for (e, live) in support.iter_mut().enumerate() {
+                        *live = parent[e] && strategy[index * engine_hands + e] > 0.0;
+                    }
+                }
                 history.push(index);
                 let child = self.visit(game, history, Some((*action, player)), derived)?;
                 history.pop();
@@ -729,6 +813,9 @@ impl Exporter {
                     engine_action: engine_label(action),
                     child,
                 });
+            }
+            if let Some(parent) = parent_support {
+                self.value_support.as_mut().expect("teaching support")[player] = parent;
             }
             ResultNode::Player {
                 id,
@@ -822,8 +909,20 @@ pub fn solve_spot_with_slices(
     plan_bytes: Option<&[u8]>,
     progress: &mut Progress,
 ) -> Result<BridgeResult, String> {
+    solve_spot_with_exports(bytes, plan_bytes, false, progress)
+}
+
+pub fn solve_spot_with_exports(
+    bytes: &[u8],
+    plan_bytes: Option<&[u8]>,
+    decision_values: bool,
+    progress: &mut Progress,
+) -> Result<BridgeResult, String> {
     progress.emit(serde_json::json!({ "type": "progress", "stage": "building", "elapsedMs": 0 }));
     let mut session = Session::with_slices(bytes, plan_bytes)?;
+    if decision_values {
+        session.enable_decision_values()?;
+    }
     progress.emit(serde_json::json!({ "type": "progress", "stage": "allocating",
         "estimatedBytes": session.estimated, "estimatedCompressedBytes": session.estimated_compressed,
         "compression": session.compress, "elapsedMs": elapsed_ms(session.started) }));
@@ -878,6 +977,7 @@ pub struct Session {
     estimated: u64,
     estimated_compressed: u64,
     export_estimate: export_estimate::ExportEstimate,
+    decision_values: bool,
     allocated_estimate: u64,
     compress: bool,
     allocated: bool,
@@ -955,6 +1055,7 @@ impl Session {
             estimated,
             estimated_compressed,
             export_estimate,
+            decision_values: false,
             allocated_estimate,
             compress,
             allocated: false,
@@ -971,6 +1072,22 @@ impl Session {
             "estimatedBytes": self.estimated, "estimatedCompressedBytes": self.estimated_compressed,
             "hands": [self.hands[0].len(), self.hands[1].len()], "memoryCapBytes": self.spot.solve.memory_cap_bytes,
             "estimateExport": self.export_estimate })
+    }
+
+    /// Enable BEFORE admission/allocation so every caller can reserve the extra export.
+    /// No strategy storage, iteration, checkpoint or regret is changed by this capability.
+    pub fn enable_decision_values(&mut self) -> Result<(), String> {
+        self.check_time()?;
+        if self.allocated || self.decision_values {
+            return Err("enable decision values once, before allocation".into());
+        }
+        if self.cards.turn.is_none() || self.compress || self.plan.is_some() {
+            return Err("decision values require an uncompressed turn/river session without slices".into());
+        }
+        let estimate = self.export_estimate.with_decision_values()?;
+        self.export_estimate = estimate;
+        self.decision_values = true;
+        Ok(())
     }
 
     pub fn status(&self) -> SessionStatus {
@@ -1137,6 +1254,7 @@ impl Session {
             iterations,
             target,
             convergence,
+            decision_values,
             ..
         } = self;
         let options = spot.solve;
@@ -1176,10 +1294,12 @@ impl Session {
             return Err("engine produced non-finite root values".into());
         }
         let mut exporter = Exporter {
+            value_support: decision_values.then(|| hands.each_ref().map(|h| vec![true; h.len()])),
             order,
             hands,
             scope: options.export_scope,
             nodes: Vec::new(),
+            decision_values: decision_values.then(Vec::new),
         };
         exporter.visit(&mut game, &mut Vec::new(), None, false)?;
         let tree: Vec<ResultNode> = exporter
@@ -1201,6 +1321,15 @@ impl Session {
             return Err("timed out while exporting; no result written".into());
         }
         let export_ms = elapsed_ms(export_started);
+        let decision_values = exporter.decision_values.map(|nodes| DecisionValues {
+            format: "poker-face-bridge-decision-values",
+            version: 1,
+            spot_hash: spot_hash.clone(),
+            units: "chips",
+            convention: "payout-minus-future-contributions",
+            basis: "local-solved-policy",
+            nodes,
+        });
 
         Ok(BridgeResult {
             format: RESULT_FORMAT,
@@ -1221,6 +1350,7 @@ impl Session {
                 exported_nodes: tree.len(),
             },
             slices: sliced,
+            decision_values,
             tree,
             root,
             exploitability: Exploitability {

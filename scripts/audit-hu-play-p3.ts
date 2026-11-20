@@ -3,7 +3,7 @@
  */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -26,6 +26,7 @@ import { p2PipelineSources } from "./audit-hu-play-p2";
 import { readP1Successor } from "./hu-play-p1-successor";
 import { mathProjection } from "./hu-play-wide-measurement";
 import { wideHash } from "./hu-play-wide-corpus";
+import { checkE1ParentSources, checkE1InputSuccessor, checkE1PlayingIdentity, type E1Parent } from "./hu-play-e1-successor";
 
 interface Source { path: string; sha256: string }
 interface Hashed { format: string; version: number; payloadHash: string }
@@ -45,7 +46,8 @@ interface BrowserReport extends Observed {
   summaries: ReturnType<typeof checkP3BrowserRows>;
 }
 export interface P3Evidence {
-  format: "poker-face-p3-evidence"; version: 1; currentSources: Source[];
+  format: "poker-face-p3-evidence"; version: 1 | 2; currentSources: Source[];
+  e1Parent?: E1Parent;
   inputs: { format: string; version: number; rootsSha256: string; engineSourceHash: string; wasmBuildHash: string;
     nativeBinarySha256: string; selectionSources: Source[]; baselineNumericalHashes: string[]; cases: Case[];
     derivedFrom: { inputsHash: string; selectionSources: Source[]; reason: string } };
@@ -62,6 +64,8 @@ export interface P3Evidence {
       identicalToP1: boolean; ledger: { finalStacks: number[]; netSinceBeforeBlinds: number[]; externalDeadBlind: number } }[] };
 }
 export const P3_EVIDENCE_STEM = "tasks/artifacts/hu-play-p3-turn";
+export const P3_E1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p3-e1-successor";
+export const currentP3EvidenceStem = () => existsSync(`${P3_E1_SUCCESSOR_STEM}.json`) ? P3_E1_SUCCESSOR_STEM : P3_EVIDENCE_STEM;
 const digest = (v: Uint8Array) => createHash("sha256").update(v).digest("hex");
 export const p3Hash = (v: unknown) => digest(Buffer.from(canonicalSolverJson(v) + "\n"));
 function bound(report: Hashed, format: string, hash = p3Hash) {
@@ -85,20 +89,33 @@ export async function p3PipelineSources(): Promise<Source[]> {
   const paths = new Set([...(await p2PipelineSources()).map(s => s.path), ...Object.keys(bundle.metafile.inputs)]);
   return [...paths].sort().map(path => ({ path, sha256: digest(readFileSync(path)) }));
 }
-export function readP3Evidence(): P3Evidence {
-  const meta = JSON.parse(readFileSync(`${P3_EVIDENCE_STEM}.json`, "utf8"));
-  assert.equal(meta.format, "poker-face-p3-evidence-bundle"); assert.equal(meta.version, 1);
-  const bytes = readFileSync(`${P3_EVIDENCE_STEM}.json.gz`); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
+function readP3Archive(stem: string, version: 1 | 2): P3Evidence {
+  const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
+  assert.equal(meta.format, "poker-face-p3-evidence-bundle"); assert.equal(meta.version, version);
+  const bytes = readFileSync(`${stem}.json.gz`); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
   const plain = gunzipSync(bytes, { maxOutputLength: 512 * 1024 ** 2 });
   assert.equal(plain.length, meta.uncompressedBytes); assert.equal(digest(plain), meta.uncompressedSha256);
-  const e = JSON.parse(plain.toString("utf8")); assert.equal(p3Hash(e), meta.evidenceHash); return e;
+  const e = JSON.parse(plain.toString("utf8")); assert.equal(p3Hash(e), meta.evidenceHash); assert.equal(e.version, version); return e;
 }
+export function readPreE1P3Evidence() { return readP3Archive(P3_EVIDENCE_STEM, 1); }
+export function readP3Evidence() { const stem = currentP3EvidenceStem(); return readP3Archive(stem, stem === P3_EVIDENCE_STEM ? 1 : 2); }
 export async function checkP3Evidence(e: P3Evidence) {
-  assert.equal(e.format, "poker-face-p3-evidence"); assert.equal(e.version, 1);
+  assert.equal(e.format, "poker-face-p3-evidence"); assert.ok(e.version === 1 || e.version === 2);
   assert.equal(e.cases.length, 200, "All 200 P3 cases must remain");
   assert.deepEqual(e.currentSources, await p3PipelineSources(), "P3 source closure changed; new reproduction evidence required");
-  assert.equal(e.inputs.format, "poker-face-p3-turn-inputs"); assert.equal(e.inputs.version, 2);
-  const { derivedFrom, ...input } = e.inputs;
+  const historical = e.version === 2 ? readPreE1P3Evidence() : null;
+  if (historical) {
+    assert.ok(e.e1Parent, "E1 parent source archive required");
+    assert.equal(e.e1Parent.evidenceHash, p3Hash(historical), "E1 P3 parent hash");
+    checkE1ParentSources(e.e1Parent.sources, historical.currentSources);
+    checkE1InputSuccessor(e.inputs, historical.inputs);
+    assert.deepEqual(e.roots, historical.roots, "Frozen P3 roots");
+    assert.equal(p3Hash(e.baselines.map(mathProjection)), p3Hash(historical.baselines.map(mathProjection)), "Frozen P3 baselines");
+    checkE1PlayingIdentity(e, historical);
+  } else assert.equal(e.e1Parent, undefined);
+  const frozenInput = historical?.inputs ?? e.inputs;
+  assert.equal(e.inputs.format, "poker-face-p3-turn-inputs"); assert.equal(frozenInput.version, 2);
+  const { derivedFrom, ...input } = frozenInput;
   const original = { ...input, version: 1, selectionSources: derivedFrom.selectionSources };
   assert.equal(p3Hash(original), "b0a7e5dd3ef4516316b8a1bf84759319521a47404965695a29526e1e02c3dae7", "Original frozen P3 games changed");
   assert.equal(derivedFrom.inputsHash, p3Hash(original)); current(e.inputs.selectionSources);
@@ -190,7 +207,7 @@ export async function checkP3Evidence(e: P3Evidence) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   assert.deepEqual(process.argv.slice(2), ["--check"]);
   void checkP3Evidence(readP3Evidence()).then(summary => {
-    assert.deepEqual(summary, JSON.parse(readFileSync(`${P3_EVIDENCE_STEM}-summary.json`, "utf8")));
+    assert.deepEqual(summary, JSON.parse(readFileSync(`${currentP3EvidenceStem()}-summary.json`, "utf8")));
     console.log(JSON.stringify(summary, null, 2));
   }).catch(e => { console.error(e); process.exitCode = 1; });
 }

@@ -1,5 +1,5 @@
 import { canonicalSolverJson } from "../../solver/toy/artifact";
-import { canonicalBridgeCombo, parseBridgeCombo, type BridgeAction } from "../../solver/bridge/contract";
+import { canonicalBridgeCombo, parseBridgeCombo, type BridgeAction, type BridgeResultV1 } from "../../solver/bridge/contract";
 import type { AsyncDecisionSource } from "../async-hand";
 import type { DecisionRequest, HumanModelRequest } from "../hand";
 import { actionToken, illegalActionReason, validatePublicState } from "../public-state";
@@ -38,7 +38,7 @@ export interface NodePolicy {
   readonly player: 0 | 1;
   readonly actions: readonly BridgeAction[];
   readonly provenance: DecisionProvenance;
-  readonly actionEvBasis: "original-saved-policy" | "not-exported";
+  readonly actionEvBasis: "original-saved-policy" | "local-solved-policy" | "not-exported";
   distribution(combo: string): ActionDistribution;
   probability(action: BridgeAction, combo: string): number;
   actionEvs(combo: string): readonly (number | null)[];
@@ -48,6 +48,7 @@ export function nodePolicy(request: HumanModelRequest, input: {
   player: 0 | 1; actions: readonly BridgeAction[]; hands: readonly string[];
   rows: readonly (readonly (number | null)[])[]; encoding: "per-mille" | "float32";
   provenance: DecisionProvenance; actionEvRows?: readonly (readonly (number | null)[])[];
+  actionEvBasis?: Exclude<NodePolicy["actionEvBasis"], "not-exported">;
 }): NodePolicy {
   if (input.player !== request.publicState.toAct || !input.actions.length
     || input.actions.length !== input.rows.length || new Set(input.hands).size !== input.hands.length) throw new Error("Policy dimensions or acting player differ");
@@ -58,6 +59,22 @@ export function nodePolicy(request: HumanModelRequest, input: {
     if (illegal) throw new Error(`Policy action is illegal: ${illegal}`);
   }
   if (input.rows.some(r => r.length !== input.hands.length)) throw new Error("Incomplete policy rows");
+  if ((input.actionEvRows !== undefined) !== (input.actionEvBasis !== undefined)) throw new Error("Action EV rows require an explicit value basis");
+  if (input.actionEvBasis === "local-solved-policy" && (input.provenance.source !== "resolve"
+    || request.publicState.street === "flop" || !/^[a-f0-9]{64}$/.test(input.provenance.spotHash))) {
+    throw new Error("Local action EV basis requires a turn/river solve provenance");
+  }
+  if (input.actionEvBasis === "original-saved-policy" && input.provenance.source !== "library") {
+    throw new Error("Saved action EV basis requires library provenance");
+  }
+  const valueRows = input.actionEvRows?.map(row => [...row]);
+  if (valueRows) {
+    if (valueRows.length !== input.actions.length || valueRows.some(row => row.length !== input.hands.length
+      || row.some(v => v !== null && !Number.isFinite(v)))) throw new Error("Malformed action EV rows");
+    for (let h = 0; h < input.hands.length; h++) {
+      if (valueRows.some(row => row[h] === null) && !valueRows.every(row => row[h] === null)) throw new Error("Partial action EV hand mask");
+    }
+  }
   const distributions = new Map<string, ActionDistribution>();
   input.hands.forEach((hand, h) => {
     const column = input.rows.map(r => r[h]);
@@ -71,7 +88,7 @@ export function nodePolicy(request: HumanModelRequest, input: {
   const incoming = request.publicState.toAct === request.aiSeat ? request.ranges.ai : request.ranges.human;
   for (const h of incoming.entries) if (h.weight > 0 && !distributions.has(h.combo)) throw new Error("Policy omits a positive-reach hand");
   return { player: input.player, actions: input.actions, provenance: input.provenance,
-    actionEvBasis: input.actionEvRows ? "original-saved-policy" : "not-exported",
+    actionEvBasis: input.actionEvBasis ?? "not-exported",
     distribution(combo) {
       const d = distributions.get(combo); if (!d) throw new Error("Hand has no policy column at this decision"); return d;
     },
@@ -81,9 +98,21 @@ export function nodePolicy(request: HumanModelRequest, input: {
     },
     actionEvs(combo) {
       const h = input.hands.indexOf(combo);
-      return input.actions.map((_, a) => h < 0 || !input.actionEvRows ? null : input.actionEvRows[a][h]);
+      return input.actions.map((_, a) => h < 0 || !valueRows ? null : valueRows[a][h]);
     },
   };
+}
+
+/** Values are attached only to the exact local solve, never to a translated reference. */
+export function localDecisionValueInput(result: BridgeResultV1, nodeId: number, provenance: DecisionProvenance): {
+  actionEvBasis?: "local-solved-policy"; actionEvRows?: readonly (readonly (number | null)[])[];
+} {
+  const values = result.decisionValues;
+  if (!values || provenance.source !== "resolve") return {};
+  if (values.spotHash !== result.spotHash || values.spotHash !== provenance.spotHash) throw new Error("Action EVs belong to another local model");
+  const entry = values.nodes.find(n => n.nodeId === nodeId);
+  if (!entry) throw new Error("Local decision has no exported action EV row");
+  return { actionEvBasis: "local-solved-policy", actionEvRows: entry.actionEv };
 }
 
 export abstract class PreparedPolicySource implements AsyncDecisionSource {

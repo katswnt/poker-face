@@ -25,18 +25,20 @@ const write = (path: string, v: unknown) => writeFileSync(path, bytesOf(v), { fl
 async function main() {
   const args = process.argv.slice(2), options = new Map<string, string>();
   for (let i = 0; i < args.length; i += 2) {
-    assert.ok(["--inputs", "--native", "--out", "--browsers", "--measured"].includes(args[i]) && args[i + 1]
+    assert.ok(["--inputs", "--native", "--out", "--browsers", "--measured", "--decision-values"].includes(args[i]) && args[i + 1]
       && !args[i + 1].startsWith("--") && !options.has(args[i]), "Invalid options"); options.set(args[i], args[i + 1]);
   }
   assert.ok(options.has("--inputs") && options.has("--native") && options.has("--out"));
   assert.ok(!options.has("--measured") || ["true", "false"].includes(options.get("--measured")!));
+  assert.ok(!options.has("--decision-values") || options.get("--decision-values") === "true");
+  const decisionValues = options.get("--decision-values") === "true";
   const measured = options.get("--measured") === "true", input = resolve(options.get("--inputs")!);
   const meta = JSON.parse(readFileSync(join(input, "inputs.json"), "utf8"));
-  assert.equal(meta.format, "poker-face-p3-turn-inputs-bundle"); assert.equal(meta.version, 2); assert.equal(meta.cases, 200);
+  assert.equal(meta.format, "poker-face-p3-turn-inputs-bundle"); assert.ok([2, 3].includes(meta.version)); assert.equal(meta.cases, 200);
   const zipped = readFileSync(join(input, "inputs.json.gz")); assert.equal(zipped.length, meta.bytes); assert.equal(digest(zipped), meta.sha256);
   const plain = gunzipSync(zipped, { maxOutputLength: 128 * 1024 ** 2 });
   assert.equal(plain.length, meta.plainBytes); assert.equal(digest(plain), meta.inputsHash);
-  const frozen = JSON.parse(plain.toString("utf8")); assert.equal(frozen.version, 2);
+  const frozen = JSON.parse(plain.toString("utf8")); assert.equal(frozen.version, meta.version);
   assert.equal(frozen.derivedFrom.inputsHash, meta.parentInputsHash);
   const rootBytes = readFileSync(join(input, "roots.json")); assert.equal(digest(rootBytes), frozen.rootsSha256);
   const roots: P3TurnRoot[] = JSON.parse(rootBytes.toString("utf8")).roots;
@@ -44,6 +46,7 @@ async function main() {
   for (const ref of frozen.selectionSources) assert.equal(digest(readFileSync(ref.path)), ref.sha256, `Frozen source changed: ${ref.path}`);
   const native = JSON.parse(readFileSync(join(options.get("--native")!, "report.json"), "utf8")), { payloadHash, ...payload } = native;
   assert.equal(payloadHash, hash(payload)); assert.equal(native.format, "poker-face-p3-production-playing");
+  assert.equal(native.decisionValues === true, decisionValues, "Native/browser teaching capability must match");
   assert.equal(native.inputsHash, meta.inputsHash); assert.equal(native.rows.length, 200);
   for (const ref of native.sourceFiles) assert.equal(digest(readFileSync(ref.path)), ref.sha256, `Native measurement source changed: ${ref.path}`);
   const expected = new Map<number, { logHash: string; publicSolveKeys: string[]; solves: { numericalHash: string }[] }>();
@@ -83,11 +86,17 @@ async function main() {
       try {
         const page = await browser.newPage(); await page.goto(`http://127.0.0.1:${address.port}`);
         await page.waitForFunction("typeof window.profileTurnJob === 'function'");
-        const result = await page.evaluate<P3BrowserMeasurement>(`window.profileTurnJob(${JSON.stringify(c)},${JSON.stringify(roots[c.rootIndex].request)},${JSON.stringify(baseline)},${JSON.stringify(base)},${measured})`);
+        const result = await page.evaluate<P3BrowserMeasurement>(`window.profileTurnJob(${JSON.stringify(c)},${JSON.stringify(roots[c.rootIndex].request)},${JSON.stringify(baseline)},${JSON.stringify(base)},${measured},${decisionValues})`);
         const ref = expected.get(c.seed)!;
         const exactNativeParity = result.logHash === ref.logHash && hash(result.publicSolveKeys) === hash(ref.publicSolveKeys)
           && hash(result.solves.map(s => s.numericalHash)) === hash(ref.solves.map(s => s.numericalHash));
-        const row = { ...result, seed: c.seed, browser: name, exactNativeParity };
+        // Chromium may expose the page's heap. This is neither Worker heap nor RSS,
+        // and absence on Firefox/WebKit is recorded, never invented as zero.
+        const pageHeap = decisionValues ? await page.evaluate(() => {
+          const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number } }).memory;
+          return memory ? { usedBytes: memory.usedJSHeapSize, totalBytes: memory.totalJSHeapSize } : null;
+        }) : undefined;
+        const row = { ...result, seed: c.seed, browser: name, exactNativeParity, ...(decisionValues ? { pageHeap } : {}) };
         rows.push(row); write(join(out, `${name}-${c.seed}.json`), row);
       } finally { await browser.close(); }
     }
@@ -96,6 +105,7 @@ async function main() {
   let gateError: string | null = null, summaries: ReturnType<typeof checkP3BrowserRows> | null = null;
   try { summaries = checkP3BrowserRows(rows, names, measured); } catch (e) { gateError = String(e); }
   const report = { format: "poker-face-p3-production-browser", version: 1, measuredAt: new Date().toISOString(), passed: gateError === null,
+    ...(decisionValues ? { decisionValues: true } : {}),
     gateError, machine: { cpu: cpus()[0].model, osRelease: release(), node: process.version }, browserVersions: versions, measured,
     buildHash: manifest.buildHash, engineSourceHash: manifest.sourceHash, nativeReportHash: payloadHash, inputsHash: meta.inputsHash,
     sourceFiles, sourceHash: hash(sourceFiles), bundles, summaries, rows,

@@ -11,7 +11,7 @@ import { actionToken, applyPublicEvent } from "../public-state";
 import { applyStrategy } from "../reach";
 import { buildNestedRiverSpot, buildRiverResponseSpot } from "../river-tree";
 import type { DecisionProvenance } from "../types";
-import { nodePolicy, preparationKey, PreparedPolicySource, type NodePolicy } from "./policy";
+import { localDecisionValueInput, nodePolicy, preparationKey, PreparedPolicySource, type NodePolicy } from "./policy";
 import { type PublicSolve, type ResolvedTreeSnapshot } from "./resolved";
 
 interface NestedRoot {
@@ -58,7 +58,8 @@ function locate(root: NestedRoot, request: HumanModelRequest): { id: number; pol
     if (n.kind !== "player" || n.street !== "river" || n.committed.some((v, i) => v !== expected.publicState.streetPut[i])
       || n.board.join() !== [...p.board.flop, p.board.turn, p.board.river].join()) throw new Error("Nested public node differs from actual chips or board");
     return nodePolicy(expected, { player: n.player, hands: root.result.hands[n.player], actions: n.actions.map(e => e.action),
-      rows: n.strategy, encoding: "float32", provenance: root.provenance });
+      rows: n.strategy, encoding: "float32", provenance: root.provenance,
+      ...localDecisionValueInput(root.result, n.id, root.provenance) });
   };
   for (const event of p.events.slice(base.events.length)) {
     const n = root.result.tree[id], policy = policyAt();

@@ -16,6 +16,29 @@ pub struct ExportEstimate {
     pub json_bytes_upper_bound: u64,
     /// Engineering reservation, NOT a mathematical bound on an arbitrary JS engine's heap.
     pub working_bytes_estimate: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub decision_value_cells: Option<u64>,
+}
+
+impl ExportEstimate {
+    /// Additional DTOs, JSON strings, transfer and parsed copies. This is an engineering
+    /// reservation, not a bound on an arbitrary browser's heap. Preserve disabled estimates.
+    pub fn with_decision_values(&self) -> Result<Self, String> {
+        if self.decision_value_cells.is_some() {
+            return Err("decision values already enabled".into());
+        }
+        let mut extra_json = 1024;
+        add(&mut extra_json, times(self.cells, 32)?)?;
+        add(&mut extra_json, times(self.nodes, 64)?)?;
+        let mut extra_working = times(extra_json, 8)?;
+        add(&mut extra_working, times(self.cells, 64)?)?;
+        add(&mut extra_working, times(self.nodes, 128)?)?;
+        let mut result = self.clone();
+        add(&mut result.json_bytes_upper_bound, extra_json)?;
+        add(&mut result.working_bytes_estimate, extra_working)?;
+        result.decision_value_cells = Some(self.cells);
+        Ok(result)
+    }
 }
 
 fn add(target: &mut u64, amount: u64) -> Result<(), String> {
@@ -117,5 +140,6 @@ pub fn estimate_export(
         edges: counter.edges,
         json_bytes_upper_bound: json,
         working_bytes_estimate: working,
+        decision_value_cells: None,
     })
 }

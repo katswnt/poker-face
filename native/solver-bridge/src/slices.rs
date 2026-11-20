@@ -463,6 +463,8 @@ pub fn export_slices(
                 .collect::<Vec<_>>()
         });
         let mut exporter = Exporter {
+            decision_values: None,
+            value_support: None,
             order: order.clone(),
             hands: hands.clone(),
             scope: crate::spot::ExportScope::Full,

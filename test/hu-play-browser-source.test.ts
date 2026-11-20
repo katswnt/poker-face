@@ -36,3 +36,19 @@ test("browser public solver carries the play profile and aborts or refuses witho
     assert.equal(disposed, starts);
   }
 });
+
+test("browser play teaching is explicit, forwarded separately, and cannot silently disappear", async () => {
+  const { BrowserPublicSolver } = await import("../src/lib/hu-play/sources/browser");
+  let emit!: (event: LiveEvent) => void;
+  const options = { assetBase: "/wasm/test/", environment: { profile: "unknown" as const }, decisionValues: true,
+    createClient: (listener: (event: LiveEvent) => void) => {
+      emit = listener;
+      return { start(request: { spotJson: string; decisionValues?: boolean }) {
+        assert.equal(request.decisionValues, true);
+        assert.deepEqual(JSON.parse(request.spotJson), spot, "Teaching does not enter the mathematical input"); return 1;
+      }, cancel() {}, dispose() {} };
+    } };
+  const runner = new BrowserPublicSolver(options), result = runner.solve(spot);
+  emit({ type: "result", id: 1, result: {} } as LiveEvent);
+  await assert.rejects(result, /decision.value/i);
+});

@@ -15,6 +15,7 @@ import { ResolvedPolicySource } from "./resolved";
 const execute = promisify(execFile);
 export interface NativeResolveOptions {
   readonly binary?: string;
+  readonly decisionValues?: boolean;
   readonly environment?: WasmEnvironment;
   readonly onEstimate?: (spot: BridgeSpotV1, estimate: LiveEstimate, verdict: LiveVerdict) => void;
   readonly onResult?: (spot: BridgeSpotV1, run: BridgeRun) => void;
@@ -22,16 +23,16 @@ export interface NativeResolveOptions {
 
 /** Estimate only; cancellation/timeout kill this process before any solve is started. */
 export async function estimatePlayNative(spot: BridgeSpotV1, signal?: AbortSignal, binary = BRIDGE_BINARY,
-  profile: "play-v1" | "play-river-v1" | "play-turn-v1" = "play-v1"): Promise<LiveEstimate> {
+  profile: "play-v1" | "play-river-v1" | "play-turn-v1" = "play-v1", decisionValues = false): Promise<LiveEstimate> {
   signal?.throwIfAborted();
   const json = canonicalBridgeSpotJson(spot); parseLiveSpot(json, profile);
   const directory = mkdtempSync(join(tmpdir(), "poker-play-estimate-")), path = join(directory, "spot.json");
   try {
     writeFileSync(path, json, { flag: "wx" });
-    const { stdout } = await execute(binary, ["estimate", path], { signal, timeout: Math.min(60000, spot.solve.timeoutMs),
+    const { stdout } = await execute(binary, ["estimate", path, ...(decisionValues ? ["--decision-values"] : [])], { signal, timeout: Math.min(60000, spot.solve.timeoutMs),
       maxBuffer: 1024 ** 2, env: { ...process.env, RAYON_NUM_THREADS: "1" } });
     signal?.throwIfAborted();
-    return parseLiveEstimate(stdout, spot, hashBridgeSpot(spot));
+    return parseLiveEstimate(stdout, spot, hashBridgeSpot(spot), decisionValues);
   } finally { rmSync(directory, { recursive: true, force: true }); }
 }
 
@@ -46,11 +47,11 @@ export class NativeResolveSource extends ResolvedPolicySource {
  */
 export async function solveNativePlay(spot: BridgeSpotV1, options: NativeResolveOptions = {}, signal?: AbortSignal,
   profile: "play-v1" | "play-river-v1" | "play-turn-v1" = "play-v1") {
-  const estimate = await estimatePlayNative(spot, signal, options.binary, profile);
+  const estimate = await estimatePlayNative(spot, signal, options.binary, profile, options.decisionValues);
   const verdict = admitBrowserSolve(estimate, options.environment ?? { profile: "unknown" }, 0, profile);
   options.onEstimate?.(spot, estimate, verdict);
   if (!verdict.ok) throw new Error(verdict.reason);
-  const run = await runBridgeSpot(spot, { threads: 1, signal, binary: options.binary });
+  const run = await runBridgeSpot(spot, { threads: 1, signal, binary: options.binary, decisionValues: options.decisionValues });
   signal?.throwIfAborted(); options.onResult?.(spot, run);
   return run.result;
 }

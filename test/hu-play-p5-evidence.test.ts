@@ -10,7 +10,10 @@ test("P5 retains every frozen UI hand and rejects changed outcomes or missing po
   assert.equal(summary.turnHands,128); assert.equal(summary.riverHands,105);
   assert.equal(summary.humanNet+summary.aiNet,10000);
   const altered=structuredClone(e);altered.report.rows[0].ledger={...altered.report.rows[0].ledger,humanNet:altered.report.rows[0].ledger.humanNet+1};
-  await assert.rejects(()=>checkP5Evidence(altered),/hash/);
+  // The E1 successor compares the complete original hand before checking report hashes.
+  // The same one-chip corruption must be rejected by that earlier identity guard.
+  await assert.rejects(()=>checkP5Evidence(altered),e.version===2
+    ? /Every full UI log and poker behavior must remain identical/ : /hash/);
   const missing=structuredClone(e); missing.solves.pop();
   await assert.rejects(()=>checkP5Evidence(missing),/policy|solve/i);
 });

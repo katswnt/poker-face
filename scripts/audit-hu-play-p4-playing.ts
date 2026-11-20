@@ -35,7 +35,7 @@ async function main() {
   assert.ok(flag === "--inputs" && inputPath && outFlag === "--out" && outputPath && !rest.length, "Use --inputs FROZEN_DIRECTORY --out NEW_DIRECTORY");
   const input = resolve(inputPath), directory = resolve(outputPath); assert.ok(!existsSync(directory)); mkdirSync(directory);
   const meta = JSON.parse(readFileSync(join(input, "inputs.json"), "utf8"));
-  assert.equal(meta.format, "poker-face-p4-flop-inputs-bundle"); assert.equal(meta.version, 1); assert.equal(meta.cases, 200);
+  assert.equal(meta.format, "poker-face-p4-flop-inputs-bundle"); assert.ok([1, 2].includes(meta.version)); assert.equal(meta.cases, 200);
   const bytes = readFileSync(join(input, "inputs.json.gz")); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
   const plain = gunzipSync(bytes, { maxOutputLength: 128 * 1024 ** 2 });
   assert.equal(plain.length, meta.plainBytes); assert.equal(digest(plain), meta.inputsHash);

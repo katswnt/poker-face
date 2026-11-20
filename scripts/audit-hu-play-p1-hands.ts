@@ -20,7 +20,8 @@ import { mathProjection } from "./hu-play-wide-measurement";
 const hash = (value: unknown) => createHash("sha256").update(canonicalSolverJson(value)).digest("hex");
 const write = (path: string, value: unknown) => writeFileSync(path, JSON.stringify(value, null, 2) + "\n", { flag: "wx" });
 async function main() {
-  const args = process.argv.slice(2);
+  const raw = process.argv.slice(2), decisionValues = raw.at(-2) === "--decision-values" && raw.at(-1) === "true";
+  const args = decisionValues ? raw.slice(0, -2) : raw;
   assert.equal(args.length, 4, "Use --hands N --out NEW_DIRECTORY");
   assert.equal(args[0], "--hands"); assert.equal(args[2], "--out");
   const count = Number(args[1]), directory = resolve(args[3]);
@@ -45,11 +46,12 @@ async function main() {
     console.error(JSON.stringify({ type: "hand-start", seed, count }));
     try {
       const dealt = await loadScriptedHand(catalog, seed, (seed % 2) as 0 | 1, undefined, fetcher);
-      const native = new NativeResolveSource({ onResult: (spot, run) => {
+      const native = new NativeResolveSource({ decisionValues, onResult: (spot, run) => {
         const key = hashBridgeSpot(spot), numericalHash = hash(mathProjection(run.result));
         const path = join(directory, "results", `${key}.json`);
         if (resultHashes.has(key)) assert.equal(resultHashes.get(key), numericalHash);
-        else { write(path, run.result); resultHashes.set(key, numericalHash); }
+        else { write(path, run.result); resultHashes.set(key, numericalHash);
+          if (decisionValues) write(join(directory, "results", `${key}.spot.json`), spot); }
         solves.push({ seed, street: spot.board.river ? "river" : "turn", spotHash: key,
           hands: spot.ranges.map(r => r.combos.length), numericalHash, iterations: run.result.iterations,
           reached: run.result.exploitability.reached, enginePctPot: run.result.exploitability.pctPot,
@@ -88,6 +90,7 @@ async function main() {
   }
   if (count === 1000) assert.ok(riverGrades.length >= 20, "P1 needs at least 20 sampled independent river grades");
   const report = { format: "poker-face-p1-production-hands", version: 1, measuredAt: new Date().toISOString(),
+    ...(decisionValues ? { decisionValues: true } : {}),
     machine: { cpu: cpus()[0].model, osRelease: release(), node: process.version },
     sourceSnapshot, sourceSnapshotHash: hash(sourceSnapshot),
     libraryManifestSha256: catalog.supplement.libraryManifestSha256,

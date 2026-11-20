@@ -62,12 +62,19 @@ export function createLiveRuntime(host: LiveHost) {
     // Any exception inside WASM may be a trap/abort. Never call back into that instance.
     const wasm = <T,>(f: () => T): T => { try { return f(); } catch (error) { safeToFree = false; throw error; } };
     try {
+      if (command.decisionValues !== undefined && typeof command.decisionValues !== "boolean") {
+        throw new Error("Invalid decision-value request.");
+      }
       const spot = parseLiveSpot(command.spotJson, command.profile); timeout = spot.solve.timeoutMs;
       const bytes = new TextEncoder().encode(canonicalSolverJson(spot)), hash = await host.hash(bytes); check();
       stage("loading"); const engine = await host.load(command.assetBase); check();
       stage("building"); await pause();
       session = wasm(() => engine.create(bytes)); check();
-      const estimate = parseLiveEstimate(wasm(() => session!.estimate()), spot, hash);
+      if (command.decisionValues) {
+        if (typeof session.enable_decision_values !== "function") throw new Error("Engine lacks the requested decision-value capability.");
+        wasm(() => session!.enable_decision_values!()); check();
+      }
+      const estimate = parseLiveEstimate(wasm(() => session!.estimate()), spot, hash, command.decisionValues);
       const verdict = admitBrowserSolve(estimate, command.environment, engine.memoryBytes(), command.profile);
       await pause(); emit({ type: "estimate", id, estimate, verdict, provenance: engine.provenance });
       if (command.type === "estimate" || !verdict.ok) return;
@@ -99,6 +106,9 @@ export function createLiveRuntime(host: LiveHost) {
         || new TextEncoder().encode(json).length > estimate.estimateExport.jsonBytesUpperBound) throw new Error("Export exceeded its reservation; result discarded.");
       stage("checking", status); await pause();
       const result = checkBridgeResult(JSON.parse(json), spot, hash);
+      if ((result.decisionValues !== undefined) !== (command.decisionValues === true)) {
+        throw new Error("Final decision values do not match the request; result discarded.");
+      }
       if (result.engine.precision !== "float32" || result.engine.threads !== 1 || result.engine.algorithm !== "discounted-cfr"
         || result.iterations !== status.iterations || result.exploitability.chips !== status.exploitability
         || result.counts.exportedNodes !== result.tree.length || result.tree.length > estimate.estimateExport.nodes

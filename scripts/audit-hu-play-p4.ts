@@ -3,7 +3,7 @@
  */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -26,6 +26,7 @@ import { p3PipelineSources } from "./audit-hu-play-p3";
 import { readP1Successor } from "./hu-play-p1-successor";
 import { mathProjection } from "./hu-play-wide-measurement";
 import { wideHash } from "./hu-play-wide-corpus";
+import { checkE1ParentSources, checkE1InputSuccessor, checkE1PlayingIdentity, type E1Parent } from "./hu-play-e1-successor";
 
 interface Source { path: string; sha256: string }
 interface Hashed { format: string; version: number; payloadHash: string }
@@ -46,7 +47,8 @@ interface BrowserReport extends Observed {
   summaries: ReturnType<typeof checkP4BrowserRows>;
 }
 export interface P4Evidence {
-  format: "poker-face-p4-evidence"; version: 1; currentSources: Source[];
+  format: "poker-face-p4-evidence"; version: 1 | 2; currentSources: Source[];
+  e1Parent?: E1Parent;
   inputs: { format: string; version: number; engineSourceHash: string; wasmBuildHash: string;
     nativeBinarySha256: string; selectionSources: Source[]; cases: Case[]; librarySha256: string; supplementSha256: string };
   cases: { seed: number; attempts: { spot: BridgeSpotV1; spotHash: string; profile: string; result: BridgeResultV1 | null;
@@ -60,6 +62,8 @@ export interface P4Evidence {
       identicalToP1: boolean; ledger: { finalStacks: number[]; netSinceBeforeBlinds: number[]; externalDeadBlind: number } }[] };
 }
 export const P4_EVIDENCE_STEM = "tasks/artifacts/hu-play-p4-flop";
+export const P4_E1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p4-e1-successor";
+export const currentP4EvidenceStem = () => existsSync(`${P4_E1_SUCCESSOR_STEM}.json`) ? P4_E1_SUCCESSOR_STEM : P4_EVIDENCE_STEM;
 const digest = (v: Uint8Array) => createHash("sha256").update(v).digest("hex");
 export const p4Hash = (v: unknown) => digest(Buffer.from(canonicalSolverJson(v) + "\n"));
 function bound(report: Hashed, format: string, hash = p4Hash) {
@@ -83,20 +87,31 @@ export async function p4PipelineSources(): Promise<Source[]> {
   const paths = new Set([...(await p3PipelineSources()).map(s => s.path), ...Object.keys(bundle.metafile.inputs)]);
   return [...paths].sort().map(path => ({ path, sha256: digest(readFileSync(path)) }));
 }
-export function readP4Evidence(): P4Evidence {
-  const meta = JSON.parse(readFileSync(`${P4_EVIDENCE_STEM}.json`, "utf8"));
-  assert.equal(meta.format, "poker-face-p4-evidence-bundle"); assert.equal(meta.version, 1);
-  const bytes = readFileSync(`${P4_EVIDENCE_STEM}.json.gz`); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
+function readP4Archive(stem: string, version: 1 | 2): P4Evidence {
+  const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
+  assert.equal(meta.format, "poker-face-p4-evidence-bundle"); assert.equal(meta.version, version);
+  const bytes = readFileSync(`${stem}.json.gz`); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
   const plain = gunzipSync(bytes, { maxOutputLength: 512 * 1024 ** 2 });
   assert.equal(plain.length, meta.uncompressedBytes); assert.equal(digest(plain), meta.uncompressedSha256);
-  const e = JSON.parse(plain.toString("utf8")); assert.equal(p4Hash(e), meta.evidenceHash); return e;
+  const e = JSON.parse(plain.toString("utf8")); assert.equal(p4Hash(e), meta.evidenceHash); assert.equal(e.version, version); return e;
 }
+export function readPreE1P4Evidence() { return readP4Archive(P4_EVIDENCE_STEM, 1); }
+export function readP4Evidence() { const stem = currentP4EvidenceStem(); return readP4Archive(stem, stem === P4_EVIDENCE_STEM ? 1 : 2); }
 export async function checkP4Evidence(e: P4Evidence) {
-  assert.equal(e.format, "poker-face-p4-evidence"); assert.equal(e.version, 1);
+  assert.equal(e.format, "poker-face-p4-evidence"); assert.ok(e.version === 1 || e.version === 2);
   assert.equal(e.cases.length, 200, "All 200 P4 cases must remain");
   assert.deepEqual(e.currentSources, await p4PipelineSources(), "P4 source closure changed; new reproduction evidence required");
-  assert.equal(e.inputs.format, "poker-face-p4-flop-inputs"); assert.equal(e.inputs.version, 1);
-  assert.equal(p4Hash(e.inputs), "4c8739f4691bb7bb5e39e6d02058550a60853f2124f61efaaf3fe97b27f98908", "Frozen P4 cases changed");
+  const historical = e.version === 2 ? readPreE1P4Evidence() : null;
+  if (historical) {
+    assert.ok(e.e1Parent, "E1 parent source archive required");
+    assert.equal(e.e1Parent.evidenceHash, p4Hash(historical), "E1 P4 parent hash");
+    checkE1ParentSources(e.e1Parent.sources, historical.currentSources);
+    checkE1InputSuccessor(e.inputs, historical.inputs);
+    checkE1PlayingIdentity(e, historical);
+  } else assert.equal(e.e1Parent, undefined);
+  const frozenInput = historical?.inputs ?? e.inputs;
+  assert.equal(e.inputs.format, "poker-face-p4-flop-inputs"); assert.equal(frozenInput.version, 1);
+  assert.equal(p4Hash(frozenInput), "4c8739f4691bb7bb5e39e6d02058550a60853f2124f61efaaf3fe97b27f98908", "Frozen P4 cases changed");
   current(e.inputs.selectionSources);
   const fetcher: typeof fetch = async path => {
     assert.match(String(path), /^\/solver-data\/[a-zA-Z0-9/_.-]+$/); assert.ok(!String(path).includes(".."));
@@ -191,7 +206,7 @@ export async function checkP4Evidence(e: P4Evidence) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   assert.deepEqual(process.argv.slice(2), ["--check"]);
   void checkP4Evidence(readP4Evidence()).then(summary => {
-    assert.deepEqual(summary, JSON.parse(readFileSync(`${P4_EVIDENCE_STEM}-summary.json`, "utf8")));
+    assert.deepEqual(summary, JSON.parse(readFileSync(`${currentP4EvidenceStem()}-summary.json`, "utf8")));
     console.log(JSON.stringify(summary, null, 2));
   }).catch(e => { console.error(e); process.exitCode = 1; });
 }

@@ -5,6 +5,7 @@ import type { LiveProfile } from "./play-profile";
 export interface ExportReservation {
   version: 1; basis: "public-tree-upper-bound"; scope: "full" | "first-street";
   nodes: number; cells: number; edges: number; jsonBytesUpperBound: number; workingBytesEstimate: number;
+  decisionValueCells?: number;
 }
 export interface LiveEstimate extends BridgeEstimateV1 { estimateExport: ExportReservation }
 export interface LiveVerdict {
@@ -21,6 +22,7 @@ export interface LivePreview {
 export interface LiveSession {
   estimate(): string; status(): string; allocate(): string; step(count: number): string;
   root_strategy(): string; finish(): string; free(): void;
+  enable_decision_values?(): void;
 }
 export interface LiveEngine {
   create(bytes: Uint8Array): LiveSession;
@@ -28,7 +30,7 @@ export interface LiveEngine {
   provenance: { buildHash: string; sourceHash: string; sourceUrl: string; licenseUrl: string; engineCommit: string };
 }
 export type LiveCommand =
-  | { type: "estimate" | "solve"; id: number; spotJson: string; environment: WasmEnvironment; assetBase: string; profile?: LiveProfile }
+  | { type: "estimate" | "solve"; id: number; spotJson: string; environment: WasmEnvironment; assetBase: string; profile?: LiveProfile; decisionValues?: boolean }
   | { type: "cancel"; id: number };
 export type LiveEvent =
   | { type: "progress"; id: number; stage: "loading" | "building" | "allocating" | "solving" | "exporting" | "checking";

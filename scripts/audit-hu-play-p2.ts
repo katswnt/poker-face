@@ -22,6 +22,7 @@ import type { P2BrowserMeasurement } from "./hu-play-p2-profile-page";
 import { p1PipelineSources } from "./hu-play-p1-successor";
 import { wideHash } from "./hu-play-wide-corpus";
 import { mathProjection } from "./hu-play-wide-measurement";
+import { checkE1ParentSources, type E1Parent } from "./hu-play-e1-successor";
 
 interface Hashed { format: string; version: number; payloadHash: string }
 interface Source { path: string; sha256: string }
@@ -48,7 +49,8 @@ interface SafetyReport extends Observed {
   safetyContract: { path: string; text: string; sha256: string };
 }
 export interface P2Evidence {
-  format: "poker-face-p2-evidence"; version: 1 | 2; currentSources: Source[];
+  format: "poker-face-p2-evidence"; version: 1 | 2 | 3; currentSources: Source[];
+  e1Parent?: E1Parent;
   parentEvidenceHash?: string;
   inputs: Hashed & { cases: FrozenCase[] };
   baselines: (Solve & { corpusIndex: number })[];
@@ -57,6 +59,7 @@ export interface P2Evidence {
 }
 export const P2_EVIDENCE_STEM = "tasks/artifacts/hu-play-p2-river";
 export const P2_P3_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p2-p3-successor";
+export const P2_E1_SUCCESSOR_STEM = "tasks/artifacts/hu-play-p2-e1-successor";
 const digest = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex");
 function bound(r: Hashed, format: string) {
   assert.equal(r.format, format); assert.equal(r.version, 1); const { payloadHash, ...payload } = r;
@@ -80,7 +83,7 @@ export async function p2PipelineSources(): Promise<Source[]> {
   const paths = new Set([...p1PipelineSources().map(r => r.path), ...Object.keys(built.metafile.inputs)]);
   return [...paths].sort().map(path => ({ path, sha256: digest(readFileSync(path)) }));
 }
-function readP2Archive(stem: string, version: 1 | 2): P2Evidence {
+function readP2Archive(stem: string, version: 1 | 2 | 3): P2Evidence {
   const meta = JSON.parse(readFileSync(`${stem}.json`, "utf8"));
   assert.equal(meta.format, "poker-face-p2-evidence-bundle"); assert.equal(meta.version, version);
   const compressed = readFileSync(`${stem}.json.gz`); assert.equal(compressed.length, meta.bytes);
@@ -91,15 +94,23 @@ function readP2Archive(stem: string, version: 1 | 2): P2Evidence {
 }
 
 export function currentP2EvidenceStem() {
+  if (existsSync(`${P2_E1_SUCCESSOR_STEM}.json`)) return P2_E1_SUCCESSOR_STEM;
   return existsSync(`${P2_P3_SUCCESSOR_STEM}.json`) ? P2_P3_SUCCESSOR_STEM : P2_EVIDENCE_STEM;
 }
 export function readHistoricalP2Evidence() { return readP2Archive(P2_EVIDENCE_STEM, 1); }
+export function readPreE1P2Evidence() { return readP2Archive(P2_P3_SUCCESSOR_STEM, 2); }
 export function readP2Evidence(): P2Evidence {
-  const stem = currentP2EvidenceStem(); return readP2Archive(stem, stem === P2_EVIDENCE_STEM ? 1 : 2);
+  const stem = currentP2EvidenceStem(); return readP2Archive(stem, stem === P2_EVIDENCE_STEM ? 1 : stem === P2_P3_SUCCESSOR_STEM ? 2 : 3);
 }
 export function checkP2SuccessorParent(e: P2Evidence) {
   if (e.version === 1) { assert.equal(e.parentEvidenceHash, undefined); return; }
-  assert.equal(e.version, 2); const historical = readHistoricalP2Evidence();
+  assert.ok(e.version === 2 || e.version === 3);
+  const historical = e.version === 3 ? readPreE1P2Evidence() : readHistoricalP2Evidence();
+  if (e.version === 3) {
+    assert.ok(e.e1Parent, "E1 parent source archive required");
+    assert.equal(e.e1Parent.evidenceHash, wideHash(historical), "E1 parent hash");
+    checkE1ParentSources(e.e1Parent.sources, historical.currentSources);
+  } else assert.equal(e.e1Parent, undefined);
   assert.equal(e.parentEvidenceHash, wideHash(historical), "P2 historical parent evidence hash");
   assert.deepEqual(e.inputs, historical.inputs, "P2 frozen inputs must remain unchanged");
   const baselineIdentity = (record: P2Evidence) => record.baselines.map(b => ({ corpusIndex: b.corpusIndex,

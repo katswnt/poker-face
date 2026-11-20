@@ -720,6 +720,56 @@ fn session_enforces_allocation_and_no_partial_result() {
 }
 
 #[test]
+fn decision_values_are_opt_in_and_reserved_before_storage() {
+    let bytes = serde_json::to_vec(&session_spot()).unwrap();
+    let mut session = Session::new(&bytes).unwrap();
+    let plain = session.estimate();
+    assert!(plain["estimateExport"].get("decisionValueCells").is_none());
+    session.enable_decision_values().unwrap();
+    let enabled = session.estimate();
+    assert!(!session.status().allocated);
+    assert_eq!(enabled["estimatedBytes"], plain["estimatedBytes"]);
+    assert_eq!(
+        enabled["estimateExport"]["decisionValueCells"],
+        enabled["estimateExport"]["cells"]
+    );
+    assert!(
+        enabled["estimateExport"]["workingBytesEstimate"].as_u64().unwrap()
+            > plain["estimateExport"]["workingBytesEstimate"].as_u64().unwrap()
+    );
+    assert!(session.enable_decision_values().is_err());
+    assert_eq!(session.estimate(), enabled);
+    session.allocate().unwrap();
+    assert!(session.enable_decision_values().is_err());
+    while !session.is_done() {
+        session.step(7).unwrap();
+    }
+    let result = session.finish().unwrap();
+    assert!(result.decision_values.is_some());
+    assert!(
+        serde_json::to_vec(&result).unwrap().len() as u64
+            <= enabled["estimateExport"]["jsonBytesUpperBound"].as_u64().unwrap()
+    );
+    let mut late = Session::new(&bytes).unwrap();
+    late.allocate().unwrap();
+    assert!(late.enable_decision_values().is_err());
+    assert_eq!(late.estimate(), plain);
+}
+
+#[test]
+fn decision_values_refuse_unsupported_scope_without_changing_the_estimate() {
+    let mut compressed = session_spot();
+    compressed["solve"]["compression"] = json!("on");
+    for spot in [compressed, flop_slice_spot()] {
+        let mut session = Session::new(&serde_json::to_vec(&spot).unwrap()).unwrap();
+        let before = session.estimate();
+        assert!(session.enable_decision_values().is_err());
+        assert_eq!(session.estimate(), before);
+        assert!(!session.status().allocated);
+    }
+}
+
+#[test]
 fn session_refuses_storage_over_cap_and_poisoned_timeouts_cannot_resume() {
     let mut spot = session_spot();
     spot["solve"]["memoryCapBytes"] = json!(1);

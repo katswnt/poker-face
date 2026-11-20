@@ -14,6 +14,7 @@ export interface WasmStatus {
 export interface WasmSession {
   estimate(): string; status(): string; allocate(): string; step(count: number): string; root_strategy(): string;
   finish(): string; free(): void;
+  enable_decision_values?(): void;
 }
 export interface WasmBindings {
   SolverSession: new(bytes: Uint8Array) => WasmSession;
@@ -57,17 +58,24 @@ export async function loadWasm() {
 export function wasmSpotBytes(spot: BridgeSpotV1): Uint8Array {
   return new TextEncoder().encode(canonicalBridgeSpotJson(spot));
 }
-export function runWasmSpot(bindings: WasmBindings, spot: BridgeSpotV1, chunk = 7): BridgeResultV1 {
+export function runWasmSpot(bindings: WasmBindings, spot: BridgeSpotV1, chunk = 7,
+  options: { decisionValues?: boolean } = {}): BridgeResultV1 {
   if (!Number.isSafeInteger(chunk) || chunk < 1 || chunk > 0xffff_ffff) throw new Error("Invalid chunk size");
   const session = new bindings.SolverSession(wasmSpotBytes(spot));
   try {
+    if (options.decisionValues) {
+      if (!session.enable_decision_values) throw new Error("WASM lacks requested decision-value export");
+      session.enable_decision_values();
+    }
     let status: WasmStatus = JSON.parse(session.allocate());
     while (!status.done) {
       status = JSON.parse(session.step(chunk));
       assert.ok(status.measuredAtIteration! <= status.iterations);
       assert.equal(JSON.parse(session.root_strategy()).iteration, status.iterations);
     }
-    return checkBridgeResult(JSON.parse(session.finish()), spot, hashBridgeSpot(spot));
+    const result = checkBridgeResult(JSON.parse(session.finish()), spot, hashBridgeSpot(spot));
+    if ((result.decisionValues !== undefined) !== (options.decisionValues === true)) throw new Error("WASM decision values do not match request");
+    return result;
   } finally { session.free(); }
 }
 

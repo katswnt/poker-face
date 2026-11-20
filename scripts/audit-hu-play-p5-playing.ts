@@ -15,6 +15,9 @@ import { canonicalSolverJson } from "../src/lib/solver/toy/artifact";
 import { validatePublicState } from "../src/lib/hu-play/public-state";
 import { P5_UI_CORPUS, p5HumanAction } from "./hu-play-p5-human";
 import { mathProjection } from "./hu-play-wide-measurement";
+import { p5PipelineSources } from "./audit-hu-play-p5";
+import { wasmBuild } from "./bridge-wasm-runner";
+import { BRIDGE_BINARY } from "./bridge-runner";
 
 interface PassedHand {
   seed: number; humanSeat: 0 | 1; log: ReturnType<PlayController["completedLog"]>;
@@ -27,13 +30,17 @@ const fetcher: typeof fetch = async url => {
   return new Response(readFileSync(`public${url}`));
 };
 async function main() {
-  const [flag, out, ...rest] = process.argv.slice(2); assert.ok(flag === "--out" && out && !rest.length);
+  const raw=process.argv.slice(2),decisionValues=raw.at(-2)==="--decision-values"&&raw.at(-1)==="true";
+  const [flag, out, ...rest] = decisionValues?raw.slice(0,-2):raw; assert.ok(flag === "--out" && out && !rest.length);
   const dir = resolve(out); assert.ok(!existsSync(dir), "Keep previous captures, including failures");
   mkdirSync(dir); mkdirSync(join(dir, "solves"));
   const write = (name: string, x: unknown) => writeFileSync(join(dir, name), canonicalSolverJson(x) + "\n", {flag:"wx"});
   const bundle = await build({entryPoints:["scripts/audit-hu-play-p5-playing.ts"],bundle:true,platform:"node",format:"esm",packages:"external",write:false,metafile:true});
   const sourceFiles = Object.keys(bundle.metafile.inputs).sort().map(path => ({path,sha256:createHash("sha256").update(readFileSync(path)).digest("hex")}));
-  const frozen = {corpus:P5_UI_CORPUS,corpusHash:hash(P5_UI_CORPUS),sourceFiles,sourceHash:hash(sourceFiles)};
+  const engine=decisionValues?wasmBuild().manifest:null;
+  const e1=engine?{decisionValues:true as const,sourceFiles:await p5PipelineSources(),engineSourceHash:engine.sourceHash,
+    wasmBuildHash:engine.buildHash,nativeBinarySha256:createHash("sha256").update(readFileSync(BRIDGE_BINARY)).digest("hex")}:undefined;
+  const frozen = {corpus:P5_UI_CORPUS,corpusHash:hash(P5_UI_CORPUS),sourceFiles,sourceHash:hash(sourceFiles),...(e1?{e1}:{})};
   write("inputs.json", frozen); // Written before any hand or solve.
   const policies = new Map<string, BridgeResultV1>(), failures = new Map<string, string>();
   const attempts: {seed:number; spotHash:string; accepted:boolean; error?:string}[] = [];
@@ -48,7 +55,7 @@ async function main() {
     const attempt = {seed,spotHash:key,accepted:false} as (typeof attempts)[number]; attempts.push(attempt);
     try {
       const profile = spot.tree.mode === "turn-subgame-v1" ? "play-turn-v1" : spot.tree.mode === "river-subgame-v1" ? "play-river-v1" : "play-v1";
-      const result = await solveNativePlay(spot, {}, abort, profile);
+      const result = await solveNativePlay(spot, {decisionValues}, abort, profile);
       if (policies.has(key)) assert.deepEqual(mathProjection(policies.get(key)!), mathProjection(result));
       else { policies.set(key,result); write(`solves/${key}.json`,{spot,result}); }
       attempt.accepted = true; return result;
@@ -94,6 +101,8 @@ async function main() {
   }
   const ledger=second.getSnapshot().ledger;second.dispose();
   for (const source of sourceFiles) assert.equal(createHash("sha256").update(readFileSync(source.path)).digest("hex"),source.sha256,"Source changed during measurement");
+  if(e1){assert.deepEqual(await p5PipelineSources(),e1.sourceFiles,"Full E1 pipeline changed during capture");
+    assert.equal(createHash("sha256").update(readFileSync(BRIDGE_BINARY)).digest("hex"),e1.nativeBinarySha256,"Native binary changed during capture");}
   const passed=rows.every(r=>r.passed) && replayRows.every(r=>r.passed) && ledger.length===200;
   assert.deepEqual(firstLedger,ledger);
   const report={format:"poker-face-p5-ui-hands",version:1,measuredAt:new Date().toISOString(),frozen,rows,replayRows,attempts,ledger,passed,

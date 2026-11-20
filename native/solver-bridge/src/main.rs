@@ -1,25 +1,25 @@
-//! `solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json]`
-//! `solver-bridge estimate <spot.json>` (build the tree, report memory, allocate nothing)
+//! `solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json] [--decision-values]`
+//! `solver-bridge estimate <spot.json> [--decision-values]` (tree/estimate only)
 //!
 //! Reads a spot (contract v1), solves it with postflop-solver, and writes a result
 //! (contract v1). Progress and errors are JSON lines on stderr. On any failure the exit
 //! code is nonzero and no output file exists.
 
-use solver_bridge::{solve_spot_with_slices, Progress};
+use solver_bridge::{solve_spot_with_exports, Progress, Session};
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 const MAX_SPOT_BYTES: u64 = 64 * 1024 * 1024;
-const USAGE: &str = "usage: solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json]\n       solver-bridge estimate <spot.json>";
+const USAGE: &str = "usage: solver-bridge solve <spot.json> --out <result.json> [--threads N] [--slices plan.json] [--decision-values]\n       solver-bridge estimate <spot.json> [--decision-values]";
 
 fn emit(value: serde_json::Value) {
     let mut stderr = std::io::stderr().lock();
     let _ = writeln!(stderr, "{value}");
 }
 
-type Args = (PathBuf, PathBuf, Option<usize>, Option<PathBuf>);
+type Args = (PathBuf, PathBuf, Option<usize>, Option<PathBuf>, bool);
 
 fn parse_args(args: &[String]) -> Result<Args, String> {
     let mut rest = args.iter();
@@ -28,7 +28,12 @@ fn parse_args(args: &[String]) -> Result<Args, String> {
     }
     let spot = rest.next().filter(|a| !a.starts_with("--")).ok_or(USAGE)?;
     let (mut out, mut threads, mut slices) = (None, None, None);
+    let mut decision_values = false;
     while let Some(flag) = rest.next() {
+        if flag == "--decision-values" && !decision_values {
+            decision_values = true;
+            continue;
+        }
         let value = rest.next().ok_or(USAGE)?;
         match flag.as_str() {
             "--out" if out.is_none() => out = Some(PathBuf::from(value)),
@@ -45,7 +50,7 @@ fn parse_args(args: &[String]) -> Result<Args, String> {
             _ => return Err(USAGE.into()),
         }
     }
-    Ok((PathBuf::from(spot), out.ok_or(USAGE)?, threads, slices))
+    Ok((PathBuf::from(spot), out.ok_or(USAGE)?, threads, slices, decision_values))
 }
 
 fn write_atomically(out: &Path, bytes: &[u8]) -> Result<(), String> {
@@ -74,12 +79,16 @@ fn read_spot(path: &Path) -> Result<Vec<u8>, String> {
 }
 
 fn run(args: &[String]) -> Result<(), String> {
-    if args.len() == 2 && args[0] == "estimate" {
-        let estimate = solver_bridge::estimate_spot(&read_spot(Path::new(&args[1]))?)?;
+    if (args.len() == 2 || (args.len() == 3 && args[2] == "--decision-values")) && args[0] == "estimate" {
+        let mut session = Session::new(&read_spot(Path::new(&args[1]))?)?;
+        if args.len() == 3 {
+            session.enable_decision_values()?;
+        }
+        let estimate = session.estimate();
         println!("{estimate}");
         return Ok(());
     }
-    let (spot_path, out, threads, slices_path) = parse_args(args)?;
+    let (spot_path, out, threads, slices_path, decision_values) = parse_args(args)?;
     if out.exists() {
         return Err(format!(
             "output {} already exists; refusing to overwrite",
@@ -101,7 +110,7 @@ fn run(args: &[String]) -> Result<(), String> {
     let bytes = fs::read(&spot_path).map_err(|e| format!("cannot read {}: {e}", spot_path.display()))?;
     let plan = slices_path.as_deref().map(read_spot).transpose()?;
     let mut sink = emit;
-    let result = solve_spot_with_slices(&bytes, plan.as_deref(), &mut Progress(&mut sink))?;
+    let result = solve_spot_with_exports(&bytes, plan.as_deref(), decision_values, &mut Progress(&mut sink))?;
     let json = serde_json::to_vec(&result).map_err(|e| format!("cannot serialize result: {e}"))?;
     write_atomically(&out, &json)?;
     emit(serde_json::json!({

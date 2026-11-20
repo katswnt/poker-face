@@ -46,6 +46,10 @@ impl SolverSession {
         json(&self.session()?.estimate())
     }
 
+    pub fn enable_decision_values(&mut self) -> Result<(), JsValue> {
+        self.session()?.enable_decision_values().map_err(js_error)
+    }
+
     pub fn status(&mut self) -> Result<String, JsValue> {
         json(&self.session()?.status())
     }

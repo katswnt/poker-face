@@ -29,16 +29,17 @@ const profileOf = (s: BridgeSpotV1) => s.tree.mode === "turn-subgame-v1" ? "play
   : s.tree.mode === "river-subgame-v1" ? "play-river-v1" as const : "play-v1" as const;
 
 async function main() {
-  const [flag, inputPath, outFlag, outputPath, ...rest] = process.argv.slice(2);
+  const raw = process.argv.slice(2), decisionValues = raw.at(-2) === "--decision-values" && raw.at(-1) === "true";
+  const [flag, inputPath, outFlag, outputPath, ...rest] = decisionValues ? raw.slice(0, -2) : raw;
   assert.ok(flag === "--inputs" && inputPath && outFlag === "--out" && outputPath && !rest.length, "Use --inputs FROZEN_DIRECTORY --out NEW_DIRECTORY");
   const input = resolve(inputPath), directory = resolve(outputPath); assert.ok(!existsSync(directory)); mkdirSync(directory);
   const meta = JSON.parse(readFileSync(join(input, "inputs.json"), "utf8"));
-  assert.equal(meta.format, "poker-face-p3-turn-inputs-bundle"); assert.ok([1, 2].includes(meta.version)); assert.equal(meta.cases, 200);
+  assert.equal(meta.format, "poker-face-p3-turn-inputs-bundle"); assert.ok([1, 2, 3].includes(meta.version)); assert.equal(meta.cases, 200);
   const bytes = readFileSync(join(input, "inputs.json.gz")); assert.equal(bytes.length, meta.bytes); assert.equal(digest(bytes), meta.sha256);
   const plain = gunzipSync(bytes, { maxOutputLength: 128 * 1024 ** 2 });
   assert.equal(plain.length, meta.plainBytes); assert.equal(digest(plain), meta.inputsHash);
   const frozen = JSON.parse(plain.toString("utf8")); assert.equal(frozen.format, "poker-face-p3-turn-inputs"); assert.equal(frozen.version, meta.version);
-  if (meta.version === 2) assert.equal(frozen.derivedFrom.inputsHash, meta.parentInputsHash);
+  if (meta.version >= 2) assert.equal(frozen.derivedFrom.inputsHash, meta.parentInputsHash);
   const rootBytes = readFileSync(join(input, "roots.json")); assert.equal(digest(rootBytes), frozen.rootsSha256);
   const roots: P3TurnRoot[] = JSON.parse(rootBytes.toString("utf8")).roots;
   const baselines: BridgeResultV1[] = roots.map((_, i) => JSON.parse(readFileSync(join(input, `baseline-${i}.json`), "utf8")));
@@ -65,7 +66,7 @@ async function main() {
         accepted: false, error: null as string | null, elapsedMs: 0 };
       attempts.push(record);
       try {
-        const r = await solveNativePlay(spot, { onResult: (_s, run) => { record.result = run.result; } }, signal, profile);
+        const r = await solveNativePlay(spot, { decisionValues, onResult: (_s, run) => { record.result = run.result; } }, signal, profile);
         // Mirror the Worker's publication gate. Invalid returned data is not a policy.
         if (profile === "play-river-v1") requireRiverPlayingResult(r, spot, record.spotHash);
         else if (profile === "play-turn-v1") requireTurnPlayingResult(r, spot, record.spotHash);
@@ -104,6 +105,7 @@ async function main() {
   }
   for (const ref of sourceFiles) assert.equal(digest(readFileSync(ref.path)), ref.sha256, "Source changed during native measurement");
   const report = { format: "poker-face-p3-production-playing", version: 1, measuredAt: new Date().toISOString(),
+    ...(decisionValues ? { decisionValues: true } : {}),
     inputsHash: meta.inputsHash, nativeBinarySha256, engineSourceHash: manifest.sourceHash, sourceFiles,
     machine: { cpu: cpus()[0].model, osRelease: release(), node: process.version }, rows,
     method: "One native thread per solve; concurrent offline cache capture may run. Wall times are observations, not browser-budget evidence. Turn raw engine grades are local; complete-turn independent samples are a separate required audit." };

@@ -44,7 +44,7 @@ CI jobs and 28 applicable deployed three-browser checks passed (two explicit zoo
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 | Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
 | `/solver/live` — bounded Rust/WASM lab | Guided turn/river inputs, preflight, real progress/cancel, root inspection and a saved example | Live solving needs prepared source-complete assets; 64 hands/player, float32, conservative memory/export limits; phones not yet validated |
-| `/play` — heads-up practice | Seat/seed choice, legal typed bet sizes, real Worker progress/cancel/retry, hand history, decision math and an in-memory completed-hand ledger | Scripted preflop, hand-written ranges, 12 saved flops; exploitable local re-solving, not exact GTO; live action EV grades unavailable |
+| `/play` — heads-up practice | Seat/seed choice, legal typed bet sizes, real Worker progress/cancel/retry, hand history, decision math, local action values and an in-memory completed-hand ledger | Scripted preflop, hand-written ranges, 12 saved flops; exploitable local re-solving, not exact GTO; action comparisons describe one saved or local solved model |
 | Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; wider games remain offline |
 | Experimental preflop model (PF0–PF3) | BTN vs BB CFR+/DCFR, independent grading, exact-enumeration all-in inputs, fitted assumptions for future play | SB always folds; no rake; future betting approximated; flagged output is not promoted to the library or app (PF4 not done) |
 
@@ -54,8 +54,17 @@ Flops use the saved library and labelled action translation; admitted turn/river
 run in separate browser Workers. Inspect pot odds, minimum defence (MDF), polar bluff share,
 exactly enumerated all-in equity against the AI's reaching range, and each decision's source.
 The AI's actual hand and hand-specific mix stay hidden until the hand ends. Saved action
-EVs and human-action gaps concern the **original saved policy**, not the later re-solving
-AI; live/translated EV grades are explicitly unavailable. Equity is not substituted for EV.
+EVs and human-action gaps concern the **original saved policy**. The E1 implementation
+also exports values for admitted live turn/river decisions: expected chips returned from
+here minus chips still to pay, following **that local solved policy**. A human-action gap
+is the best listed value minus the chosen action's value, using the model shown before
+the action. Neither kind of comparison predicts the later re-solving AI. Translated
+decisions, sizes outside that original menu and unavailable hand rows remain ungraded;
+equity is not substituted for EV. Values are displayed to 0.1 chip; this rounding is
+separate from numerical, convergence and range errors. No session EV score is inferred.
+The [E1 contract and release checks](tasks/live-decision-ev-spec.md) document the independent
+verification and measured export cost. E1 release checks are in progress; the production
+identity above remains R1 until deployment is verified.
 
 **Unusual bet sizes can exploit this AI.** The P2 audit measured composed-policy local
 exploitability as high as **23.4% of the subgame pot**. That is neither expected winnings
@@ -66,6 +75,8 @@ Firefox turns can take tens of seconds. No partial policy or silently trimmed ra
 substituted after a failed solve. Completed-hand nets include the external dead small blind
 and sum to +0.5bb per hand, not zero; the ledger lasts only until reload/navigation.
 Use `npm run audit:hu-play:p5` to replay the frozen 200-hand UI-controller evidence.
+Use `npm run audit:hu-play:e1` alongside the P1–P5 audits to check the live-value evidence,
+unchanged policy results, independent action values and recorded browser gates.
 Prepared builds show the matching downloadable AGPL engine source and build/archive hashes;
 without those assets `/play` refuses play rather than using a stub AI.
 
@@ -798,7 +809,11 @@ already powers solver-backed drills. The active path does not depend on a collab
    all eight CI jobs and deployed three-browser checks. Its clean-build Vercel engine
    and corresponding AGPL source match byte for byte; see the
    [closing handoff](tasks/codex-handoff-2026-11-19.md) for identities and remaining limits.
-   Next after P5: live EV export/grading, push/fold and equity-vs-range drills, then hand review.
+   The [E1 implementation](tasks/live-decision-ev-spec.md) adds optional native/WASM action
+   values and model-relative comparisons in `/play`, with independent complete-game
+   checks, immutable pre-action model identity and new source-bound regression evidence.
+   Its release gates are in progress. Next: prospective push/fold and equity-vs-range
+   drill contracts, then hand review; none depends on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

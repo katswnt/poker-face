@@ -12,7 +12,7 @@ export function browserPlayFactory(assetBase: string, environment: WasmEnvironme
         const profile = spot.tree.mode === "turn-subgame-v1" ? "play-turn-v1"
           : spot.tree.mode === "river-subgame-v1" ? "play-river-v1" : "play-v1";
         const street = spot.board.river ? "river" : "turn";
-        const runner = new BrowserPublicSolver({ assetBase, environment, profile, onEvent(event) {
+        const runner = new BrowserPublicSolver({ assetBase, environment, profile, decisionValues: true, onEvent(event) {
           if (event.type === "progress") progress({ stage: event.stage, street, pot: spot.startingPot,
             iterations: event.status?.iterations ?? null, measuredAtIteration: event.status?.measuredAtIteration ?? null,
             exploitability: event.status?.exploitability ?? null });

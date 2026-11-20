@@ -111,7 +111,7 @@ test.describe("prepared play UI", () => {
     expect(nets.map(parseFloat).reduce((s,n)=>s+n,0)).toBe(0.5);
   });
 
-  test("a real turn Worker can be cancelled and retried without charging the off-menu bet twice", async ({page}) => {
+  test("a real turn Worker can be cancelled and retried without charging the off-menu bet twice", async ({page}, info) => {
     await page.goto("/play"); await page.getByLabel("Hand seed").fill("1");
     await page.getByRole("button",{name:"Deal hand",exact:true}).click();
     await page.getByLabel("Bet or raise to (chips)").fill("237");
@@ -128,8 +128,35 @@ test.describe("prepared play UI", () => {
     await page.getByRole("button",{name:"Show decision hints",exact:true}).click();
     await expect(page.getByText(/New solve at the start of this street\./)).toBeVisible();
     await expect(page.getByText(/reported local exploitability/)).toBeVisible();
-    await expect(page.getByText(/EV grade unavailable:.*Live and translated decisions are not graded/)).toBeVisible();
+    await expect(page.getByRole("heading",{name:"Your action vs the local model shown before you acted"})).toBeVisible();
+    await expect(page.getByText("Choose an action first to see its local-model EV gap.",{exact:true})).toBeVisible();
+    await expect(page.getByText(/expected chips returned from here minus chips still to pay/i)).toBeVisible();
     await expect(page.getByText(/hand\/runout outcomes · no Monte Carlo sampling/)).toBeVisible({timeout:60_000});
+    const inspector=page.getByLabel("Decision to inspect"), originalDecision=await inspector.inputValue();
+    const table=page.getByRole("table",{name:"Approximate strategy at this decision",exact:true});
+    const evs=await table.locator("tbody tr").evaluateAll(rows=>rows.map(row=>({
+      action:row.querySelector("th")!.textContent!,ev:Number(row.querySelectorAll("td")[1].textContent)
+    })));
+    expect(evs.every(r=>Number.isFinite(r.ev))).toBe(true);
+    const checkEv=evs.find(r=>r.action==="Check")!.ev, expectedGap=Math.max(...evs.map(r=>r.ev))-checkEv;
+    await page.getByRole("button",{name:"Check",exact:true}).focus(); await page.keyboard.press("Enter");
+    await expect(page.getByRole("button",{name:"Cancel thinking",exact:true})).toBeHidden({timeout:120_000});
+    await inspector.selectOption(originalDecision);
+    const comparison=page.getByText(/You chose Check\. Local-model EV gap:/);
+    await expect(comparison).toBeVisible();
+    const shownGap=Number((await comparison.innerText()).match(/gap: (-?[\d.]+) bb/)![1]);
+    // Three displayed numbers rounded to .001 bb: <= .0015 bb total rounding difference.
+    expect(Math.abs(shownGap-expectedGap)).toBeLessThanOrEqual(.0015+1e-12);
+    await expect(page.getByText(/does not predict the AI after later re-solving/i)).toBeVisible();
+    for (const width of [320, 390, 1280]) {
+      await page.setViewportSize({width,height:900});
+      expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+      await expect(comparison).toBeVisible();
+      await page.screenshot({path:info.outputPath(`play-live-values-${width}.png`),fullPage:true});
+    }
+    await page.evaluate(()=>{document.documentElement.style.fontSize="200%";});
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+    await page.screenshot({path:info.outputPath("play-live-values-text-200.png"),fullPage:true});
   });
 
   test("missing engine bytes refuse the next decision and a fresh Worker succeeds after retry", async ({page,context}) => {
