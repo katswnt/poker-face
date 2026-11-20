@@ -27,10 +27,11 @@ bounded Rust/WASM turn and river solving in a Worker when its source-complete as
 prepared; without those assets it still offers a saved example. `/play` now implements
 heads-up practice with saved flop policies and browser turn/river re-solving. It requires
 prepared engine assets, now deployed at [Play the solver-backed AI](https://pokerface.katswint.com/play).
-The [R1 release record](tasks/post-p5-release-and-live-ev.md#r1-production-deployment--2026-11-19)
-binds the current deployed engine and downloadable AGPL source to clean release `b509656`.
-It preserves P5's solver results and adds guarded, explicit production releases. All eight
-CI jobs and 28 applicable deployed three-browser checks passed (two explicit zoom-API skips).
+The [E1 release record](tasks/live-decision-ev-spec.md#production-deployment--2026-11-20)
+binds the deployed engine and downloadable AGPL source to clean release `bfecbce`.
+It preserves the playing policies and adds live action values and model-relative comparisons.
+All eight CI jobs and 28 applicable deployed three-browser checks passed (two explicit
+zoom-API skips). Production continues to use guarded, explicit releases.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -63,8 +64,8 @@ decisions, sizes outside that original menu and unavailable hand rows remain ung
 equity is not substituted for EV. Values are displayed to 0.1 chip; this rounding is
 separate from numerical, convergence and range errors. No session EV score is inferred.
 The [E1 contract and release checks](tasks/live-decision-ev-spec.md) document the independent
-verification and measured export cost. E1 release checks are in progress; the production
-identity above remains R1 until deployment is verified.
+verification and measured export cost. E1 passed exact-commit tests, all eight CI jobs,
+deployed browser checks and public engine/source verification on November 20.
 
 **Unusual bet sizes can exploit this AI.** The P2 audit measured composed-policy local
 exploitability as high as **23.4% of the subgame pot**. That is neither expected winnings
@@ -812,7 +813,7 @@ already powers solver-backed drills. The active path does not depend on a collab
    The [E1 implementation](tasks/live-decision-ev-spec.md) adds optional native/WASM action
    values and model-relative comparisons in `/play`, with independent complete-game
    checks, immutable pre-action model identity and new source-bound regression evidence.
-   Its release gates are in progress. Next: prospective push/fold and equity-vs-range
+   Its release gates pass. Next: prospective push/fold and equity-vs-range
    drill contracts, then hand review; none depends on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its

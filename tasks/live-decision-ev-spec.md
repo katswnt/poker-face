@@ -176,13 +176,13 @@ separately from the unchanged poker behavior. Preserve all failed measurements.
 - [x] Fresh source-bound successors and full frozen correctness/quality/performance gates pass.
 - [x] Browser keyboard, 320/390/1280px, real 200% zoom, refusal/cancel/retry and live-grade
       checks pass; inspect screenshots. Saved-policy behavior remains intact.
-- [ ] Explicit owned files only; README staged from a clean blob. Exact commit in isolated
+- [x] Explicit owned files only; README staged from a clean blob. Exact commit in isolated
       checkout with copied dependencies: full unit suite, tsc, lint, relevant audits, Rust
       checks, asset reproduction and saved/prepared production builds pass.
-- [ ] Push and observe all eight CI jobs green. Rebuild/prepare source-complete assets from
+- [x] Push and observe all eight CI jobs green. Rebuild/prepare source-complete assets from
       the clean release commit, use the guarded pinned Vercel procedure, verify deployed
       bytes/source links and real-hand teaching checks.
-- [ ] Update this record with measured values, commits, owned paths and limits; finish a
+- [x] Update this record with measured values, commits, owned paths and limits; finish a
       dated handoff listing untouched work and the next drills contracts.
 
 Do not promote a failed numerical or performance gate into a claim of completion. Record
@@ -455,3 +455,85 @@ Log: `/private/tmp/e1-full-suite-approved-05.log`. All 184 measured source hashe
 76-file owned manifest still match. The previous permission-review block is resolved.
 Candidate verification is complete; exact-commit verification, hosted CI and deployment
 remain required before calling E1 released.
+
+
+## Exact-commit release verification — 2026-11-20
+
+Implementation commit `bfecbced77d8a70a1eee80315974d911a00541f5` contains only the
+76 reviewed E1 paths. The complete explicit list is reproducible with
+`git diff-tree --no-commit-id --name-only -r bfecbce`; the landing manifest and hashes
+are also retained in ignored `build/post-p5-2026-11-19/E1-landing-2026-11-20/`.
+README was staged from a clean blob. All 15 protected non-README hashes and all
+49 added/removed trainer README lines remained unchanged.
+
+A clean detached checkout, `/private/tmp/poker-e1-exact-67o58von`, used **copied**
+node_modules. Native and WASM were rebuilt there with Rust 1.98.1 and wasm-bindgen
+0.2.104; engine source SHA-256 remains
+`f6bc73d115885a997ac66390fdcaf489b7974541a481fbd66ddfd9127531f981`.
+
+- Full unit suite **1,101/1,101**, zero failures/skips, **156.370 s**. Typecheck and lint pass.
+- Both Rust format/Clippy checks and all **23 Rust tests** pass.
+- All 14 audits pass: bridge, WASM, saved example, river v3, heads-up library, P1–P5,
+  E1 values, preflop reproduction, wide-range evidence and gadget study. Preflop remains
+  research-only; reproduction is not validation or permission to promote PF4.
+- All three-browser WASM and Worker harness checks pass. Historical solver identities
+  remain unchanged, including river v3 value **16.081056725 chips** and exploitability
+  **0.009074631 chips**.
+- Saved-only preview build passes; its app suite has **87 passes / 9 explicit
+  asset-required skips**. Missing production assets refuse before Next starts.
+- Prepared production build passes with an intentionally unusable HTTP(S) proxy,
+  confirming that its local font does not require a Google Fonts fetch.
+- Prepared full app **96/96**. Three-browser play **28 passes / 2 explicit non-Chromium
+  zoom-API skips**; live solver **34 passes / 2 same skips**. Zero retries throughout.
+  Live-value tables at 320px and 1280px, WebKit 320px and real Chromium 200% browser
+  zoom screenshots were inspected; the controls, value table, focus and source links fit.
+- Pinned Vercel 62.1.0 packaging passes; all six packaged engine/source assets match
+  the prepared files byte for byte. The release checkout remains clean.
+
+Commands are retained in `build/post-p5-2026-11-19/E1-exact-bfecbce/verify.sh` with every
+per-check log and screenshot under `logs/`. That script runs the full suite, typecheck,
+lint, Rust checks, the 14 audits, both three-browser harnesses, saved/prepared builds,
+and all three Playwright configurations, each with zero retries. The exact source
+freeze and original measurement evidence remain intact; no corpus was recaptured or
+tolerance changed to obtain these results.
+
+The commit was pushed to main after these checks. Hosted
+[CI 44813301904](https://github.com/katswnt/poker-face/actions/runs/44813301904)
+passed all eight jobs; the completed production verification is recorded below.
+
+
+## Production deployment — 2026-11-20
+
+All eight jobs in [CI 44813301904](https://github.com/katswnt/poker-face/actions/runs/44813301904)
+passed on `bfecbced77d8a70a1eee80315974d911a00541f5` before deployment.
+The main push created no replacement production entry in the observed Vercel list.
+Vercel CLI 62.1.0 then deployed the verified clean package to the existing project.
+
+- Deployment: `dpl_8D4ohZcho7zqDt6yrhupq1sWxibM`; Ready, production.
+- Immutable URL: <https://poker-face-ccf41zv03-kat-swints-projects.vercel.app>.
+- Public page: <https://pokerface.katswint.com/play>.
+- Build SHA-256: `9c60cd7b4f6d56e271f344caf8441836b88ed43f3054d0aa85076ed29b28dc7d`.
+- Engine source SHA-256: `f6bc73d115885a997ac66390fdcaf489b7974541a481fbd66ddfd9127531f981`.
+- WASM: **811,207 bytes**, SHA-256 `32efb5beef3f6668c0512799b5786f332694f27194256d80520b0bf476f5f5ec`.
+- Corresponding AGPL source: **4,808,775 bytes**, SHA-256
+  `35e959307a9dc5cbcad605975953cd3fddf91c7289b9a072753137a855e595ca`.
+
+Public verification passed at **2026-11-20T21:14:09.749Z**: every one of the six fetched
+assets matches the prepared distribution byte for byte. Both engine-serving pages link
+the corresponding source archive and show the correct build identity; `/play` retains
+the measured 23.4% warning. Different clean build paths/commit metadata can change
+binary/archive bytes; this establishes source correspondence and numerical parity,
+not a universal bit-identical-build claim.
+
+Deployed three-browser play: **28 passes / 2 explicit non-Chromium zoom-API skips**,
+zero failures/flakes/retries, **120.433 s**. This covers real
+hands, off-menu actions, live EVs and original-model grades, missing-engine recovery,
+Worker cancellation/retry, keyboard controls, source links, responsive layouts and real
+Chromium 200% zoom. Deployed narrow live-value and zoom screenshots were inspected.
+Physical phone performance remains unvalidated; the existing Firefox limitations remain.
+
+Local release evidence is retained under ignored
+`build/post-p5-2026-11-19/E1-exact-bfecbce/`; current machine-readable state is
+`E1-release-current.json`. The closing documentation commit changes no app/engine code
+and must pass isolated full tests, typecheck, lint and the 14 audits before push, followed
+by all eight CI jobs. It is not a separate production deployment.

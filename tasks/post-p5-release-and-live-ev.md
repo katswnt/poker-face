@@ -1,10 +1,10 @@
 # After P5: production safeguard, then live decision values
 
 Authorized by Kat on 2026-11-19. Baseline: `a9cbce9`; production app/engine: `22f513e`.
-Current status: **R1 shipped as `b509656`**, all eight CI jobs green, deployed and verified
-on November 19. E1 candidate verification is complete, including all 1,101 tests and
-source-bound browser evidence. No E1 commit or deployment yet; exact-commit, CI and
-public-release gates remain.
+Current status: **E1 shipped as `bfecbce`**, after exact-commit verification, all eight
+CI jobs and deployed three-browser checks passed on November 20. Live action values and
+original-model comparisons are available in `/play`. R1's guarded release process remains
+in force; the engine/source bytes and both serving-page links were verified publicly.
 See `tasks/live-decision-ev-spec.md` for the frozen contract and current measurements.
 W1–W4/P1–P5 remain complete. Preserve the trainer/session work and paused configurable-
 flop draft exactly. Follow the CPU roadmap's isolated verification, explicit staging,
@@ -221,3 +221,15 @@ That warning remains visible; live action grades do not certify the composed opp
 The source-bound legacy successors, enabled browser performance/memory corpus, full
 exact-commit suite, CI and deployed source verification remain release gates. Full details
 and preserved failure/measurement locations are in the E1 spec. No protected work changed.
+
+
+### E1 release closure — 2026-11-20
+
+The [E1 release record](live-decision-ev-spec.md#production-deployment--2026-11-20)
+and [closing handoff](codex-handoff-2026-11-20.md) contain commit/deployment identities,
+1,101/1,101 isolated tests, three-browser checks, source hashes and preserved work.
+The frozen 600-case enabled browser corpus passes its unchanged contracts; Chromium
+turn response p95 is 4.2408 s, and peak WASM linear memory is 29.8125 MiB. Firefox's
+50.507 s measured turn p95 is retained explicitly. The 23.4% composed-policy warning,
+scripted preflop, hand-written ranges, 12 saved flops and gated PF4 remain unchanged.
+Next: prospective push/fold and equity-vs-range drill contracts, then hand review.

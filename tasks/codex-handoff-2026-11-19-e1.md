@@ -1,5 +1,8 @@
 # E1 live action values — release candidate, 2026-11-19
 
+> Historical candidate record. E1 subsequently shipped as `bfecbce` on November 20.
+> See the [release handoff](codex-handoff-2026-11-20.md) for completed CI, deployment and network diagnosis.
+
 **E1 is not committed, pushed or deployed.** R1 remains production: code `b509656`,
 closing documentation `1a6ee2a`; both passed all eight CI jobs. The public release was
 verified again at 20:12:20 UTC on November 19. No E1 release claim is warranted yet.
