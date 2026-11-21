@@ -3,12 +3,12 @@ import assert from "node:assert/strict";
 import { DRILL_TYPES } from "../src/lib/drills/generators";
 import { BOX_GAPS, initialState } from "../src/lib/drills/scheduler";
 import { advance, changeLevel, changeMode, startSession, submit, type Session } from "../src/lib/drills/session";
-import type { Question } from "../src/lib/drills/types";
+import type { Question } from "../src/lib/drills/practice-types";
 
 const rightAnswer = (q: Question): string =>
   q.answer.kind === "choice" ? q.answer.value : String(q.answer.value);
 const wrongAnswer = (q: Question): string =>
-  q.answer.kind === "choice" || q.answer.kind === "decision" ? (q.answer.value === "call" ? "fold" : "call") : String(q.answer.value + 50);
+  q.answer.kind === "choice" || q.answer.kind === "decision" || q.answer.kind === "push-fold" ? (q.answer.value === "call" ? "fold" : "call") : String(q.answer.value + 50);
 
 test("the same session seed replays the same questions", () => {
   const run = () => {

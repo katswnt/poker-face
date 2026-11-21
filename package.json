@@ -109,7 +109,9 @@
     "solve:preflop": "node --import tsx scripts/solve-preflop.ts --write",
     "audit:preflop": "node --import tsx scripts/solve-preflop.ts --check",
     "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts",
-    "verify:release": "node scripts/verify-live-release.mjs"
+    "verify:release": "node scripts/verify-live-release.mjs",
+    "generate:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --write",
+    "audit:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --check"
   },
   "dependencies": {
     "next": "16.3.3",

@@ -5,7 +5,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { initialState } from "../src/lib/drills/scheduler";
 import { advance, resolvePending, startSession, submit, type Session } from "../src/lib/drills/session";
 import { createSolverSource } from "../src/lib/drills/solver";
-import type { Question } from "../src/lib/drills/types";
+import type { Question } from "../src/lib/drills/practice-types";
 
 const fetcher = (async (url: string) => new Response(readFileSync(`public${url}`))) as unknown as typeof fetch;
 const source = createSolverSource({ fetcher });

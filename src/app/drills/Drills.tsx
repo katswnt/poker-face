@@ -16,9 +16,12 @@ import {
 } from "@/lib/drills/session";
 import type { SolverSource } from "@/lib/drills/solver";
 import { PricePanel, RangePanel, SolverExplanation, SolverHistory, decisionVerdict } from "./SolverPanels";
+import { PushFoldContext, PushFoldPanel } from "./PushFoldPanel";
+import type { PushFoldSource } from "@/lib/drills/push-fold/source";
 import styles from "./drills.module.css";
 
 const LEVEL_NAMES = { 1: "round numbers", 2: "realistic sizes", 3: "awkward sizes" } as const;
+const PUSH_FOLD_LEVEL_NAMES = { 1: "clear choices", 2: "more stacks", 3: "close choices" } as const;
 const SOLVER_LEVEL_NAMES = { 1: "flop", 2: "flop and turn", 3: "all streets" } as const;
 
 // The solver source (bridge library loader, evaluator) is loaded only when a solver question is
@@ -32,8 +35,14 @@ function loadSolverSource(): Promise<SolverSource> {
   return solverSource;
 }
 
+let pushFoldSource: Promise<PushFoldSource> | null = null;
+function loadPushFoldSource(): Promise<PushFoldSource> {
+  pushFoldSource ??= import("@/lib/drills/push-fold/source").then(m => m.createPushFoldSource()).catch(error => { pushFoldSource = null; throw error; });
+  return pushFoldSource;
+}
+
 function buildPending(pending: PendingQuestion): Promise<Question> {
-  return loadSolverSource().then(source => pending.key
+  return (pending.type === "push-fold" ? loadPushFoldSource() : loadSolverSource()).then(source => pending.key
     ? source.fromKey(pending.key, pending.seed, pending.level)
     : source.generate(pending.seed, pending.level));
 }
@@ -73,6 +82,7 @@ function modeKey(mode: DrillMode): string {
 }
 
 function answerHint(q: Question): string {
+  if (q.answer.kind === "push-fold") return "Pick an action (keys 1–2). Within 0.01 bb of the higher action value counts as correct. Both actions can be accepted when close.";
   if (q.answer.kind === "decision") return `Pick an action (keys 1–${q.answer.options.length}). Within 0.3% of the pot of the best EV, or an action the solver plays at least 20% with this hand, counts as correct.`;
   if (q.answer.kind === "percent") return `A percent such as 25, 25% or 1/4. Within ±${q.answer.tolerance} pt${q.answer.tolerance === 1 ? "" : "s"} counts as correct.`;
   if (q.answer.kind === "integer") return "A whole number. Must be exact.";
@@ -87,7 +97,7 @@ function exactText(q: Question): string {
 }
 
 function isOptionAnswer(q: Question): boolean {
-  return q.answer.kind === "choice" || q.answer.kind === "decision";
+  return q.answer.kind === "choice" || q.answer.kind === "decision" || q.answer.kind === "push-fold";
 }
 
 function combineStats(list: readonly (TypeStats | undefined)[]): TypeStats {
@@ -137,8 +147,8 @@ export default function Drills() {
       (error: unknown) => {
         if (!live) return;
         const e = error instanceof Error ? error : new Error(String(error));
-        const retryable = e.name !== "SolverKeyError";
-        setLoadError({ pending, retryable, message: retryable && /loading chunk|dynamically imported|import/i.test(e.message) ? "Could not load the solver drill. Check your connection and retry." : e.message });
+        const retryable = e.name !== "SolverKeyError" && e.name !== "DrillKeyError";
+        setLoadError({ pending, retryable, message: retryable && /loading chunk|dynamically imported|import/i.test(e.message) ? "Could not load this drill. Check your connection and retry." : e.message });
       },
     );
     return () => { live = false; };
@@ -176,7 +186,7 @@ export default function Drills() {
   const pickOption = (index: number): boolean => {
     if (!session?.question || session.result || !isOptionAnswer(session.question)) return false;
     const answer = session.question.answer;
-    const option = answer.kind === "choice" || answer.kind === "decision" ? answer.options[index] : undefined;
+    const option = answer.kind === "choice" || answer.kind === "decision" || answer.kind === "push-fold" ? answer.options[index] : undefined;
     if (!option) return false;
     commit(submit(session, option.id, clock()), true);
     return true;
@@ -225,7 +235,7 @@ export default function Drills() {
   const med = median(stats.recentMs);
   const autoLevelType: DrillType | null = mode.kind === "type" ? mode.type : null;
   const queueByType = ALL_DRILL_TYPES.map(t => [t, state.review.filter(i => i.type === t).length] as const).filter(([, n]) => n > 0);
-  const levelNames = mode.kind === "type" && mode.type === "solver" ? SOLVER_LEVEL_NAMES : LEVEL_NAMES;
+  const levelNames = mode.kind === "type" && mode.type === "solver" ? SOLVER_LEVEL_NAMES : mode.kind === "type" && mode.type === "push-fold" ? PUSH_FOLD_LEVEL_NAMES : LEVEL_NAMES;
   const shownError = loadError && loadError.pending === pending ? loadError : null;
   const retry = (): void => { setLoadError(null); setAttempt(n => n + 1); };
   const skipSaved = (): void => { setLoadError(null); commit(dropPending(session, clock()), true); };
@@ -283,7 +293,7 @@ export default function Drills() {
               <div className={styles.empty}>
                 {shownError ? (
                   <>
-                    <h2 id="drill-question">Couldn&apos;t load the solver spot</h2>
+                    <h2 id="drill-question">{pending.type === "push-fold" ? "Couldn't load the push/fold question" : "Couldn't load the solver spot"}</h2>
                     <p role="alert">{shownError.message}</p>
                     <div className={styles.retryRow}>
                       {shownError.retryable
@@ -293,8 +303,8 @@ export default function Drills() {
                   </>
                 ) : (
                   <>
-                    <h2 id="drill-question">Loading a solver spot…</h2>
-                    <p role="status">Fetching and verifying the saved solver data for this question (a few hundred KB the first time).</p>
+                    <h2 id="drill-question">{pending.type === "push-fold" ? "Loading a push/fold question…" : "Loading a solver spot…"}</h2>
+                    <p role="status">{pending.type === "push-fold" ? "Fetching and verifying one saved stack size (under 50 KB). The timer starts when the question is ready." : "Fetching and verifying the saved solver data for this question (a few hundred KB the first time)."}</p>
                   </>
                 )}
               </div>
@@ -331,6 +341,7 @@ export default function Drills() {
                     );
                   })}
                 </dl>
+                {question.pushFold && <PushFoldContext />}
                 {question.solver && <SolverHistory detail={question.solver} />}
                 {question.solver && !graded && (
                   <div className={styles.toggles}>
@@ -341,16 +352,16 @@ export default function Drills() {
                 {question.solver && !graded && showPrice && <PricePanel detail={question.solver} />}
                 {question.solver && !graded && showRange && <RangePanel detail={question.solver} />}
 
-                {question.answer.kind === "choice" || question.answer.kind === "decision" ? (
-                  <div className={styles.choices} role="group" aria-label="Your answer">
+                {question.answer.kind === "choice" || question.answer.kind === "decision" || question.answer.kind === "push-fold" ? (
+                  <div className={styles.choices} role="group" aria-label="Your answer" aria-describedby={question.answer.kind === "push-fold" ? "drill-choice-hint" : undefined}>
                     {question.answer.options.map((option, i) => {
                       const chosen = graded !== null && session.given === option.id;
                       return (
                         <button key={option.id} type="button" ref={i === 0 ? firstChoiceRef : undefined}
                           disabled={graded !== null} aria-pressed={chosen}
-                          aria-keyshortcuts={question.answer.kind === "decision" ? String(i + 1) : undefined}
+                          aria-keyshortcuts={question.answer.kind !== "choice" ? String(i + 1) : undefined}
                           onClick={() => onSubmit(option.id)}>
-                          {question.answer.kind === "decision" && <kbd aria-hidden="true">{i + 1}</kbd>}
+                          {question.answer.kind !== "choice" && <kbd aria-hidden="true">{i + 1}</kbd>}
                           {option.label}
                         </button>
                       );
@@ -380,6 +391,8 @@ export default function Drills() {
                   </form>
                 )}
 
+                {question.answer.kind === "push-fold" && <p id="drill-choice-hint" className={styles.hint}>{answerHint(question)}</p>}
+
                 <div aria-live="polite" aria-atomic="true">
                   {graded && (
                     <div className={styles.verdictBox}>
@@ -391,7 +404,7 @@ export default function Drills() {
                       </p>
                       {question.answer.kind === "decision" ? (
                         <p className={styles.compare}>{decisionVerdict(question, graded).detail}</p>
-                      ) : <p className={styles.compare}>
+                      ) : question.answer.kind === "push-fold" ? <p className={styles.compare}>Your action gives up {question.answer.grades[String(graded.given)].lossBb.toFixed(3)} bb versus the higher-value action in this saved game.</p> : <p className={styles.compare}>
                         Exact: <strong>{exactText(question)}</strong>
                         {question.answer.kind !== "choice" && <> · You: {session.given}</>}
                         {question.answer.kind === "percent" && graded.error !== undefined && (
@@ -406,6 +419,7 @@ export default function Drills() {
                 </div>
                 {graded && (
                   <div className={graded.correct ? styles.feedbackRight : styles.feedbackWrong}>
+                    {question.pushFold && <PushFoldPanel detail={question.pushFold} />}
                     {question.solver ? <SolverExplanation q={question} given={session.given} /> : <dl className={styles.explanation}>
                       <div><dt>Formula</dt><dd>{question.explanation.formula}</dd></div>
                       <div><dt>Your numbers</dt><dd>{question.explanation.plugged}</dd></div>
@@ -510,10 +524,10 @@ function Header() {
       <p className={styles.eyebrow}>Instant poker math</p>
       <h1>Poker math drills</h1>
       <p className={styles.intro}>
-        One question at a time: pot odds, minimum defence, bluff share, outs, and combo counting. Every
-        answer is computed exactly; the explanation shows the formula with your numbers and the at-table
-        shortcut, and says when a shortcut is only an approximation. Solver decisions put the same math
-        in a real spot and grade your action by its EV loss in a saved solve. The timer measures you and
+        One question at a time: pot odds, minimum defence, bluff share, outs, and combo counting. Math
+        answers use exact formulas; at-table shortcuts are labelled when approximate. Push/fold and
+        postflop decisions grade action values against saved approximate strategies for specific games.
+        Each explanation shows the assumptions and the numbers. The timer measures you and
         never cuts you off. Keys: <kbd>Enter</kbd> checks, <kbd>1</kbd>–<kbd>9</kbd> pick an action, <kbd>N</kbd> moves on.
       </p>
     </header>

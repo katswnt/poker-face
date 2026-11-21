@@ -31,6 +31,9 @@ jobs:
       - name: Audit hand evaluator category counts
         run: npm run audit:math
 
+      - name: Reproduce every push/fold drill and re-grade the rounded profiles
+        run: npm run audit:drills:push-fold
+
       - name: Audit exact push/fold equity matrix
         run: npm run audit:equity-matrix
 
@@ -240,6 +243,11 @@ jobs:
           POKER_FACE_LIVE_REQUIRED: "1"
       - name: Exercise the production Next Worker, UI, source links and keyboard controls
         run: npx playwright test --config playwright.live.config.ts
+        env:
+          POKER_FACE_LIVE_REQUIRED: "1"
+
+      - name: Exercise push/fold drills, keyboard, loading, reviews and reflow in three browsers
+        run: npx playwright test --config playwright.drills.config.ts
         env:
           POKER_FACE_LIVE_REQUIRED: "1"
 

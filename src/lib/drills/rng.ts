@@ -2,7 +2,7 @@
 // (type, seed, level); the salt keeps the same seed from producing correlated numbers
 // across drill types.
 import { mulberry32 } from "@/lib/poker/equity";
-import type { DrillType, Level } from "./types";
+import type { DrillType, Level } from "./practice-types";
 
 export type Rng = () => number;
 

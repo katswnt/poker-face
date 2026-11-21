@@ -89,6 +89,19 @@ Explanations show the formula with your numbers and the at-table shortcut, and r
 are labelled approximate. Missed questions return through a Leitner review queue stored in
 your browser. See the [drills spec](tasks/drills-spec.md).
 
+**Push or fold (`/drills?drill=push-fold`).** Practice both seats in the restricted
+heads-up shove-or-fold game, at 37 depths from 2–20 bb. The drill reuses the saved approximate
+strategies, with no new training or browser solve. Feedback shows both action values in bb
+relative to folding now, saved frequencies, the action gap, conditional equity, fold chance
+or call price, and blockers. Both actions count when their value difference is at most
+0.01 bb; that practice tolerance is not a solver error bound. All 12,506 decisions are
+independently recomputed, and the actual rounded profiles meet the existing 0.0005 bb
+combined best-response-gain target (maximum 0.000046465 bb). The fixed equity matrix is
+rounded to six decimals after exact enumeration. One hash-verified depth downloads at a
+time (under 48 KB); reviews preserve the dataset, seat, stack and hand. No limps, small
+raises, later betting, rake, or antes are modeled. See the [validation contract and next
+drills](tasks/drill-expansion-plan.md) and [D1 release record](tasks/drills-push-fold-d1.md).
+
 **Solver decisions (`/drills?drill=solver`).** Choose an action with a particular hand on
 the flop, turn or river. See the saved strategy's frequencies, action EVs, EV differences,
 price and blocker-aware opponent range groups. Questions load from hash-checked library
@@ -813,8 +826,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    The [E1 implementation](tasks/live-decision-ev-spec.md) adds optional native/WASM action
    values and model-relative comparisons in `/play`, with independent complete-game
    checks, immutable pre-action model identity and new source-bound regression evidence.
-   Its release gates pass. Next: prospective push/fold and equity-vs-range
-   drill contracts, then hand review; none depends on promoting the flagged preflop model.
+   Its release gates pass. The [drill expansion contract](tasks/drill-expansion-plan.md)
+   adds push/fold practice first, then equity-versus-range drills and hand review;
+   none depends on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

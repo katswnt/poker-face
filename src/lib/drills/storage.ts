@@ -1,8 +1,9 @@
 // localStorage persistence for the drills. Every access is wrapped in try/catch; a missing,
 // corrupt or throwing store yields a fresh in-memory state and the page keeps working.
+import { parsePushFoldKey } from "./push-fold/key";
 import { isDrillType } from "./generators";
 import { initialState, type Box, type DrillState, type Progress, type ReviewItem, type TypeStats } from "./scheduler";
-import type { DrillType, Level } from "./types";
+import type { DrillType, Level } from "./practice-types";
 
 export const STORAGE_KEY = "poker-face:drills:v1";
 
@@ -28,6 +29,10 @@ function readItem(v: unknown): ReviewItem | null {
   if (!isObj(v)) return null;
   const { type, seed, level, box, dueAt, lapses, key } = v;
   if (!isDrillType(type) || !isNat(seed) || seed > 0xffffffff || !isLevel(level) || !isBox(box) || !isNat(dueAt) || !isNat(lapses)) return null;
+  if (type === "push-fold") {
+    if (typeof key !== "string" || !parsePushFoldKey(key)) return null;
+    return { id: `push-fold:${key}`, type, seed, level, box, dueAt, lapses, key };
+  }
   if (type === "solver") {
     if (typeof key !== "string" || !SOLVER_KEY.test(key)) return null;
     return { id: `solver:${key}`, type, seed, level, box, dueAt, lapses, key };

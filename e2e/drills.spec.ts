@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 // pure session the page runs and asserts against its exact questions.
 import { initialState } from "../src/lib/drills/scheduler";
 import { advance, startSession, submit } from "../src/lib/drills/session";
-import type { Question } from "../src/lib/drills/types";
+import type { Question } from "../src/lib/drills/practice-types";
 
 const exact = (q: Question): string => {
   if (q.answer.kind === "choice") return q.answer.value;

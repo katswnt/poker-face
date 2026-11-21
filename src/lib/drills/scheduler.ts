@@ -1,6 +1,6 @@
 // Leitner review queue, per-type stats and the automatic difficulty ramp. All pure: every
 // function returns a new state. Time is counted in answered questions ("ticks"), not days.
-import type { DrillType, GradeResult, Level, Question } from "./types";
+import type { DrillType, GradeResult, Level, Question } from "./practice-types";
 
 export type Box = 1 | 2 | 3 | 4;
 /** Questions until an item in each box is due again. */

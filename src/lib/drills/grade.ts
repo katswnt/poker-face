@@ -1,5 +1,5 @@
 // Parsing and grading. Percent answers are in percentage points; tolerance is inclusive.
-import type { AnswerKind, GradeResult, Question } from "./types";
+import type { AnswerKind, GradeResult, Question } from "./practice-types";
 
 export type Parsed = { readonly ok: true; readonly value: number } | { readonly ok: false };
 
@@ -8,7 +8,7 @@ const NUMBER = /^[+]?(\d+(\.\d*)?|\.\d+)$/;
 export const GRADE_EPSILON = 1e-9;
 
 /** Percent: `25`, `25.0`, `25 %`, or a fraction `1/4` (→ 25). Integer: `12` or `12.0`. */
-export function parseAnswer(kind: Exclude<AnswerKind, "choice" | "decision">, raw: string): Parsed {
+export function parseAnswer(kind: Exclude<AnswerKind, "choice" | "decision" | "push-fold">, raw: string): Parsed {
   const text = raw.trim().replace(/,/g, "");
   if (kind === "percent") {
     const fraction = /^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/.exec(text);
@@ -36,12 +36,12 @@ export function grade(question: Question, input: string, elapsedMs: number): Gra
   let given: number | string;
   let error: number | undefined;
   let band: GradeResult["band"];
-  if (answer.kind === "decision") {
+  if (answer.kind === "decision" || answer.kind === "push-fold") {
     const verdict = Object.prototype.hasOwnProperty.call(answer.grades, input) ? answer.grades[input] : undefined;
     if (!verdict || !answer.options.some(o => o.id === input)) return null;
     given = input;
     correct = verdict.correct;
-    band = verdict.band;
+    if (answer.kind === "decision") band = answer.grades[input].band;
   } else if (answer.kind === "choice") {
     if (!answer.options.some(o => o.id === input)) return null;
     given = input;

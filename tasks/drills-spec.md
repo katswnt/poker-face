@@ -309,3 +309,12 @@ key through storage. `e2e/drills-solver.spec.ts`: keyboard answer and explanatio
   `scheduler.ts`, `storage.ts`, `session.ts`, `index.ts`.
 - `src/app/drills/` — `page.tsx` (server, metadata), `Drills.tsx` (client), `drills.module.css`.
 - `test/drills-*.test.ts`, `e2e/drills.spec.ts`.
+
+## Push/fold and equity-versus-range expansion
+
+The separate [prospective validation contract](drill-expansion-plan.md) governs D1 and D2.
+D1 adds `push-fold` to the existing async session and review queue, with its own 0.01 bb
+action-value grading rule. It does **not** inherit the postflop mixed-action exemption above.
+Fresh Mixed math sampling and existing solver questions retain their original behavior.
+See the [D1 record](drills-push-fold-d1.md) for measurements and release gates. D2 remains
+next until its own contract and release gates are met.

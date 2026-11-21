@@ -1,7 +1,7 @@
 // Presentational pieces for solver-backed decision questions. Types and formatting only: the
 // solver source itself is loaded with a dynamic import by Drills.tsx.
 import { fmtChipsBb, fmtPct, fmtSignedChipsBb } from "@/lib/drills/format";
-import type { DecisionBand, GradeResult, Question, SolverDetail } from "@/lib/drills/types";
+import type { DecisionBand, GradeResult, Question, SolverDetail } from "@/lib/drills/practice-types";
 import styles from "./drills.module.css";
 
 export const BAND_LABELS: Readonly<Record<DecisionBand, string>> = {

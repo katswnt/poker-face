@@ -734,3 +734,12 @@
     padding: 6px 4px;
   }
 }
+
+/* Push/fold: three compact columns reflow at a 320px viewport. */
+.pushFoldTable { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 12px; }
+.pushFoldTable caption { text-align: left; padding-bottom: 8px; color: #eeeeea; }
+.pushFoldTable th, .pushFoldTable td { border-bottom: 1px solid #2a2e34; padding: 8px 2px; text-align: right; overflow-wrap: anywhere; }
+.pushFoldTable th:first-child { text-align: left; width: 38%; }
+.pushFoldTable thead th { color: #a8a8a0; font-weight: 400; }
+.dataIdentity { overflow-wrap: anywhere; }
+.details a { color: #7dd3a0; text-underline-offset: 3px; }

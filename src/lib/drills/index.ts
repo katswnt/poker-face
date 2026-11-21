@@ -1,4 +1,4 @@
-export * from "./types";
+export * from "./practice-types";
 export * from "./generators";
 export * from "./grade";
 export * from "./scheduler";

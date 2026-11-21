@@ -1,17 +1,17 @@
 // The drill session as a pure state machine: pick a question, grade an answer, move on.
 // The UI supplies the clock (`now`, ms) and a session seed; everything else is deterministic.
-import { DRILL_TYPES, generateQuestion } from "./generators";
+import { DRILL_TYPES, generateQuestion, isAsyncDrillType } from "./generators";
 import { grade } from "./grade";
 import { sessionRng } from "./rng";
 import { START_PROGRESS, applyResult, pickNext, type DrillMode, type DrillState, type ReviewEvent } from "./scheduler";
-import type { DrillType, GradeResult, Level, Question } from "./types";
+import type { AsyncDrillType, DrillType, GradeResult, Level, Question } from "./practice-types";
 
 export type LevelPin = Level | "auto";
 
 /** A solver question the UI must build asynchronously (lazy-loaded library chunks), then hand
  *  back with `resolvePending`. Fresh: sampled from `(seed, level)`; review: rebuilt from `key`. */
 export interface PendingQuestion {
-  readonly type: "solver";
+  readonly type: AsyncDrillType;
   readonly seed: number;
   readonly level: Level;
   readonly key?: string;
@@ -53,27 +53,27 @@ export function advance(session: Session, now: number): Session {
   if (pick.source === "empty") return { ...base, question: null, fromReview: false };
   if (pick.source === "review") {
     const { item } = pick;
-    if (item.type === "solver") {
-      return { ...base, question: null, fromReview: true, pending: { type: "solver", seed: item.seed, level: item.level, key: item.key, fromReview: true } };
+    if (isAsyncDrillType(item.type)) {
+      return { ...base, question: null, fromReview: true, pending: { type: item.type, seed: item.seed, level: item.level, key: item.key, fromReview: true } };
     }
     return { ...base, question: generateQuestion(item.type, item.seed, item.level), fromReview: true };
   }
   const { seed, typePick } = freshDraw(session.sessionSeed, session.drawn);
   const type = session.mode.kind === "type" ? session.mode.type : DRILL_TYPES[Math.floor(typePick * DRILL_TYPES.length)];
   const level = levelFor(session.state, type, session.levelPin);
-  if (type === "solver") {
-    return { ...base, drawn: session.drawn + 1, question: null, fromReview: false, pending: { type: "solver", seed, level, fromReview: false } };
+  if (isAsyncDrillType(type)) {
+    return { ...base, drawn: session.drawn + 1, question: null, fromReview: false, pending: { type, seed, level, fromReview: false } };
   }
   return { ...base, drawn: session.drawn + 1, question: generateQuestion(type, seed, level), fromReview: false };
 }
 
 const lastPendingId = (session: Session): string | undefined =>
-  session.pending?.key ? `solver:${session.pending.key}` : undefined;
+  session.pending?.key ? `${session.pending.type}:${session.pending.key}` : undefined;
 
 /** Install the question built for `session.pending`; the timer starts now. A stale question
  *  (the mode changed while it loaded) is ignored. */
 export function resolvePending(session: Session, pending: PendingQuestion, question: Question, now: number): Session {
-  if (session.pending !== pending) return session;
+  if (session.pending !== pending || question.type !== pending.type || question.seed !== pending.seed || question.level !== pending.level || (pending.key !== undefined && question.reviewKey !== pending.key)) return session;
   return { ...session, pending: null, question, fromReview: pending.fromReview, shownAt: now };
 }
 
@@ -81,7 +81,7 @@ export function resolvePending(session: Session, pending: PendingQuestion, quest
 export function dropPending(session: Session, now: number): Session {
   const key = session.pending?.key;
   if (!key) return session;
-  const state = { ...session.state, review: session.state.review.filter(item => item.key !== key) };
+  const state = { ...session.state, review: session.state.review.filter(item => item.type !== session.pending?.type || item.key !== key) };
   return advance({ ...session, state, pending: null, question: null }, now);
 }
 
