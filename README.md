@@ -826,9 +826,10 @@ already powers solver-backed drills. The active path does not depend on a collab
    The [E1 implementation](tasks/live-decision-ev-spec.md) adds optional native/WASM action
    values and model-relative comparisons in `/play`, with independent complete-game
    checks, immutable pre-action model identity and new source-bound regression evidence.
-   Its release gates pass. The [drill expansion contract](tasks/drill-expansion-plan.md)
-   adds push/fold practice first, then equity-versus-range drills and hand review;
-   none depends on promoting the flagged preflop model.
+   Its release gates pass. [Push/fold drills](tasks/drills-push-fold-d1.md) are also
+   shipped and verified in production. The [drill expansion contract](tasks/drill-expansion-plan.md)
+   puts equity-versus-range drills next, followed by hand review; neither depends on
+   promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

@@ -76,10 +76,10 @@ posted blinds are sunk. They are not full-hand net profit.
 - [x] Byte reproduction, all quality gates, all sampling buckets, measured download sizes.
 - [x] Browser: keyboard answer/Next/focus, loading/retry/stale switch, persisted review,
   correct explanation, 320/390/desktop layouts, 200% zoom, three engines, screenshots.
-- [ ] Exact commit with copied dependencies: full unit suite (native/WASM tests available),
+- [x] Exact commit with copied dependencies: full unit suite (native/WASM tests available),
   typecheck, lint, relevant existing solver audits, new artifact audit, production build.
-- [ ] Explicit owned files only (README hunks only), push main, all eight CI jobs green.
-- [ ] Clean-checkout WASM rebuild and guarded Vercel deployment; deployed source archive,
+- [x] Explicit owned files only (README hunks only), push main, all eight CI jobs green.
+- [x] Clean-checkout WASM rebuild and guarded Vercel deployment; deployed source archive,
   hashes, new drill and `/play` smoke checks verified. Record commit and measured results.
 
 ## Frozen D2 contract (before implementation)

@@ -2,7 +2,7 @@
 
 Implementation started 2026-11-21 from `747a293`. Contract:
 [drill-expansion-plan.md](drill-expansion-plan.md), frozen D1 section.
-Status: candidate implemented; exact-commit, hosted CI and deployment gates pending.
+Status: shipped and verified in production, 2026-11-21.
 
 ## What changed
 
@@ -89,11 +89,43 @@ CI=1 npx playwright test --config playwright.drills.config.ts --retries=0
 - [x] Frozen contract, failing tests first, independent values and serialized-profile grades.
 - [x] Byte reproduction, sampling coverage, bounded/lazy loading and review identity.
 - [x] Candidate keyboard, responsive and three-browser checks; visible model/grade limits.
-- [ ] Exact commit in isolation with **copied** dependencies, full native/WASM-enabled unit
+- [x] Exact commit in isolation with **copied** dependencies, full native/WASM-enabled unit
   suite, typecheck, lint, relevant solver audits and production build.
-- [ ] Push explicit D1 files to main; all eight hosted CI jobs green.
-- [ ] Clean-checkout WASM rebuild; guarded Vercel deploy; deployed source archive and build
+- [x] Push explicit D1 files to main; all eight hosted CI jobs green.
+- [x] Clean-checkout WASM rebuild; guarded Vercel deploy; deployed source archive and build
   hashes match; deployed drill and `/play` checks pass.
+
+## Verified release — 2026-11-21
+
+Code commit: `be05152646d493a656e5062b07326bd6f0b2b084` (69 explicit files; README
+hunks only). All eight jobs passed in [CI 44952657754](https://github.com/katswnt/poker-face/actions/runs/44952657754),
+observed green at 22:11:32 UTC before deployment.
+
+The exact clean checkout with **copied** dependencies passed fresh native/WASM builds,
+23 Rust tests, **1,110/1,110 unit tests** (zero skips, 147.803 seconds), typecheck,
+lint and 16 audits: push/fold data, equity matrix, bridge, WASM parity/example, river v3,
+play library/P1/P2/P3/P4/P5/E1, preflop reproduction, wide-range and gadget audits.
+The guarded production build and 104 full-app browser tests passed. Dedicated three-engine
+checks: drills 24/24 (16.5 seconds), play 28 passed / 2 existing non-Chromium zoom skips,
+live solver 34 / 2 equivalent skips. Zero retries. No new skip or tolerance change.
+
+The pinned Vercel 62.1.0 prebuilt production deployment is
+`dpl_HynauesGcebg5NbS8JsmmTHW55VR`, immutable URL
+<https://poker-face-l55xbei8r-kat-swints-projects.vercel.app>, serving
+<https://pokerface.katswint.com/drills?drill=push-fold>.
+
+- Build hash: `d80ae977b1d0930044657e521f84057bb43c35f967f3e28d322965fff2514052`.
+- Engine source: `f6bc73d115885a997ac66390fdcaf489b7974541a481fbd66ddfd9127531f981`.
+- Corresponding source archive: `ae328471b900542c26f10867d279cc7006fe1d4309a85e5cdfed7e369b60264f` (4,808,786 bytes).
+
+Public verification fetched and matched all six engine/source assets, checked both engine
+pages' source links, and matched all 37 drill files (1,763,288 bytes). Deployed drill/play
+checks: **52 passed, 2 existing non-Chromium zoom skips**, zero retries, 2.0 minutes.
+The 24 new drill checks all passed in Chromium, Firefox and WebKit. Physical phone
+performance and native browser zoom for the new drill remain unmeasured; its 200% checks
+use CSS zoom. Logs and screenshots are retained locally under
+`build/drill-expansion-2026-11-21/`; the record is evidence of the above execution, not a
+claim that all historical performance corpora were freshly profiled.
 
 ## Ownership and next step
 
