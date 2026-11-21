@@ -743,3 +743,13 @@
 .pushFoldTable thead th { color: #a8a8a0; font-weight: 400; }
 .dataIdentity { overflow-wrap: anywhere; }
 .details a { color: #7dd3a0; text-underline-offset: 3px; }
+
+/* The entire explicit range remains visible before answering, including removed rows. */
+.equityRangeTable { width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 12px; font-size: 0.78rem; }
+.equityRangeTable caption { text-align: left; color: #eeeeea; padding-bottom: 8px; }
+.equityRangeTable th, .equityRangeTable td { padding: 8px 2px; border-bottom: 1px solid #2a2e34; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.equityRangeTable th:first-child { width: 40%; }
+.equityRangeTable thead th { color: #a8a8a0; font-weight: 400; }
+.equityRangeTable td { line-height: 1.6; }
+.equityCounts { padding-left: 1.2em; font-size: 0.76rem; line-height: 1.7; }
+.equityCounts li { margin-top: 8px; }

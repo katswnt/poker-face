@@ -318,3 +318,13 @@ action-value grading rule. It does **not** inherit the postflop mixed-action exe
 Fresh Mixed math sampling and existing solver questions retain their original behavior.
 See the [D1 record](drills-push-fold-d1.md) for measurements and release gates. D2 remains
 next until its own contract and release gates are met.
+
+## Equity-versus-range practice (D2)
+
+The [frozen D2 contract](drill-expansion-plan.md#frozen-d2-contract-before-implementation)
+and [implementation record](drills-equity-range-d2.md) add `/drills?drill=equity-range`:
+36 explicit turn/river cases, exact weighted enumeration, two independent evaluators,
+complete visible ranges and blocker removal. The ±2-point band is a practice tolerance;
+equity assumes no further betting and is not a call EV. A 30-second target never cuts off
+an answer. Full dataset/case keys preserve reviews; existing Mixed math and solver grading
+remain unchanged. No PF4 promotion or claim that a hand-written range is a solved policy.

@@ -1,0 +1,1944 @@
+{
+  "format": "poker-face-equity-drill-inputs",
+  "version": 1,
+  "cases": [
+    {
+      "id": "e01",
+      "level": 1,
+      "hero": [
+        "As",
+        "Kd"
+      ],
+      "board": [
+        "Ac",
+        "7d",
+        "5s",
+        "2h",
+        "9c"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7h",
+            "7s"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qd"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e02",
+      "level": 1,
+      "hero": [
+        "Kh",
+        "Kd"
+      ],
+      "board": [
+        "Ah",
+        "9c",
+        "7d",
+        "4s",
+        "2c"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ac",
+            "Qs"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "Jd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "8c",
+            "8d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e03",
+      "level": 1,
+      "hero": [
+        "Qh",
+        "Jc"
+      ],
+      "board": [
+        "As",
+        "Kd",
+        "Qc",
+        "7h",
+        "2s"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Td"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "9c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Tc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9h",
+            "8d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e04",
+      "level": 1,
+      "hero": [
+        "2c",
+        "3d"
+      ],
+      "board": [
+        "As",
+        "Ks",
+        "Qs",
+        "Js",
+        "Ts"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "8h",
+            "7h"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e05",
+      "level": 1,
+      "hero": [
+        "As",
+        "5s"
+      ],
+      "board": [
+        "2s",
+        "3s",
+        "4s",
+        "Kd",
+        "Qh"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Kh",
+            "Kc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "6c",
+            "7c"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e06",
+      "level": 1,
+      "hero": [
+        "7c",
+        "2d"
+      ],
+      "board": [
+        "As",
+        "Ah",
+        "Kc",
+        "Qd",
+        "Js"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ad",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "8h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qh"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e07",
+      "level": 1,
+      "hero": [
+        "Ac",
+        "Qd"
+      ],
+      "board": [
+        "Ah",
+        "8c",
+        "8d",
+        "4s",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Jc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ad",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "8h",
+            "7h"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e08",
+      "level": 1,
+      "hero": [
+        "Tc",
+        "Td"
+      ],
+      "board": [
+        "Ts",
+        "9c",
+        "5d",
+        "3h",
+        "2s"
+      ],
+      "range": [
+        {
+          "cards": [
+            "9h",
+            "9d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "5s",
+            "5c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Jh",
+            "Jd"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e09",
+      "level": 1,
+      "hero": [
+        "9h",
+        "8h"
+      ],
+      "board": [
+        "7c",
+        "6d",
+        "5s",
+        "Kc",
+        "2d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "4c",
+            "3c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "8d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kd"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e10",
+      "level": 1,
+      "hero": [
+        "Ah",
+        "3h"
+      ],
+      "board": [
+        "Kh",
+        "9h",
+        "6h",
+        "2c",
+        "8d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qh",
+            "Jh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7h",
+            "5h"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e11",
+      "level": 1,
+      "hero": [
+        "Qc",
+        "Qd"
+      ],
+      "board": [
+        "Qs",
+        "7c",
+        "7d",
+        "2h",
+        "As"
+      ],
+      "range": [
+        {
+          "cards": [
+            "7h",
+            "7s"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "2c",
+            "2d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e12",
+      "level": 1,
+      "hero": [
+        "Ac",
+        "Kd"
+      ],
+      "board": [
+        "Ah",
+        "Ad",
+        "As",
+        "7c",
+        "2d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Kh",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Jc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e13",
+      "level": 2,
+      "hero": [
+        "Ah",
+        "Jd"
+      ],
+      "board": [
+        "Ac",
+        "Kc",
+        "9d",
+        "6s",
+        "3h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ad",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "Td"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kd",
+            "Qs"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "6c",
+            "6d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e14",
+      "level": 2,
+      "hero": [
+        "Ks",
+        "Qs"
+      ],
+      "board": [
+        "As",
+        "Ts",
+        "4s",
+        "4h",
+        "2c"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Js",
+            "9s"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "4c",
+            "4d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Th",
+            "Td"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "5s",
+            "6s"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e15",
+      "level": 2,
+      "hero": [
+        "8h",
+        "8d"
+      ],
+      "board": [
+        "8c",
+        "7s",
+        "7h",
+        "Kd",
+        "2c"
+      ],
+      "range": [
+        {
+          "cards": [
+            "7c",
+            "7d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "6h",
+            "6d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Js"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "2h",
+            "2d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e16",
+      "level": 2,
+      "hero": [
+        "Ac",
+        "5d"
+      ],
+      "board": [
+        "2s",
+        "3h",
+        "4c",
+        "9d",
+        "Ks"
+      ],
+      "range": [
+        {
+          "cards": [
+            "6c",
+            "5h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "6h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qc",
+            "Jd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "5s"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e17",
+      "level": 2,
+      "hero": [
+        "Kh",
+        "Jc"
+      ],
+      "board": [
+        "Ks",
+        "Qd",
+        "7s",
+        "7d",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Qc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kd",
+            "Tc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qh",
+            "Qs"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7c",
+            "6c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "Ts"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e18",
+      "level": 2,
+      "hero": [
+        "Jh",
+        "Th"
+      ],
+      "board": [
+        "Ah",
+        "Kh",
+        "Qh",
+        "2s",
+        "2d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "2c",
+            "2h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9h",
+            "8h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Kc"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e19",
+      "level": 2,
+      "hero": [
+        "Ah",
+        "Kh"
+      ],
+      "board": [
+        "Qh",
+        "Jh",
+        "2c",
+        "7d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qs",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9h",
+            "8h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Tc",
+            "9c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7c",
+            "7s"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e20",
+      "level": 2,
+      "hero": [
+        "9c",
+        "8d"
+      ],
+      "board": [
+        "7h",
+        "6s",
+        "2c",
+        "Kd"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Ah"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7c",
+            "7d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Tc",
+            "Ts"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Qc"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e21",
+      "level": 2,
+      "hero": [
+        "Qc",
+        "Qh"
+      ],
+      "board": [
+        "Ts",
+        "8d",
+        "4c",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Ah"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Jc",
+            "Jd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9s",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Th",
+            "9d"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e22",
+      "level": 2,
+      "hero": [
+        "Ac",
+        "Kd"
+      ],
+      "board": [
+        "Ah",
+        "9s",
+        "5c",
+        "3d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ad",
+            "Jc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9c",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "5s",
+            "5d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7c",
+            "6c"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e23",
+      "level": 2,
+      "hero": [
+        "7h",
+        "7d"
+      ],
+      "board": [
+        "7c",
+        "6h",
+        "2s",
+        "Kd"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ks",
+            "Kh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "6c",
+            "6d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "As",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qh",
+            "Jh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "5c",
+            "4c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Qc"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e24",
+      "level": 2,
+      "hero": [
+        "As",
+        "4s"
+      ],
+      "board": [
+        "Ks",
+        "8s",
+        "3d",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "8c",
+            "8d"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Js"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "5c",
+            "6c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "Qh"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e25",
+      "level": 3,
+      "hero": [
+        "Ah",
+        "Kh"
+      ],
+      "board": [
+        "Qh",
+        "Jh",
+        "2c",
+        "7d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qs",
+            "Qd"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "9h",
+            "8h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Tc",
+            "9c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "As"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "2c",
+            "2s"
+          ],
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "e26",
+      "level": 3,
+      "hero": [
+        "Ah",
+        "Kh"
+      ],
+      "board": [
+        "Qh",
+        "Jh",
+        "2c",
+        "7d"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qs",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "9h",
+            "8h"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "Tc",
+            "9c"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Ah",
+            "As"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "2c",
+            "2s"
+          ],
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "e27",
+      "level": 3,
+      "hero": [
+        "As",
+        "Qd"
+      ],
+      "board": [
+        "Ac",
+        "Ts",
+        "7s",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Kh"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "Ad",
+            "Jc"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Th",
+            "Td"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Js"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "As",
+            "Ks"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "7s",
+            "7d"
+          ],
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "e28",
+      "level": 3,
+      "hero": [
+        "Ad",
+        "Qd"
+      ],
+      "board": [
+        "Ac",
+        "Ts",
+        "7s",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Kh"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "As",
+            "Jc"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Th",
+            "Td"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Js"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "Ad",
+            "Kd"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "7s",
+            "7d"
+          ],
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "e29",
+      "level": 3,
+      "hero": [
+        "9h",
+        "8h"
+      ],
+      "board": [
+        "7h",
+        "6c",
+        "2h",
+        "Kd"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ah",
+            "Kh"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "Ks",
+            "Kc"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "5c",
+            "4c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "7c",
+            "7d"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "9h",
+            "9c"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "Kd",
+            "Qc"
+          ],
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "e30",
+      "level": 3,
+      "hero": [
+        "Qc",
+        "Qd"
+      ],
+      "board": [
+        "Qs",
+        "8c",
+        "8d",
+        "2s"
+      ],
+      "range": [
+        {
+          "cards": [
+            "8h",
+            "8s"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "Kh",
+            "Kd"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "2c",
+            "2d"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Qc",
+            "Jc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "8c",
+            "7c"
+          ],
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "e31",
+      "level": 3,
+      "hero": [
+        "5s",
+        "4s"
+      ],
+      "board": [
+        "3s",
+        "2d",
+        "Ah",
+        "Kc"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "As",
+            "Kh"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "6c",
+            "7c"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Qs",
+            "Js"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "4s",
+            "4h"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "Kc",
+            "Kd"
+          ],
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "e32",
+      "level": 3,
+      "hero": [
+        "Ah",
+        "9c"
+      ],
+      "board": [
+        "As",
+        "7d",
+        "7c",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ac",
+            "Kd"
+          ],
+          "weight": 6
+        },
+        {
+          "cards": [
+            "Ad",
+            "8s"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "7h",
+            "6h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ks",
+            "Kh"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "Ah",
+            "Qh"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "2h",
+            "2d"
+          ],
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "e33",
+      "level": 3,
+      "hero": [
+        "Kh",
+        "Kd"
+      ],
+      "board": [
+        "Ah",
+        "Qs",
+        "Js",
+        "3c"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Ac",
+            "Ad"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "As",
+            "Td"
+          ],
+          "weight": 5
+        },
+        {
+          "cards": [
+            "Ts",
+            "9s"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "Qc",
+            "Qd"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Kh",
+            "9h"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Js",
+            "Jc"
+          ],
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "e34",
+      "level": 3,
+      "hero": [
+        "Ts",
+        "9s"
+      ],
+      "board": [
+        "8s",
+        "7d",
+        "2c",
+        "Qh"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qs",
+            "Qd"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "As",
+            "Ks"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "6h",
+            "5h"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Jc",
+            "Tc"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ts",
+            "Th"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "2c",
+            "2d"
+          ],
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "e35",
+      "level": 3,
+      "hero": [
+        "6c",
+        "6d"
+      ],
+      "board": [
+        "6h",
+        "5h",
+        "4s",
+        "Ac"
+      ],
+      "range": [
+        {
+          "cards": [
+            "As",
+            "Ad"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "7c",
+            "8c"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "3c",
+            "2c"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "Kh",
+            "Qh"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "6c",
+            "Ks"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "5h",
+            "5s"
+          ],
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "e36",
+      "level": 3,
+      "hero": [
+        "Jh",
+        "Jd"
+      ],
+      "board": [
+        "Js",
+        "Ts",
+        "9d",
+        "2h"
+      ],
+      "range": [
+        {
+          "cards": [
+            "Qc",
+            "Kc"
+          ],
+          "weight": 10
+        },
+        {
+          "cards": [
+            "Th",
+            "Td"
+          ],
+          "weight": 2
+        },
+        {
+          "cards": [
+            "9c",
+            "9h"
+          ],
+          "weight": 1
+        },
+        {
+          "cards": [
+            "Ah",
+            "Ad"
+          ],
+          "weight": 4
+        },
+        {
+          "cards": [
+            "Jh",
+            "Qh"
+          ],
+          "weight": 3
+        },
+        {
+          "cards": [
+            "Ts",
+            "8s"
+          ],
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}

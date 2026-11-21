@@ -4,7 +4,6 @@
 // only owns the clock, focus, keyboard shortcuts and persistence calls.
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { RN, SUIT_NAMES } from "@/lib/poker/cards";
 import type { CardObj } from "@/lib/poker/types";
 import {
   ALL_DRILL_TYPES, BOX_GAPS, DRILL_LABELS, DRILL_TYPES, browserStorage, dueCount, fmtPct, fmtPts, initialState,
@@ -16,12 +15,16 @@ import {
 } from "@/lib/drills/session";
 import type { SolverSource } from "@/lib/drills/solver";
 import { PricePanel, RangePanel, SolverExplanation, SolverHistory, decisionVerdict } from "./SolverPanels";
+import { Cards } from "./DrillCards";
+import { EquityRangeContext, EquityRangePanel } from "./EquityRangePanel";
+import type { EquityRangeSource } from "@/lib/drills/equity-range/source";
 import { PushFoldContext, PushFoldPanel } from "./PushFoldPanel";
 import type { PushFoldSource } from "@/lib/drills/push-fold/source";
 import styles from "./drills.module.css";
 
 const LEVEL_NAMES = { 1: "round numbers", 2: "realistic sizes", 3: "awkward sizes" } as const;
 const PUSH_FOLD_LEVEL_NAMES = { 1: "clear choices", 2: "more stacks", 3: "close choices" } as const;
+const EQUITY_RANGE_LEVEL_NAMES = { 1: "simple rivers", 2: "rivers and turns", 3: "weighted turns" } as const;
 const SOLVER_LEVEL_NAMES = { 1: "flop", 2: "flop and turn", 3: "all streets" } as const;
 
 // The solver source (bridge library loader, evaluator) is loaded only when a solver question is
@@ -41,35 +44,22 @@ function loadPushFoldSource(): Promise<PushFoldSource> {
   return pushFoldSource;
 }
 
+let equityRangeSource: Promise<EquityRangeSource> | null = null;
+function loadEquityRangeSource(): Promise<EquityRangeSource> {
+  equityRangeSource ??= import("@/lib/drills/equity-range/source").then(m => m.createEquityRangeSource()).catch(error => { equityRangeSource = null; throw error; });
+  return equityRangeSource;
+}
+
 function buildPending(pending: PendingQuestion): Promise<Question> {
-  return (pending.type === "push-fold" ? loadPushFoldSource() : loadSolverSource()).then(source => pending.key
+  return (pending.type === "equity-range" ? loadEquityRangeSource() : pending.type === "push-fold" ? loadPushFoldSource() : loadSolverSource()).then(source => pending.key
     ? source.fromKey(pending.key, pending.seed, pending.level)
     : source.generate(pending.seed, pending.level));
 }
 
 interface LoadError { readonly pending: PendingQuestion; readonly message: string; readonly retryable: boolean; }
-const RED_SUITS = new Set(["♥", "♦"]);
 
 const clock = () => performance.now();
 const seconds = (ms: number) => (ms / 1000).toFixed(1);
-
-function cardWords(card: CardObj): string {
-  const value = card.rank === "10" ? 10 : ({ J: 11, Q: 12, K: 13, A: 14 } as Record<string, number>)[card.rank] ?? Number(card.rank);
-  return `${RN[value].toLowerCase()} of ${SUIT_NAMES[card.suit]}`;
-}
-
-function Cards({ cards }: Readonly<{ cards: readonly CardObj[] }>) {
-  return (
-    <span className={styles.cards}>
-      <span className={styles.srOnly}>{cards.map(cardWords).join(", ")}</span>
-      {cards.map(card => (
-        <span key={card.rank + card.suit} aria-hidden="true" className={RED_SUITS.has(card.suit) ? styles.playingCardRed : styles.playingCard}>
-          {card.rank}{card.suit}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 function factCards(q: Question, label: string): readonly CardObj[] | null {
   if (label === "Your hand" && q.hole) return q.hole;
@@ -82,6 +72,7 @@ function modeKey(mode: DrillMode): string {
 }
 
 function answerHint(q: Question): string {
+  if (q.type === "equity-range") return "Enter 0 to 100 percent (25, 25% or 1/4). Within ±2 percentage points counts as correct: a practice tolerance, not sampling uncertainty.";
   if (q.answer.kind === "push-fold") return "Pick an action (keys 1–2). Within 0.01 bb of the higher action value counts as correct. Both actions can be accepted when close.";
   if (q.answer.kind === "decision") return `Pick an action (keys 1–${q.answer.options.length}). Within 0.3% of the pot of the best EV, or an action the solver plays at least 20% with this hand, counts as correct.`;
   if (q.answer.kind === "percent") return `A percent such as 25, 25% or 1/4. Within ±${q.answer.tolerance} pt${q.answer.tolerance === 1 ? "" : "s"} counts as correct.`;
@@ -235,7 +226,7 @@ export default function Drills() {
   const med = median(stats.recentMs);
   const autoLevelType: DrillType | null = mode.kind === "type" ? mode.type : null;
   const queueByType = ALL_DRILL_TYPES.map(t => [t, state.review.filter(i => i.type === t).length] as const).filter(([, n]) => n > 0);
-  const levelNames = mode.kind === "type" && mode.type === "solver" ? SOLVER_LEVEL_NAMES : mode.kind === "type" && mode.type === "push-fold" ? PUSH_FOLD_LEVEL_NAMES : LEVEL_NAMES;
+  const levelNames = mode.kind === "type" && mode.type === "equity-range" ? EQUITY_RANGE_LEVEL_NAMES : mode.kind === "type" && mode.type === "solver" ? SOLVER_LEVEL_NAMES : mode.kind === "type" && mode.type === "push-fold" ? PUSH_FOLD_LEVEL_NAMES : LEVEL_NAMES;
   const shownError = loadError && loadError.pending === pending ? loadError : null;
   const retry = (): void => { setLoadError(null); setAttempt(n => n + 1); };
   const skipSaved = (): void => { setLoadError(null); commit(dropPending(session, clock()), true); };
@@ -293,7 +284,7 @@ export default function Drills() {
               <div className={styles.empty}>
                 {shownError ? (
                   <>
-                    <h2 id="drill-question">{pending.type === "push-fold" ? "Couldn't load the push/fold question" : "Couldn't load the solver spot"}</h2>
+                    <h2 id="drill-question">{pending.type === "equity-range" ? "Couldn't load the equity question" : pending.type === "push-fold" ? "Couldn't load the push/fold question" : "Couldn't load the solver spot"}</h2>
                     <p role="alert">{shownError.message}</p>
                     <div className={styles.retryRow}>
                       {shownError.retryable
@@ -303,8 +294,8 @@ export default function Drills() {
                   </>
                 ) : (
                   <>
-                    <h2 id="drill-question">{pending.type === "push-fold" ? "Loading a push/fold question…" : "Loading a solver spot…"}</h2>
-                    <p role="status">{pending.type === "push-fold" ? "Fetching and verifying one saved stack size (under 50 KB). The timer starts when the question is ready." : "Fetching and verifying the saved solver data for this question (a few hundred KB the first time)."}</p>
+                    <h2 id="drill-question">{pending.type === "equity-range" ? "Loading an equity question…" : pending.type === "push-fold" ? "Loading a push/fold question…" : "Loading a solver spot…"}</h2>
+                    <p role="status">{pending.type === "equity-range" ? "Fetching and verifying the 36 saved equity cases (under 200 KB). The timer starts when the question is ready." : pending.type === "push-fold" ? "Fetching and verifying one saved stack size (under 50 KB). The timer starts when the question is ready." : "Fetching and verifying the saved solver data for this question (a few hundred KB the first time)."}</p>
                   </>
                 )}
               </div>
@@ -342,6 +333,7 @@ export default function Drills() {
                   })}
                 </dl>
                 {question.pushFold && <PushFoldContext />}
+                {question.equityRange && <EquityRangeContext detail={question.equityRange} />}
                 {question.solver && <SolverHistory detail={question.solver} />}
                 {question.solver && !graded && (
                   <div className={styles.toggles}>
@@ -386,7 +378,7 @@ export default function Drills() {
                     </div>
                     <p id="drill-answer-hint" className={styles.hint}>{answerHint(question)} Press Enter to check.</p>
                     <p id="drill-answer-error" className={styles.error} aria-live="polite">
-                      {session.invalid ? "That isn't a number this drill can read. Try 25, 25% or 1/4." : ""}
+                      {session.invalid ? question.type === "equity-range" ? "Enter a percentage from 0 to 100, such as 25, 25% or 1/4." : "That isn't a number this drill can read. Try 25, 25% or 1/4." : ""}
                     </p>
                   </form>
                 )}
@@ -405,7 +397,7 @@ export default function Drills() {
                       {question.answer.kind === "decision" ? (
                         <p className={styles.compare}>{decisionVerdict(question, graded).detail}</p>
                       ) : question.answer.kind === "push-fold" ? <p className={styles.compare}>Your action gives up {question.answer.grades[String(graded.given)].lossBb.toFixed(3)} bb versus the higher-value action in this saved game.</p> : <p className={styles.compare}>
-                        Exact: <strong>{exactText(question)}</strong>
+                        {question.type === "equity-range" ? "Equity (rounded):" : "Exact:"} <strong>{exactText(question)}</strong>
                         {question.answer.kind !== "choice" && <> · You: {session.given}</>}
                         {question.answer.kind === "percent" && graded.error !== undefined && (
                           <> ({fmtPts(graded.error)} off; ±{question.answer.tolerance} accepted)</>
@@ -430,6 +422,7 @@ export default function Drills() {
                       </div>
                       {question.explanation.note && <div><dt>Note</dt><dd>{question.explanation.note}</dd></div>}
                     </dl>}
+                    {question.equityRange && <EquityRangePanel detail={question.equityRange} />}
                     <button type="button" ref={nextRef} className={styles.next} onClick={goNext}>
                       Next question <kbd>N</kbd>
                     </button>
@@ -525,7 +518,7 @@ function Header() {
       <h1>Poker math drills</h1>
       <p className={styles.intro}>
         One question at a time: pot odds, minimum defence, bluff share, outs, and combo counting. Math
-        answers use exact formulas; at-table shortcuts are labelled when approximate. Push/fold and
+        answers use exact formulas; equity-versus-range questions enumerate every outcome for the stated cards and range. At-table shortcuts are labelled when approximate. Push/fold and
         postflop decisions grade action values against saved approximate strategies for specific games.
         Each explanation shows the assumptions and the numbers. The timer measures you and
         never cuts you off. Keys: <kbd>Enter</kbd> checks, <kbd>1</kbd>–<kbd>9</kbd> pick an action, <kbd>N</kbd> moves on.

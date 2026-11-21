@@ -1,0 +1,193 @@
+{
+  "format": "poker-face-equity-range",
+  "version": 1,
+  "contractSha256": "154247441249cbde51d705b5890eb572e18afa4bec5b3b1e99ab5c86733d864d",
+  "inputs": [
+    {
+      "path": "tasks/drills-equity-range-d2-inputs.json",
+      "sha256": "58c6a5a980c677a293ce3faaeea7b6b1804d9b07406651d899da9c7b34827426"
+    },
+    {
+      "path": "src/lib/drills/equity-range/model.ts",
+      "sha256": "d1ba7798bd83242ee9193c9895a556650b6b36aac6035ec9853ab025592f3af9"
+    },
+    {
+      "path": "src/lib/drills/equity-range/evaluate.ts",
+      "sha256": "1bba3b5d33c5a9c39182f9060ac2e47577e59b2e483ee21651a6cb420f97a377"
+    },
+    {
+      "path": "scripts/equity-range-reference.ts",
+      "sha256": "5de70d6e7277e5636f4798a38694b348b6e6f41720a058b64217b34d9b292d9a"
+    },
+    {
+      "path": "scripts/build-equity-range-drills.ts",
+      "sha256": "eefa22e3ad01fca6a8c45c8eeaae069018a3f795a465c0078f9d72aaaa5eb1d8"
+    },
+    {
+      "path": "src/lib/poker/score7.ts",
+      "sha256": "88e93bd6eb003b800bd23f8f8080a8c4b13d70da67f76fa735e547618efce2cc"
+    },
+    {
+      "path": "src/lib/poker/eval.ts",
+      "sha256": "d7cf71f725e38e516e85b305bccd044a1a8e228d016ed3030384f2d22384114a"
+    },
+    {
+      "path": "src/lib/poker/cards.ts",
+      "sha256": "365cd924633535fe3fcf7cd5f0b8150e5bac9c02c07d4a48250105e9122a7f32"
+    },
+    {
+      "path": "src/lib/solver/river/cards.ts",
+      "sha256": "82e2b7ffe1df3333e9ab4ff68016da0b8483acc3c6689d940975b9b6adebfc37"
+    }
+  ],
+  "datasetId": "1702f32ea735ddf13eb7f3eb244888309f11bbf7da861f41442435dacd594d48",
+  "file": "cases.json",
+  "bytes": 32591,
+  "sha256": "71d543a41576e9ad6e674db234168984ba0f9517a93cb1ccae47fda3b300f2e1",
+  "cases": [
+    {
+      "id": "e01",
+      "level": 1
+    },
+    {
+      "id": "e02",
+      "level": 1
+    },
+    {
+      "id": "e03",
+      "level": 1
+    },
+    {
+      "id": "e04",
+      "level": 1
+    },
+    {
+      "id": "e05",
+      "level": 1
+    },
+    {
+      "id": "e06",
+      "level": 1
+    },
+    {
+      "id": "e07",
+      "level": 1
+    },
+    {
+      "id": "e08",
+      "level": 1
+    },
+    {
+      "id": "e09",
+      "level": 1
+    },
+    {
+      "id": "e10",
+      "level": 1
+    },
+    {
+      "id": "e11",
+      "level": 1
+    },
+    {
+      "id": "e12",
+      "level": 1
+    },
+    {
+      "id": "e13",
+      "level": 2
+    },
+    {
+      "id": "e14",
+      "level": 2
+    },
+    {
+      "id": "e15",
+      "level": 2
+    },
+    {
+      "id": "e16",
+      "level": 2
+    },
+    {
+      "id": "e17",
+      "level": 2
+    },
+    {
+      "id": "e18",
+      "level": 2
+    },
+    {
+      "id": "e19",
+      "level": 2
+    },
+    {
+      "id": "e20",
+      "level": 2
+    },
+    {
+      "id": "e21",
+      "level": 2
+    },
+    {
+      "id": "e22",
+      "level": 2
+    },
+    {
+      "id": "e23",
+      "level": 2
+    },
+    {
+      "id": "e24",
+      "level": 2
+    },
+    {
+      "id": "e25",
+      "level": 3
+    },
+    {
+      "id": "e26",
+      "level": 3
+    },
+    {
+      "id": "e27",
+      "level": 3
+    },
+    {
+      "id": "e28",
+      "level": 3
+    },
+    {
+      "id": "e29",
+      "level": 3
+    },
+    {
+      "id": "e30",
+      "level": 3
+    },
+    {
+      "id": "e31",
+      "level": 3
+    },
+    {
+      "id": "e32",
+      "level": 3
+    },
+    {
+      "id": "e33",
+      "level": 3
+    },
+    {
+      "id": "e34",
+      "level": 3
+    },
+    {
+      "id": "e35",
+      "level": 3
+    },
+    {
+      "id": "e36",
+      "level": 3
+    }
+  ]
+}

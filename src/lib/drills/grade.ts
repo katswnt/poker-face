@@ -48,7 +48,7 @@ export function grade(question: Question, input: string, elapsedMs: number): Gra
     correct = input === answer.value;
   } else {
     const parsed = parseAnswer(answer.kind, input);
-    if (!parsed.ok) return null;
+    if (!parsed.ok || (question.type === "equity-range" && (parsed.value < 0 || parsed.value > 100))) return null;
     given = parsed.value;
     if (answer.kind === "percent") {
       error = Math.abs(parsed.value - answer.value);

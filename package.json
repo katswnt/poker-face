@@ -111,7 +111,9 @@
     "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts",
     "verify:release": "node scripts/verify-live-release.mjs",
     "generate:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --write",
-    "audit:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --check"
+    "audit:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --check",
+    "generate:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --write",
+    "audit:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --check"
   },
   "dependencies": {
     "next": "16.3.3",

@@ -102,6 +102,18 @@ time (under 48 KB); reviews preserve the dataset, seat, stack and hand. No limps
 raises, later betting, rake, or antes are modeled. See the [validation contract and next
 drills](tasks/drill-expansion-plan.md) and [D1 release record](tasks/drills-push-fold-d1.md).
 
+**Equity vs range (`/drills?drill=equity-range`).** Estimate your average pot share
+against a complete, explicit list of possible opponent hands. The 36 hand-written
+examples cover 18 rivers and 18 turns, including weighted ranges and blocked cards.
+Every one of the 3,780 distinct hand/runout outcomes is checked with two independent
+hand evaluators; the 32,591-byte dataset preserves exact counts and weighted fractions.
+The page explains removed hands, split pots and why a different range changes equity.
+The ±2-percentage-point answer band is a practice tolerance, not a Monte Carlo error bar.
+Equity assumes no more betting; it is not call EV or a solved opponent strategy. This
+small teaching collection is not representative of all poker situations. Includes
+versioned reviews, keyboard controls and lazy, hash-verified downloads. See the
+[D2 record and release gates](tasks/drills-equity-range-d2.md).
+
 **Solver decisions (`/drills?drill=solver`).** Choose an action with a particular hand on
 the flop, turn or river. See the saved strategy's frequencies, action EVs, EV differences,
 price and blocker-aware opponent range groups. Questions load from hash-checked library
@@ -828,8 +840,8 @@ already powers solver-backed drills. The active path does not depend on a collab
    checks, immutable pre-action model identity and new source-bound regression evidence.
    Its release gates pass. [Push/fold drills](tasks/drills-push-fold-d1.md) are also
    shipped and verified in production. The [drill expansion contract](tasks/drill-expansion-plan.md)
-   puts equity-versus-range drills next, followed by hand review; neither depends on
-   promoting the flagged preflop model.
+   specifies the [equity-versus-range implementation](tasks/drills-equity-range-d2.md),
+   with hand review next. Neither depends on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

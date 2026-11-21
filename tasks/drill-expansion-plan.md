@@ -107,10 +107,11 @@ within level. Versioned, hash-verified lazy data and review identity as in D1.
 
 ### D2 gates and release checklist
 
-- [ ] Freeze 36 inputs and expected coverage before implementation/measurement.
-- [ ] Fail-first evaluator/count, invalid input, blocker, half-tie, weight-scale,
+- [x] Freeze 36 inputs and expected coverage before implementation/measurement. See
+  [the D2 record](drills-equity-range-d2.md) and its frozen input checksum.
+- [x] Fail-first evaluator/count, invalid input, blocker, half-tie, weight-scale,
   card/range-order and suit-permutation tests; independent verification of every outcome.
-- [ ] Exact byte reproduction, all 36 cases, complete range display, ≤200 KiB total data.
+- [x] Exact byte reproduction, all 36 cases, complete range display, ≤200 KiB total data.
 - [ ] Same loader/session/storage, keyboard/three-engine/mobile/zoom and release gates as D1.
 - [ ] Record exact commit, CI, deployment/source verification, numbers and limitations.
 

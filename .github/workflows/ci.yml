@@ -34,6 +34,9 @@ jobs:
       - name: Reproduce every push/fold drill and re-grade the rounded profiles
         run: npm run audit:drills:push-fold
 
+      - name: Reproduce equity-range drills and independently check every showdown
+        run: npm run audit:drills:equity-range
+
       - name: Audit exact push/fold equity matrix
         run: npm run audit:equity-matrix
 
@@ -246,7 +249,7 @@ jobs:
         env:
           POKER_FACE_LIVE_REQUIRED: "1"
 
-      - name: Exercise push/fold drills, keyboard, loading, reviews and reflow in three browsers
+      - name: Exercise push/fold and equity-range drills, keyboard, loading, reviews and reflow in three browsers
         run: npx playwright test --config playwright.drills.config.ts
         env:
           POKER_FACE_LIVE_REQUIRED: "1"

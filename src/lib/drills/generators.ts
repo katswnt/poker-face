@@ -26,6 +26,7 @@ export const SPEED_TARGET_MS: Readonly<Record<DrillType, number>> = {
   "call-or-fold": 8000,
   solver: 20000,
   "push-fold": 20000,
+  "equity-range": 30000,
 };
 /** Inclusion–exclusion combo questions get a longer target. */
 export const EITHER_COMBOS_TARGET_MS = 20000;
@@ -463,12 +464,13 @@ export const DRILL_SOURCES: Readonly<Record<MathDrillType, DrillSource>> = {
 /** The synchronous math drills (mixed mode draws from these only). */
 export const DRILL_TYPES = Object.keys(DRILL_SOURCES) as MathDrillType[];
 /** Every drill type, including the lazy-loaded solver decisions. */
-export const ALL_DRILL_TYPES: readonly DrillType[] = [...DRILL_TYPES, "solver", "push-fold"];
+export const ALL_DRILL_TYPES: readonly DrillType[] = [...DRILL_TYPES, "solver", "push-fold", "equity-range"];
 
 export const DRILL_LABELS: Readonly<Record<DrillType, string>> = {
   ...Object.fromEntries(DRILL_TYPES.map(t => [t, DRILL_SOURCES[t].label])) as Record<MathDrillType, string>,
   solver: "Solver decisions",
   "push-fold": "Push or fold",
+  "equity-range": "Equity vs range",
 };
 
 export function isMathDrillType(value: unknown): value is MathDrillType {
@@ -484,5 +486,5 @@ export function generateQuestion(type: MathDrillType, seed: number, level: Level
 }
 
 export function isAsyncDrillType(value: unknown): value is AsyncDrillType {
-  return value === "solver" || value === "push-fold";
+  return value === "solver" || value === "push-fold" || value === "equity-range";
 }
