@@ -853,8 +853,10 @@ already powers solver-backed drills. The active path does not depend on a collab
    shipped and verified in production. The [drill expansion contract](tasks/drill-expansion-plan.md)
    also records [equity-versus-range drills](tasks/drills-equity-range-d2.md), now
    shipped and verified in production. [H1 hand review](tasks/hand-review-h1-spec.md)
-   preserves completed decisions in bounded tab-lifetime snapshots; its release gates are
-   recorded separately. It does not depend on promoting the flagged preflop model.
+   is also shipped and verified in production: it preserves completed decisions in bounded
+   tab-lifetime snapshots, with 200 frozen hands and 1,031 original decisions checked.
+   See the [H1 release handoff](tasks/codex-handoff-2026-11-21-h1.md). These teaching
+   features do not depend on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

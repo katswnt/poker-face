@@ -86,12 +86,12 @@ leave the original hand and ledger usable.
   completed-only data, correct numbers/labels, download, reload clearing, equity cancel/
   retry and stale selection; no solver/data fetch caused by review. 320/390/1280px and
   200% text zoom reflow, real Chromium 200% zoom, screenshots inspected. No new skips.
-- [ ] Exact clean commit, **copied** dependencies, fresh native/WASM assets: full units,
+- [x] Exact clean commit, **copied** dependencies, fresh native/WASM assets: full units,
   tsc/lint, new review audit, D1/D2 reproduction and existing bridge/WASM/river-v3/P1–P5/
   E1/preflop/wide/gadget audits, production build and full applicable browser suites.
-- [ ] Explicit owned files/README hunks only; protected work unchanged. Push main and
+- [x] Explicit owned files/README hunks only; protected work unchanged. Push main and
   observe all eight CI jobs green before any next milestone.
-- [ ] Guarded pinned Vercel deploy from that exact clean release; deployed review/play
+- [x] Guarded pinned Vercel deploy from that exact clean release; deployed review/play
   smoke and public engine/source/data hashes verified. Record commits, CI, measured
   numbers and remaining limits; update the handoff and this checklist honestly.
 
@@ -108,10 +108,10 @@ finds a real need; never weaken the gates or overwrite unrelated work.
 
 ## Execution record
 
-The candidate is implemented in the isolated checkout. Local records live in
-`build/hand-review-2026-11-21/`. Exact-commit, CI and deployment gates remain open.
-The clean D2 closing checkout is reused as an isolated candidate with copied dependencies;
-the deployed D2 exact checkout remains available until the replacement is verified.
+The records below preserve the candidate, failed CI capture and verified fix in order.
+H1 is now shipped; the final production record closes every release gate. Local evidence
+lives in `build/hand-review-2026-11-21/`. Superseded candidate/failed-release checkouts
+have been retired; source commits, logs and proofs remain available.
 
 
 ### Candidate verification — 2026-11-21
@@ -204,3 +204,73 @@ verification scope without changing lint configuration.
 Repeat the exact-commit sequence and hosted CI for this fix; then deploy from its clean
 fresh build. Logs and the original failure excerpt are retained under
 `build/hand-review-2026-11-21/`. The original contract and numerical gates are unchanged.
+
+
+### Verified H1 production release — 2026-11-21
+
+H1 code `6ca2f9a` and the screenshot fix **`de7f0d6174fb3510d8595ed987bff88ca8232b86`** are on main.
+All eight jobs passed in [CI 44972899823](https://github.com/katswnt/poker-face/actions/runs/44972899823).
+Hosted play/review: **55 pass, two existing native-zoom skips, zero retries** (3.2 min).
+The earlier failed run remains documented above; its package was never deployed.
+
+The fix's exact clean checkout, `/private/tmp/poker-h1-fixed-90bavjbh`, used copied
+dependencies and freshly rebuilt native/WASM assets. It passed **23 Rust tests**,
+**1,133/1,133 unit tests** (zero skips; 141.070 s), tsc, lint, all 18 listed audits,
+the guarded production build and the pinned Vercel production build. Local browser
+results: 121 full-app, 48 drill, 55 play/review and 34 live-solver checks pass, with
+only the two existing native-zoom skips in each of the latter two suites, zero retries.
+All nine 200% tile captures prove complete page coverage without changing text size.
+Narrow WebKit and real Chromium zoom screenshots were visually inspected.
+
+Exact replay measurements: capture p50 **7.238 ms**, p95 **10.667 ms**, max **12.596 ms**.
+The 200 hands / 1,031 decisions / 301 solve requests and all byte counts above are
+unchanged. Zero missing decisions or log mismatches. These are preservation and capture
+measurements on this laptop, not new solver-strength or physical-phone measurements.
+
+Production: <https://pokerface.katswint.com/play>. Deployment `dpl_HHoAePwiogWCLqgcSbCELVGEfFcB`,
+immutable URL <https://poker-face-av1ksokke-kat-swints-projects.vercel.app>. CLI pinned to `vercel@62.1.0`; the source-clean
+prebuilt package was deployed only after all eight code CI jobs passed. All **1,716**
+packaged engine/source/drill files match the tested checkout. The **six** public
+engine/source assets and **38** drill files match it byte for byte; both engine-serving
+pages show the matching AGPL source link and `/play` retains the 23.4%-pot warning.
+Deployed Chromium/Firefox/WebKit checks: **103 pass, two existing skips, zero retries**.
+
+- Build SHA-256: `a34c636fd90da5bcef285d97ce3af961b4550e7e78f77960357056982d2fdb4a`.
+- Engine-source SHA-256: `f6bc73d115885a997ac66390fdcaf489b7974541a481fbd66ddfd9127531f981` (unchanged).
+- Corresponding source archive SHA-256: `268ec4566f9caecf08cd1411f98d71666050ecf784fed91c4a05bff957a8238f`; **4,808,719 bytes**.
+
+Reproduction: `cargo +1.98.1 build --release --locked --manifest-path native/solver-bridge/Cargo.toml`
+and `cargo +1.98.1 test --release --locked --manifest-path native/solver-bridge/Cargo.toml`;
+`WASM_BINDGEN=/path/to/wasm-bindgen-0.2.104 npm run build:wasm`; `npm test`;
+`npm run typecheck`; `npm run lint`; `npm run audit:hu-play:review` and the 17 other
+audits listed in the frozen release gate; `npm run prepare:wasm:live`;
+`npm run verify:release`; `VERCEL_ENV=production node scripts/build-vercel.mjs`.
+Run full-app and the drills/play/live Playwright configs with `CI=1`,
+`POKER_FACE_LIVE_REQUIRED=1`, `--retries=0`. Build with
+`POKER_FACE_LIVE_REQUIRED=1 npx --yes vercel@62.1.0 build --prod`, then the authorized
+`deploy --prebuilt --prod --archive=tgz`. Verify public source with
+`node scripts/verify-live-release.mjs --origin https://pokerface.katswint.com`.
+Exact audit and browser command lists (after the production build):
+
+```sh
+for audit_task in audit:hu-play:review audit:drills:equity-range audit:drills:push-fold \
+  audit:equity-matrix audit:bridge audit:wasm audit:wasm:example audit:river:v3 \
+  audit:hu-play:library audit:hu-play:p1 audit:hu-play:p2 audit:hu-play:p3 \
+  audit:hu-play:p4 audit:hu-play:p5 audit:hu-play:e1 audit:preflop \
+  audit:hu-play:wide audit:hu-play:gadget; do
+  npm run "$audit_task" || exit
+done
+CI=1 POKER_FACE_LIVE_REQUIRED=1 npx playwright test --retries=0
+CI=1 POKER_FACE_LIVE_REQUIRED=1 npx playwright test --config playwright.drills.config.ts --retries=0
+CI=1 POKER_FACE_LIVE_REQUIRED=1 npx playwright test --config playwright.play.config.ts --retries=0
+CI=1 POKER_FACE_LIVE_REQUIRED=1 npx playwright test --config playwright.live.config.ts --retries=0
+```
+
+Complete commands, CI records, screenshots, coverage JSON and public proofs are retained
+in `build/hand-review-2026-11-21/`; the owned code paths are listed above.
+
+All H1 gates are closed. The documentation-only closing commit does not replace this
+deployed code build; it receives its own isolated full-unit/tsc/lint/18-audit checks and
+hosted CI. No mathematical engine, old evidence, policy source, grader, controller,
+trainer/session work or paused flop draft was changed. Physical devices remain open;
+PF4 remains gated. D1, D2 and H1 complete the agreed post-P5 teaching sequence.
