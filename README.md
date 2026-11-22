@@ -45,7 +45,7 @@ zoom-API skips). Production continues to use guarded, explicit releases.
 | Offline turn-and-river solver | Joint two-street solve, configurable betting, exact river enumeration, independent grading, restartable checkpoints | Up to 64 combinations/player, three opening sizes, three raise targets, optional all-in and one raise per street; custom solves remain offline |
 | Offline flop/turn/river solver | All three streets solved together, exact ordered runouts, independent grading, binary restart checkpoints; sequential cached library generation | One capped opening size per street, no raises; up to 64 physical combinations/player |
 | `/solver/live` — bounded Rust/WASM lab | Guided turn/river inputs, preflight, real progress/cancel, root inspection and a saved example | Live solving needs prepared source-complete assets; 64 hands/player, float32, conservative memory/export limits; phones not yet validated |
-| `/play` — heads-up practice | Seat/seed choice, legal typed bet sizes, real Worker progress/cancel/retry, hand history, decision math, local action values and an in-memory completed-hand ledger | Scripted preflop, hand-written ranges, 12 saved flops; exploitable local re-solving, not exact GTO; action comparisons describe one saved or local solved model |
+| `/play` — heads-up practice | Seat/seed choice, legal typed bet sizes, real Worker progress/cancel/retry, hand history, decision math, local action values, a completed-hand ledger and bounded tab-lifetime hand review | Scripted preflop, hand-written ranges, 12 saved flops; exploitable local re-solving, not exact GTO; action comparisons describe one saved or local solved model |
 | Offline postflop-solver bridge | Pinned external Rust engine behind a hashed JSON contract; locked small games re-graded node for node by our engines; a 100bb benchmark and a saved 12-flop button-vs-big-blind library used by drills | Heads-up, equal stacks, no rake, finite bet menus; hand-written ranges; large solves only spot-checked by our graders; wider games remain offline |
 | Experimental preflop model (PF0–PF3) | BTN vs BB CFR+/DCFR, independent grading, exact-enumeration all-in inputs, fitted assumptions for future play | SB always folds; no rake; future betting approximated; flagged output is not promoted to the library or app (PF4 not done) |
 
@@ -66,6 +66,17 @@ separate from numerical, convergence and range errors. No session EV score is in
 The [E1 contract and release checks](tasks/live-decision-ev-spec.md) document the independent
 verification and measured export cost. E1 passed exact-commit tests, all eight CI jobs,
 deployed browser checks and public engine/source verification on November 20.
+
+**Completed-hand review.** Between deals, revisit up to 20 completed hands from this tab
+(with an 8 MiB serialized-data cap). Step through the original board, ranges, price math,
+action values and provenance; later cards do not rewrite the model. Equity runs in a
+separate Worker using the range and board at that decision. Outcomes stay separate from
+model-relative EV gaps, which are never summed into a session score. Reload/navigation
+clears reviews; a versioned JSON download preserves their inputs, but import is not yet
+supported. The [H1 contract and release record](tasks/hand-review-h1-spec.md) documents
+coverage and limits. `npm run audit:hu-play:review` checks all 200 original P5 hands,
+1,031 decisions and 301 solve requests for unchanged logs, values, ranges and ledger.
+This is a preservation test, not a new estimate of AI strength.
 
 **Unusual bet sizes can exploit this AI.** The P2 audit measured composed-policy local
 exploitability as high as **23.4% of the subgame pot**. That is neither expected winnings
@@ -841,8 +852,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    Its release gates pass. [Push/fold drills](tasks/drills-push-fold-d1.md) are also
    shipped and verified in production. The [drill expansion contract](tasks/drill-expansion-plan.md)
    also records [equity-versus-range drills](tasks/drills-equity-range-d2.md), now
-   shipped and verified in production. Hand review is next; it does not depend on
-   promoting the flagged preflop model.
+   shipped and verified in production. [H1 hand review](tasks/hand-review-h1-spec.md)
+   preserves completed decisions in bounded tab-lifetime snapshots; its release gates are
+   recorded separately. It does not depend on promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

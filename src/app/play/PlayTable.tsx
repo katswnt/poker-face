@@ -9,6 +9,9 @@ import type { BridgeAction, BridgePlayer } from "@/lib/solver/bridge/contract";
 import { cardText } from "@/lib/drills/solver/tree";
 import DecisionMath, { actionName, bb } from "./DecisionMath";
 import styles from "./play.module.css";
+import HandReview from "./HandReview";
+import reviewStyles from "./review.module.css";
+import { ReviewArchive, type ReviewCollection } from "@/lib/hu-play/review";
 
 const ranks:Record<string,string>={A:"Ace",K:"King",Q:"Queen",J:"Jack",T:"Ten"};
 const suits:Record<string,string>={c:"clubs",d:"diamonds",h:"hearts",s:"spades"};
@@ -22,6 +25,8 @@ function download(controller:PlayController) {
 export default function PlayTable({deployment}:{deployment:LiveDeployment|null}) {
   const [view,setView]=useState<PlayView|null>(null),[seat,setSeat]=useState("0"),[seed,setSeed]=useState("0");
   const [amount,setAmount]=useState(""),[error,setError]=useState(""),[hints,setHints]=useState(false),[selected,setSelected]=useState("");
+  const reviewArchive=useRef(new ReviewArchive());
+  const [reviewCollection,setReviewCollection]=useState<ReviewCollection>({reviews:[],bytes:0,evicted:0}),[reviewError,setReviewError]=useState("");
   const [elapsed,setElapsed]=useState(0),[seedError,setSeedError]=useState("");
   const [activeController,setActiveController]=useState<PlayController|null>(null);
   const controller=useRef<PlayController|null>(null),unsubscribe=useRef<(()=>void)|null>(null),status=useRef<HTMLParagraphElement>(null);
@@ -38,7 +43,16 @@ export default function PlayTable({deployment}:{deployment:LiveDeployment|null})
     if(!controller.current){
       const deviceMemoryGiB=(navigator as Navigator&{deviceMemory?:number}).deviceMemory;
       const c=new PlayController(browserPlayFactory(deployment.assetBase,{profile:"unknown",...(deviceMemoryGiB===undefined?{}:{deviceMemoryGiB})}));
-      controller.current=c;setActiveController(c);unsubscribe.current=c.subscribe(()=>setView(c.getSnapshot()));
+      controller.current=c;setActiveController(c);unsubscribe.current=c.subscribe(()=>{
+        const snapshot=c.getSnapshot();
+        if(snapshot.phase==="complete"){
+          try{
+            reviewArchive.current.capture(snapshot,{buildHash:deployment.buildHash,engineSourceHash:deployment.sourceHash},key=>c.equityInput(key));
+            setReviewCollection(reviewArchive.current.getSnapshot());setReviewError("");
+          }catch(e){setReviewError(e instanceof Error?e.message:String(e));}
+        }
+        setView(snapshot);
+      });
     }
     return controller.current;
   }
@@ -124,7 +138,8 @@ export default function PlayTable({deployment}:{deployment:LiveDeployment|null})
             </form>}
           </section>}
           {decision&&<div className={styles.buttons}><button aria-expanded={hints||complete} aria-controls="play-inspector" onClick={()=>setHints(x=>!x)} disabled={complete}>{hints||complete?"Decision hints shown":"Show decision hints"}</button>
-            {complete&&<button onClick={()=>download(controller.current!)}>Download completed hand</button>}</div>}
+            {complete&&<button onClick={()=>download(controller.current!)}>Download completed hand</button>}
+            {complete&&<a className={reviewStyles.entry} href="#play-review">Review this session’s completed hands</a>}</div>}
           <section className={styles.history}><h2>Hand history</h2>
             <p>Scripted preflop: BTN 2.5bb, BB 2.5bb, external dead small blind 0.5bb. Flop: {h.public.flop.map(cardText).join(" ")}.</p>
             <ol>{h.public.events.map((e,i)=><li key={i}>{e.kind==="card"?`${e.street}: ${cardText(e.card)}`:`${e.player===h.humanSeat?"You":"AI"}: ${actionName(e.action)} (${actionToken(e.action)})`}</li>)}</ol>
@@ -146,6 +161,7 @@ export default function PlayTable({deployment}:{deployment:LiveDeployment|null})
           After the hand, inspect the AI’s hand-specific mix and the source of each decision.</p><p>The AI’s actual cards and mix stay hidden until the hand is complete.</p></>}
       </aside>
     </div>
+    {(!h||complete)&&!busy&&<HandReview collection={reviewCollection} error={reviewError}/>}
     <footer className={styles.footer}><h2>Engine and source</h2><p>Flops use saved strategies and action translation, sometimes a labelled passive call rule.
       Turn and river decisions use bounded single-thread browser solves. This page does not use the unfinished turn cache.</p>
       {deployment?<><a href={deployment.sourceArchive}>Download corresponding AGPL engine source</a><dl className={styles.identity}>
