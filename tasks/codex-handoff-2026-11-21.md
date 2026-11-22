@@ -1,61 +1,37 @@
 # Codex handoff — 2026-11-21
 
-## Current checkpoint: D1 shipped; D2 next
+## Current checkpoint: both new drills shipped
 
-W1–W4/P1–P5, R1/E1 and now D1 push/fold practice are complete. D1 code is
-`be05152646d493a656e5062b07326bd6f0b2b084`; all eight jobs in
-[CI 44952657754](https://github.com/katswnt/poker-face/actions/runs/44952657754) passed
-before production deployment. The [D1 release record](drills-push-fold-d1.md#verified-release--2026-11-21)
-contains the exact measurements, deployment identity, source/data hashes and limitations.
+W1–W4/P1–P5, the release guard (R1), live action values (E1), push/fold practice (D1)
+and equity-versus-range practice (D2) are complete. The latest detailed handoff is
+[D2's release handoff](codex-handoff-2026-11-21-d2.md); read it before continuing.
 
-Production: <https://pokerface.katswint.com/drills?drill=push-fold>, deployment
-`dpl_HynauesGcebg5NbS8JsmmTHW55VR`. All 37 published drill files and six engine/source
-assets match the exact tested release. Deployed browser checks: 52 pass, two existing
-non-Chromium real-zoom skips, zero retries. All 24 new drill checks pass.
+- D1 code: `be05152`; release record: `ffbb82c`. All eight closing CI jobs passed in
+  [run 44957214650](https://github.com/katswnt/poker-face/actions/runs/44957214650).
+- D2 code: `0851bed`. All eight CI jobs passed in
+  [run 44962474667](https://github.com/katswnt/poker-face/actions/runs/44962474667).
+  The exact clean commit passed 1,122 unit tests (zero skips), 23 Rust tests, tsc,
+  lint, 17 audits, guarded production build and all applicable browser checks.
+- Production: <https://pokerface.katswint.com/drills?drill=equity-range>, deployment
+  `dpl_FC5Bpfggh9XYcXrsKs1WgMiqaa6x`. All 38 drill files and six engine/source assets
+  match their expected hashes. Deployed browser checks: 76 pass, two existing
+  non-Chromium real-zoom skips, zero retries. Both drill types pass all three browsers.
 
-## What was verified
+D1 independently grades 12,506 saved decisions across 37 restricted push/fold games;
+its maximum combined unilateral gain is 0.000046464518117771554 bb against the unchanged
+0.0005 bb gate. D2 enumerates 3,780 distinct outcomes for 36 frozen turn/river examples,
+with two independent hand evaluators and a 32,591-byte download. Practice tolerances
+are not solver error bounds. Exact equity for a stated range is not a solved strategy.
 
-The exact clean code checkout `/private/tmp/poker-drills-d1-final-ciod7tcm` has **copied**
-node_modules, fresh native/WASM builds, 23 passing Rust tests, **1,110/1,110 unit tests**
-(zero skips), tsc, lint, 16 audits and a guarded production build. All 104 full-app,
-24 dedicated drill, 28 applicable play and 34 applicable live browser checks pass.
-No numerical gates or frozen solver inputs changed.
+Before starting the next milestone, verify and observe green CI for the closing-document
+commit containing this handoff; `build/drill-expansion-2026-11-21/D2-release-current.json`
+tracks the local execution checkpoint. Production stays on the tested code commit above;
+documentation-only closure does not require deployment. Then write the separate `/play`
+hand-review validation contract before implementing it. PF4 remains gated. Physical-device
+checks are still unmeasured and nonblocking by Kat's instruction.
 
-D1 independently recomputes all 12,506 decisions and all 37 serialized profile grades.
-The largest combined unilateral gain is 0.000046464518117771554 bb against the unchanged
-0.0005 bb gate. Largest download: 47,962 bytes; all depths: 1,763,288 bytes.
-Dataset: `90edb16e88236f983c73ec4907e65d71c38b917597d92ffa1143d959be032a4c`.
-The 0.01 bb practice tolerance is not a per-hand accuracy guarantee. Approximate restricted
-push/fold profiles do not unlock PF4. Existing scripted preflop, hand-written ranges,
-12 saved flops and 23.4% composed-policy weakness remain labelled in `/play`.
-
-## Continue in order
-
-1. Verify the exact D1 closing-document commit in isolation, push its explicit files,
-   and observe all eight CI jobs green. Production stays on the tested D1 code commit;
-   a documentation-only commit does not need deployment.
-2. Freeze D2's 36 hand-written turn/river inputs **before computing answers**, following
-   [the prospective contract](drill-expansion-plan.md#frozen-d2-contract-before-implementation).
-   No D2 cases or implementation exist at this checkpoint. Write failing tests first,
-   independently verify every outcome, then implement and meet the same release gates.
-3. Specify `/play` hand review separately after D2. Do not silently broaden that scope.
-
-Physical-device checks remain open and nonblocking by Kat's instruction. No GPU training
-is required for these drills. Do not promote the unvalidated preflop payoff model.
-
-## Untouched work
-
-The trainer/session work and paused configurable-flop draft remain exactly as found:
-`METHODOLOGY.md`, trainer hunks in `README.md`, `e2e/keyboard.spec.ts`,
-`src/app/globals.css`, `src/components/PokerSim.tsx`, `test/copy.test.ts`,
-`src/lib/poker/session.ts`, `test/session.test.ts`,
-`src/lib/solver/postflop/configurable-flop/`, `tasks/configurable-flop-v2-plan.md`,
-and `tasks/poker-data-reuse-and-publication.md`. Do not stage, revert or repair them.
-The paused draft still prevents treating the dirty working tree as a verified release;
-no files were excluded from TypeScript. Verification was against the exact committed tree.
-
-Preservation baseline, README residual patch, explicit 69-file D1 ownership list, final
-file hashes and live release checkpoint are in `build/drill-expansion-2026-11-21/`.
-Use `D1-release-current.json` for the latest local machine-readable checkpoint. The earlier
-unpublished `2db414c` was amended only to add the stronger hash test and its record; its
-partial verification is superseded by the complete verification of `be05152`.
+The trainer/session edits and their README hunks, paused configurable-flop draft and
+pre-existing data-publication note remain untouched. See the detailed handoff's exact
+list and `build/drill-expansion-2026-11-21/protected.json`. Never stage or repair them as
+part of this work. No TypeScript files were excluded; verify exact commits in isolation
+with **copied** dependencies rather than testing the dirty main tree as a release.

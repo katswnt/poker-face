@@ -840,8 +840,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    checks, immutable pre-action model identity and new source-bound regression evidence.
    Its release gates pass. [Push/fold drills](tasks/drills-push-fold-d1.md) are also
    shipped and verified in production. The [drill expansion contract](tasks/drill-expansion-plan.md)
-   specifies the [equity-versus-range implementation](tasks/drills-equity-range-d2.md),
-   with hand review next. Neither depends on promoting the flagged preflop model.
+   also records [equity-versus-range drills](tasks/drills-equity-range-d2.md), now
+   shipped and verified in production. Hand review is next; it does not depend on
+   promoting the flagged preflop model.
    A separate [TypeScript gadget study](tasks/heads-up-play-p4-study.md) compares translation,
    unsafe re-solving, Resolve and Max-margin in two completely graded small games. Its
    per-hand protection checks do not apply to the Rust/browser path or certify `/play` safe.

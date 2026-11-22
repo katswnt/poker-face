@@ -112,8 +112,8 @@ within level. Versioned, hash-verified lazy data and review identity as in D1.
 - [x] Fail-first evaluator/count, invalid input, blocker, half-tie, weight-scale,
   card/range-order and suit-permutation tests; independent verification of every outcome.
 - [x] Exact byte reproduction, all 36 cases, complete range display, ≤200 KiB total data.
-- [ ] Same loader/session/storage, keyboard/three-engine/mobile/zoom and release gates as D1.
-- [ ] Record exact commit, CI, deployment/source verification, numbers and limitations.
+- [x] Same loader/session/storage, keyboard/three-engine/mobile/zoom and release gates as D1.
+- [x] Record exact commit, CI, deployment/source verification, numbers and limitations.
 
 ## Records
 

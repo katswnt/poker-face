@@ -2,7 +2,7 @@
 
 Started after D1 code `be05152` and closing record `ffbb82c` passed all eight CI jobs
 ([closing run 44957214650](https://github.com/katswnt/poker-face/actions/runs/44957214650)).
-Status: candidate implemented and independently checked; exact-commit, CI and deployment gates pending.
+Status: shipped and verified in production, 2026-11-21.
 Contract: [drill expansion plan](drill-expansion-plan.md#frozen-d2-contract-before-implementation).
 
 ## Prospective input freeze
@@ -47,10 +47,10 @@ keys and malformed/corrupt downloads with retry or explicit removal. Data cap: 2
   retry, stale replies, timer and storage checks; prior drill behavior preserved.
 - [x] Byte reproduction, 36 cases, complete range display, ≤200 KiB.
 - [x] Three browsers, keyboard, failure/retry/review, 320/390/1280 px, 200% reflow; screenshots.
-- [ ] Exact commit with copied dependencies: full unit suite, tsc, lint, solver/artifact
+- [x] Exact commit with copied dependencies: full unit suite, tsc, lint, solver/artifact
   audits and production build; explicit milestone files and README hunks only.
-- [ ] Push main; all eight CI jobs observed green before deployment.
-- [ ] Fresh clean native/WASM rebuild, guarded Vercel deployment, public source/data hash
+- [x] Push main; all eight CI jobs observed green before deployment.
+- [x] Fresh clean native/WASM rebuild, guarded Vercel deployment, public source/data hash
   checks and deployed browser checks; record measurements and remaining device limits.
 
 ## Measurements and release
@@ -105,5 +105,37 @@ and only the README equity-drill paragraphs. Explicit staging list is retained l
 `build/drill-expansion-2026-11-21/D2-owned-files.json`. No solver, `/play`, trainer or paused
 configurable-flop edits belong to D2. Hand review is next, under a separate contract.
 
-Exact-commit verification, hosted CI and deployment measurements will be recorded here
-when observed; candidate success alone is not a release claim.
+## Verified release — 2026-11-21
+
+Code commit: `0851bedf330c651d41da86d60a3504b8f02421c8` (29 explicit files; README
+hunks only). All eight jobs passed in [CI 44962474667](https://github.com/katswnt/poker-face/actions/runs/44962474667),
+observed green at `2026-11-21T23:56:11.659Z` before deployment.
+
+The exact clean checkout with **copied** node_modules passed fresh native and WASM builds,
+23 Rust tests, **1,122/1,122 unit tests** (zero skips, 135.582 seconds), typecheck, lint,
+and 17 audits: both drill datasets, equity matrix, native bridge, WASM parity/example,
+river v3, play library/P1/P2/P3/P4/P5/E1, preflop reproduction, wide-range and gadget study.
+All prior numerical gates and frozen solver inputs remain unchanged. The guarded production
+build and **112 full-app browser tests** passed. Dedicated three-engine checks: **48 drills**
+(24.5 seconds), 28 play / 2 existing non-Chromium real-zoom skips, and 34 live-solver /
+2 equivalent skips. Zero retries; the new drill has no skipped tests.
+
+Pinned Vercel 62.1.0 production deployment:
+`dpl_FC5Bpfggh9XYcXrsKs1WgMiqaa6x`, immutable URL
+<https://poker-face-qkiij48nd-kat-swints-projects.vercel.app>, serving
+<https://pokerface.katswint.com/drills?drill=equity-range>.
+
+- Build hash: `b1838716556824d76f0f720d7874c96014034b4e90e3c0de97da6e4c5fc30219`.
+- Engine source: `f6bc73d115885a997ac66390fdcaf489b7974541a481fbd66ddfd9127531f981` (unchanged).
+- Corresponding source archive: `e6431505969ef8a1bae892fd27bb7a8e3b92757fdb66cde1e8ca63e50adca6e8` (4,808,708 bytes).
+
+Public checks fetched and matched all six engine/source assets, verified both engine pages'
+source links, and matched all **38 drill files** (1,795,879 bytes including unchanged D1 data).
+Deployed browser checks: **76 passed, 2 existing non-Chromium real-zoom skips**, zero retries,
+2.4 minutes. All 48 drill checks pass across Chromium, Firefox and WebKit. Exact logs and
+public proofs are retained under `build/drill-expansion-2026-11-21/`.
+
+The production app is the tested code commit above. Subsequent closing-document commits
+record the observations; they do not replace the deployed build or its source identity.
+Physical-phone checks remain open and nonblocking by Kat's instruction. Hand review follows
+under its own prospective contract; PF4 remains gated.
