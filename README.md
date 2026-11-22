@@ -13,7 +13,7 @@ Open these locally or on a deployment containing those routes.
 
 ## Current state
 
-Verified production status as of 2026-11-19: the river lab and
+Verified production status as of 2026-11-22: the river lab and
 comparisons, bounded TypeScript turn/flop solvers and saved explorers, and an offline bridge
 to the external Rust postflop-solver engine are implemented. The bridge adds wide-range
 CPU solves, checked on small games by our independent graders, and a saved 12-flop 100bb
@@ -27,11 +27,11 @@ bounded Rust/WASM turn and river solving in a Worker when its source-complete as
 prepared; without those assets it still offers a saved example. `/play` now implements
 heads-up practice with saved flop policies and browser turn/river re-solving. It requires
 prepared engine assets, now deployed at [Play the solver-backed AI](https://pokerface.katswint.com/play).
-The [E1 release record](tasks/live-decision-ev-spec.md#production-deployment--2026-11-20)
-binds the deployed engine and downloadable AGPL source to clean release `bfecbce`.
-It preserves the playing policies and adds live action values and model-relative comparisons.
-All eight CI jobs and 28 applicable deployed three-browser checks passed (two explicit
-zoom-API skips). Production continues to use guarded, explicit releases.
+The [H1 release record](tasks/hand-review-h1-spec.md) binds the deployed engine and
+downloadable AGPL source to clean release `de7f0d6`. It preserves the playing policies,
+includes E1 live action values, and adds completed-hand review. All eight CI jobs and
+103 applicable deployed three-browser checks passed (two explicit zoom-API skips).
+Production continues to use guarded, explicit releases.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -778,10 +778,14 @@ already powers solver-backed drills. The active path does not depend on a collab
 
 1. **Validate preflop continuation values before promoting ranges.** PF0–PF3 and the
    [read-only diagnosis](tasks/preflop-model-diagnosis.md) are complete, not a validated
-   full-game preflop solution. Check missing-hand coverage, representative flop sampling,
-   unadjusted fit residuals and the ability to model future betting. Freeze held-out tests
-   before changing the payoff model. PF4 (feeding generated ranges back into the library)
-   remains withheld; adding more flops or more iterations alone is not a demonstrated fix.
+   full-game preflop solution. The [v2 validation contract](tasks/preflop-validation-v2-spec.md)
+   now freezes 84 boards, two complete 169-class stress-range profiles and three pot types:
+   504 required continuation observations. Separate suit-equivalent board groups prevent
+   training/holdout overlap; exact tiny-deck checks verify card conditioning and future-chip
+   accounting. These are test inputs, **not solved results or validated playing ranges**.
+   Compute, original-value error and decision-uncertainty gates are fixed before fitting.
+   PF4 remains withheld. The [completion plan](tasks/cpu-ceiling-completion-plan.md) sequences
+   this research, conditional library regeneration, more formations and bounded multiway work.
 2. **Bring bounded turn/river solving to the browser, then heads-up play.** The
    [W1 single-threaded foundation](tasks/postflop-solver-w1-st.md) shares a resumable Rust
    session with the native bridge. Its WASM output matches native on the tested games and
@@ -1297,6 +1301,7 @@ and CI's x86-64 runners may round float32 sums in a different order.
 ```bash
 npm run audit:preflop       # reproduce PF2/PF3 and independently re-grade; no writes
 npm run diagnose:preflop    # print hash-bound diagnostic JSON; no writes, no Rust needed
+npm run audit:preflop:v2:contract  # replay frozen validation inputs; no solve or range promotion
 node --import tsx --test test/preflop-diagnostics.test.ts
 ```
 

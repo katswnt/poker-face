@@ -1,0 +1,153 @@
+{
+  "contractHash": "cab23a48a48c8c1d70db6b3afbb88611a768f718afbb15389c24c6678822a471",
+  "format": "poker-face-preflop-v2-selection",
+  "method": "crypto.randomInt-without-replacement",
+  "populationHash": "902091d9b650ea8a057b88477adb548441056406a1b0ccf3bad20e8870d77695",
+  "strata": [
+    {
+      "draws": [
+        79,
+        37,
+        83,
+        103,
+        56,
+        81
+      ],
+      "eligibleOrbits": 117,
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "draws": [
+        56,
+        12,
+        27,
+        23,
+        35,
+        7
+      ],
+      "eligibleOrbits": 59,
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "draws": [
+        4,
+        12,
+        3,
+        11,
+        13,
+        1
+      ],
+      "eligibleOrbits": 19,
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "draws": [
+        35,
+        66,
+        104,
+        46,
+        86,
+        14
+      ],
+      "eligibleOrbits": 107,
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "draws": [
+        172,
+        77,
+        125,
+        117,
+        92,
+        211
+      ],
+      "eligibleOrbits": 285,
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "draws": [
+        203,
+        138,
+        233,
+        309,
+        388,
+        373
+      ],
+      "eligibleOrbits": 553,
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "draws": [
+        90,
+        20,
+        51,
+        149,
+        110,
+        35
+      ],
+      "eligibleOrbits": 199,
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "draws": [
+        7,
+        12,
+        8,
+        6,
+        9,
+        2
+      ],
+      "eligibleOrbits": 15,
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "draws": [
+        11,
+        9,
+        13,
+        14,
+        3,
+        1
+      ],
+      "eligibleOrbits": 21,
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "draws": [
+        52,
+        55,
+        123,
+        135,
+        163,
+        189
+      ],
+      "eligibleOrbits": 197,
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "draws": [
+        46,
+        93,
+        113,
+        1,
+        74,
+        109
+      ],
+      "eligibleOrbits": 124,
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "draws": [
+        46,
+        27,
+        10,
+        20,
+        7,
+        30
+      ],
+      "eligibleOrbits": 47,
+      "stratum": "srp-btn-bb-7c6c5d"
+    }
+  ],
+  "version": 1
+}

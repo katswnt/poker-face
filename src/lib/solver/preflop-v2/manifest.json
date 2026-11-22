@@ -1,0 +1,5982 @@
+{
+  "boards": [
+    {
+      "cards": [
+        0,
+        9,
+        14
+      ],
+      "key": "00-09-14",
+      "multiplicity": 24,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        0,
+        21,
+        46
+      ],
+      "key": "00-21-46",
+      "multiplicity": 24,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        4,
+        21,
+        33
+      ],
+      "key": "04-21-33",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        4,
+        25,
+        26
+      ],
+      "key": "04-25-26",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        4,
+        25,
+        50
+      ],
+      "key": "04-25-50",
+      "multiplicity": 24,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        8,
+        28,
+        40
+      ],
+      "key": "08-28-40",
+      "multiplicity": 4,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        8,
+        37,
+        38
+      ],
+      "key": "08-37-38",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        12,
+        17,
+        21
+      ],
+      "key": "12-17-21",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        12,
+        33,
+        49
+      ],
+      "key": "12-33-49",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        16,
+        25,
+        29
+      ],
+      "key": "16-25-29",
+      "multiplicity": 12,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        20,
+        29,
+        34
+      ],
+      "key": "20-29-34",
+      "multiplicity": 24,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        32,
+        41,
+        46
+      ],
+      "key": "32-41-46",
+      "multiplicity": 24,
+      "role": "legacy",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        12,
+        25,
+        46
+      ],
+      "key": "12-25-46",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        4,
+        21,
+        46
+      ],
+      "key": "04-21-46",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        12,
+        33,
+        46
+      ],
+      "key": "12-33-46",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        20,
+        29,
+        42
+      ],
+      "key": "20-29-42",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        8,
+        21,
+        42
+      ],
+      "key": "08-21-42",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        12,
+        33,
+        42
+      ],
+      "key": "12-33-42",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "cards": [
+        28,
+        37,
+        50
+      ],
+      "key": "28-37-50",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        4,
+        13,
+        50
+      ],
+      "key": "04-13-50",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        8,
+        45,
+        50
+      ],
+      "key": "08-45-50",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        8,
+        29,
+        50
+      ],
+      "key": "08-29-50",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        16,
+        25,
+        50
+      ],
+      "key": "16-25-50",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        0,
+        33,
+        50
+      ],
+      "key": "00-33-50",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "cards": [
+        28,
+        33,
+        38
+      ],
+      "key": "28-33-38",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        32,
+        41,
+        50
+      ],
+      "key": "32-41-50",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        24,
+        37,
+        42
+      ],
+      "key": "24-37-42",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        32,
+        45,
+        50
+      ],
+      "key": "32-45-50",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        36,
+        45,
+        50
+      ],
+      "key": "36-45-50",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        24,
+        33,
+        38
+      ],
+      "key": "24-33-38",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "cards": [
+        16,
+        25,
+        28
+      ],
+      "key": "16-25-28",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        24,
+        29,
+        41
+      ],
+      "key": "24-29-41",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        36,
+        41,
+        45
+      ],
+      "key": "36-41-45",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        20,
+        25,
+        33
+      ],
+      "key": "20-25-33",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        28,
+        37,
+        41
+      ],
+      "key": "28-37-41",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        12,
+        17,
+        29
+      ],
+      "key": "12-17-29",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "cards": [
+        12,
+        16,
+        48
+      ],
+      "key": "12-16-48",
+      "multiplicity": 4,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        4,
+        12,
+        20
+      ],
+      "key": "04-12-20",
+      "multiplicity": 4,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        8,
+        12,
+        36
+      ],
+      "key": "08-12-36",
+      "multiplicity": 4,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        4,
+        40,
+        44
+      ],
+      "key": "04-40-44",
+      "multiplicity": 4,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        4,
+        20,
+        24
+      ],
+      "key": "04-20-24",
+      "multiplicity": 4,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        16,
+        28,
+        40
+      ],
+      "key": "16-28-40",
+      "multiplicity": 4,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "cards": [
+        4,
+        13,
+        33
+      ],
+      "key": "04-13-33",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        0,
+        28,
+        33
+      ],
+      "key": "00-28-33",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        4,
+        20,
+        37
+      ],
+      "key": "04-20-37",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        8,
+        13,
+        37
+      ],
+      "key": "08-13-37",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        8,
+        37,
+        40
+      ],
+      "key": "08-37-40",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        8,
+        29,
+        40
+      ],
+      "key": "08-29-40",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "cards": [
+        8,
+        9,
+        44
+      ],
+      "key": "08-09-44",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        0,
+        1,
+        42
+      ],
+      "key": "00-01-42",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        4,
+        5,
+        32
+      ],
+      "key": "04-05-32",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        16,
+        28,
+        29
+      ],
+      "key": "16-28-29",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        12,
+        13,
+        32
+      ],
+      "key": "12-13-32",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        0,
+        25,
+        26
+      ],
+      "key": "00-25-26",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "cards": [
+        4,
+        9,
+        22
+      ],
+      "key": "04-09-22",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        8,
+        17,
+        22
+      ],
+      "key": "08-17-22",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        4,
+        13,
+        22
+      ],
+      "key": "04-13-22",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        4,
+        9,
+        18
+      ],
+      "key": "04-09-18",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        8,
+        13,
+        22
+      ],
+      "key": "08-13-22",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        0,
+        5,
+        18
+      ],
+      "key": "00-05-18",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "cards": [
+        16,
+        25,
+        30
+      ],
+      "key": "16-25-30",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        16,
+        21,
+        30
+      ],
+      "key": "16-21-30",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        20,
+        25,
+        34
+      ],
+      "key": "20-25-34",
+      "multiplicity": 24,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        20,
+        29,
+        38
+      ],
+      "key": "20-29-38",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        12,
+        17,
+        26
+      ],
+      "key": "12-17-26",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        8,
+        17,
+        26
+      ],
+      "key": "08-17-26",
+      "multiplicity": 24,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "cards": [
+        4,
+        33,
+        48
+      ],
+      "key": "04-33-48",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        4,
+        37,
+        49
+      ],
+      "key": "04-37-49",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        16,
+        36,
+        49
+      ],
+      "key": "16-36-49",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        20,
+        29,
+        48
+      ],
+      "key": "20-29-48",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        28,
+        32,
+        49
+      ],
+      "key": "28-32-49",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        40,
+        44,
+        49
+      ],
+      "key": "40-44-49",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "cards": [
+        16,
+        45,
+        46
+      ],
+      "key": "16-45-46",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        32,
+        48,
+        49
+      ],
+      "key": "32-48-49",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        40,
+        45,
+        46
+      ],
+      "key": "40-45-46",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        0,
+        33,
+        34
+      ],
+      "key": "00-33-34",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        28,
+        45,
+        46
+      ],
+      "key": "28-45-46",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        40,
+        41,
+        50
+      ],
+      "key": "40-41-50",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "cards": [
+        12,
+        17,
+        20
+      ],
+      "key": "12-17-20",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        4,
+        12,
+        17
+      ],
+      "key": "04-12-17",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        0,
+        8,
+        17
+      ],
+      "key": "00-08-17",
+      "multiplicity": 12,
+      "role": "calibration",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        4,
+        9,
+        12
+      ],
+      "key": "04-09-12",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        0,
+        5,
+        16
+      ],
+      "key": "00-05-16",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-7c6c5d"
+    },
+    {
+      "cards": [
+        4,
+        17,
+        20
+      ],
+      "key": "04-17-20",
+      "multiplicity": 12,
+      "role": "holdout",
+      "stratum": "srp-btn-bb-7c6c5d"
+    }
+  ],
+  "budgets": {
+    "corpusSolveMs": 14400000,
+    "estimatedAllocationAndExportBytes": 12884901888,
+    "heldoutMaxErrorBb": 0.01,
+    "heldoutWeightedMaeBb": 0.002,
+    "iterations": 5000,
+    "peakRssBytes": 17179869184,
+    "perRootMs": 600000,
+    "rawRecordBytes": 1073741824,
+    "referenceExploitabilityPctPot": 0.001,
+    "threads": 8
+  },
+  "chipsPerBb": 100,
+  "flopOrbits": 1755,
+  "format": "poker-face-preflop-validation-corpus",
+  "legalFlopsGivenPrivatePair": 17296,
+  "payloadHash": "01fb5ca7cdb6532be5f2c81191c2fd7835d2b942255294f9c0a26a4daf10a313",
+  "physicalFlops": 22100,
+  "playerOrder": [
+    "OOP",
+    "IP"
+  ],
+  "potSettings": {
+    "3bp": {
+      "effectiveStack": 8900,
+      "paidPerPlayer": 1100,
+      "startingPot": 2250
+    },
+    "4bp": {
+      "effectiveStack": 7600,
+      "paidPerPlayer": 2400,
+      "startingPot": 4850
+    },
+    "srp": {
+      "effectiveStack": 9750,
+      "paidPerPlayer": 250,
+      "startingPot": 550
+    }
+  },
+  "profiles": [
+    {
+      "classWeights": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          0.5,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1
+        ]
+      ],
+      "id": "A",
+      "rangeHashes": [
+        "61077ca74951f8da364af53af4bb52b457fc387ae4bdfdd459d90d64749810fb",
+        "84a6e0e45c72738c75126b52281612c7b75a7eddc2b52776b197f61df27f2cda"
+      ]
+    },
+    {
+      "classWeights": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1,
+          1,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          1
+        ]
+      ],
+      "id": "B",
+      "rangeHashes": [
+        "cbfd4d5589127d27ca09fef477636a6ef0d811c28b1e12a6a42ab197565bfa3b",
+        "089702444b2cb68c8a09ed6356c01e1c45ec2234659c112063bdf058bdb5c6af"
+      ]
+    }
+  ],
+  "roots": [
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-srp-a-legacy-00-09-14",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a9e77fef43cc7c90f47ea20686e0df80dcf04cdb15b446281a8d952693bbfc59"
+    },
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-srp-b-legacy-00-09-14",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ef34bf688a59bcc1a6494933e0673644252b5dd4588e71f6e4c584b617e077f8"
+    },
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-3bp-a-legacy-00-09-14",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "490991f7007ba47eb814cc35b09e344ce0cfdf453123778149655805860373b6"
+    },
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-3bp-b-legacy-00-09-14",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fb18397cf637101adc4756afd392d515842e5706bc0cb23d82ed8fed2c97ed14"
+    },
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-4bp-a-legacy-00-09-14",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7e07f85ccc8f9a894130b4d111349253d86b5b7e8163e39256f5b1f118c3bccf"
+    },
+    {
+      "boardKey": "00-09-14",
+      "id": "pfv2-4bp-b-legacy-00-09-14",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c6f62b856770454104c55564763375a1a77f2ade65c3682618e3899809a3d08b"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-srp-a-legacy-00-21-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "93f4870c1de907cd2cd17f30fb7b0cb321d874f11ae2f24adf1173e2f81d7063"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-srp-b-legacy-00-21-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e5b08432e924d809e1bbe58a89a9eb1c524ce7f01d14bc6633131607b7084ae0"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-3bp-a-legacy-00-21-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5ccf1a059e142a001449b3acfff56234ecfd35f8d59cf1d38fb37d4240aa65c9"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-3bp-b-legacy-00-21-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "950d6cc9fe0be1927cce1e5dbc4d918e07196078a98186923d92ac7766cec8c0"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-4bp-a-legacy-00-21-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "efa4ebd17d811e59401a28376c929738c702906a4af14cb89e07157d456f5aa3"
+    },
+    {
+      "boardKey": "00-21-46",
+      "id": "pfv2-4bp-b-legacy-00-21-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1957547a8a3b2fad48b88eca0689780d9d62954f8880b9bd4175dcdb827a14cf"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-srp-a-legacy-04-21-33",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6f5f2e3dd89515bf470fb2357d659b7b5806d70941e042a5ca184b709de8c726"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-srp-b-legacy-04-21-33",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a7e87b9a361fada9941514cffecfde79d14f4f055d7d8106b33a59b64fb297f6"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-3bp-a-legacy-04-21-33",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "17897f2732e16991fadc9342799fb476439213e37cf7ac64b8eaecf2574f9b3c"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-3bp-b-legacy-04-21-33",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d4ce4b0f05a3c20b62972f852e205b8b3d5a1e5cd62de7697d892a71924d13d7"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-4bp-a-legacy-04-21-33",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4b402f7226e1120da6b425f0f1c23f0549255bec81db987e897eedcd4f68f79e"
+    },
+    {
+      "boardKey": "04-21-33",
+      "id": "pfv2-4bp-b-legacy-04-21-33",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "18f6b11c662271d278d80d98ac6d59f05ebf5ab2b9827f2c9e5b0041dc216f01"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-srp-a-legacy-04-25-26",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7bb2e87b3e3251ed2882101a5bb408408dc8d5d88fbf026f8ce547cd16ded3aa"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-srp-b-legacy-04-25-26",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4a7f3d94a7a59e24a4f6ff6f0257faa0c18707c67d84481b0db83fb707697833"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-3bp-a-legacy-04-25-26",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dc139d10699d06ad73600cc39a000cfab481d8c89a0563adce79ead9c6408bf1"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-3bp-b-legacy-04-25-26",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5c79aa22c146f4a5ee31621c502aaf73390e50b240cbd5b85d5b5fb66c878d06"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-4bp-a-legacy-04-25-26",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "02bdeaf0901d38c08f8e0b07c4f55025b97fc57d254d5f6d0acf6003ee5ac58a"
+    },
+    {
+      "boardKey": "04-25-26",
+      "id": "pfv2-4bp-b-legacy-04-25-26",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4c723076c2fa9fe10055973fa431392580cb328644e1a122ba25804fff7f03f1"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-srp-a-legacy-04-25-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "320e5a0de71cac2b4481075805aaf5ec001aacb5ae489797f7a3ee17e3baa743"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-srp-b-legacy-04-25-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "45f5e39b05a9196ab20120115de570824edbc36bcc5c6135a798c4db7de51e95"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-3bp-a-legacy-04-25-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "daf0a803ea3fa6713471def9e1ca7ad53e26d64a309a14127ac63de62425d8c0"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-3bp-b-legacy-04-25-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dc71325a10b96bf31555f52c822d7beeaec12050cbeb33387f25c13fbe3c61de"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-4bp-a-legacy-04-25-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "03caefe3366a621a7f27bda1d35914d18392351d28f824da70415522b9580962"
+    },
+    {
+      "boardKey": "04-25-50",
+      "id": "pfv2-4bp-b-legacy-04-25-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d5fcd6766cc16714f7feae88653f72716ed4b25ebed69a1563099e6045e3d4dd"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-srp-a-legacy-08-28-40",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b16ef0adedd6bf934952eb57426f9230d064baaa1690d0127014ffaa6ccdb20f"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-srp-b-legacy-08-28-40",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ac8389e9864c8b4f06d11f744950f8b641206717937adc829c533cc438695882"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-3bp-a-legacy-08-28-40",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "83772a92bffca32d8be915c44f0e07865c1dda49a11974e1af1ba3ab13be43a6"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-3bp-b-legacy-08-28-40",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a2b33088ab76dbed9a175728dfa5d248aaf5350beb33d4a243efff4a1f4dc574"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-4bp-a-legacy-08-28-40",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d4a925dd9d04b28949bfef00f62128dd77c836ce02f38562ee9088dbc3987336"
+    },
+    {
+      "boardKey": "08-28-40",
+      "id": "pfv2-4bp-b-legacy-08-28-40",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a1aa54b8f045cd654841e9dd9a1a64a26f4fac0b33dbfe8513c185ea36424cad"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-srp-a-legacy-08-37-38",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3e94893cb199cd1215c9fc9f8914da8e2d5287df3b66754d1e22218c8f819a71"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-srp-b-legacy-08-37-38",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7bbccfd7cb0f2af2d2dcca4f577b3c637eeafe6160bf874a5fd95aebe234a1aa"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-3bp-a-legacy-08-37-38",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "447c417fc7f6fa6809181f6b4266e72f725cced4d258a3efcd65526151be246e"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-3bp-b-legacy-08-37-38",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b75c05bd68e28da67845b0ae2d9ece4c1f22b71270697a2dcaae5c1ce906b0dc"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-4bp-a-legacy-08-37-38",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b4a415bf639ed5eda800573476c7c880558675cb0ca055c9c2a0bf4dc3cc7429"
+    },
+    {
+      "boardKey": "08-37-38",
+      "id": "pfv2-4bp-b-legacy-08-37-38",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ac470445b0ac0dacc0eefe9ed7d4ef16640d5788bb71d8b605d7ea42119b2fe1"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-srp-a-legacy-12-17-21",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b6d1bde33e5fb2ec7eb3172e30b58f856b4802d81ff37b741f06ebebb9e0a748"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-srp-b-legacy-12-17-21",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "baba8c1eb49ec7196210a85d22e15f7ee8f27ee48fa0888369074c60b0322b5b"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-3bp-a-legacy-12-17-21",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8c393a6234a0198a999fd64638ff35effeb1460201a129ed888bc182355ba03f"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-3bp-b-legacy-12-17-21",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "914a9b49c5ca13cd108b3c3e030d3247a35f6164b018780bce4660b493c81e19"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-4bp-a-legacy-12-17-21",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a4f13cd893cd5948ecc3d831be39f5f64582115d2f95d5904d150f29dba6ab74"
+    },
+    {
+      "boardKey": "12-17-21",
+      "id": "pfv2-4bp-b-legacy-12-17-21",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6933dfec90ea2959511282f36ceb947dbabe32c2fd19be7c5acbc4e2b41ad9a5"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-srp-a-legacy-12-33-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d82a320779be5ca5f00799ebd11bc8d23ef44ba170ea83e85253c94eac5df42d"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-srp-b-legacy-12-33-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0250400c84bf43df13116cad649731b38457a49472668f1883f28a45f87a547f"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-3bp-a-legacy-12-33-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9b78866f947a51f0487c482328dfc09585576d60bddb6ac97f7947a409b60833"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-3bp-b-legacy-12-33-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f369db842258cf3e7a78739e11ff10163466790e61c2d3bc108c3e077c87c6d8"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-4bp-a-legacy-12-33-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "476039e59f857f9b3d285eb2d50fb80e49c69f2f0ea8e2b153c6a941b5338f7e"
+    },
+    {
+      "boardKey": "12-33-49",
+      "id": "pfv2-4bp-b-legacy-12-33-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "913df4ea127063d880a5b8ffe25b56a5cf4edbfe5a715987626a528654938653"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-srp-a-legacy-16-25-29",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0b0a1d821f1cf165c25c8cd81e7b3fcf60597b44d42906c4b4919d8da47ba7f3"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-srp-b-legacy-16-25-29",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "760dd8f5ba1cc09d505c9735c8ed43499edcea49f8e9ddf14837fb4e06a26b50"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-3bp-a-legacy-16-25-29",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "45f256153ed22bd24babe11edffa0e68feff74bd8ec90df850da5e471b468650"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-3bp-b-legacy-16-25-29",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d0c401262610f5e002a00fc356ee69bc5bf6a60b9e40bbcc82d5d0d92c4a9b41"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-4bp-a-legacy-16-25-29",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "90b6dcd3f0f9ec106b3150a1a02b5cdfb4226807c35d0f721a0f927c814fa91e"
+    },
+    {
+      "boardKey": "16-25-29",
+      "id": "pfv2-4bp-b-legacy-16-25-29",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "87de70a06bbc9fdabec79d6be7f1fea2a97abc4a5032849ea77c2c4c84df03ef"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-srp-a-legacy-20-29-34",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "18d7320d1d4a943c8a68cf171270fcc373556ae732497dd4d9c7b5fb05a231d6"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-srp-b-legacy-20-29-34",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "647061432a21fa43bb432357b1b323e66f909d042669d38e46e955a7fd5a477a"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-3bp-a-legacy-20-29-34",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "72814c9b6a9b44cbaf79d70735c489fdae71b55ac0d99ae2ce2d6a7dd96efab9"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-3bp-b-legacy-20-29-34",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "416fb2f73645254334901658f5e2b66302830a4a6c575c0a0844d0a1a693b16a"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-4bp-a-legacy-20-29-34",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "21bbf5c7fb86ebf9ad98d355b83f5bec04fb03814364a24bd3e734839a4a70c0"
+    },
+    {
+      "boardKey": "20-29-34",
+      "id": "pfv2-4bp-b-legacy-20-29-34",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b876177e458e44f0651d4b0389b6cc7a933f6b88b432651c22e45972f9c7820f"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-srp-a-legacy-32-41-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a02f152e8e1073ce926ca9bbf9fbcb7876a0177e8b0f4d0c27d26e3908a3036a"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-srp-b-legacy-32-41-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b1963571b3db9168c69ab2d4d9d7270de3d512e5ea65a004e528b8a143c9574e"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-3bp-a-legacy-32-41-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8753186e0ea0d387f615c591304069c2e0fe611750d054642c310887ccd33d59"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-3bp-b-legacy-32-41-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9beb5c246f9cc791ed204ed3def641825c5258232f6754f63fa8e3f6b68ae3a1"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-4bp-a-legacy-32-41-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4a85b50d10aa51c6962830eb6bb41d24aa8ec5ed2f6c8c0ea8296e223c311851"
+    },
+    {
+      "boardKey": "32-41-46",
+      "id": "pfv2-4bp-b-legacy-32-41-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1335cf4a5ad37dfdf639164a6055a71f54f96c74234518995ea4e7ce84b8d6a0"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-srp-a-calibration-12-25-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "84925ccad1b94dde4e9b084cac6ec63e37cec9699d92d085db43f6e48d326bcc"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-srp-b-calibration-12-25-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e4d1ea986d9d0d49fb1e89280941685674d1162fd15ff528d11a35e5da10207a"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-3bp-a-calibration-12-25-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b6e2c42608b1e8644d6f4e217bff5949f5362413c4dc0fd5fea7adc9c57b78ad"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-3bp-b-calibration-12-25-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "036402920a10d29841a9a24284c6200d23e1d6f978338d8366d02d9c9e6b2f24"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-4bp-a-calibration-12-25-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "929d6070ec7ebfe14ec5ba560e58c1458dfd424cc9abfc3b32459de3ab2b5367"
+    },
+    {
+      "boardKey": "12-25-46",
+      "id": "pfv2-4bp-b-calibration-12-25-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1efbbef7297eb0085f1d3eccdbee684f17ad519eb61292f2b4c3894f72c66d2d"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-srp-a-calibration-04-21-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "154b45748826acfdc041c98db7eb59c52d765501f96da620c7f36f239a085e5a"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-srp-b-calibration-04-21-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2c76422bfcea4ac53c056a6e045cbb8891b62b241405ebe40bca3ceca3955ea7"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-3bp-a-calibration-04-21-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3cc976970a640fa38042646b26ada11a43f47faf4c540e251d7534eafbae9bcb"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-3bp-b-calibration-04-21-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c3a7f25f42e6b7aa8d34241f44132b3482afe4d4ebf0049b32834c1b7522eb53"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-4bp-a-calibration-04-21-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "950f098e61565beae4cf4490ab3196f9a7ee7870a04d79f7aae49153efe33a5c"
+    },
+    {
+      "boardKey": "04-21-46",
+      "id": "pfv2-4bp-b-calibration-04-21-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "73ec21018681ad38cd7b85464bbdb86d22b9985cedf5c9186dea89d50fc5e64d"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-srp-a-calibration-12-33-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "04e29bb805f6cfabe3ca9e8fc8492a50f7d116a4b02e4dd812cee849c9d40fbf"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-srp-b-calibration-12-33-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "398adb0c982297f2fdae4f6ca8fae0d58805cef2808ee75a0e2d255356fdb2e2"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-3bp-a-calibration-12-33-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8173821e3f8cf242e3757f994b034974d1a64e4610be53b8f4e9e10a75137c53"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-3bp-b-calibration-12-33-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "36ddaa5880f8c3004dc903859e42a3db9759fbc027dbd7cb7114fc62f675dda7"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-4bp-a-calibration-12-33-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f901b7d08ae0b18f4b0fb009aecaa508cef8097e59ea096d1ab3a5f69a94a5dc"
+    },
+    {
+      "boardKey": "12-33-46",
+      "id": "pfv2-4bp-b-calibration-12-33-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9ed38b0a52dc6b11af524041fab1e547f93d1beff8152f15011e4030fd2f73ba"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-srp-a-holdout-20-29-42",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "06ad980c0255c185f609347d2a70e0b8f177d2b78e9d8d26270c5c57877f6c99"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-srp-b-holdout-20-29-42",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9d47ab139981cd7b82f6c6e05bf9aac536881d29a2cbaf206b2c4356131dd2ab"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-3bp-a-holdout-20-29-42",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e3c970bcc7748b4dd1560d2594abe93712871e78ffb60797f004fe4bf18c2966"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-3bp-b-holdout-20-29-42",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bea209dcb5a51f430ee6be1c3d23855530d830a58c63ccaca51a01d78eb40a49"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-4bp-a-holdout-20-29-42",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "be8d287e321b4f49fd01ae82f631ba3f414edd864c6fdf3b42ed6adf4d12b9e4"
+    },
+    {
+      "boardKey": "20-29-42",
+      "id": "pfv2-4bp-b-holdout-20-29-42",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6c7dac11b105d78380177b5f66eb554cd1961ef4c0451d289f81b9b393534b87"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-srp-a-holdout-08-21-42",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d084aa5a5e3b03fdcec12aac9fb34a127395e04256a91c60438a79d364a4729b"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-srp-b-holdout-08-21-42",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d5a17891b1f49e171b4a4372ea64c79d7bdc7fdc7419be6eacdfee6c6f1e4b6b"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-3bp-a-holdout-08-21-42",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "26fc1d6ec50e754dfac5177b5b0bd485efc0d9c2e788cbbde9478dfa52e77eee"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-3bp-b-holdout-08-21-42",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "999a0850a51792cd1f5932b683273efa382970c5b8911c636ab819ac3395e5f9"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-4bp-a-holdout-08-21-42",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0e908ec0b2542e5e2e3c6b18f16589ee908df770f5364c7f1652ee014877f61b"
+    },
+    {
+      "boardKey": "08-21-42",
+      "id": "pfv2-4bp-b-holdout-08-21-42",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "aa000b67076f724e4c7a20b2a38004253fe105fc3d93cbedce60051f334cd183"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-srp-a-holdout-12-33-42",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3eb203f1028f1208fcc21add10ee26f34af6c20231d069aa3fea84540706f9ee"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-srp-b-holdout-12-33-42",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c8199d09c03319ecd30e52c964e12249d07b5cb4dd06f2cd8562105dd3c0ae41"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-3bp-a-holdout-12-33-42",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "aa339ed5d358af698a1bb3e46a19ce22aa541c2dac6c4d8e7622623204f0757b"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-3bp-b-holdout-12-33-42",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8ca4ae37e11db05743e273bd288ad8496ba2d845b2653472ce0d95ea4f5f9623"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-4bp-a-holdout-12-33-42",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f1110aa0607f157b040d47ff682ba24efc7ac3a57371ea9f642b94818025ad96"
+    },
+    {
+      "boardKey": "12-33-42",
+      "id": "pfv2-4bp-b-holdout-12-33-42",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "35877e602306bda77f8ad062c4c971e691be79f7c867eb5d5bf2b0eb8d6060e6"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-srp-a-calibration-28-37-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0a16963897bdf49e71933667532cedf7eff8979a2c48f06fb558099828472d2b"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-srp-b-calibration-28-37-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "34f49bfbf0c008f02bde767b2e66994967c7971f1dff74ced56f84fb24306924"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-3bp-a-calibration-28-37-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "76d0e9f9242c86d0e1bd6d8cc5851f1628e1e6961dda047dd49376e240a4a43a"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-3bp-b-calibration-28-37-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "19e8e530e670741f5c6b7ab037b249533f471e24961f86aa74fb98b7d3294d24"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-4bp-a-calibration-28-37-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b63d07a86b87236b433817212aee76d51e1de540157a014a5cf14694699cdcca"
+    },
+    {
+      "boardKey": "28-37-50",
+      "id": "pfv2-4bp-b-calibration-28-37-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4b8ed1cdffe035c88770cbae5863f74a41a03cd9b3341e93d88191cef645da76"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-srp-a-calibration-04-13-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7c5812a7776ce5adeaa8979742d2300575dd268e5dd18c73bd4e67f7af93bbf1"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-srp-b-calibration-04-13-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "60c2cb46b5f68689d2e7fcf76a34b3e264587224e81ee1d8920a8caf69dffe4e"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-3bp-a-calibration-04-13-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "747c07ab9823d7860f4283ca8c73cf617384038105dd88ae17a01cbdcb1d6e2e"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-3bp-b-calibration-04-13-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "96fab4eb5c43a80764586ae0de8c5f7cf7d564bbf4efd232220203de50a8c167"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-4bp-a-calibration-04-13-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2eb431769dd708e7575b95b7f8dd110db7a9dc2504f01dba66ed029639398eaa"
+    },
+    {
+      "boardKey": "04-13-50",
+      "id": "pfv2-4bp-b-calibration-04-13-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "181b4167f75964d4a7fee47938a680a61bb532b7bd87cd13c7af7953cbf63f09"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-srp-a-calibration-08-45-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4b427833d34a1d0904dad3091ce497b38d3ce3fd52f21b3c1ab6a0ccf824fb4e"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-srp-b-calibration-08-45-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "be175c9b52e5967e98ae0afa1b586bcfd6dc423cec29cb4654da650f1a09dba8"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-3bp-a-calibration-08-45-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "77436af7807da8f71d2423afd22751d3a9034dff199bf426fac6006b931e5121"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-3bp-b-calibration-08-45-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ca9e65cc41b21435fe2748792263946d0b992fa35707ac68a80d6af09e5621aa"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-4bp-a-calibration-08-45-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0ee827dfe70b0fdf05b46bf3f9a83ca2dc5852cef7084690fcc344464952d656"
+    },
+    {
+      "boardKey": "08-45-50",
+      "id": "pfv2-4bp-b-calibration-08-45-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1a009928bb04248e79b8f17d59c4d6d0d30328e5e7c83659d5cede72d6f2609f"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-srp-a-holdout-08-29-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ed8a9c333c471a1ecad4faa0152539c2733ec3ab8c6c2d8e6fe707a6e6393f78"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-srp-b-holdout-08-29-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3392c1f1e7f8d910106da27613b7324be7b71cb346d367cc25158b820bd8b554"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-3bp-a-holdout-08-29-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "655338af468adc38ce25842281d7c23e5adcbca926c798881237723a2d40370f"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-3bp-b-holdout-08-29-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0911208aefde480188c53812483f5364b75873e76be953a700999823febb9c6d"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-4bp-a-holdout-08-29-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f9db37b0e31ec5697e05d146eb3974f677f16d0bc6bb8734d4c00d71793353ae"
+    },
+    {
+      "boardKey": "08-29-50",
+      "id": "pfv2-4bp-b-holdout-08-29-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "316cbce5a8f362342174f79bb6b78e43a55fae1e06af087e72b79558f9d5934e"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-srp-a-holdout-16-25-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "073471869eb25916c40a71f03ab203cec6d33122cba9e6261c52ccf7d4c8f848"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-srp-b-holdout-16-25-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fb4a3c05021d762556dfba7012bbf561448b36769b79d2816ddfa6afd17a68ec"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-3bp-a-holdout-16-25-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "799058d182945ec20e4dbc7935eba3e3081b4375f2385d5405d8e19f3dd9c4d0"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-3bp-b-holdout-16-25-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4400d996d2f9b9fe9b10cc834654c0dde987f64ba0793f0d0398b2fe481a4c13"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-4bp-a-holdout-16-25-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1efcb8a8298c8e2f3d851574b19879e2681782fadba0516eaba6cd8861615ea1"
+    },
+    {
+      "boardKey": "16-25-50",
+      "id": "pfv2-4bp-b-holdout-16-25-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e075f869d54067b34876b7cb09e77854bb592aae686b6a1299aa49daff0ae389"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-srp-a-holdout-00-33-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "007cc5425dd833bed91cd3e4c251420998f20b142f3ff4e2e1402c75343f4f3c"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-srp-b-holdout-00-33-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "88b10bb2b82a1d8d708b7693f17c171d1384bb2e6a7dac823450c0484205d818"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-3bp-a-holdout-00-33-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b45738b9ef2b9c60e8ce3b3f9a7c02f8b535c53d2e56f6053e1cf4d1b6065d9e"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-3bp-b-holdout-00-33-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9c239bd3014c42b233e949995176120b6190ebea51ad9d8f5d8269cf89ae8698"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-4bp-a-holdout-00-33-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "88b4399c93212b60abec1ee7c08cb37fd7631b179c25ae96b3f6ad566c3ecfd1"
+    },
+    {
+      "boardKey": "00-33-50",
+      "id": "pfv2-4bp-b-holdout-00-33-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f30accf845303d44c5273f83a55a08d793cb348d5674e04b7ed8528db3a61e6e"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-srp-a-calibration-28-33-38",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cedf882ebeb3f79c8d76d1bee1e5f61ba59537d62d0a73936eb969e9dcc6cd65"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-srp-b-calibration-28-33-38",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0498534f65e544b9d6c76bd9868f43641faf11c0ed6de005d7c6b0e4c25ea17a"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-3bp-a-calibration-28-33-38",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2dd478513e7701b27a169d7b44d74cd012382c7d785c6067e238baddc45dd1c1"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-3bp-b-calibration-28-33-38",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "df90772e003481b733c1724bca08e9ed243f4f359f25785807d2b77ca4e9b827"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-4bp-a-calibration-28-33-38",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3c4e2ea0fc1797e217210261c9afd8508caae7f85e619317e3e4a58dce42c99f"
+    },
+    {
+      "boardKey": "28-33-38",
+      "id": "pfv2-4bp-b-calibration-28-33-38",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2bfb5fbbc276e95f661165ad2836b76566d5319576621e3064b129cea6416f1d"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-srp-a-calibration-32-41-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6127b9469fe3749305b04a613824764b863c5c5586c666a7f8ee9d0a0d47cb25"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-srp-b-calibration-32-41-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d16cfa9a66fb7a97900006e702476af4649042adb7684ca584315eec50033908"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-3bp-a-calibration-32-41-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b28500615686501d518698ce4c9167d1dafcf2c9a47d230794b513738851c717"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-3bp-b-calibration-32-41-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8c3a6fcfd6d3ffdb7b8dca9a0fbac08c2817b03689394089afd50b34d5335368"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-4bp-a-calibration-32-41-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dcc4b0fd453fd82da78a3f2b090c3ff508f7bd6f068d7527c82fe2715bf5d309"
+    },
+    {
+      "boardKey": "32-41-50",
+      "id": "pfv2-4bp-b-calibration-32-41-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "aab9f48a76cd5527f4b000dd1c449b13d133f93bf033c957a7c9f23f174c3fc4"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-srp-a-calibration-24-37-42",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ec4594a3bc218d2ea10c36a6ff6adfaf3ee171ef766b4c18a02942725df1aa45"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-srp-b-calibration-24-37-42",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4d4a5baa19dc5615df56384f3ac4e778b8159ac5a4f8cb7b4b04e715e5d77c4e"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-3bp-a-calibration-24-37-42",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3a276cebd2e43d9795a0675dc1eb2a64a399923c9790c7e3cd7cc0efa80f4d4c"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-3bp-b-calibration-24-37-42",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "74cc5ae0c2e8c60b81739a9ad678118ffc3e54e105f7b4b52db78323942e3f36"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-4bp-a-calibration-24-37-42",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7f3ea53d0d70384f15cb8ba14f5e354998c3afb2ccaa9b21ae3ee1a4969559ce"
+    },
+    {
+      "boardKey": "24-37-42",
+      "id": "pfv2-4bp-b-calibration-24-37-42",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1a00253ba30faeb68ee74619050155a55cbe3b0a757b90a33384f0c62f4b087b"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-srp-a-holdout-32-45-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "82e7879ece9c04427f02f95361dcb6d1143020b9a596e51d5b62083c56813221"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-srp-b-holdout-32-45-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "34339dfbe3aa4fbed7c47b67a3c4aba37158ac69f2d423936135d97350d2f967"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-3bp-a-holdout-32-45-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2ac58c23b558705fe7f7324ae6033e1881c5ac98984dcc64c668922479455c44"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-3bp-b-holdout-32-45-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cdf420bb9e12cfed83558b3cfbf3cd28363e2356a14425d84d588722e403ab43"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-4bp-a-holdout-32-45-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3dfb537b99a78754fddaec079b9bb3f5367bb01220f66bc7dd1affdc12ac2bb5"
+    },
+    {
+      "boardKey": "32-45-50",
+      "id": "pfv2-4bp-b-holdout-32-45-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6bea725b8cccff176008e1443f71e42a695a6f600ff66562a37c409c20d507a9"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-srp-a-holdout-36-45-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "32c34685a35d9f94befd37c8ac6d69a5068223418ce94387cdc8301748b0909d"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-srp-b-holdout-36-45-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "98215e3e6be29f32e54167a9f9f5776baa6653e68c5de86538ede7f8e2052711"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-3bp-a-holdout-36-45-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5a78d010da88fe2af952b78fbd17c71ded4d78d1dba262bcf14fc38b3f128b47"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-3bp-b-holdout-36-45-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "85370d293489d00e6407a1cfd7781d5fb86280cbadf69d2143fd42dff37bb63f"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-4bp-a-holdout-36-45-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "740d212c2283c6abc0c87b9532222f7947c359add4419fc2fe96e387f2de1f1c"
+    },
+    {
+      "boardKey": "36-45-50",
+      "id": "pfv2-4bp-b-holdout-36-45-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3a3e3b7fa7b720afb4a4810abae6cc0bd354cba3cb79c0762b2cc1e38d5626eb"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-srp-a-holdout-24-33-38",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "855a077eacf56f6e37862a69e21522de5ae05be3daaa1d3c2b6857676b380787"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-srp-b-holdout-24-33-38",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5dc5c0f79bcfcd215e97461b069ec188ec2bdfe4e989b5b5a5dbddd2e9ac58b9"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-3bp-a-holdout-24-33-38",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "06bdd2a78fbced444bff846f91a76f935e6ad6b2b2b7495984d1c3975ccea01f"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-3bp-b-holdout-24-33-38",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3b5b037b1eefd816649f2d3dbe3d915dd139f41248c12a17032956dfb2fbe09d"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-4bp-a-holdout-24-33-38",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8889eda5b31e298386b80fe92b3a52094e0743ae46e5be88c1c904789b982fba"
+    },
+    {
+      "boardKey": "24-33-38",
+      "id": "pfv2-4bp-b-holdout-24-33-38",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "463ad7c3a2d6c4601c675729bbb7cddbbd4f05b1537d6ca1f487c77cc50f0307"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-srp-a-calibration-16-25-28",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b4324043a1459740566924cac138000e1b88b92272cc5e1e7e775a89d9751302"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-srp-b-calibration-16-25-28",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d887c885b257f10d2cdf20a01cce9807c7764dad48facdde459a4695a017e73b"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-3bp-a-calibration-16-25-28",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "baabaf440cb1ead7fcc0a21f23b93a8278aeae246517af93851368457169855c"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-3bp-b-calibration-16-25-28",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "12ec6885cc11c02e1dea459763961c07639c07ec1ac379b8f7a7c5bfb715b444"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-4bp-a-calibration-16-25-28",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e835f1876ca209043abc426f0d644265c66d60dff461f6902648cf10d96771e6"
+    },
+    {
+      "boardKey": "16-25-28",
+      "id": "pfv2-4bp-b-calibration-16-25-28",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1b3891a735ae1e4c17ce1f9921ebfca1fc08210717c552607853ba006580a815"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-srp-a-calibration-24-29-41",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "82b5ff1d17195964b1f40588188bfca4310ee91f8976602c654dd3ca9909dd46"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-srp-b-calibration-24-29-41",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "362243d1e8036911dbc0a3744c7dd25ef1442245d162b48a78c74d63c23b2df3"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-3bp-a-calibration-24-29-41",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b5ba2afe850e0be38a629a3fb46d72c46b8f8b7b4526737f818ea2bc27aa7ddd"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-3bp-b-calibration-24-29-41",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a90445e92919be482d28521c1383e5d042907f563fbf5d130161ab7fc2d6eebd"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-4bp-a-calibration-24-29-41",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4b3fa64790b3944e8c05eaea87e1a93e1f19ba832a4519acc45d791e74051c09"
+    },
+    {
+      "boardKey": "24-29-41",
+      "id": "pfv2-4bp-b-calibration-24-29-41",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bd4624bc85556b3ad1ac41dbbf422728413c6e7b76d749cb638c7e15dcba8f5e"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-srp-a-calibration-36-41-45",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "319f78070ebaffb2ea3b26ecb7e0cf952d3394acb6052d00be5698c92bfe929a"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-srp-b-calibration-36-41-45",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fa8c75ea3983cb02f64c5ae00dad8e6b10928ba60353cc6bb238db4f98f557d4"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-3bp-a-calibration-36-41-45",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "87451f6388080114e143b5fa4a6d44f761a0b376f8a9ea1569df83cf70e5a0ab"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-3bp-b-calibration-36-41-45",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "00c44fa71053576ff62aec17e280cee46994e9cd04feb3afe7069bdb120115c1"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-4bp-a-calibration-36-41-45",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "66dbf731f836372176af9d51693d7e5693efadd81baaeb2dc3ccb559b43a3836"
+    },
+    {
+      "boardKey": "36-41-45",
+      "id": "pfv2-4bp-b-calibration-36-41-45",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dbcf92789d5606d50983347efa58890e9b555da5d262094f751c69484d3e42b3"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-srp-a-holdout-20-25-33",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6929a04d23404e3f3abfb949f3c2dbee002d0939d278bc53022f9b3e23c09c11"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-srp-b-holdout-20-25-33",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e11a4c9a43f6e2c2dae46b2971af67b6a15b5c4e7314334dd12dbe53734c4fa8"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-3bp-a-holdout-20-25-33",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c0d236b153a4e3419a9ee7ffd1b3d64b29ce444e76e2a8fb5d82698851479f18"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-3bp-b-holdout-20-25-33",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7fedc971fca431605b980b0dd025e0a11fc59d8ad5bd90d2c270988e9913bd7a"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-4bp-a-holdout-20-25-33",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c9f1722b941d8c823e70c9e80a725926fc94b5ca332b97322a72696808362c38"
+    },
+    {
+      "boardKey": "20-25-33",
+      "id": "pfv2-4bp-b-holdout-20-25-33",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e5153baa78eb1dad7216bda5deab3b3971d71dfcd728cf14733010ddb523969e"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-srp-a-holdout-28-37-41",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "351f87cf65877164eb5300259b0e57faab2008900bb17d0a8834b0c6a8a80f46"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-srp-b-holdout-28-37-41",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9ff8d44650dda4d195848f3afc776bd4a4362bf8bd6c51534f976d0a45775cd3"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-3bp-a-holdout-28-37-41",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a52efef5655090cccbd1bdf6f25397e66805c3c825b804ab9f95c58a4d60030c"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-3bp-b-holdout-28-37-41",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ab6c2efe476e69417e348ed246e7df145f350c067f8b0609274de96d1a99fe3e"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-4bp-a-holdout-28-37-41",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "52142925220e7a0b513b5ec56d82b92a63017cb091f34ecd1d7466a8147e1d56"
+    },
+    {
+      "boardKey": "28-37-41",
+      "id": "pfv2-4bp-b-holdout-28-37-41",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "88167c48ebee627a9c20750ee34a2731b2f74126dbb2f5b1b282173543b09ad1"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-srp-a-holdout-12-17-29",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "23a6fd88a49fed3e04730e7c42014160ad9f16cd777f7c590d0c3334ef5d4db5"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-srp-b-holdout-12-17-29",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "03e23ce8a32f397e74b5300bf23a8d71fa90ccf1bc3efe881857851c3358d6f7"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-3bp-a-holdout-12-17-29",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5283218b354877838c3ca1f195e2499553ee16a6c58a6e1479c90b6b675208b4"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-3bp-b-holdout-12-17-29",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6fa69145f1586f1ca5cd6dc4459fe35adba9f8a9e16e7b5b2aeae18ca86cdba5"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-4bp-a-holdout-12-17-29",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d28d00b63744d46e7841ba7f46ac7f53d37290184965cd2dd591de4056f341d1"
+    },
+    {
+      "boardKey": "12-17-29",
+      "id": "pfv2-4bp-b-holdout-12-17-29",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0086c80d76c7a181a09978dc1ee977047e4187feec87c5551ee3dd74966bdc8c"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-srp-a-calibration-12-16-48",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dc7e8ac0de888e54c4a1fccb9da4a5e79ddcdedbf9a7363993cbd124b1bb9558"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-srp-b-calibration-12-16-48",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "465274df4997ab4f04279855c30d82718c903721675b2638c8d0432d69b35d34"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-3bp-a-calibration-12-16-48",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "059bd0b1a73137c0cdbd6b168457d07ef7e8370a96a32f81e63cb7378025b57e"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-3bp-b-calibration-12-16-48",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "58ace6945b891dc1f40c01285b4b9ed4c64ee21663638d3d8ab0f3b1ec44ce53"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-4bp-a-calibration-12-16-48",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "088fc0e7e8d399d1058af380b9cf709c22b32dc21abc0b6ebdfda72256fc836d"
+    },
+    {
+      "boardKey": "12-16-48",
+      "id": "pfv2-4bp-b-calibration-12-16-48",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bd30b92c68d422a92ae58ecab54581bdccd4d81d36e9f04d5a1ab82fe37ba284"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-srp-a-calibration-04-12-20",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6f5f4bc00c8b8a4ec7fde09401db8fd593ca0bf5e1b2f33de65b84b9e000122d"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-srp-b-calibration-04-12-20",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "063214723ebdba0dfb8f404acf77765301765a9990b9c68680c1ba98a546b952"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-3bp-a-calibration-04-12-20",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7812d2840467d82381653bdfeaa280dcd9f4c4be334fb5e667db09a31730e827"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-3bp-b-calibration-04-12-20",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fd3ff897a4af149026fc38774aa043cd3326bd0382f53baf399775f42a65e946"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-4bp-a-calibration-04-12-20",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8f8f1209060de4d0bb43bfd7669282f0be52e7682b57e6869efdadf35f1f8d15"
+    },
+    {
+      "boardKey": "04-12-20",
+      "id": "pfv2-4bp-b-calibration-04-12-20",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2ea328b4c75a7a387105943e7ad3fb38c478d8a0c33217174cb9f9beb48e9b3d"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-srp-a-calibration-08-12-36",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "090fc336bdd3f3a365e0537c52dc61b434bb47ae40a43a65b63b583075bd6cfd"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-srp-b-calibration-08-12-36",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "04ccd905da42c2f2a4d1092c1345ca1a17bf89ff4775723f30b468fb83d9f27b"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-3bp-a-calibration-08-12-36",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9f0179897bf1003951247d71539620549e5e3156f962c0c7506d121989fc4d5a"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-3bp-b-calibration-08-12-36",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "16b9677b8572ba7c1a0fcc6b87e0a8121706dbfa993a0d756206b1e7ad3987d6"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-4bp-a-calibration-08-12-36",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "eb9c15ffd92968175ee0bf57754555ed97e800847ee83e766275e60e940560eb"
+    },
+    {
+      "boardKey": "08-12-36",
+      "id": "pfv2-4bp-b-calibration-08-12-36",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "658dd229760a016ab33f912e0b2d2e0682eef2e086e9386e9307683eb10c2a7c"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-srp-a-holdout-04-40-44",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5793a43e622a64a441d16ed015422d0b0770344d29b93111deded7b64735d1f4"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-srp-b-holdout-04-40-44",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dab41cda62f2ed39a6206d7440c5361b646e813bb06ce392d67df839f408156c"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-3bp-a-holdout-04-40-44",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cfac7cb8e351903e74f5a7a40dac2c584b19450258edabd211d7a246211c15a7"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-3bp-b-holdout-04-40-44",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1312374259b04be3c6ebcb644274d5931e9b93b939fca0eb8e729ae5c687e7fa"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-4bp-a-holdout-04-40-44",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e0fc97fc997c3251ea491c051065b4f7a7134609595514dcfd07598eb46a74be"
+    },
+    {
+      "boardKey": "04-40-44",
+      "id": "pfv2-4bp-b-holdout-04-40-44",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f26f338cc07daa288fc54ee368f4380cf9feb2075e7655e1e753dc8557ecf888"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-srp-a-holdout-04-20-24",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b490a71626fc8e1320a84ecd211bb8cedf7b2ea00d6f326adcfbe023ccf84ed9"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-srp-b-holdout-04-20-24",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "37889481a22bbe13db53c19bbaa5ab09947e23141d6e7bb03402f273d5412664"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-3bp-a-holdout-04-20-24",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "87465668cbef9ba389cb2451849a7ec56f931a3e65b8ea2824fc09e1e2c38e72"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-3bp-b-holdout-04-20-24",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7674ff18f5ea4afeab51f59391d8f8693f9e0b92575821c772ca55b30834cc21"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-4bp-a-holdout-04-20-24",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a1ea3bbb3b6deedc4108be2c4a223cdf9fe70e2ed78153f22013de9b020d04f3"
+    },
+    {
+      "boardKey": "04-20-24",
+      "id": "pfv2-4bp-b-holdout-04-20-24",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0eb02ffe58ba73a33d661fab644c496bacfe322a0f7ca39033ca7ebd98d8e306"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-srp-a-holdout-16-28-40",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ec3c006be7b5c9ae7e399ebaa99b5dd0ac1f512a68553e14b7ad16cff05c101a"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-srp-b-holdout-16-28-40",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5f35b5ee5c6e92832443f5960ebd649f8faeccf17c50c3bfc3c5f48f5e40db51"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-3bp-a-holdout-16-28-40",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ba5e75019422984ae0e832aea64dd01165b331ab0799ce4c79ce70358ee79e4b"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-3bp-b-holdout-16-28-40",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9c5cc0223b79e21618ab277c4e6feb0e5ffba604e745c5e8ee0bf69126e1a384"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-4bp-a-holdout-16-28-40",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c5cda042e74e2824ecc5d6790c1c27edb26f5764ac8ccaaf564155e19d6c1129"
+    },
+    {
+      "boardKey": "16-28-40",
+      "id": "pfv2-4bp-b-holdout-16-28-40",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2010ad16de61213c365f2fecb5eb43c97ce3b26098c0341a945c5529dccbe065"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-srp-a-calibration-04-13-33",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "15a7b9e96784f0296d56be1ad9a2f28f69e0d8eaa147e48d47ec9862730dab84"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-srp-b-calibration-04-13-33",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f233a8063767e1aeff50845edc5e9d7edc1b4d998f4fcad3a9ce7963f3a4be28"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-3bp-a-calibration-04-13-33",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "82e313fdf5b96bf3dd2b3e2c02b6a16d41425067532e6c4645d5d54e0309b46c"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-3bp-b-calibration-04-13-33",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b2c1289b4371f679cfeda66175b0a246ad2b89495337d35409feb99aa96c7f40"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-4bp-a-calibration-04-13-33",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a2cf6ef5d9bbdabf10782dca6675b54076982e37c777a558ff4d4acc723019a3"
+    },
+    {
+      "boardKey": "04-13-33",
+      "id": "pfv2-4bp-b-calibration-04-13-33",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "be6c35206b98e46ebffc99a5dd7c14b6b5419faf4cb409eec4c7dc7555cb2438"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-srp-a-calibration-00-28-33",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b5abed21eb30149ba2ae9114eee569750d1e87aa20975561e0312f3bf5d267df"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-srp-b-calibration-00-28-33",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "233100dab02257863a90676b9bd66d13c1c894a607f4d77b4b51f2f84de8c5cc"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-3bp-a-calibration-00-28-33",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5100f728cf5066be05eff0d516bd02aa02eb9fdd4eb5b0a77555958eb9aa54c3"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-3bp-b-calibration-00-28-33",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6c9ece7f717f7ca022e05106ae396645ecbc37c1307fdd3978750ad16959de60"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-4bp-a-calibration-00-28-33",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a774fafef009561b7fc3ac0aacc466efa71b9acc2f12d745d850247357fb0f31"
+    },
+    {
+      "boardKey": "00-28-33",
+      "id": "pfv2-4bp-b-calibration-00-28-33",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "369a8af9e767b2e3e55d41fc11fa692ab6df3105383f45fbc532ea2843c1c87d"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-srp-a-calibration-04-20-37",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1b91f9b7d39de2ea37d637db78a2b7c5df3397ecfce1c8b02c71e59d64bfeea9"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-srp-b-calibration-04-20-37",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "136d5d40620f977451e872dfd77fd53eb1b3af4101a12a657d9b8d8423376695"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-3bp-a-calibration-04-20-37",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fd25630c5123d9e41daa05219d01c39fb3fccd1ce728e0eaba1d309f36d3342c"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-3bp-b-calibration-04-20-37",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "10db5a3fdebb7af28e5bae86ed7f38f1a1b1ec977f7bc33dc1b21b783cfb9e83"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-4bp-a-calibration-04-20-37",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1eebd7f03110a6b5b5c691e577d6c7abbbd1a8ba29e5f02b80bd08bd76c13ab7"
+    },
+    {
+      "boardKey": "04-20-37",
+      "id": "pfv2-4bp-b-calibration-04-20-37",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "92d839e3f412626daff5a3d237939ef389fa809cb5f37350db3367647bdebd2d"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-srp-a-holdout-08-13-37",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "53e43c3c20a5f2045f4dbd2df3695c4f9bed4ff0c5fa1dc5910cb79d72d0294a"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-srp-b-holdout-08-13-37",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a45db9de1f4939d8cc6155f70baac35388d214b600b593b4cbc9fe9395764678"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-3bp-a-holdout-08-13-37",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c1d93c88d4e7a83543b292c5cdc7b4f42cb790e132af6de5bcbaf7f1a65a71ca"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-3bp-b-holdout-08-13-37",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5d7db4e08427c42f98b571e4e3337b8403c6cdba61c91475c1a0e032af6393cd"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-4bp-a-holdout-08-13-37",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b3228a4cbfe0d16e983dee6c7985b67927c8f6c9e71528aee3b5b2dd0e4fe5c8"
+    },
+    {
+      "boardKey": "08-13-37",
+      "id": "pfv2-4bp-b-holdout-08-13-37",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1a5481eec2d766528b488517cac3466bc34631a1bcc5cc635d03a683b01093ef"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-srp-a-holdout-08-37-40",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7b63d91d758e6c2cf2245bce19df558abf3502e416dbb59362cf9cf3aa814775"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-srp-b-holdout-08-37-40",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6771f3fb6a3fcf5abe408e25d3a6150cec8225c757c7a218e98589982e12796f"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-3bp-a-holdout-08-37-40",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5c5808b1bdb2ecfd286d13f23f3aac1c68436afdb82fc9cf5d3996fac55ff20e"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-3bp-b-holdout-08-37-40",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "87604e35c98e49741a14758e0de4326a5b867840213ab7ba3870be8870bc9224"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-4bp-a-holdout-08-37-40",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8ffbd856a133107931a69830ed324f4a15b9830afa1497b3456978bf6e29b82d"
+    },
+    {
+      "boardKey": "08-37-40",
+      "id": "pfv2-4bp-b-holdout-08-37-40",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "847556e860dd86531bbbdb6467181fb594c24e3935a6e878984f8b1f30fc213a"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-srp-a-holdout-08-29-40",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3f181f38c708729ab589b6904db0c9d58a6a7611c30c4f09a607a8407605b33d"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-srp-b-holdout-08-29-40",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f60fa0443b6d3eb631bcdff59c76103be63b84096688413b29a13c2aabc86417"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-3bp-a-holdout-08-29-40",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f11d6f0ccf59887a5aaf2a49e903a2470ca3f01175f528aee588f77a37642ed1"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-3bp-b-holdout-08-29-40",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2cdb097e55be786b31b3497a07123f7ad07b8c8acf57e45d7936a542a8e86388"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-4bp-a-holdout-08-29-40",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fdffec69889ae887256d91fe75eff69031d20bc528dda908422f1064081a4299"
+    },
+    {
+      "boardKey": "08-29-40",
+      "id": "pfv2-4bp-b-holdout-08-29-40",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b072a2b54138dbc9e2266d9df1b9671f1d167adec10194711978909f72be0b61"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-srp-a-calibration-08-09-44",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c6b17ed2f87d903efa460529ffcdb38872f04164e00ab734aeb7f44e95ac059a"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-srp-b-calibration-08-09-44",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c985dc553941f64f5d996c3b6bf07b78b799bba4d7a2c17c9da38e9c853e34a7"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-3bp-a-calibration-08-09-44",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b53737fd0519a91e3772f47fae78aa6d81b3fe497c74e7477c06d8decee8df7c"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-3bp-b-calibration-08-09-44",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "85f6f2342fb386445b299651cea35680d70ba584690adaf1cc4608bcb094d0e3"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-4bp-a-calibration-08-09-44",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a87a932a85655129a21fc93f53a6b490d129023cd738a891fbde0792496359e5"
+    },
+    {
+      "boardKey": "08-09-44",
+      "id": "pfv2-4bp-b-calibration-08-09-44",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "183456f5ae81800a0c493501a8511b2f19768931f8e6e7a38b0f6d3ff1abf5aa"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-srp-a-calibration-00-01-42",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e5e7ba1039edd3fd9d41ad2054745955a396f584a760c9d2a4b77e1070fcaa9a"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-srp-b-calibration-00-01-42",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a24655c8a3cfefec960b2ac87543ac971b9c306709ceabef97e44aa7e0a7ea85"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-3bp-a-calibration-00-01-42",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "08da66f61449f4ae52712d5911c1b368c7f2d86ac47f9833930a5804c80ae745"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-3bp-b-calibration-00-01-42",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8b2077b6ae9083b6f6a9eb43d6137c4dc4b883381e6d81fe090cd1e57a117928"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-4bp-a-calibration-00-01-42",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fa40c6ee4719548763a1cd2a31bbb64ab6300d60c5d0d2c1d3f3eccbbb5f0705"
+    },
+    {
+      "boardKey": "00-01-42",
+      "id": "pfv2-4bp-b-calibration-00-01-42",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e69f81dd5e1af3ac7485e3fa56d584e0d644b4beb000c3057ef9dd4e77580a9c"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-srp-a-calibration-04-05-32",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e523dad2682521a999f44d452e9d60904d31cddd767037d0d4542e8a053387ec"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-srp-b-calibration-04-05-32",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "45d3c576195d0caa5165167dbbcc1261246f49d4029bbc1b8fc9023708b4b1a6"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-3bp-a-calibration-04-05-32",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b0d2404f2d71385cc4ce84201745e70f3c532f03382f0b93dfa94fc245d3135d"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-3bp-b-calibration-04-05-32",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "52721184d5b5bf6f73d9ca6cb466c0e5aa3a608dffe60f2e59fe7998e95327ea"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-4bp-a-calibration-04-05-32",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a5fc4cc6c73cb5f851e1a3e7701aabb85ed1d274eff1b4ef858c586fbbc2c97d"
+    },
+    {
+      "boardKey": "04-05-32",
+      "id": "pfv2-4bp-b-calibration-04-05-32",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0947b7cb8cb2f3b0bea6e6c510289a7e68647acbd331be6887b4bbe4447990ac"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-srp-a-holdout-16-28-29",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "dd0b053ed299a97e69071186cfd1149de15aad13b7f93c6933cd663b5fb6e73b"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-srp-b-holdout-16-28-29",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f132af995eefee2bc3e3c0a20dd02d04319d1d4a07f07f9033ac96e200d8bd74"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-3bp-a-holdout-16-28-29",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "94e7b99309c4bf6294c151ce910e39628f573d8f8b51329d355125ba4502f53d"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-3bp-b-holdout-16-28-29",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ae17bbf96d88e573b09d5d0a089696a5ba309f6444f84227fd9fcf5dbe62072f"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-4bp-a-holdout-16-28-29",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7066cada7c0ce1223b0be80e2f79c912f483afbe830475aea1afe53e10713c26"
+    },
+    {
+      "boardKey": "16-28-29",
+      "id": "pfv2-4bp-b-holdout-16-28-29",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3152a6e783937379da1c938a3c5cb12d4c24cbf1cb243b38068208530cc16af9"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-srp-a-holdout-12-13-32",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d35c08812e38075f214c2a1d494904c16a395fd2b38035d579cf730805405411"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-srp-b-holdout-12-13-32",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "52f7063547b0d586ec55801bcbb115e2ee448eca70d25e17ce1bacc8b04b477c"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-3bp-a-holdout-12-13-32",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "31ce025fbdbace9937a8690bd3315fd1e08e30698a9a7de0d3745a960f79390c"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-3bp-b-holdout-12-13-32",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3313368e2dac7cc5bb47f3e449975a25e980fba3d4f33fd433a56ed9bc891aa1"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-4bp-a-holdout-12-13-32",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "30d845e582e34adf5e1c0b64b45bbfac4d4556e1ef5b8b2763a41bd19f64adfd"
+    },
+    {
+      "boardKey": "12-13-32",
+      "id": "pfv2-4bp-b-holdout-12-13-32",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ea607246a57d47807d59f91698dcae286600d55b90c6516aae8638b8e7fc7c9d"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-srp-a-holdout-00-25-26",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a0418042006f1b70a8d8a471fefddd4ec078c944b51e464edd81e8f44d3d3d72"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-srp-b-holdout-00-25-26",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8394f11db9f8b3e5196846471c49cbd97cf1c0dd5e696b1c8c940f63fb708eaa"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-3bp-a-holdout-00-25-26",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a462f6648cd658d5b3eee67cc7cefd19e2fb61a41905a3c4dadadc5bb888fa9f"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-3bp-b-holdout-00-25-26",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "17470973bf0d283310642b73a1496dbd90a24ab3e7f0d6fcffb9abcc4d08f090"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-4bp-a-holdout-00-25-26",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a9fa31d03ffa4cff4a1b01baee617b11db502120e161d3846d47b96d9e849c04"
+    },
+    {
+      "boardKey": "00-25-26",
+      "id": "pfv2-4bp-b-holdout-00-25-26",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "16f6d08e8f56a930735ee9402018421666de85c2dfc9e4f29b475c6e09f2141d"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-srp-a-calibration-04-09-22",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ed1243ccf6be4be9199b5c6cee0bd93c69c4e0f922f0f2f2208a689e444c8eac"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-srp-b-calibration-04-09-22",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "49f874e0764b84d17af041ab0df137fe332315496eaf715aa6eca6ecf2607c39"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-3bp-a-calibration-04-09-22",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f81d34926cea7a1f877dae125029d56fea3681627744629d6eca3d216c8d7a90"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-3bp-b-calibration-04-09-22",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2d42b2e5b2ff50786d6924b6cfde216bb5fd3af1f5376088be559707ab48ee7f"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-4bp-a-calibration-04-09-22",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "151bd7c1a39d6bf691cef81826babf2fd2299e349d548027cc0bb48d07094db7"
+    },
+    {
+      "boardKey": "04-09-22",
+      "id": "pfv2-4bp-b-calibration-04-09-22",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "02223ced19386e6e385c69017f5ae28e756bbdaed3da1c6d6a4a4f713300f69c"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-srp-a-calibration-08-17-22",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e68cf1ac81d3aab0d99414e7aaaeba99cee0ccb616a1870f01236803c00f4502"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-srp-b-calibration-08-17-22",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b4c94588364c48ab555edfab8c539dbe47202caeaf9e08e769e92e1a0587de5c"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-3bp-a-calibration-08-17-22",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a5129e079963a99170706f04d87d98518b4721957158fc20bfe90f2946881df4"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-3bp-b-calibration-08-17-22",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "863e23a9851c3c75aecdf9dec06409cb50f614f48c72f072a355c6fc6f65275b"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-4bp-a-calibration-08-17-22",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3d3ff3c9847ddc42b79f55b351b9b90abea4c5761aafff6d00ff32816209acb0"
+    },
+    {
+      "boardKey": "08-17-22",
+      "id": "pfv2-4bp-b-calibration-08-17-22",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5a36beea4d243a81d5f123b8e5bcba2b3e8e41c4010ee683b5aa156d07246fb5"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-srp-a-calibration-04-13-22",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a65f47bc8da0ba69f37266687ca68cfc88bc413908c49d86f6b6a322f38c88fe"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-srp-b-calibration-04-13-22",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ea586fc584bd66634dd725fe9dcc8594bf8cecb2f2b03ea42448009800d0a687"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-3bp-a-calibration-04-13-22",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a9e90c653ab5e400c86b9ad665110c423ddf20fe455a3a2f8d37207772870b19"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-3bp-b-calibration-04-13-22",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2d47d8ded8804350d89a74b11833be14259df2fc357280175546665facf67cf5"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-4bp-a-calibration-04-13-22",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2cfde07b187cf71d990976af17b154996702999ca3283c4fbd4f9f9d0713bf70"
+    },
+    {
+      "boardKey": "04-13-22",
+      "id": "pfv2-4bp-b-calibration-04-13-22",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d6c83113a73250e8b627867e1264a8f54275de4c17646473a3e4397071494b1f"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-srp-a-holdout-04-09-18",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "29e0c30adc905f65054f8c0e78498a39a17e5209a7e9e1b5aaeb259bd1bcebb1"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-srp-b-holdout-04-09-18",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "80402cc3a98d1a787cddbe1bfea60d2dd80f7062c56defd2ed8267f2f9f1657a"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-3bp-a-holdout-04-09-18",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9e75e5bdaa88499778e04fcb9c44ce0e1b5fdc0c3490b0b3a38952c8ae632ca0"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-3bp-b-holdout-04-09-18",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ea1db465843f17f1e052e2463bf9f4c7ec8322948598612be405d0bcdc4cab75"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-4bp-a-holdout-04-09-18",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c77dad60714ea008326a3ebdab9baa216154d2f7127ee508c934697167161e3b"
+    },
+    {
+      "boardKey": "04-09-18",
+      "id": "pfv2-4bp-b-holdout-04-09-18",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4e5b069d8ca4e658806e43b9cdba94cc98dfe66251deec44a442055ad9e6076f"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-srp-a-holdout-08-13-22",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bc06a667f99e9dcc989518cd6900a8dc1f2de146db17e23836fa38cf574186d1"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-srp-b-holdout-08-13-22",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d4e5ab031797730953a2332d6e3e8eb9d82e626c8614446690a0aac400bf8388"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-3bp-a-holdout-08-13-22",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1e76eb2cf0c2f1c1b0344c9b6da570b36dbacb24f9638795e7db188a5338eaab"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-3bp-b-holdout-08-13-22",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c32d6206704be3ba980f38b62c7500213be20699ccf873a015550d2df8237516"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-4bp-a-holdout-08-13-22",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "70c526a7e92c67bc88e760ba9c055f68bd8fffc80625f529bea625b9ee8d00e6"
+    },
+    {
+      "boardKey": "08-13-22",
+      "id": "pfv2-4bp-b-holdout-08-13-22",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b3e2ec96b8043446e0fd5493fa87cd7f8f2dc65cad24592a319f3d33cafd3e85"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-srp-a-holdout-00-05-18",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3b79997776e528c76cb46ee7bb55cbb47e23e674caf80f2085eeac8fe1ee21cd"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-srp-b-holdout-00-05-18",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5d6907f5f61f29c77a9b16f7ec3e6090fd5af78d35b2b9d95b7e51b391ae3603"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-3bp-a-holdout-00-05-18",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0aae96765a489c37da543673a6c23efe9a5e119ac6f26a0d9f31a4b9a4ac7f07"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-3bp-b-holdout-00-05-18",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a55ab262d39ba9fbc0b2bea86adfc0c60aca1fbf17d5d2930e71ecd51e442fb0"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-4bp-a-holdout-00-05-18",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "79df8b60458035c51077825776ee1979aad8101f916e46068bcff43e60f9debd"
+    },
+    {
+      "boardKey": "00-05-18",
+      "id": "pfv2-4bp-b-holdout-00-05-18",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9eaea260b549b4c75b99a23582bf4d8375dbff85b8c73bf1d3fa38df1826aea3"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-srp-a-calibration-16-25-30",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0781ec5e3aaa3d77ec4e9d85234b5dabe608c4517455081c74a6c242178843aa"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-srp-b-calibration-16-25-30",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "84056f0ca4a741e1bb16ba9df2053a48f3909c4d485a3a3cfc717f2c4d9ea575"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-3bp-a-calibration-16-25-30",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "816b024ee0ca3881e0a90b6d55e809d6350c186f44a80fa2359a430809e6ce63"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-3bp-b-calibration-16-25-30",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "21c4cbe8f1519f6e8ee79768936cdb5b3e9b92660f4c12a4b9bad887860ed5f1"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-4bp-a-calibration-16-25-30",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ca9cc64920170f6d3dcbabeefe81900f214f063a4bff2e5519b0723452ef415e"
+    },
+    {
+      "boardKey": "16-25-30",
+      "id": "pfv2-4bp-b-calibration-16-25-30",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e61de27d71d80e8b5ae69bcb8cfc349fab6fb22519c6790bd288e210ea0f9ad8"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-srp-a-calibration-16-21-30",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "73b51590fe129dfb4e281f27a4051887ef742a5e5d34ea9e24b529a30434f41a"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-srp-b-calibration-16-21-30",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3d7d3cb8d91ea7a9da470fad3f5bce94533d4a97c1136b004ef7f085d8b52727"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-3bp-a-calibration-16-21-30",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c1463d4bc7827d26999fa261e038745406d688980c12f38ca81ffcb999b0805f"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-3bp-b-calibration-16-21-30",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e8e96d0ad45b79b825ac43839586204de0cdde4c53ba29c1755f979c848a49bb"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-4bp-a-calibration-16-21-30",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6839ccb3e5483e0aec101bc73754459fd0d0f4361c33d9b97906985f5759087d"
+    },
+    {
+      "boardKey": "16-21-30",
+      "id": "pfv2-4bp-b-calibration-16-21-30",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1334e60d0df5c81f7dedbe36bd96ade4974273d22195a1da4279ebcff0679473"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-srp-a-calibration-20-25-34",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9bfdc6b4cb14a52b7c35e8feecf9908917b8e2068a8b36fc111b441b884ae44f"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-srp-b-calibration-20-25-34",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "183b1545c93f4acba0845c2d1925dbb772dad492d6a3e8e0b728ac4dc8bc238e"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-3bp-a-calibration-20-25-34",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2ac6aaf3313760c0a3c4bcf02050ae13f2137a5a0d84a1555d027265cbef47b5"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-3bp-b-calibration-20-25-34",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "813141acb1c37bd8658800ca1e113ea2bf085d53c502d32919dcc1e748ab2a79"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-4bp-a-calibration-20-25-34",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7d56bea760e104882ef999ed964e6a8ca5cc5e7fa435fc5f324d8f853b827470"
+    },
+    {
+      "boardKey": "20-25-34",
+      "id": "pfv2-4bp-b-calibration-20-25-34",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8a5b832af384035a3122201d90f361dc50b225929d4a1b7928c60022d01145d2"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-srp-a-holdout-20-29-38",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3741db0e356c5c5b7fadaf2dd2124d9f14d7fbc7a582b913dc69b86683e4854d"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-srp-b-holdout-20-29-38",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ea67eab3a0d38d0173724a84f0d48ea660dd78b4c9a38ffa866434fc42833bc3"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-3bp-a-holdout-20-29-38",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1aaaae694276524c652f3022c99494e8afc148f6dfff3213d20e01b50bfc6918"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-3bp-b-holdout-20-29-38",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bc8fd208d963cafd0f30674048537c37b245d74c58c4180ba6cdaf797afdc5be"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-4bp-a-holdout-20-29-38",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "04e91c3a918eded6abe036b9044759748fb677eee3784a41808115b3969242d6"
+    },
+    {
+      "boardKey": "20-29-38",
+      "id": "pfv2-4bp-b-holdout-20-29-38",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "63e7d789f1a141c4719372c4e2b49205f648253047debbf4c1a15cddfc6c0438"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-srp-a-holdout-12-17-26",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bc4476880ae5876a58473ae9a1fa64d9b725fb70ef0cd5ee9f4994b9d04d4203"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-srp-b-holdout-12-17-26",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b6b700e29f1ae737c2d0668fbfbdf9e5cb7f9ae69d71856d65c1fc73231d31c6"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-3bp-a-holdout-12-17-26",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "37d3c5a21cde5e5e2dfd86e6a8e4ee48bf9ff4632b2c59e0577df924b7599e3b"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-3bp-b-holdout-12-17-26",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "42964bd666469148ca732c70d7613b59dd79ed4108755c3e534a3ac7cdea62a2"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-4bp-a-holdout-12-17-26",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c9eb5f4c1b666e46cad0799cb44dfb2c0ac0e29f32756cefd337459fec359032"
+    },
+    {
+      "boardKey": "12-17-26",
+      "id": "pfv2-4bp-b-holdout-12-17-26",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a37914e3e14b8868688041aa736fac759f0908a5b24307fe3aaae1823a7ebcd2"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-srp-a-holdout-08-17-26",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "1a0308931efb5b5f4b97bbee7469844e84b7ea74e90d2eae64321aad022d2882"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-srp-b-holdout-08-17-26",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f70df46e64a86bec805889d07cb6d38acf917bdccf33efd0d14164ee661710b0"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-3bp-a-holdout-08-17-26",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "24dfb77200f5a7a997b7b3365373f269ed2342cd04e8b6ae7d0f27e5c0d8fe3b"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-3bp-b-holdout-08-17-26",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a93ad5bfa3a4572d59725c5d4c513b8897e6fcc4e5d81529302f82e2515af2a5"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-4bp-a-holdout-08-17-26",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "faf296aebfc226361c3eb5d8a0a26aa9b52a729bd3db02e5d6c438838aee964f"
+    },
+    {
+      "boardKey": "08-17-26",
+      "id": "pfv2-4bp-b-holdout-08-17-26",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "fc4ae9fa0b160bca981e4281f3454bce5c57079123355b256fc869f7a85767c4"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-srp-a-calibration-04-33-48",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "32d01a4ba2037c914793ddadb21a103ab25b9aabe10754701c2bc4c32f94e1be"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-srp-b-calibration-04-33-48",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "96219bf38f5f4c28dbf48936c4b7cbcd752604d5848582bbc2624cb234d8bbd3"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-3bp-a-calibration-04-33-48",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "97d7d494fa65349b3a390c72b15f2315f7ee2d2dc461edf9f1939e824c3b02da"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-3bp-b-calibration-04-33-48",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e45c6b534ba10ab665493aafd1d9eec2b6ecda212628289642d54d7f14ec3858"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-4bp-a-calibration-04-33-48",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7a88456194ef2c1e4df7118b188c091e49ffc839f8801395ac782e26226990db"
+    },
+    {
+      "boardKey": "04-33-48",
+      "id": "pfv2-4bp-b-calibration-04-33-48",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "70ab701b8bc1be90b1fe8d0a4ada266f12f279b5d86b332b0bcf2b27c4335489"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-srp-a-calibration-04-37-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "821c22bb8a053f2a1ffe1e8008fc83d2a9993b87d8cf6eadd36d0691c822ca73"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-srp-b-calibration-04-37-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e0d5c45adec01eeafbbecf4be3a1817ebfd9ec979cf2ca1d7880a1ca21cb8599"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-3bp-a-calibration-04-37-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "632cfb557f19e4114e97062696cf8728bddfa9f825fc6eddf102f21b66ab889b"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-3bp-b-calibration-04-37-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e8c2ad282d4bb81d9b98643b5452712c1f8d26bc9cce898dad2c0c0f060f3514"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-4bp-a-calibration-04-37-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "50e9d6d407d4b9035607ca12cb8327306b0146d179ffb90c5dc0c96b7298084c"
+    },
+    {
+      "boardKey": "04-37-49",
+      "id": "pfv2-4bp-b-calibration-04-37-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3c545bb32c130b9d8a44ab0318bb111fc96b1a1ad2eea7ce9c33c4e6f8139f15"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-srp-a-calibration-16-36-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0c2f8767234f67e22a8e9aa1f76033593005b4ae967532b4cda1286291e449b0"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-srp-b-calibration-16-36-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cb707ea60b820c3cf0b5959b24f8086a3c79615887e8cb7a549c5a0a0ac0bc41"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-3bp-a-calibration-16-36-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "915add383afcee11bb34dee9b739f87410b5cc34ebc89abb772a779b3d418d54"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-3bp-b-calibration-16-36-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "491073de67cb80fa71a913b11d0730208c11cd967294ec93d240fffc101ec955"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-4bp-a-calibration-16-36-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c658982b401fff3b4e4c4cd9f74d9185f01975f641c84f5e7948a71fa87d02b8"
+    },
+    {
+      "boardKey": "16-36-49",
+      "id": "pfv2-4bp-b-calibration-16-36-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d577dca4e4042d4ed1da7e996971bfd5cf3afb41ac8e1fb4701597f205bbbe5c"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-srp-a-holdout-20-29-48",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bce657aac6e668c95f6de26d75a1b628b50e87a325f45ea6c711e2b637c31424"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-srp-b-holdout-20-29-48",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4cf114d52d0196d06ce1ce17fed94dabb68bcb3c13d42f52ce8373f159c4229b"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-3bp-a-holdout-20-29-48",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b7a97e8c1f159566bec9bfe79f63c24ad3b0a0c69c5ee7499d0dd9de93ae6294"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-3bp-b-holdout-20-29-48",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3a8cc19e1f8b18e5805e2f76c82155a0a5ace471b9b7efdff3fd55b54f0ca864"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-4bp-a-holdout-20-29-48",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c8313601fa97cea254c500db2297fd885f30a4dac751215ffa6c0add7065820f"
+    },
+    {
+      "boardKey": "20-29-48",
+      "id": "pfv2-4bp-b-holdout-20-29-48",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "357d1ff37844a2686d2c3ed6a1602a4506a816369a312e3f3ac495b7ad091946"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-srp-a-holdout-28-32-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "852ba6ee55f0d52d4c8500c151525a00c8102dd1850359d2ada6ef5a70d09c7b"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-srp-b-holdout-28-32-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "58de8d461b608fca7c1e964aa2c2df526e48444525dfce6dbec09b11cb14f62d"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-3bp-a-holdout-28-32-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a1a8c5d5823cb72482f0fd2ede247d50b07c9830d7b4915b54254ed750651328"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-3bp-b-holdout-28-32-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cd0f7d563a9436a7db3f4df98a2fc4ead2d9c9c2bf5986b72c69b0cbbaccf319"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-4bp-a-holdout-28-32-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f4c063e770c8bbee3546ae03254d3c9b23f4493d6166e7ba1ec61989db02fe15"
+    },
+    {
+      "boardKey": "28-32-49",
+      "id": "pfv2-4bp-b-holdout-28-32-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "84e1bdc5487d763199b3384f17d5de0b2b9b68ab9984761ed7cd94f35e6bc2d8"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-srp-a-holdout-40-44-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5c904d8a7accfe83c665ba6a0d8115d971e315aeb2cddf9c5b7502a80f2c3a60"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-srp-b-holdout-40-44-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "26ea0601b0c25be3fbc7dd7a55f6e099c38af9138685a628537e1ff8c17143ca"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-3bp-a-holdout-40-44-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "99a40804caf557c8dbfb9faa6cba2657728596e47df6b5f85910f7bf5e8f8865"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-3bp-b-holdout-40-44-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "84da4c0a039e1563380da995662fb684316b8d065311dda593515455fa2aff47"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-4bp-a-holdout-40-44-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c999804757b9261197c211639023d17e5e7e920d3bd8651bea9c5874daf274a6"
+    },
+    {
+      "boardKey": "40-44-49",
+      "id": "pfv2-4bp-b-holdout-40-44-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3b603fd892d1ed60368e936c36d04a68bef05a79bc79093ca803dc2a3d83dc0e"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-srp-a-calibration-16-45-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "06474200dddc2af7ec9566011ca36aa9c79e61c1febdb1212b6bf95a1bdc8900"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-srp-b-calibration-16-45-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "153849507fb3c78fc7fa4839d41f08976d084c04c19897122817715b15a7478d"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-3bp-a-calibration-16-45-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "27053d78c4d9b317ac6f08f0e5d28ba9c1a9f19b6780bc60dcb0d71730d78c24"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-3bp-b-calibration-16-45-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7af8a5e5a6bbc3bbf490ae08d1f0cfa92aed4cabc1a74150866bb11d062411ef"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-4bp-a-calibration-16-45-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "63b306b7e666e2986c897f4ce4f7c8894ba9bc4e9440eb3eaaf9967cfed9d840"
+    },
+    {
+      "boardKey": "16-45-46",
+      "id": "pfv2-4bp-b-calibration-16-45-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e015bd1c84283e62a9f506b2612d3f474fd39772f44ba6ff3fca65b64a873b46"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-srp-a-calibration-32-48-49",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b3ed10ce413e10d821a49b1893748a464129c0f5a86dfe84b5e35c834da7529f"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-srp-b-calibration-32-48-49",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "25f1769378fa04c97d2d412af65d42e7aad049bf9c54270762e074732dabadc4"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-3bp-a-calibration-32-48-49",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "66323cfe8d929a6821b4de80a7656ef99943b0d9467eb53a3756d55e4d837419"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-3bp-b-calibration-32-48-49",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c988b803e16012866a5b1643ac091e2662c67c93792331eb525b3b99abb94c64"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-4bp-a-calibration-32-48-49",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ac885450d131289ac43ee4aa51b0e0cb1f685f84cf1e67bd100d8ede968f379a"
+    },
+    {
+      "boardKey": "32-48-49",
+      "id": "pfv2-4bp-b-calibration-32-48-49",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "13610c31fdbb7965a32317a9ba38bfe53203a565296bcb6a4a20f7a6f785b9d7"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-srp-a-calibration-40-45-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f7bc382eab7c836a30d29e33a00996b992e26734ad1bbbc61ab9dbe4f45211e3"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-srp-b-calibration-40-45-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "461f5d5621f81dc49f8b12006dd7f37c9dcb31a2c8fefd60d8543f0b23396c0c"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-3bp-a-calibration-40-45-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "906ef838ebac3a25a2d35adaf9a19f339fd4b29ebace10fe42d409f4ae0988e4"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-3bp-b-calibration-40-45-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ff970f9b3cce31bf2c95238369584e60eba075456e4af4f92067c2e42cddde8a"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-4bp-a-calibration-40-45-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "313c8ffd874f2e0fdf5cf2d3342792a8712f23aa1ee07a08858d316a3892964d"
+    },
+    {
+      "boardKey": "40-45-46",
+      "id": "pfv2-4bp-b-calibration-40-45-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "7e037cb99ec2f39debf2cff0aa048f60cf8b6ac194e063e3c7850431b8892818"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-srp-a-holdout-00-33-34",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "74201b0059719bbe14bebaaaba9758c756d0f2acbf3a3069e075cc482a777c99"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-srp-b-holdout-00-33-34",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cbaa6843a88b6b98a805a30342da2a50039f62c39be5e619176777ab519cd435"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-3bp-a-holdout-00-33-34",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0674b4fa9be15960d664fda86b243e392a79f97e0524648564586876d1e393a0"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-3bp-b-holdout-00-33-34",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "859ea4526cc4a5ff5d30e825901e39c4c5dd766cf4a78efb22785b9ad6767d77"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-4bp-a-holdout-00-33-34",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "acf3f718576a06f833d4c4935667e00bd61e2d36def31b946774347b3198c993"
+    },
+    {
+      "boardKey": "00-33-34",
+      "id": "pfv2-4bp-b-holdout-00-33-34",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a9a315bb72409c146f8d055c7a2ce3887ac1aecd2a4ea6b6372ccd004748deb7"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-srp-a-holdout-28-45-46",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "6a9bd209cc986d63015be64d5df73db99807dd396e73d1b4ce256847a01e34ab"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-srp-b-holdout-28-45-46",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a5fae4c778767d55530b30095593f53d96ac87a49c65ed8b4d02dd3e1a1e13f8"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-3bp-a-holdout-28-45-46",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ab71b0be70c27b5060e3ccd62ad89472414d7957e73e4d4481ad4b90ab821c20"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-3bp-b-holdout-28-45-46",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "93247598790941ffa3c1b0eb2b45eb802cc9492ff1a8d4da7e8b0f3b9b33ef7d"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-4bp-a-holdout-28-45-46",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "f78b85445494207338659e3a2c38436da3175417ed1184cc2627f90de6fa64f5"
+    },
+    {
+      "boardKey": "28-45-46",
+      "id": "pfv2-4bp-b-holdout-28-45-46",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "26f161ccdc2cc205ea655b153f639727faf1776635fdb3232967346b5bafb50c"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-srp-a-holdout-40-41-50",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "66c17e90446a46d371727cee18454a9d7a7196bccf2e37e542424ff999cf9b8e"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-srp-b-holdout-40-41-50",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "853d5695eacaa775f3ba3cf3ebb9c882a322c8e0744f18f1876fccf27e6bbb4e"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-3bp-a-holdout-40-41-50",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "99de37d96d5530d71ad133d9be7c38dff4047471d6d0548a09c1b44d0bb442b1"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-3bp-b-holdout-40-41-50",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "065b9e2ef20f27acecd6101a2c3d662da598e2f64336b1fd784458e1c3cb8441"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-4bp-a-holdout-40-41-50",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d8d5ab76eeb9e1a3879bd17ba4b8fb3a9402615fbb15b41dd06e3c62960b71c1"
+    },
+    {
+      "boardKey": "40-41-50",
+      "id": "pfv2-4bp-b-holdout-40-41-50",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9b03ef41cb8caeb9e55d0efc97093b6af9a99e648e5b90e2e683b8a6997646bb"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-srp-a-calibration-12-17-20",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "135acb3ded77bbdd30604d2eec16cfbf1fb0ded62c4a59e7906fec801954313f"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-srp-b-calibration-12-17-20",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3b43c5375c01497557616dbd0e275c762f26f9e32b7e19428c09d15de3675920"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-3bp-a-calibration-12-17-20",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e3764ced0d6c0b10c8206ade38a29b23392f0438f4d1b3b38a2f97afbecc798c"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-3bp-b-calibration-12-17-20",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "89c2f95dea81132a3c9810faa524d0c23c307d4fd1c1255966c454e2d0c373cb"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-4bp-a-calibration-12-17-20",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8e737c9ecad8d159b5e46a0a63c7f05d537eb17d67e29ee0d1b2a739de570cf8"
+    },
+    {
+      "boardKey": "12-17-20",
+      "id": "pfv2-4bp-b-calibration-12-17-20",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "be2638e5f0b77fd884fc8e7ee1e1704d54a1f0d5bdef9b746c44c902a916f4cd"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-srp-a-calibration-04-12-17",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "9c5c299e24cdaa8dd4f5ba251b4ba82153adb411201d8267e3f4e1aaf2642cfd"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-srp-b-calibration-04-12-17",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "436148e87749d382986fcb37fa5e3d09d04edcad8049eacfa111000446c047ee"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-3bp-a-calibration-04-12-17",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "0041a2cd91f1b47e84ab8d0cf5e128c0239f02e6823095bc715a6c1d9d536102"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-3bp-b-calibration-04-12-17",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "83b80282a6c4e2d4380d5b9d47e9c9c9384ea124d207b25779f05a84ffc54ad6"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-4bp-a-calibration-04-12-17",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d62c9fc2cace5bf9144a1552ff0352570be0ad4b61539f10b074346da8dd099b"
+    },
+    {
+      "boardKey": "04-12-17",
+      "id": "pfv2-4bp-b-calibration-04-12-17",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "8ab745af454267705c7ef2b41eac9cb2bf9889e258e87f340790a94bc9ee7676"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-srp-a-calibration-00-08-17",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cefd41b72b67871e39fc087d2023344bd7098a3fe363d2f024a0385f17d173e2"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-srp-b-calibration-00-08-17",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d1158df272b96cd64235cfd56e3a8d60158f7fda7f79fa9e02555afbd8f648c9"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-3bp-a-calibration-00-08-17",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d2f02d10c496c38723f4b9ffea4205db6e93d2c98aaa83088736792d8d664528"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-3bp-b-calibration-00-08-17",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "064a6ecec7d0765b7d011d5418e2f5620a156a3f396ade0accde62b2d3fc30d5"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-4bp-a-calibration-00-08-17",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "bd9f0490bf52b00fec83ba812a46005fc8a572efd73dac275880ac83f6627e69"
+    },
+    {
+      "boardKey": "00-08-17",
+      "id": "pfv2-4bp-b-calibration-00-08-17",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d48443ec1f483470ee38d29169e71debd972c481f49d824e6b3edd7f1edb541e"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-srp-a-holdout-04-09-12",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "287476d73cc0942f120b725537303073f25292a969c675ff80a98d4e4329500f"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-srp-b-holdout-04-09-12",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "21bcb2be28a13b2a2c67f95aaf4980c02e9ae5376180ca54c2a59cb85c5be916"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-3bp-a-holdout-04-09-12",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "4b3af99e3f2340df105efd9924d87cddd2e666d683c4063b4d3926dd2e00ba01"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-3bp-b-holdout-04-09-12",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "ab0b2471479165a7a1a47c4c2b7a30c38d26a7510648bc9ca3ea5595fa2348da"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-4bp-a-holdout-04-09-12",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "e0e00bc223d1d81180a7f0b2d39a2418854a67c9a153490be70f446f54134d6c"
+    },
+    {
+      "boardKey": "04-09-12",
+      "id": "pfv2-4bp-b-holdout-04-09-12",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "2cf3eb460e1a9abb408eb20428debc1bcfa5e320f4d50752eaae986b0a359c59"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-srp-a-holdout-00-05-16",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3bfdc9032b67ca09c62e0ede9517db90f762c486917bb96904f88447c1989b6b"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-srp-b-holdout-00-05-16",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "b01029c17cbb50446828be41c4649ff96cda710d9d1aacc8c9516f75576fdd21"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-3bp-a-holdout-00-05-16",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "07852433ce591e5a4a3936f9755dba1a437b8ab328e3bd144fbb2fe5328757f2"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-3bp-b-holdout-00-05-16",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "c54380ca0d4bdf16d55ba072e9ad88edec3034a6c4beda871b3eeedafd3fecae"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-4bp-a-holdout-00-05-16",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "3a32aee686b64e5752f1ec8246e2a07ee444544f632f8c4a3bd195294c595b0f"
+    },
+    {
+      "boardKey": "00-05-16",
+      "id": "pfv2-4bp-b-holdout-00-05-16",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "cc9351fc21e9abab0907ca7c113f4e69e7df9b420b48aabf6c8d5227b4a00946"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-srp-a-holdout-04-17-20",
+      "potType": "srp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "a11b20c3e87aa9ecdf135c5e84d376143ecb9c6b6263b6359c2ef44d9c7c6736"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-srp-b-holdout-04-17-20",
+      "potType": "srp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "babab55b7ad3be37602763e583b2ac9ab9dc18baf7527e40f9832b295d1f1140"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-3bp-a-holdout-04-17-20",
+      "potType": "3bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "5a0ec8b6fa94ac5034e86e2b040eac2dcc7fa3027448acfc5df4ac26c9eca027"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-3bp-b-holdout-04-17-20",
+      "potType": "3bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "016b0b7c5cf9ff7eb33cd15861ce3a52ba573d67c01f3e8e11a7cefae2fdc1a6"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-4bp-a-holdout-04-17-20",
+      "potType": "4bp",
+      "profile": "A",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "d1f5a7d5bd8686c171ec2a648c648c30dfddc8aec61eca3fd8033f2161caa3e2"
+    },
+    {
+      "boardKey": "04-17-20",
+      "id": "pfv2-4bp-b-holdout-04-17-20",
+      "potType": "4bp",
+      "profile": "B",
+      "removedCombosPerPlayer": 150,
+      "spotHash": "42cdf482d0b4487d9c60077cec57f106163e973c7add3287ba6136e247deb8f6"
+    }
+  ],
+  "scope": "research-only; no production range promotion",
+  "selectionHash": "21f1d3f87025c1539db4825ac6bf7e7668d0a7f74856614bc989376203d8eef9",
+  "sourceHashes": {
+    "src/lib/solver/bridge/fixtures.ts": "cdf01daeea6f39991bf8e38f388c73e46b7016292d4b0d911ec6844b8586052c",
+    "src/lib/solver/bridge/library/spots.ts": "657028557c26b077468f9df3a5fb4e9d8d7cd6741f70d9ead8010426e8a54415",
+    "src/lib/solver/comboCounts.ts": "3b0de0b2384c105a3489779f20a41432556c9446ea9647475c9465de43603698",
+    "src/lib/solver/hands.ts": "4d38920779df608128eb6b9b45709857a7bf9fb8c816efedf28b1e211a44ba32",
+    "src/lib/solver/preflop-v2/frozen-contract.md": "cab23a48a48c8c1d70db6b3afbb88611a768f718afbb15389c24c6678822a471",
+    "src/lib/solver/preflop/texture.ts": "42bdaf5663a8d8887ef80ec7f6df04e21d241f09a58e684e9deb746a481ce2b2"
+  },
+  "strata": [
+    {
+      "calibrationInclusion": {
+        "denominator": 117,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 114,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 117,
+      "nonlegacyPhysicalFlops": 2808,
+      "stratum": "srp-btn-bb-ks7h2d"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 59,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 56,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 59,
+      "nonlegacyPhysicalFlops": 1416,
+      "stratum": "srp-btn-bb-ad8c3s"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 19,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 16,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 19,
+      "nonlegacyPhysicalFlops": 456,
+      "stratum": "srp-btn-bb-khqdtc"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 107,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 104,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 107,
+      "nonlegacyPhysicalFlops": 1284,
+      "stratum": "srp-btn-bb-9h8h6c"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 285,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 282,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 285,
+      "nonlegacyPhysicalFlops": 1140,
+      "stratum": "srp-btn-bb-qs9s4s"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 553,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 550,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 553,
+      "nonlegacyPhysicalFlops": 7236,
+      "stratum": "srp-btn-bb-td7d3c"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 199,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 196,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 199,
+      "nonlegacyPhysicalFlops": 2324,
+      "stratum": "srp-btn-bb-8s8d3h"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 15,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 12,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 15,
+      "nonlegacyPhysicalFlops": 360,
+      "stratum": "srp-btn-bb-5h4c2d"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 21,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 18,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 21,
+      "nonlegacyPhysicalFlops": 504,
+      "stratum": "srp-btn-bb-tc9d7s"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 197,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 194,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 197,
+      "nonlegacyPhysicalFlops": 2364,
+      "stratum": "srp-btn-bb-ahth5c"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 124,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 121,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 124,
+      "nonlegacyPhysicalFlops": 1448,
+      "stratum": "srp-btn-bb-jcjd4s"
+    },
+    {
+      "calibrationInclusion": {
+        "denominator": 47,
+        "numerator": 3
+      },
+      "holdoutInclusionGivenCalibration": {
+        "denominator": 44,
+        "numerator": 3
+      },
+      "nonlegacyOrbits": 47,
+      "nonlegacyPhysicalFlops": 564,
+      "stratum": "srp-btn-bb-7c6c5d"
+    }
+  ],
+  "tree": {
+    "addAllInThreshold": 0,
+    "flop": {
+      "ip": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 66
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      },
+      "oop": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 33
+          },
+          {
+            "kind": "pot",
+            "pct": 66
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      }
+    },
+    "forceAllInThreshold": 0.2,
+    "maxRaisesPerStreet": 1,
+    "mergingThreshold": 0,
+    "mode": "menu",
+    "river": {
+      "ip": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 66
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      },
+      "oop": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 50
+          },
+          {
+            "kind": "pot",
+            "pct": 100
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      }
+    },
+    "riverDonk": null,
+    "turn": {
+      "ip": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 66
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      },
+      "oop": {
+        "bet": [
+          {
+            "kind": "pot",
+            "pct": 66
+          }
+        ],
+        "raise": [
+          {
+            "kind": "pot",
+            "pct": 60
+          }
+        ]
+      }
+    },
+    "turnDonk": null
+  },
+  "treeHash": "2676e933cf80f7360d431810f8c2c875e89a899e50f360d0ee799c4da32efd52",
+  "version": 2
+}

@@ -110,6 +110,7 @@
     "solve:preflop": "node --import tsx scripts/solve-preflop.ts --write",
     "audit:preflop": "node --import tsx scripts/solve-preflop.ts --check",
     "diagnose:preflop": "node --import tsx scripts/diagnose-preflop.ts",
+    "audit:preflop:v2:contract": "node --import tsx scripts/audit-preflop-v2-contract.ts --check",
     "verify:release": "node scripts/verify-live-release.mjs",
     "generate:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --write",
     "audit:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --check",

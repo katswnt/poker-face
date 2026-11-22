@@ -3,6 +3,21 @@
 Written 2026-09-30 for Codex (and any later agent). Steps 1–9 are the execution target of the
 current run; steps 10–14 are specified here so their contracts are not re-invented later.
 
+## Current continuation — 2026-11-22
+
+Steps 1–9, E1 live values, D1/D2 drills and H1 completed-hand review have shipped.
+The [November 21 handoff](codex-handoff-2026-11-21.md) records the verified `de7f0d6`
+production release and `16f6460` closing documentation. The old status tables below
+are historical. Physical-device checks remain explicitly unmeasured.
+
+Kat has now authorized the remaining steps 10–14 in the
+[completion plan](cpu-ceiling-completion-plan.md). Step 10's
+[prospective v2 contract](preflop-validation-v2-spec.md) freezes 84 boards × two complete
+range profiles × three pot types, with joint-card/accounting checks and predeclared budgets.
+No new continuation solve or model validation is claimed by that input contract. PF4
+stays gated; independently scoped formations and multiway research may proceed if the
+preflop branch fails its required gates. The working rules below remain binding.
+
 ## What "the CPU ceiling" means
 
 - **Achievable on a laptop CPU:** heads-up postflop solved without abstraction (postflop-solver
@@ -340,7 +355,7 @@ remaining untouched trainer/session work and configurable-flop draft.
 
 ---
 
-## Steps 10–14 (specified, not part of this run)
+## Steps 10–14 (authorized continuation on 2026-11-22)
 
 ### Step 10 — Preflop continuation-value validation contract
 Write `tasks/preflop-validation-v2-spec.md` **before any model change**: frozen held-out boards

@@ -87,6 +87,9 @@ jobs:
       - name: Reproduce and independently grade the simplified preflop model (PF1-PF3)
         run: npm run audit:preflop
 
+      - name: Replay frozen preflop-v2 validation inputs (no range promotion)
+        run: npm run audit:preflop:v2:contract
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 

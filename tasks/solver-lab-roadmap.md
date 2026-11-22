@@ -1,11 +1,18 @@
 # Explainable solver lab — guiding plan
 
-**Status:** CPU-first M0–M6, external Rust bridge B0–B4, saved 12-flop library and solver-backed drills delivered. Preflop PF0–PF3 remains experimental and withheld. W1/W2/W4 now provide a locally verified bounded browser solver and learner page; public deployment and physical-device validation remain open. Heads-up play still has only its P0 foundation.
-**Last updated:** 2026-09-30
+**Status (2026-11-22):** CPU-first M0–M6, Rust bridge B0–B4, the saved 12-flop library,
+W1–W4 browser solving, P1–P5 `/play`, E1 live action values, D1/D2 drills and H1 completed-hand
+review have shipped. Production is the source-verified `de7f0d6` H1 release. Preflop
+PF0–PF3 remains research-only; PF4 is gated. Physical-device checks remain unmeasured.
+The current work is CPU roadmap steps 10–14, beginning with the
+[prospective preflop validation contract](preflop-validation-v2-spec.md). See the
+[completion plan](cpu-ceiling-completion-plan.md) and [latest release handoff](codex-handoff-2026-11-21.md).
 
-**W3 verification:** [Desktop browser measurements](postflop-solver-w3-verification.md)
-cover 72 fresh-process jobs on the M1 Pro; W1 and W2 are pushed with all hosted CI green.
-Physical devices remain open and the conservative ST admission caps are unchanged.
+The September status and recommendations below are historical design records, superseded
+for current completion by that handoff and the CPU roadmap's dated continuation records.
+Their mathematical limits and preservation requirements still apply. In particular, local
+re-solving is not a global guarantee; the measured composed-policy weakness remains visible
+in `/play`. No validated preflop range or physical-phone performance claim has been added.
 
 This document is the source of truth for the next solver project. It records what we
 are building, what we are deliberately not building, how we will know the math is
@@ -18,7 +25,7 @@ implemented through M6; M7's conditional acceleration gate is evaluated and not 
 for this target. Separate turn and flop backends admit up to 64 combinations/player;
 existing reference-engine and custom browser-solve limits remain unchanged.
 
-## Current priorities after the native bridge
+## Historical priorities after the native bridge (September 2026)
 
 This section supersedes the old assumption that another TypeScript flop-capacity milestone
 must come next. Preserve the original engines as readable, independent referees; do not
@@ -61,7 +68,7 @@ See the [Claude handoff](claude-handoff-2026-09-29.md) for exact changes, checks
 preservation notes and recommendations. No GPU, neural-policy training or learned-value
 model is required by this next product milestone. The standalone turn lesson stays deferred.
 
-## Where we are now and what comes next
+## Earlier implementation record and original teaching plan
 
 The bounded heads-up river engine and `/solver/river` teaching lab are implemented.
 Kuhn, Leduc, compact/factorized CPU engines, configurable river v3, and the separate
