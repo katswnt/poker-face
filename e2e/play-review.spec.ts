@@ -1,4 +1,4 @@
-import { chromium, expect, test, type Page } from "@playwright/test";
+import { chromium, expect, test, type Page, type TestInfo } from "@playwright/test";
 import { resolve } from "node:path";
 import { writeFile } from "node:fs/promises";
 const required=process.env.POKER_FACE_LIVE_REQUIRED==="1";
@@ -12,6 +12,31 @@ async function openReview(page:Page){
   await page.getByText("Review completed hands",{exact:true}).click();
   const region=page.getByRole("region",{name:"Completed-hand review",exact:true});
   await expect(region.getByLabel("Review decision",{exact:true})).toBeVisible();return region;
+}
+
+/** Keep full visual coverage without exceeding WebKit's single-image height limit.
+ * Text remains at 200%; nothing is hidden or scaled down for the screenshots. */
+async function captureTextZoomTiles(page:Page,info:TestInfo,label:string){
+  await expect(page.locator("#play-inspector").getByText(/hand\/runout outcomes/)).toBeVisible({timeout:60_000});
+  await page.evaluate(()=>document.fonts.ready);
+  const size=await page.evaluate(()=>({height:document.documentElement.scrollHeight,width:innerWidth,viewport:innerHeight}));
+  const tiles:{top:number;bottom:number;file:string}[]=[];
+  for(let requested=0;tiles.length<100;requested+=size.viewport-80){
+    const top=Math.min(requested,Math.max(0,size.height-size.viewport));
+    await page.evaluate(top=>scrollTo({top,left:0,behavior:"instant"}),top);
+    await expect.poll(()=>page.evaluate(()=>scrollY)).toBe(top);
+    const file=`${label}-tile-${String(tiles.length).padStart(2,"0")}.png`;
+    await page.screenshot({path:info.outputPath(file),fullPage:false});
+    tiles.push({top,bottom:Math.min(size.height,top+size.viewport),file});
+    if(top+size.viewport>=size.height)break;
+  }
+  expect(tiles[0].top).toBe(0);expect(tiles.at(-1)!.bottom).toBe(size.height);
+  for(let i=1;i<tiles.length;i++)expect(tiles[i].top).toBeLessThanOrEqual(tiles[i-1].bottom);
+  expect(await page.evaluate(()=>document.documentElement.scrollHeight)).toBe(size.height);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const coverage=JSON.stringify({size,tiles});
+  await writeFile(info.outputPath(`${label}-coverage.json`),coverage);
+  await info.attach(`${label}-coverage.json`,{body:coverage,contentType:"application/json"});
 }
 
 test("review empty state explains completion and tab-lifetime limits",async({page})=>{
@@ -107,7 +132,7 @@ test.describe("prepared hand review",()=>{
     await page.screenshot({path:info.outputPath(`review-${width}.png`),fullPage:true});
     await page.addStyleTag({content:"html {font-size:200%;}"});
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-    await page.screenshot({path:info.outputPath(`review-text-200-${width}.png`),fullPage:true});
+    await captureTextZoomTiles(page,info,`review-text-200-${width}`);
   });
   test("review keyboard works at 200% zoom with real browser zoom in Chromium",async({browserName,baseURL,page:normalPage},info)=>{
     if(browserName!=="chromium"){

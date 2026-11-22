@@ -170,3 +170,37 @@ CSS viewport width halved, device-pixel ratio doubled, no horizontal overflow, k
 navigation works. The test now saves a CDP viewport screenshot plus those measurements;
 the screenshot was inspected and shows readable controls/cards. No application code or
 quality threshold changed. Repeat the full exact-commit sequence on the amended commit.
+
+
+### Hosted screenshot failure and fix forward
+
+Code commit `6ca2f9a6313aae7a50dedae1070dafdc3530c199` passed the complete isolated
+release sequence: copied dependencies, freshly rebuilt native/WASM assets, 23 Rust tests,
+1,133/1,133 unit tests (zero skips), tsc, lint, all 18 specified audits and production
+build. Browser results: 121 full-app, 48 drill, 55 play/review and 34 live checks pass;
+the play and live suites each retain their two existing non-Chromium native-zoom skips.
+No retries. Exact replay capture p50/p95/max: 7.449/10.799/13.143 ms. All numerical
+preservation and size results above remain unchanged.
+
+After push, CI run `44970183319` failed in `bridge-wasm` job `137048046854`: Linux
+WebKit cannot take a single screenshot taller than 32,767 pixels. The 200% text cases
+at 320px and 390px exceeded that capture limit after the original semantic and layout
+assertions passed. The failing suite recorded 53 pass, 2 fail and 2 existing skips;
+retries reproduced the same error. The package was **not deployed**. Production stayed
+on D2. This is a failed release gate, not a passed test or a mathematical failure.
+
+Fix forward only in the test: wait for the existing inspector equity/fonts to settle,
+then capture every part of the unchanged 200% page in viewport tiles with 80px overlap.
+Assert first/last coverage, no gaps, unchanged page height and no horizontal overflow;
+save a coverage JSON alongside screenshots. No content is hidden, zoom reduced, test
+skipped, timeout increased or assertion removed. The original full-page 100% captures
+and real Chromium 200% browser-zoom check remain. All nine width/browser cases passed
+locally (22.7 s, zero retries), capturing 40 tiles per 320px page, 32 per 390px page,
+and 15–16 per desktop page. Representative narrow WebKit tiles were visually inspected.
+Typecheck and lint pass. A first lint attempt found generated Vercel bundle code in the
+old release checkout; deleting that obsolete generated package restored the normal clean
+verification scope without changing lint configuration.
+
+Repeat the exact-commit sequence and hosted CI for this fix; then deploy from its clean
+fresh build. Logs and the original failure excerpt are retained under
+`build/hand-review-2026-11-21/`. The original contract and numerical gates are unchanged.
