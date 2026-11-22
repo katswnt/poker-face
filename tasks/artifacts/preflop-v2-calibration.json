@@ -1,0 +1,66 @@
+{
+  "attempted": 1,
+  "baseCommit": "912616aef21b34bdbdfec3aaffa455e7f1705b8c",
+  "complete": false,
+  "corpusHash": "01fb5ca7cdb6532be5f2c81191c2fd7835d2b942255294f9c0a26a4daf10a313",
+  "elapsedMs": 600282.739834,
+  "fittedModels": 0,
+  "format": "poker-face-preflop-v2-calibration",
+  "heldoutObservations": 0,
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "node": "v24.10.0",
+    "osRelease": "25.4.0",
+    "platform": "darwin",
+    "ramBytes": 34359738368
+  },
+  "measuredAt": "2026-11-22T21:21:55.882Z",
+  "nativeBinarySha256": "7cbe699d9b3197606a80a4c8500a37cfdd9685d309d5120ab5bc57a69d5226c0",
+  "nativeInputHashes": {
+    "native/solver-bridge/.gitignore": "b53ee26e6ff1da219b0563333a76d2c9ec19eec713d6ee54e11a1edacb0e9f3d",
+    "native/solver-bridge/Cargo.lock": "721b038673be507a9a7dd69b998420d34b20268edf7534b4a2027c008344ec07",
+    "native/solver-bridge/Cargo.toml": "f5d9fcf357f81f9edb067b3ab66eb2fe17f9011c2972696ba1be6fcd888380f8",
+    "native/solver-bridge/rust-toolchain.toml": "4d7d5425fe623392e565a964fc135c563c316ce125058199eb40b2953ba6ecbb",
+    "native/solver-bridge/rustfmt.toml": "e090969e99df9360705680cc0097cfaddae10c22dc2e01470592cf3b9787fd36",
+    "native/solver-bridge/src/export_estimate.rs": "7d443010c34079361be376f1727340a4250bdf2bc45c07fd55dcce5219b83f9a",
+    "native/solver-bridge/src/lib.rs": "300c3ca698086fbab1b00372345f4cf0d22ec4110d20e00e49e860376ccd5d3f",
+    "native/solver-bridge/src/main.rs": "4cfca681bd550301b9d20db80534d7b66ec074b4e8314c2d44aa2878033a4675",
+    "native/solver-bridge/src/slices.rs": "300501a22afb367b80e9eed29c275e46146dde94aca08e4e255f07a50a71e5d9",
+    "native/solver-bridge/src/spot.rs": "9882345ec6da4d5354d70cd3422c01a99f4e0a3eb4c53530f60837b208baf2d0",
+    "native/solver-bridge/tests/bridge.rs": "557d56a952049d2a0db8ec0ef8db558def79dc882e9a661e4e0908203bf5664c"
+  },
+  "passed": 0,
+  "payloadHash": "37851268c19614406092b2787c9fc153505a368636054a9059858bf219da4422",
+  "preflightHash": "b0071efa61bb597f204700ae09f1d16809a3edd22339c4cdde7162d38ff16ce9",
+  "productionRangePromotion": false,
+  "required": 144,
+  "rows": [
+    {
+      "command": "solve",
+      "elapsedMs": 600282.739834,
+      "error": "continuation timed out after 600000 ms; no result published",
+      "id": "pfv2-srp-a-legacy-00-09-14",
+      "lastCheckpoint": {
+        "elapsedMs": 589251,
+        "exploitability": 6.233832359313965,
+        "iteration": 120
+      },
+      "rawResult": null,
+      "resultHash": null,
+      "rssErrors": 0,
+      "rssSamples": 11669,
+      "sampledPeakRssBytes": 12293881856,
+      "spotHash": "a9e77fef43cc7c90f47ea20686e0df80dcf04cdb15b446281a8d952693bbfc59",
+      "status": "failed",
+      "stderr": "{\"elapsedMs\":0,\"stage\":\"building\",\"type\":\"progress\"}\n{\"compression\":false,\"elapsedMs\":129,\"estimatedBytes\":12627754408,\"estimatedCompressedBytes\":6365756680,\"stage\":\"allocating\",\"type\":\"progress\"}\n{\"elapsedMs\":111131,\"exploitability\":431.36151123046875,\"iteration\":10,\"maxIterations\":5000,\"peakRssBytes\":9211396096,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":154325,\"exploitability\":161.03048706054688,\"iteration\":20,\"maxIterations\":5000,\"peakRssBytes\":12290277376,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":194721,\"exploitability\":43.39863586425781,\"iteration\":30,\"maxIterations\":5000,\"peakRssBytes\":12292374528,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":239509,\"exploitability\":23.072547912597656,\"iteration\":40,\"maxIterations\":5000,\"peakRssBytes\":12292685824,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":288631,\"exploitability\":14.814400672912598,\"iteration\":50,\"maxIterations\":5000,\"peakRssBytes\":12292685824,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":327078,\"exploitability\":10.614154815673828,\"iteration\":60,\"maxIterations\":5000,\"peakRssBytes\":12293472256,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":365486,\"exploitability\":13.507369041442871,\"iteration\":70,\"maxIterations\":5000,\"peakRssBytes\":12293799936,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":406007,\"exploitability\":6.902776718139648,\"iteration\":80,\"maxIterations\":5000,\"peakRssBytes\":12293881856,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":447915,\"exploitability\":5.00136661529541,\"iteration\":90,\"maxIterations\":5000,\"peakRssBytes\":12293881856,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":489773,\"exploitability\":4.044963836669922,\"iteration\":100,\"maxIterations\":5000,\"peakRssBytes\":12293881856,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":535144,\"exploitability\":4.765764236450195,\"iteration\":110,\"maxIterations\":5000,\"peakRssBytes\":12293881856,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n{\"elapsedMs\":589251,\"exploitability\":6.233832359313965,\"iteration\":120,\"maxIterations\":5000,\"peakRssBytes\":12293881856,\"stage\":\"solving\",\"target\":0.0055000000000000005,\"type\":\"progress\"}\n",
+      "threads": 8
+    }
+  ],
+  "sourceHashes": {
+    "scripts/solve-preflop-v2-calibration.ts": "65be10b97f338102bf80f4249dc8c9eb34c3d4721ea04351d42f5d7f011edb41",
+    "src/lib/solver/preflop-v2/observations.ts": "36f0fb294262e9ef9110346f271d23f24073b08256a382b7356da8ece4979b1c",
+    "tasks/artifacts/preflop-v2-calibration-contract.md": "2b469616405d5821b8e1825dc5af81f592f222df9ea312f8b51c4f452613d4b7"
+  },
+  "stopReason": "continuation timed out after 600000 ms; no result published",
+  "version": 1
+}

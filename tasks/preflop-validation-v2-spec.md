@@ -176,8 +176,8 @@ incomplete. If the corpus fits, exhaust the predeclared experiment before conclu
   before observations; require exactly 504 roots and all declared texture/range coverage.
 - [x] Fail-first tests and an audit for corpus identity, disjoint suit-orbit holdouts,
   range symmetry/coverage, invalid inputs, exact tiny joint measure and chip accounting.
-- [ ] Verify old preflop artifacts/diagnosis and deployed game data remain unchanged.
-- [ ] Exact isolated commit, copied dependencies: full unit suite, tsc, lint, new contract
+- [x] Verify old preflop artifacts/diagnosis and deployed game data remain unchanged.
+- [x] Exact isolated commit, copied dependencies: full unit suite, tsc, lint, new contract
   audit and relevant old solver audits; explicit files/README hunks; push and all CI green.
 
 Step 10 owns validation/manifest/measure helpers under `src/lib/solver/preflop-v2/`,
@@ -228,4 +228,14 @@ The one-time `--freeze` command refuses existing inputs; ordinary audits replay 
 saved selection and reproduce the canonical manifest bytes without new randomness.
 
 No continuation-corpus solve, fitted model, performance measurement, validation pass or range promotion
-is asserted. Exact-commit release checks and hosted CI are still pending.
+is asserted. Release `912616aef21b34bdbdfec3aaffa455e7f1705b8c` is on `origin/main`.
+Exact isolated checkout with copied dependencies: 1,142/1,142 tests, zero skips
+(138,016.525584 ms), typecheck, lint, 20 relevant audits, diagnosis reproduction and
+production build passed. All eight jobs in [CI 45065228344](https://github.com/katswnt/poker-face/actions/runs/45065228344)
+passed before starting step 11. CI included 23 Rust tests and three-browser checks:
+34 live-solver checks, 48 drill checks and 55 play/review checks; the existing browser
+zoom skips remain. The copied dependency root was a real directory; its internal `.bin`
+links were preserved after correcting an initial copy setup error. No compiler exclusion
+or gate was changed. Protected file hashes and the trainer README patch were unchanged.
+The public production descriptor was checked on November 22 and still matched H1;
+this research-only release did not require deployment.

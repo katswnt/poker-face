@@ -14,9 +14,13 @@ Kat has now authorized the remaining steps 10–14 in the
 [completion plan](cpu-ceiling-completion-plan.md). Step 10's
 [prospective v2 contract](preflop-validation-v2-spec.md) freezes 84 boards × two complete
 range profiles × three pot types, with joint-card/accounting checks and predeclared budgets.
-No new continuation solve or model validation is claimed by that input contract. PF4
-stays gated; independently scoped formations and multiway research may proceed if the
-preflop branch fails its required gates. The working rules below remain binding.
+Step 10 shipped as `912616a` with all eight CI jobs green. The [step-11 research](preflop-v2-research.md)
+passes the independent nine-card reference and all 504 native preflights, but its first
+full-range calibration root timed out at 600 seconds (last checkpoint 1.1334% pot versus
+the frozen 0.001% target). No final policy, fit or held-out observation was accepted.
+The necessary coverage gate failed; **step 12/PF4 stays blocked**. This does not falsify
+the untested additive candidate. Independent steps 13/14 are next after the evidence
+release passes CI. The working rules below remain binding.
 
 ## What "the CPU ceiling" means
 

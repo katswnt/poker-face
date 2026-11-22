@@ -115,7 +115,8 @@
     "generate:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --write",
     "audit:drills:push-fold": "node --import tsx scripts/build-push-fold-drills.ts --check",
     "generate:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --write",
-    "audit:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --check"
+    "audit:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --check",
+    "audit:preflop:v2:research": "node --import tsx scripts/audit-preflop-v2-research.ts --check"
   },
   "dependencies": {
     "next": "16.3.3",

@@ -90,6 +90,9 @@ jobs:
       - name: Replay frozen preflop-v2 validation inputs (no range promotion)
         run: npm run audit:preflop:v2:contract
 
+      - name: Reproduce tiny preflop reference and verify frozen native research evidence
+        run: npm run audit:preflop:v2:research
+
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3
 
@@ -181,7 +184,7 @@ jobs:
         run: npm run test:bridge
 
       - name: Drive solver-bridge through the Node runner, referee and slice-export tests
-        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts test/bridge-session-regression.test.ts test/hu-play-wide-feasibility.test.ts
+        run: node --import tsx --test test/bridge-runner.test.ts test/bridge-referee.test.ts test/bridge-library.test.ts test/bridge-session-regression.test.ts test/hu-play-wide-feasibility.test.ts test/preflop-v2-preflight.test.ts test/preflop-v2-observations.test.ts
 
       - name: Referee audit (postflop-solver vs our engines on the locked referee games)
         run: npm run audit:bridge

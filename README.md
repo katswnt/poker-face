@@ -639,8 +639,9 @@ approximate equilibrium of this finite game, not exact or universal GTO.
   transfer to bigger games without a new measurement.
 - **Ranges are assumptions.** The benchmark and library use hand-written approximate 100bb
   button-open and big-blind-call ranges, not solved preflop ranges.
-- **Saved data, not a live bridge in the browser.** Solver-backed drills read this library;
-  the app does not yet run the Rust bridge in a browser. Other formations are not built.
+- **Saved library plus live browser solving.** Saved drills use this library; `/solver/live`
+  and `/play` also run the bounded turn/river bridge in a Web Worker. The saved B4 library
+  still covers this one formation; additional formation coverage is separate work.
 
 See the [bridge plan](tasks/postflop-solver-bridge-plan.md) and
 [contract, unit mapping, referee, benchmark and library results](tasks/postflop-solver-bridge-spec.md).
@@ -784,7 +785,13 @@ already powers solver-backed drills. The active path does not depend on a collab
    training/holdout overlap; exact tiny-deck checks verify card conditioning and future-chip
    accounting. These are test inputs, **not solved results or validated playing ranges**.
    Compute, original-value error and decision-uncertainty gates are fixed before fitting.
-   PF4 remains withheld. The [completion plan](tasks/cpu-ceiling-completion-plan.md) sequences
+   The [step-11 research](tasks/preflop-v2-research.md) adds a nine-card joint reference:
+   independent legal best responses agree, and the approximate CFR strategy has maximum
+   unilateral gain below 0.000095 chips. All 504 native allocation estimates fit the frozen
+   limit (largest reservation 11.779 GiB), but the first full-range calibration solve
+   timed out at ten minutes: its last checkpoint was 1.1334% pot against a 0.001% target.
+   No final policy, fitted model or held-out result was accepted. This failed coverage
+   gate keeps PF4 withheld; it does not disprove the untested additive model. The [completion plan](tasks/cpu-ceiling-completion-plan.md) sequences
    this research, conditional library regeneration, more formations and bounded multiway work.
 2. **Bring bounded turn/river solving to the browser, then heads-up play.** The
    [W1 single-threaded foundation](tasks/postflop-solver-w1-st.md) shares a resumable Rust

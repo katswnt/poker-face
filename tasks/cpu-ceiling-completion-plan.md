@@ -81,15 +81,24 @@ Existing preflop-v1 code/artifacts, B4 data and all play source-bound evidence s
 Later milestone ownership must be declared in its contract before implementation.
 
 Safeguard: `build/cpu-finish-2026-11-22/` holds the starting HEAD/status, protected hashes
-and copies, the trainer README patch and current checkpoint. Candidate work uses the
-clean, copied-dependency checkout `/private/tmp/poker-h1-close-i_ugz814`. Preserve
+and copies, the trainer README patch and current checkpoint. Step 10 was verified in the
+clean, copied-dependency checkout `/private/tmp/poker-pf10-exact-jhxtywnl`, now the next
+candidate. Its redundant predecessor was retired only after all source matched the
+verified commit. Preserve
 `/private/tmp/poker-h1-fixed-90bavjbh` as the exact deployed build until a verified successor.
 
 ## Progress
 
-- [ ] Step 10 contract and executable validation gates landed, CI green.
+- [x] Step 10 contract and executable validation gates landed, CI green.
 - [ ] Step 11 candidate measured and its complete pass/fail result landed, CI green.
 - [ ] Step 12 PF4 shipped **only if** step 11 passes; otherwise record the blocking evidence.
 - [ ] Step 13 independently gated formation coverage landed and any UI release verified.
 - [ ] Step 14 R0 measured; follow-on work only if its frozen gate passes.
 - [ ] Closing documentation/handoff and all required release checks complete.
+
+
+Step-11 measurement: [research record](preflop-v2-research.md). The tiny reference and
+504 preflights pass; the first large calibration root fails the frozen ten-minute gate.
+Zero accepted calibration/held-out observations and no fitted candidate. PF4 is blocked
+by incomplete required validation, not by an established failure of the untested additive
+model. Continue independent steps 13 and 14 only after this release's exact checks and CI.
