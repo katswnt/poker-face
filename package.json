@@ -118,9 +118,9 @@
     "audit:drills:equity-range": "node --import tsx scripts/build-equity-range-drills.ts --check",
     "audit:preflop:v2:research": "node --import tsx scripts/audit-preflop-v2-research.ts --check",
     "build:bridge:formations": "node --import tsx scripts/build-formation-libraries.ts",
-    "audit:bridge:formations": "node --import tsx scripts/publish-formation-libraries.ts --check",
+    "audit:bridge:formations": "node --import tsx scripts/publish-portable-formations.ts --check",
     "reproduce:bridge:formations": "node --import tsx scripts/formation-reproduction-command.ts",
-    "publish:bridge:formations": "node --import tsx scripts/publish-formation-libraries.ts --publish"
+    "publish:bridge:formations": "node --import tsx scripts/publish-portable-formations.ts --publish"
   },
   "dependencies": {
     "next": "16.3.3",
@@ -136,6 +136,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "fast-check": "^4.9.0",
+    "pako": "2.1.0",
     "tsx": "^4.23.1",
     "typescript": "^5"
   }

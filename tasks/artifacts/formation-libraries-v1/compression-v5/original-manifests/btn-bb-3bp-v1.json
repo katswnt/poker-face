@@ -1,0 +1,2448 @@
+{
+  "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+  "format": "poker-face-formation-library",
+  "formation": "btn-bb-3bp-v1",
+  "generationRecordHash": "f3ce16febc3894af832190f6366412632c3a3399c668ffa48f6e665be98454ad",
+  "payloadHash": "f46e99033be1021e1888b4c9ebeefc74fe3bf4e7ed45a5fb4f733ee5a5e16d5c",
+  "provenance": {
+    "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+    "engineLicense": "AGPL-3.0",
+    "label": "Approximate strategies for specified finite postflop games, not exact or universal GTO. Ranges are hand-written teaching assumptions, not solved preflop play. The reported whole-game exploitability grades the complete unrounded native policy; rounded partial saved slices are not separately certified. Local re-solving is not a global guarantee.",
+    "ranges": "Hand-written teaching approximations, not solved preflop ranges. No preflop-v1/v2 promotion."
+  },
+  "publication": {
+    "revision": 3,
+    "sourceHashes": {
+      "scripts/publish-formation-libraries.ts": "742562c343917e9e96cdd97edd22beb76dede8f7d8504d60739f87c9d1daaeaf",
+      "src/lib/solver/bridge/formations/publication.ts": "9b4194b3045cd353b08d030e9f3ae2c88af9406e8334ae033725b24157d99fc7",
+      "tasks/artifacts/formation-libraries-v1/publication-v3/contract.md": "2a5af24cb70340e43bdb433f46eae1b6d9c0d421843773ffc7da556047015a25"
+    }
+  },
+  "quantization": {
+    "equity": 1000,
+    "ev": 10,
+    "reach": 10000,
+    "strategy": 1000
+  },
+  "referee": {
+    "grade": {
+      "board": [
+        "Ks",
+        "7h",
+        "2d",
+        "Qh",
+        "2c"
+      ],
+      "deals": 14870,
+      "handsInPlay": [
+        104,
+        166
+      ],
+      "localExploitabilityPctPot": 0.7200662001012385,
+      "maxColumnSumError": 1.0399999994525899e-7,
+      "ours": {
+        "exploitability": 87.20001683225996,
+        "gains": [
+          7.662674592721942,
+          166.73735907179798
+        ],
+        "value": [
+          803.9136708522591,
+          -803.9136708522591
+        ]
+      },
+      "path": [
+        "x",
+        "b1485",
+        "c",
+        "Qh",
+        "x",
+        "b3445",
+        "c",
+        "2c"
+      ],
+      "pot": 12110,
+      "publicNodes": 9,
+      "reachMass": 0.04953255709456093,
+      "theirs": {
+        "value": [
+          803.913728927747,
+          -803.9136821559217
+        ]
+      }
+    },
+    "ref": {
+      "bytes": 22142,
+      "sha256": "543c80678eb2bae91f156b0c283de143d845d6716d747a1456707bfbcc2df93b",
+      "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/referee.json"
+    },
+    "spotId": "btn-bb-3bp-v1-ks7h2d"
+  },
+  "reproductionRecordHash": "7d9bf496eb4e64214b4c2a31027ec9d302e2a21a8a5686e9b53b850e001701d5",
+  "sourceHashes": {
+    "scripts/bridge-runner.ts": "1f0886734e5a02982b34cb235d770e54268fc3c397ae05d724738f60671770cc",
+    "scripts/build-formation-libraries.ts": "56348e03ed417e5a6dd74589f93a844cf9bbf3c76d1c1bbbad7d32e29ed53f66",
+    "src/lib/solver/bridge/contract-node.ts": "43fb834c8dec53c0c8697deaa859b616ae6321adf95b6e910dd26a987e490657",
+    "src/lib/solver/bridge/contract.ts": "c88e83271934c78d0645bcc7d149bea8252b2a7243e88fb1e24666818f5fef2f",
+    "src/lib/solver/bridge/fixtures.ts": "cdf01daeea6f39991bf8e38f388c73e46b7016292d4b0d911ec6844b8586052c",
+    "src/lib/solver/bridge/formations/fixtures.ts": "7f1ffa04f18081234f9a84712b1eaecaa72cf9eddd6b72010138c9424852a7d9",
+    "src/lib/solver/bridge/formations/inputs.json": "adc8f915d2fdf31a96867c17c19cadadcb821effd5ce22e520a79976f97ae1b2",
+    "src/lib/solver/bridge/formations/library.ts": "944c0c89e36ffc4cd2f80021a89f07b29d3617ff6abf902937a4ac529c651f5b",
+    "src/lib/solver/bridge/formations/manifest.json": "292b2af0e53ec16849c681f5a60495e6ec53a51319f8d59a6657806a2e3002f8",
+    "src/lib/solver/bridge/library/encode.ts": "77777de58892cbca402a2b5ee165c1c738da03a52b0d6720d587239b1f7c3db1",
+    "src/lib/solver/bridge/library/invariants.ts": "ffa4cb9de46cc454fcb8f77d6be1f9d9577952d70d04b3a14e54f89986f39a69",
+    "src/lib/solver/bridge/library/load.ts": "8e37a236d167e87cccd92c3353914b48329b9336a803c80f81cc3843a9b51ae7",
+    "src/lib/solver/bridge/library/model.ts": "e875a51ad8efcf36d2572ce1bd625d313ecce947d5cca4d2e73c75e509c5546e",
+    "src/lib/solver/bridge/library/spots.ts": "657028557c26b077468f9df3a5fb4e9d8d7cd6741f70d9ead8010426e8a54415",
+    "src/lib/solver/bridge/subgame-referee.ts": "a0574266e2708de6c64ed23e163dda72c4ee42b44ad2046bd01264a742cfef88",
+    "src/lib/solver/preflop-v2/preflight.ts": "817e243ebcbc8f08a0db147733b3d1c6674bd09f4305884d640c664e2d618b1a",
+    "src/lib/solver/river/configurable/range.ts": "fce9b9a74d1c299cfaab3058efa63c6536475d61766593760b59d95eed161007",
+    "tasks/artifacts/formation-libraries-v1/contract.md": "f45819c77da26db1ec38a2eab0b957b0da4865b45834e570e37a8936db901737"
+  },
+  "spots": [
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 83810,
+          "nodes": 10,
+          "sha256": "24ec73222ae49861697c20187a3bd9a8c8a105da596c58eae52426df60d58240",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/flop.json"
+        },
+        "river-5dJs-b1485.c": {
+          "bytes": 61049,
+          "nodes": 14,
+          "sha256": "f7f6b9cbf8e790ec4d7462e6759c95b83cf520375af05b3e3d789e849ca31779",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-5dJs-b1485.c.json"
+        },
+        "river-5dJs-b743.c": {
+          "bytes": 73129,
+          "nodes": 15,
+          "sha256": "7a93ebcfc7e5da32fd148aef73851565c9b34ace07a0d35f9dcda2fd7f90dd18",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-5dJs-b743.c.json"
+        },
+        "river-5dJs-x.b1485.c": {
+          "bytes": 77812,
+          "nodes": 14,
+          "sha256": "2a2b3e42e7b33d1ebb1702c315535dda22fb4e25dbadb29115f0829ba41ffb5c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-5dJs-x.b1485.c.json"
+        },
+        "river-5dJs-x.b743.c": {
+          "bytes": 97015,
+          "nodes": 15,
+          "sha256": "63196d17389e34cfcc78b88e3a8c652cb4d39481ea7542859187ba5555c0bdb7",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-5dJs-x.b743.c.json"
+        },
+        "river-5dJs-x.x": {
+          "bytes": 119619,
+          "nodes": 19,
+          "sha256": "3e1e6145e7ec29b62be2ef64c9727bd315a891fc33c98987db43711a87fba1ad",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-5dJs-x.x.json"
+        },
+        "river-Qh2c-b1485.c": {
+          "bytes": 57541,
+          "nodes": 14,
+          "sha256": "15dd7bc787ce38bc34e91373fb8c3b073f5c274decb75f1f17c0223c89f06f51",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-Qh2c-b1485.c.json"
+        },
+        "river-Qh2c-b743.c": {
+          "bytes": 67286,
+          "nodes": 15,
+          "sha256": "461b4b15ae5db143b7dd875c14938360a17f55e84e122bb8d4573fb132f2dc64",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-Qh2c-b743.c.json"
+        },
+        "river-Qh2c-x.b1485.c": {
+          "bytes": 76417,
+          "nodes": 14,
+          "sha256": "060d38aca2e03e870a548b1ba00d84f79d224dbbc59feb495c431d2010e51dc3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-Qh2c-x.b1485.c.json"
+        },
+        "river-Qh2c-x.b743.c": {
+          "bytes": 93460,
+          "nodes": 15,
+          "sha256": "229f9be18deb7e73af050234f097833453b15f727413c92479bfed1d57dfc1b5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-Qh2c-x.b743.c.json"
+        },
+        "river-Qh2c-x.x": {
+          "bytes": 106491,
+          "nodes": 19,
+          "sha256": "25971a1d19cabd07829fcf3a15ab4290e7d20d741161d6d8f5a40115927caa6c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/river-Qh2c-x.x.json"
+        },
+        "turn-3c": {
+          "bytes": 185230,
+          "nodes": 25,
+          "sha256": "880d1211e425ca1ef6ba097eba014f48cca92455dc2e5a9e0f17751743e66f43",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-3c.json"
+        },
+        "turn-5d": {
+          "bytes": 176505,
+          "nodes": 25,
+          "sha256": "1c03ec7bd3b3cc572dba49c2fc3a774d88376cf8699bf093fe0ced6510149945",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-5d.json"
+        },
+        "turn-7c": {
+          "bytes": 181656,
+          "nodes": 25,
+          "sha256": "f7b01a4e0499df864ba6a370f66ea73549a9d29442e41321586d680f2c2e0c03",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-7c.json"
+        },
+        "turn-9s": {
+          "bytes": 174501,
+          "nodes": 25,
+          "sha256": "d6c112f0870a901dce7ca69401c1ee2079551617ea38c377abe54e734d142b8c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-9s.json"
+        },
+        "turn-Ac": {
+          "bytes": 156977,
+          "nodes": 25,
+          "sha256": "f64a4cfd0792a26c40fcd12cb5736593f34fe92f13ae5ed22213e1762501cd04",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-Ac.json"
+        },
+        "turn-Kd": {
+          "bytes": 165806,
+          "nodes": 25,
+          "sha256": "9ce4ad0647cb0070dd558acdcc5f719ace11709165655941fd335c92cfc87c01",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-Kd.json"
+        },
+        "turn-Qh": {
+          "bytes": 164013,
+          "nodes": 25,
+          "sha256": "b8f424bca2140e10be7771d1b3394d845cfb324df8adca0c32e890eaef67d668",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-Qh.json"
+        },
+        "turn-Th": {
+          "bytes": 173589,
+          "nodes": 25,
+          "sha256": "5416668fa2de035a8d6e8b51c71b603d2049256daccd0cf3365e8d5e01ada194",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/turn-Th.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 1,
+        "cards": [
+          "Ks",
+          "7h",
+          "2d"
+        ],
+        "gaps": [
+          6,
+          5
+        ],
+        "highRank": "K",
+        "pairing": "unpaired",
+        "ranks": [
+          "K",
+          "7",
+          "2"
+        ],
+        "straightPossible": false,
+        "suitPattern": "rainbow",
+        "texture": "dry high (K-high rainbow)"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.2782135,
+        "pctPot": 0.2790317111545139
+      },
+      "flop": [
+        "Ks",
+        "7h",
+        "2d"
+      ],
+      "id": "btn-bb-3bp-v1-ks7h2d",
+      "iterations": 130,
+      "peakRssBytes": 834076672,
+      "riverBoards": [
+        [
+          "Qh",
+          "2c"
+        ],
+        [
+          "5d",
+          "Js"
+        ]
+      ],
+      "root": {
+        "bytes": 14530,
+        "sha256": "bc3c0c8bd3681eeed9c9a4e13c9cf94cef38200a1f1856052409aed505f182d5",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/root.json"
+      },
+      "slicePlanHash": "3532508b382072149f70acb2e1164ad495ece027c1b611353c10f7df00fbb4bf",
+      "solveMs": 16635,
+      "spot": {
+        "bytes": 10712,
+        "sha256": "984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ks7h2d/984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca/spot.json"
+      },
+      "spotHash": "984b814f59c23697136df50f82ac511b63ab1bbcd31fe8381cf05b0812741fca",
+      "texture": "dry high (K-high rainbow)",
+      "turnCards": [
+        "Ac",
+        "Kd",
+        "7c",
+        "Qh",
+        "Th",
+        "9s",
+        "5d",
+        "3c"
+      ],
+      "value": [
+        355.536280932273,
+        -355.536297456649
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 75014,
+          "nodes": 10,
+          "sha256": "11fef55ee42a8d563177ce373c15af419e09acc5cb069947815aaeac302e7866",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/flop.json"
+        },
+        "river-9hTs-b1485.c": {
+          "bytes": 56274,
+          "nodes": 14,
+          "sha256": "85aa92b6be12436efcfcfa94e42685bb1ad5a25f2ef4a2b63870933fd4d454e2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-9hTs-b1485.c.json"
+        },
+        "river-9hTs-b743.c": {
+          "bytes": 66676,
+          "nodes": 15,
+          "sha256": "970967ff43d98bdb83bb89accaeda45eb0a0fe944661f664dacf5dd290b9f4e0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-9hTs-b743.c.json"
+        },
+        "river-9hTs-x.b1485.c": {
+          "bytes": 69487,
+          "nodes": 14,
+          "sha256": "5dbeb2a7272b0b8a55c7c3a57bae97eaf5b5a3e155f8ee6050ffd24af3f0b88a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-9hTs-x.b1485.c.json"
+        },
+        "river-9hTs-x.b743.c": {
+          "bytes": 85363,
+          "nodes": 15,
+          "sha256": "936040e6549856afaeb1b3bf2f426024c966258e9323dfdb280adabeaae34c89",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-9hTs-x.b743.c.json"
+        },
+        "river-9hTs-x.x": {
+          "bytes": 106999,
+          "nodes": 19,
+          "sha256": "60a062592a8dac4dfe1e30b01b875a048990d6e4c2189aa7fa70fa311af628c5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-9hTs-x.x.json"
+        },
+        "river-Kh4c-b1485.c": {
+          "bytes": 64304,
+          "nodes": 14,
+          "sha256": "f771f1d90cc55fd3cff410e4b581b155a18edf6c1353bb89ea9230d596ad8708",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-Kh4c-b1485.c.json"
+        },
+        "river-Kh4c-b743.c": {
+          "bytes": 64181,
+          "nodes": 15,
+          "sha256": "39924fef41937680d95fc163fb9333ab5f90669cd0c7447dabb3559ec2161df5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-Kh4c-b743.c.json"
+        },
+        "river-Kh4c-x.b1485.c": {
+          "bytes": 71285,
+          "nodes": 14,
+          "sha256": "e5434992ec020a902649a1e76862a8dbf2708fa5294174819a5f8efed45c753a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-Kh4c-x.b1485.c.json"
+        },
+        "river-Kh4c-x.b743.c": {
+          "bytes": 88163,
+          "nodes": 15,
+          "sha256": "e16af6c670bedc0ea7201d957ce7e3b03dec4d1b7e1b74eeffad51fc1855e0ca",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-Kh4c-x.b743.c.json"
+        },
+        "river-Kh4c-x.x": {
+          "bytes": 110562,
+          "nodes": 19,
+          "sha256": "2f5aa5c76e30aee4de7760e3ae17df220b9e9a1b4ec884f50bda4a8a172fa3cd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/river-Kh4c-x.x.json"
+        },
+        "turn-2d": {
+          "bytes": 161855,
+          "nodes": 25,
+          "sha256": "de4fa6737e6ea1a7058b6bf512fee9aaec67a871d7cb391cac8a111cfd9074f2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-2d.json"
+        },
+        "turn-5c": {
+          "bytes": 158285,
+          "nodes": 25,
+          "sha256": "d24986679a5ce0e01e6b39367c89d18846edf05eadebc606cab4c247762ee693",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-5c.json"
+        },
+        "turn-8d": {
+          "bytes": 159883,
+          "nodes": 25,
+          "sha256": "46bd62b59bc37c6b0901e1b9d70e8267149e32c8385c90fffc2a3cef6d030d8a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-8d.json"
+        },
+        "turn-9h": {
+          "bytes": 157328,
+          "nodes": 25,
+          "sha256": "d2d223952b9eb11e32e41cc19e1dbd9e34bc51c95b074344b2a2d4c8b4c8c114",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-9h.json"
+        },
+        "turn-Ac": {
+          "bytes": 140181,
+          "nodes": 25,
+          "sha256": "0ff79040315870ffef2e0e136837249e301fc80bc6eb28fe61d6193516c05291",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-Ac.json"
+        },
+        "turn-Js": {
+          "bytes": 157752,
+          "nodes": 25,
+          "sha256": "10571b74c4301213f70e910f9904c87fa2a0448d2a092295b5c85bb94e531957",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-Js.json"
+        },
+        "turn-Kh": {
+          "bytes": 153352,
+          "nodes": 25,
+          "sha256": "ba29650f312255ef2eee08ca7e2689b2d864394f1f45e2aec5a44727182b1fa2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-Kh.json"
+        },
+        "turn-Qs": {
+          "bytes": 152220,
+          "nodes": 25,
+          "sha256": "bb5ec720fc991ee6fe49959a41814d6be84393d8923bb9a681c442fc66b8132a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/turn-Qs.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 1,
+        "cards": [
+          "Ad",
+          "8c",
+          "3s"
+        ],
+        "gaps": [
+          6,
+          5
+        ],
+        "highRank": "A",
+        "pairing": "unpaired",
+        "ranks": [
+          "A",
+          "8",
+          "3"
+        ],
+        "straightPossible": false,
+        "suitPattern": "rainbow",
+        "texture": "ace-high dry rainbow"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 5.6042175,
+        "pctPot": 0.24907633463541667
+      },
+      "flop": [
+        "Ad",
+        "8c",
+        "3s"
+      ],
+      "id": "btn-bb-3bp-v1-ad8c3s",
+      "iterations": 130,
+      "peakRssBytes": 784498688,
+      "riverBoards": [
+        [
+          "Kh",
+          "4c"
+        ],
+        [
+          "9h",
+          "Ts"
+        ]
+      ],
+      "root": {
+        "bytes": 13812,
+        "sha256": "f03d6fc95197d28c7a19bb5eabfc6c6fccc2c3496a362a444cc54925a10646a3",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/root.json"
+      },
+      "slicePlanHash": "ae6bcbb863894bb719ffa01b7863c904396d79b363a13c4dd7d49bc7224be90b",
+      "solveMs": 15143,
+      "spot": {
+        "bytes": 10091,
+        "sha256": "b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ad8c3s/b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495/spot.json"
+      },
+      "spotHash": "b7b31487f7d0633c56957f7edf3ed70ef5adde5ffe6a222f983767e7136ee495",
+      "texture": "ace-high dry rainbow",
+      "turnCards": [
+        "Kh",
+        "Ac",
+        "8d",
+        "Qs",
+        "Js",
+        "9h",
+        "5c",
+        "2d"
+      ],
+      "value": [
+        282.40529254395415,
+        -282.40530843237707
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 73788,
+          "nodes": 10,
+          "sha256": "b88c2d5ffaa19c4b0d019ac284ede6a24c43eb96697ec749f244f995ffd90e4d",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/flop.json"
+        },
+        "river-2cAh-b1485.c": {
+          "bytes": 49812,
+          "nodes": 14,
+          "sha256": "9b234171a6298f98bec157de6ad1441f40df66041c6c4c2320bd8940504d5a48",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-2cAh-b1485.c.json"
+        },
+        "river-2cAh-b743.c": {
+          "bytes": 54783,
+          "nodes": 15,
+          "sha256": "5b81e802b4d0faf66aef080ab7732a7fb4e1ed9744d7fb46854486ff7cdcf4a0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-2cAh-b743.c.json"
+        },
+        "river-2cAh-x.b1485.c": {
+          "bytes": 50346,
+          "nodes": 14,
+          "sha256": "ca0e9b953a4247716fd69f0b0b4bfa3dc10bbb95d444199227efc6709d544571",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-2cAh-x.b1485.c.json"
+        },
+        "river-2cAh-x.b743.c": {
+          "bytes": 55797,
+          "nodes": 15,
+          "sha256": "a77ce437dff25872943c775bee6a74407e9f32f1de3f6369f2e7960aae8099e4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-2cAh-x.b743.c.json"
+        },
+        "river-2cAh-x.x": {
+          "bytes": 81614,
+          "nodes": 19,
+          "sha256": "22a072f0a0abb6858b2f98b4bf479155bbb0b57bcf17f92c2a0017287ffa40b8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-2cAh-x.x.json"
+        },
+        "river-Js3d-b1485.c": {
+          "bytes": 59843,
+          "nodes": 14,
+          "sha256": "2f2bc622838446443202b47fb0146f0b53afdf0173203c85aacb3686a864d66a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-Js3d-b1485.c.json"
+        },
+        "river-Js3d-b743.c": {
+          "bytes": 62628,
+          "nodes": 15,
+          "sha256": "d8975b09b4bd9b9eef24e16ad683b226310fb236fb17b8f6d98cc390402e4fcb",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-Js3d-b743.c.json"
+        },
+        "river-Js3d-x.b1485.c": {
+          "bytes": 57754,
+          "nodes": 14,
+          "sha256": "f343754e41a89c3e74bb0972e7d56eb9fd4ac5d7dbd8801e21da07cfe40ab19f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-Js3d-x.b1485.c.json"
+        },
+        "river-Js3d-x.b743.c": {
+          "bytes": 62010,
+          "nodes": 15,
+          "sha256": "6d1682fee6cd237b4758e15303a80d0416ce4d1585a85a6c7e3c03992d8ad22e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-Js3d-x.b743.c.json"
+        },
+        "river-Js3d-x.x": {
+          "bytes": 101158,
+          "nodes": 19,
+          "sha256": "7a93710c8379336defa7abbafcdbbff6d8227d19d2523d1f5da76ad847cce4af",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/river-Js3d-x.x.json"
+        },
+        "turn-2c": {
+          "bytes": 149428,
+          "nodes": 25,
+          "sha256": "222083c0e61f221203a0bb85ecb2d5ce3bff2d4d4ac18060627252aec7cc03a5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-2c.json"
+        },
+        "turn-5s": {
+          "bytes": 149118,
+          "nodes": 25,
+          "sha256": "1b11500503e2b2ef949534b28a700153c86cbb73037e3a6780bb3b1c5681c812",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-5s.json"
+        },
+        "turn-8h": {
+          "bytes": 148392,
+          "nodes": 25,
+          "sha256": "02d6e988fc3f7af20bc070f3f0f11f03e2f1202bae4a20dfa12bac29c652a24f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-8h.json"
+        },
+        "turn-9d": {
+          "bytes": 141540,
+          "nodes": 25,
+          "sha256": "057457871b974ca8365f3e8a07f4600487a16f19cf3726e7694788866c7c740a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-9d.json"
+        },
+        "turn-As": {
+          "bytes": 125594,
+          "nodes": 25,
+          "sha256": "94c0d901395e115e7001cee11f1a05f9a05c854a324db72c8651ae2e2f9b4fde",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-As.json"
+        },
+        "turn-Js": {
+          "bytes": 136545,
+          "nodes": 25,
+          "sha256": "1029de5e1591c90ac01da1bc296c83c91832e32aa1ed06c0c85e054811273414",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-Js.json"
+        },
+        "turn-Kc": {
+          "bytes": 134136,
+          "nodes": 25,
+          "sha256": "4742c4ed1226e75ce565460e1e3624a0e62303866c1b768d7f8785e62185c8af",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-Kc.json"
+        },
+        "turn-Qc": {
+          "bytes": 131192,
+          "nodes": 25,
+          "sha256": "6dfed9b279b00a74133d3de385caa0ac5e52d9fde5a799f1e58863b40a9c2be8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/turn-Qc.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 3,
+        "cards": [
+          "Kh",
+          "Qd",
+          "Tc"
+        ],
+        "gaps": [
+          1,
+          2
+        ],
+        "highRank": "K",
+        "pairing": "unpaired",
+        "ranks": [
+          "K",
+          "Q",
+          "T"
+        ],
+        "straightPossible": true,
+        "suitPattern": "rainbow",
+        "texture": "broadway rainbow"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.5566406,
+        "pctPot": 0.29140625
+      },
+      "flop": [
+        "Kh",
+        "Qd",
+        "Tc"
+      ],
+      "id": "btn-bb-3bp-v1-khqdtc",
+      "iterations": 140,
+      "peakRssBytes": 755417088,
+      "riverBoards": [
+        [
+          "Js",
+          "3d"
+        ],
+        [
+          "2c",
+          "Ah"
+        ]
+      ],
+      "root": {
+        "bytes": 12973,
+        "sha256": "86f511396951968e143accd0c68a1794509fcbf41dd43fce53301832401343c9",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/root.json"
+      },
+      "slicePlanHash": "bd1648ac3fd004d882d606a6941975171425ad0328766895aa8a7fdb41c39e99",
+      "solveMs": 14602,
+      "spot": {
+        "bytes": 9781,
+        "sha256": "bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-khqdtc/bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c/spot.json"
+      },
+      "spotHash": "bbee9c144ee361ae6be368cd625290cf2899841d183362e6ffe7b82465ad923c",
+      "texture": "broadway rainbow",
+      "turnCards": [
+        "As",
+        "Kc",
+        "Js",
+        "9d",
+        "8h",
+        "5s",
+        "2c",
+        "Qc"
+      ],
+      "value": [
+        324.2649978242947,
+        -324.2650103678903
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 82832,
+          "nodes": 10,
+          "sha256": "1a1d47de67173dba38856dabd17c87cfef8f3761be2a01a8ee775c08748634ac",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/flop.json"
+        },
+        "river-Kd4h-b1485.c": {
+          "bytes": 60013,
+          "nodes": 14,
+          "sha256": "0c25bfa7a3be40288959a36fa3b3556e7c1d9ec214956199d4833011f9ec467e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-Kd4h-b1485.c.json"
+        },
+        "river-Kd4h-b743.c": {
+          "bytes": 82646,
+          "nodes": 15,
+          "sha256": "775d2ad07f0c0eb9b03221d7da026a4ccaac89acb29a0b3d0d48da5e2fa61b60",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-Kd4h-b743.c.json"
+        },
+        "river-Kd4h-x.b1485.c": {
+          "bytes": 70347,
+          "nodes": 14,
+          "sha256": "d320524222381eb01d6136af0488841ed761aa29fbe66b9f91482f9934c839ba",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-Kd4h-x.b1485.c.json"
+        },
+        "river-Kd4h-x.b743.c": {
+          "bytes": 66923,
+          "nodes": 15,
+          "sha256": "b912e4ae5cbb9f1de59a7004f2b5be47ac0ba99272da97fd60776c9996af6de8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-Kd4h-x.b743.c.json"
+        },
+        "river-Kd4h-x.x": {
+          "bytes": 94468,
+          "nodes": 19,
+          "sha256": "405afcd416eff2a3187d502cef05ff917e7c57eaf7cba53ef33da9e8f98e6f20",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-Kd4h-x.x.json"
+        },
+        "river-TsQh-b1485.c": {
+          "bytes": 56057,
+          "nodes": 14,
+          "sha256": "eaf4e19868c4900328d13e33b3c457bd511e5561f322f370b0233163e722a244",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-TsQh-b1485.c.json"
+        },
+        "river-TsQh-b743.c": {
+          "bytes": 74925,
+          "nodes": 15,
+          "sha256": "db8a6ab69838ab053c4fb7920a30625b13a55d0479fb3a1b03b656102664cd3f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-TsQh-b743.c.json"
+        },
+        "river-TsQh-x.b1485.c": {
+          "bytes": 63039,
+          "nodes": 14,
+          "sha256": "c809f61a3943f37b1cf5ebdebf29b2440f2a03fa397ed492b3afe57412b53078",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-TsQh-x.b1485.c.json"
+        },
+        "river-TsQh-x.b743.c": {
+          "bytes": 61781,
+          "nodes": 15,
+          "sha256": "bfb01eaca54fff91034c2feec1e9869f2631aa2af0653dcc829d3c1319e817c9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-TsQh-x.b743.c.json"
+        },
+        "river-TsQh-x.x": {
+          "bytes": 96604,
+          "nodes": 19,
+          "sha256": "4d81f8a90337df51acd4e9f33fab9ac3533f15d443099091979f7a82d52991e7",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/river-TsQh-x.x.json"
+        },
+        "turn-2h": {
+          "bytes": 172932,
+          "nodes": 25,
+          "sha256": "01e85fea31e09595115432732cec0ee55fb746ebbf83f7dd7e80a8600cb6c10e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-2h.json"
+        },
+        "turn-3s": {
+          "bytes": 175625,
+          "nodes": 25,
+          "sha256": "634ba0fa8991a20f78c4f380d79e0ae2ba841ade3bb721cbb29eccc6b03e4d27",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-3s.json"
+        },
+        "turn-5c": {
+          "bytes": 174313,
+          "nodes": 25,
+          "sha256": "dcaef0e18940202c1062812ba883fdd8895caf835f23d94636ab1914f976729c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-5c.json"
+        },
+        "turn-7d": {
+          "bytes": 167639,
+          "nodes": 25,
+          "sha256": "596430c3da669c430cb7d0d22d377a19347e6c09bb5382430834da53f88d5296",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-7d.json"
+        },
+        "turn-9s": {
+          "bytes": 172424,
+          "nodes": 25,
+          "sha256": "6a0b15ea2744cbdc806cf289b12009413d8829549c23303ad18872b3bc813091",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-9s.json"
+        },
+        "turn-Ah": {
+          "bytes": 147973,
+          "nodes": 25,
+          "sha256": "d3c1826d95324602056c4a5f17054cdb31cfe0d53e5d4cc58ef5fe4c2bffffdb",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-Ah.json"
+        },
+        "turn-Kd": {
+          "bytes": 161441,
+          "nodes": 25,
+          "sha256": "357050cae91975f07292988fb4c92ae96c6a755e6898b39dadf6d28c13c275eb",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-Kd.json"
+        },
+        "turn-Ts": {
+          "bytes": 165140,
+          "nodes": 25,
+          "sha256": "b53aa775d78d075045539617ed6d7aa2a7a71a27eef3f99fbff441a0471f0d6b",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/turn-Ts.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 0,
+        "cards": [
+          "9h",
+          "8h",
+          "6c"
+        ],
+        "gaps": [
+          1,
+          2
+        ],
+        "highRank": "9",
+        "pairing": "unpaired",
+        "ranks": [
+          "9",
+          "8",
+          "6"
+        ],
+        "straightPossible": true,
+        "suitPattern": "two-tone",
+        "texture": "wet connected two-tone"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.1575165,
+        "pctPot": 0.27366739908854165
+      },
+      "flop": [
+        "9h",
+        "8h",
+        "6c"
+      ],
+      "id": "btn-bb-3bp-v1-9h8h6c",
+      "iterations": 120,
+      "peakRssBytes": 527466496,
+      "riverBoards": [
+        [
+          "Ts",
+          "Qh"
+        ],
+        [
+          "Kd",
+          "4h"
+        ]
+      ],
+      "root": {
+        "bytes": 15126,
+        "sha256": "ab22f67c8962d1aac8d16f23ce816e7eae81e47cc659e5dde86fed5c6fb7aa1c",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/root.json"
+      },
+      "slicePlanHash": "eefe2896a55eee07a6a4a02f05de2eef2e2c7f394843453ec9e129aa9a29bb8a",
+      "solveMs": 9776,
+      "spot": {
+        "bytes": 10975,
+        "sha256": "78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-9h8h6c/78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82/spot.json"
+      },
+      "spotHash": "78fb9082a569fd763dc82589e086bc564d56d72c53817c5daaf0b921f51ceb82",
+      "texture": "wet connected two-tone",
+      "turnCards": [
+        "Ah",
+        "Ts",
+        "7d",
+        "2h",
+        "9s",
+        "5c",
+        "Kd",
+        "3s"
+      ],
+      "value": [
+        -213.9005175423973,
+        213.9005012249857
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 82869,
+          "nodes": 10,
+          "sha256": "812880c9a30c360e36513e26255d36a479ac4297aad0a634e6f5aa3b6d4421a4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/flop.json"
+        },
+        "river-7hKd-b1485.c": {
+          "bytes": 54520,
+          "nodes": 14,
+          "sha256": "313f53d66f4f790030a1bfdf641401df6be529e3aeea5b9cc5893002716fd942",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-7hKd-b1485.c.json"
+        },
+        "river-7hKd-b743.c": {
+          "bytes": 72160,
+          "nodes": 15,
+          "sha256": "e71a14d295a931066ed0f9915e8a9777c76d5be2333d03d6b0d077fde7f2c494",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-7hKd-b743.c.json"
+        },
+        "river-7hKd-x.b1485.c": {
+          "bytes": 77583,
+          "nodes": 14,
+          "sha256": "49db5641db9851e4b50747c2db85ec7cc52968bd3dcdb4a298d8a6a211b74e80",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-7hKd-x.b1485.c.json"
+        },
+        "river-7hKd-x.b743.c": {
+          "bytes": 81304,
+          "nodes": 15,
+          "sha256": "e713ed398ddc0d763e1bb0b15e92767848c1d5a280dd3206c41d1314218f1f2a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-7hKd-x.b743.c.json"
+        },
+        "river-7hKd-x.x": {
+          "bytes": 93300,
+          "nodes": 19,
+          "sha256": "f847516bb118aab01dcfb24b8c6ec9385da82d7a4539141835bd4c9af6df8b5b",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-7hKd-x.x.json"
+        },
+        "river-Ah5s-b1485.c": {
+          "bytes": 51735,
+          "nodes": 14,
+          "sha256": "bbaef2fde0d0efad78787ec41d662b795fb8d01e13c84a083b5e24f68ed12c67",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-Ah5s-b1485.c.json"
+        },
+        "river-Ah5s-b743.c": {
+          "bytes": 63885,
+          "nodes": 15,
+          "sha256": "531e6d25dc39e23483f2377cbdd8892fcaabad089ef7b1afd0451bf6e816cb3b",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-Ah5s-b743.c.json"
+        },
+        "river-Ah5s-x.b1485.c": {
+          "bytes": 73653,
+          "nodes": 14,
+          "sha256": "d1d0564294f928f071a250e1ec402b8a1f216b8bddb8321f858bf92e8c065620",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-Ah5s-x.b1485.c.json"
+        },
+        "river-Ah5s-x.b743.c": {
+          "bytes": 87867,
+          "nodes": 15,
+          "sha256": "85e6010e076af5bc4422719b9afdda1eddc8311b7a4ad4d843766735e5f183fa",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-Ah5s-x.b743.c.json"
+        },
+        "river-Ah5s-x.x": {
+          "bytes": 103504,
+          "nodes": 19,
+          "sha256": "396b7c0f036593c6aaccb08131b356d7a7281f0cdd0e93fefdad1652304085fc",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/river-Ah5s-x.x.json"
+        },
+        "turn-2s": {
+          "bytes": 171113,
+          "nodes": 25,
+          "sha256": "17d601c661edf7486d3441a8cd2d70728c8c14786878d58c667c468e0e396d4c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-2s.json"
+        },
+        "turn-3c": {
+          "bytes": 176247,
+          "nodes": 25,
+          "sha256": "4c6dd73e2c8af720d9781184f6814b99abe4347767415e2488778c570ae16329",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-3c.json"
+        },
+        "turn-7h": {
+          "bytes": 174700,
+          "nodes": 25,
+          "sha256": "71f06542a1feac3e11c0b7d488c514dcd9b2e03bbeeda88b9af9ff3b3dfc0779",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-7h.json"
+        },
+        "turn-9d": {
+          "bytes": 171527,
+          "nodes": 25,
+          "sha256": "1adad5cbeb165f4adf1be5e0bcb268d3ce87770a11348c6ffd04cd704459c15e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-9d.json"
+        },
+        "turn-Ah": {
+          "bytes": 154476,
+          "nodes": 25,
+          "sha256": "a443a392fdf7551fc7f40249789f8dc0d17e603f64a5571591fc6a4437a6e68e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-Ah.json"
+        },
+        "turn-As": {
+          "bytes": 146730,
+          "nodes": 25,
+          "sha256": "d9f1ce21de12726fd816e40c6a18870b1cd0e3dc83f77d4e6b868c9c01d1756c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-As.json"
+        },
+        "turn-Jc": {
+          "bytes": 168887,
+          "nodes": 25,
+          "sha256": "ca01e7f89b0ad33af00c7131e76c7d3a2f1c353c69fb1f4ae33d072333510203",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-Jc.json"
+        },
+        "turn-Qd": {
+          "bytes": 155816,
+          "nodes": 25,
+          "sha256": "e45a0dacfdb48f6bba5b738d5c9b2266caaa2ac7f50c07adbde564e46e720008",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/turn-Qd.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 1,
+        "cards": [
+          "Qs",
+          "9s",
+          "4s"
+        ],
+        "gaps": [
+          3,
+          5
+        ],
+        "highRank": "Q",
+        "pairing": "unpaired",
+        "ranks": [
+          "Q",
+          "9",
+          "4"
+        ],
+        "straightPossible": false,
+        "suitPattern": "monotone",
+        "texture": "monotone"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.335312,
+        "pctPot": 0.28156941731770835
+      },
+      "flop": [
+        "Qs",
+        "9s",
+        "4s"
+      ],
+      "id": "btn-bb-3bp-v1-qs9s4s",
+      "iterations": 140,
+      "peakRssBytes": 249331712,
+      "riverBoards": [
+        [
+          "Ah",
+          "5s"
+        ],
+        [
+          "7h",
+          "Kd"
+        ]
+      ],
+      "root": {
+        "bytes": 14401,
+        "sha256": "e779b669fc093aaac4e212dfd1ad76546907b5421a33947a9a6981b4ce87472c",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/root.json"
+      },
+      "slicePlanHash": "1628fbc62bffd51a85c0b603f88856f5b0ad83bde982f9b08f012bb12a7f468e",
+      "solveMs": 5258,
+      "spot": {
+        "bytes": 10555,
+        "sha256": "b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-qs9s4s/b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6/spot.json"
+      },
+      "spotHash": "b1da9f321f029686b014bad232bc40922f7f65370e4c967f07b26b4694062ca6",
+      "texture": "monotone",
+      "turnCards": [
+        "As",
+        "Ah",
+        "2s",
+        "Qd",
+        "Jc",
+        "9d",
+        "7h",
+        "3c"
+      ],
+      "value": [
+        123.75471404666226,
+        -123.75471735898746
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 90442,
+          "nodes": 10,
+          "sha256": "8cba8035266b16038fbfef42c6b5d5279661aa8eba52a3956e054e8d93b0ffdd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/flop.json"
+        },
+        "river-4c3s-b1485.c": {
+          "bytes": 83420,
+          "nodes": 14,
+          "sha256": "c1e7d1b8ad780499b19b05cb6e14d52d0db6109c454e641f44d35fbe3cc71890",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-4c3s-b1485.c.json"
+        },
+        "river-4c3s-b743.c": {
+          "bytes": 86758,
+          "nodes": 15,
+          "sha256": "9a1f57b7f7ca0f0aee55944c2f6fea2af5f539d7c64a35cb7125a65fab138c0e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-4c3s-b743.c.json"
+        },
+        "river-4c3s-x.b1485.c": {
+          "bytes": 96997,
+          "nodes": 14,
+          "sha256": "3301b8fccd3a1a0160f1681a5887b717509d8d9a4fe0abde3171f261ab788b7d",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-4c3s-x.b1485.c.json"
+        },
+        "river-4c3s-x.b743.c": {
+          "bytes": 100169,
+          "nodes": 15,
+          "sha256": "f4b85366d6bc2a6b294a00d38c847b5fd6968420ebd37fb4b3086baa7f047052",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-4c3s-x.b743.c.json"
+        },
+        "river-4c3s-x.x": {
+          "bytes": 125690,
+          "nodes": 19,
+          "sha256": "fe27551ed79c465843b1bab188f8782f5387d9c40c687d609fcf0bf7a534cb03",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-4c3s-x.x.json"
+        },
+        "river-Kh9d-b1485.c": {
+          "bytes": 72480,
+          "nodes": 14,
+          "sha256": "39c2dce26885c9e4f3315d9138fe8ee5be183bc0ecd37c0f41636041ce91bc35",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-Kh9d-b1485.c.json"
+        },
+        "river-Kh9d-b743.c": {
+          "bytes": 76884,
+          "nodes": 15,
+          "sha256": "afd94c85bcf8a42f7a7ec8fc451a947784fcc14d05e540b6f10f549610911cbd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-Kh9d-b743.c.json"
+        },
+        "river-Kh9d-x.b1485.c": {
+          "bytes": 78457,
+          "nodes": 14,
+          "sha256": "eaff47bccc152e913d07a6f35993d91aac544ec14c40a2a28b6cbcd7b8d611d6",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-Kh9d-x.b1485.c.json"
+        },
+        "river-Kh9d-x.b743.c": {
+          "bytes": 80471,
+          "nodes": 15,
+          "sha256": "6f36ec14db6960d0ce91713f0e5c4b7ebe1049e557bb8a7797aa2e69fd12ed07",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-Kh9d-x.b743.c.json"
+        },
+        "river-Kh9d-x.x": {
+          "bytes": 116909,
+          "nodes": 19,
+          "sha256": "401b8c6b22d79bf8d9c1e0da295d93a08f77c8a24781119beb1e5c5f21ec7e01",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/river-Kh9d-x.x.json"
+        },
+        "turn-2d": {
+          "bytes": 199838,
+          "nodes": 25,
+          "sha256": "0385cdb7b52e58accad371aa5ad2fa7b0db3c031a4cec98f21e589bfe9135df5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-2d.json"
+        },
+        "turn-4c": {
+          "bytes": 204739,
+          "nodes": 25,
+          "sha256": "30efc743c0e39cdbbdbb16c4772b51bff9b7f77884ff4aaf1010d5faaeb22b72",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-4c.json"
+        },
+        "turn-6h": {
+          "bytes": 198060,
+          "nodes": 25,
+          "sha256": "927273e7bd790e986ddac1fb6dd971dc10fb632751804a580dd323f358f24080",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-6h.json"
+        },
+        "turn-8s": {
+          "bytes": 196646,
+          "nodes": 25,
+          "sha256": "9431b7accb6116ff772d1661d70837e40bbdddd031e72dc9a2bddfcd98a334d3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-8s.json"
+        },
+        "turn-Ad": {
+          "bytes": 166940,
+          "nodes": 25,
+          "sha256": "e6784142961e6c050926a873ccbea4e50a9a93a1b2df4f948613ad6bff359eb4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-Ad.json"
+        },
+        "turn-Jc": {
+          "bytes": 192416,
+          "nodes": 25,
+          "sha256": "ed94244ecc582fb1043a13b9adfc4d19d2657d8396bce26da11cbccfeeadb39e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-Jc.json"
+        },
+        "turn-Kh": {
+          "bytes": 183643,
+          "nodes": 25,
+          "sha256": "b8a1d6e32c46249e6990e770a0045edebf23bccbc28eb4336f722ea5c3f07aac",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-Kh.json"
+        },
+        "turn-Ts": {
+          "bytes": 192641,
+          "nodes": 25,
+          "sha256": "cace747e4338d1a954eefda38a7e0085923828134cd7f61851d8253ee9cbabf2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/turn-Ts.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 1,
+        "cards": [
+          "Td",
+          "7d",
+          "3c"
+        ],
+        "gaps": [
+          3,
+          4
+        ],
+        "highRank": "T",
+        "pairing": "unpaired",
+        "ranks": [
+          "T",
+          "7",
+          "3"
+        ],
+        "straightPossible": false,
+        "suitPattern": "two-tone",
+        "texture": "two-tone middle"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.218317,
+        "pctPot": 0.2763696458604601
+      },
+      "flop": [
+        "Td",
+        "7d",
+        "3c"
+      ],
+      "id": "btn-bb-3bp-v1-td7d3c",
+      "iterations": 170,
+      "peakRssBytes": 530907136,
+      "riverBoards": [
+        [
+          "Kh",
+          "9d"
+        ],
+        [
+          "4c",
+          "3s"
+        ]
+      ],
+      "root": {
+        "bytes": 15018,
+        "sha256": "57cf1fb777ff3deb910f28cf127bb5c442d3b0875c9b8a00913beefdb1d716fe",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/root.json"
+      },
+      "slicePlanHash": "937d8561c675239f5e209184aa67504fcc59efbb0d0c86ce44fa905024cfdb48",
+      "solveMs": 13769,
+      "spot": {
+        "bytes": 11046,
+        "sha256": "73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-td7d3c/73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026/spot.json"
+      },
+      "spotHash": "73f4305f14f1d3295870b5f1c7302c5f923cd265846a471a25c6acc633048026",
+      "texture": "two-tone middle",
+      "turnCards": [
+        "Ad",
+        "Kh",
+        "2d",
+        "Ts",
+        "8s",
+        "6h",
+        "4c",
+        "Jc"
+      ],
+      "value": [
+        48.92266609942237,
+        -48.92266732492087
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 86810,
+          "nodes": 10,
+          "sha256": "95ac2967fc1bf2e7007d5e78460990e1cae6f5e568f64856446da7600853a7da",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/flop.json"
+        },
+        "river-5sKd-b1485.c": {
+          "bytes": 66615,
+          "nodes": 14,
+          "sha256": "287ff11926a2e6d29eacc0a675b370cdf62ca7e9933b0629aeafe64956a0db48",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-5sKd-b1485.c.json"
+        },
+        "river-5sKd-b743.c": {
+          "bytes": 74622,
+          "nodes": 15,
+          "sha256": "48bce6351ea59c1a335c467110742cc75a9c672c661cfe81c5b7ae39de7ca569",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-5sKd-b743.c.json"
+        },
+        "river-5sKd-x.b1485.c": {
+          "bytes": 62819,
+          "nodes": 14,
+          "sha256": "a74b841e7a266d0c3116e675b918b1a9c62b7cc80278c9454dde92338ace12c5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-5sKd-x.b1485.c.json"
+        },
+        "river-5sKd-x.b743.c": {
+          "bytes": 71211,
+          "nodes": 15,
+          "sha256": "4af8c39ba5707ff3d12355248924c6aeeab9a5d3ea3435218a04af1353902e8b",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-5sKd-x.b743.c.json"
+        },
+        "river-5sKd-x.x": {
+          "bytes": 99979,
+          "nodes": 19,
+          "sha256": "8df101bc1c9303371e7352a0242aaea48fb4ac5bc08c4e71130e15b5e6020e7f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-5sKd-x.x.json"
+        },
+        "river-Ac7h-b1485.c": {
+          "bytes": 70464,
+          "nodes": 14,
+          "sha256": "46ebf3cd18ec5ebfe5dbba15ce7954b1fa394febd0192447dd27755a239e8905",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-Ac7h-b1485.c.json"
+        },
+        "river-Ac7h-b743.c": {
+          "bytes": 69586,
+          "nodes": 15,
+          "sha256": "0a50cc66cca6b781487508ec142bcb10bd9a6a2bc08c5c73758922c93a9de2d9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-Ac7h-b743.c.json"
+        },
+        "river-Ac7h-x.b1485.c": {
+          "bytes": 46510,
+          "nodes": 14,
+          "sha256": "b64c2125ca01e5aa48deb475c85d880a6d5a34ce79baa6a357f0c176ddd2158c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-Ac7h-x.b1485.c.json"
+        },
+        "river-Ac7h-x.b743.c": {
+          "bytes": 74540,
+          "nodes": 15,
+          "sha256": "951579269a45b301914be822a4e77f31142ccadece7352caed2cd6005d8297cd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-Ac7h-x.b743.c.json"
+        },
+        "river-Ac7h-x.x": {
+          "bytes": 82538,
+          "nodes": 19,
+          "sha256": "ca67599b7d28cb227e556a82cb032e55c0f79ca501cc98d21e9b44390835c9a0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/river-Ac7h-x.x.json"
+        },
+        "turn-2d": {
+          "bytes": 180135,
+          "nodes": 25,
+          "sha256": "90057777c181217996aa05ba5d3fbb14a1bd9f39d09aa993f3387c8f36bc07d1",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-2d.json"
+        },
+        "turn-3c": {
+          "bytes": 183347,
+          "nodes": 25,
+          "sha256": "a6b76250a2ead0da49fceab9d4ed10061a2b7ed76e5c3df2705c2bab4d7f5ec1",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-3c.json"
+        },
+        "turn-5s": {
+          "bytes": 177754,
+          "nodes": 25,
+          "sha256": "c2eeea84ca7b2aa94504deb58a4192d7ab35a6db819fd6fa92e92d788d9685e4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-5s.json"
+        },
+        "turn-8c": {
+          "bytes": 183576,
+          "nodes": 25,
+          "sha256": "32e60008a109d5eb9891ca8896f1322618b387dd7e3b95db702f5534ab20f5ce",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-8c.json"
+        },
+        "turn-9h": {
+          "bytes": 176540,
+          "nodes": 25,
+          "sha256": "b266f2a68c334949f170e71395d36a492012ae3e0af5b799f26adf5bba2e8113",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-9h.json"
+        },
+        "turn-Ac": {
+          "bytes": 147670,
+          "nodes": 25,
+          "sha256": "0bb2d6b398d7f54ff696758477549f56539d6e14e13c92e74a29043bc3c79248",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-Ac.json"
+        },
+        "turn-Kh": {
+          "bytes": 164225,
+          "nodes": 25,
+          "sha256": "d46dc21b6f1cbe1ea2239bba1563e38b075f5b619216e9ad3e2ecda86aa69703",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-Kh.json"
+        },
+        "turn-Qd": {
+          "bytes": 167491,
+          "nodes": 25,
+          "sha256": "7ba93f29f1aa0772722066a7ba8849593b56597e1c9a35044a7da0dd3312aba3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/turn-Qd.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 0,
+        "cards": [
+          "8s",
+          "8d",
+          "3h"
+        ],
+        "gaps": [
+          0,
+          5
+        ],
+        "highRank": "8",
+        "pairing": "paired",
+        "ranks": [
+          "8",
+          "8",
+          "3"
+        ],
+        "straightPossible": false,
+        "suitPattern": "rainbow",
+        "texture": "paired middle"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.042225,
+        "pctPot": 0.26854332817925347
+      },
+      "flop": [
+        "8s",
+        "8d",
+        "3h"
+      ],
+      "id": "btn-bb-3bp-v1-8s8d3h",
+      "iterations": 140,
+      "peakRssBytes": 554041344,
+      "riverBoards": [
+        [
+          "Ac",
+          "7h"
+        ],
+        [
+          "5s",
+          "Kd"
+        ]
+      ],
+      "root": {
+        "bytes": 15018,
+        "sha256": "d3f130b01b8d0bdc331c00ee91d45c6d9db59a0d6f9e693be3e96eae85dbd941",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/root.json"
+      },
+      "slicePlanHash": "cd3f48f9de1be0b8929659f5b3a2d8305f9c99229f3ae3e437504de638dfca1d",
+      "solveMs": 11676,
+      "spot": {
+        "bytes": 11147,
+        "sha256": "35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-8s8d3h/35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138/spot.json"
+      },
+      "spotHash": "35a11e8074e44710de1a7fc4d61c66e15fe48b7eb269e46bddc0b4231ea76138",
+      "texture": "paired middle",
+      "turnCards": [
+        "Ac",
+        "Kh",
+        "8c",
+        "3c",
+        "Qd",
+        "9h",
+        "5s",
+        "2d"
+      ],
+      "value": [
+        129.5115920258501,
+        -129.51156742920364
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 95166,
+          "nodes": 10,
+          "sha256": "2f333790b91b48f9210cb8ae327ead17fab0d838071060ce554bfbea2853e311",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/flop.json"
+        },
+        "river-3sQh-b1485.c": {
+          "bytes": 55596,
+          "nodes": 14,
+          "sha256": "c349e932cc83f8dfe741322a8a06829c7031f7d853b99dcf45c1905d9fc4b185",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-3sQh-b1485.c.json"
+        },
+        "river-3sQh-b743.c": {
+          "bytes": 90902,
+          "nodes": 15,
+          "sha256": "d921cac74543bb174ca983254b35174e4d22f8b24a6e0a3a412f6121f9da395e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-3sQh-b743.c.json"
+        },
+        "river-3sQh-x.b1485.c": {
+          "bytes": 75856,
+          "nodes": 14,
+          "sha256": "e55fc3ee39beda6f6ed9335dead0ce211b8a445b26768210320a43c0eb7cbca4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-3sQh-x.b1485.c.json"
+        },
+        "river-3sQh-x.b743.c": {
+          "bytes": 74619,
+          "nodes": 15,
+          "sha256": "3e72f707b98be74939ee735e2e821466bb07bc665941d428b22e3cde5361c6ca",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-3sQh-x.b743.c.json"
+        },
+        "river-3sQh-x.x": {
+          "bytes": 118268,
+          "nodes": 19,
+          "sha256": "111fde874baa0d9dc3d242d0a69e3102a902037dbdc956705a534fa60752b851",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-3sQh-x.x.json"
+        },
+        "river-Kd7c-b1485.c": {
+          "bytes": 75517,
+          "nodes": 14,
+          "sha256": "df4be4ef88aa7d528efa1b9d1ebaab62539f4676afabc93fd2f91b9eb74a44a2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-Kd7c-b1485.c.json"
+        },
+        "river-Kd7c-b743.c": {
+          "bytes": 101096,
+          "nodes": 15,
+          "sha256": "85bc83d48ba518a14061acd794144a5a769a7448f81770bb8501d0582c00566a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-Kd7c-b743.c.json"
+        },
+        "river-Kd7c-x.b1485.c": {
+          "bytes": 87666,
+          "nodes": 14,
+          "sha256": "5dc5f0403b441a83bf86bdf08af3d5ccf4b78cc208e291c09ceb2c89c1f92a31",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-Kd7c-x.b1485.c.json"
+        },
+        "river-Kd7c-x.b743.c": {
+          "bytes": 92205,
+          "nodes": 15,
+          "sha256": "2ab3dc28e3af158d4a5c02e26ecde66cf5b7f22785b7be5950cb621e3e35e933",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-Kd7c-x.b743.c.json"
+        },
+        "river-Kd7c-x.x": {
+          "bytes": 116851,
+          "nodes": 19,
+          "sha256": "38a9b4f0846777d72b2240d76726c5e2268b47b67b03d229a0784689b6aeefdb",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/river-Kd7c-x.x.json"
+        },
+        "turn-2h": {
+          "bytes": 206968,
+          "nodes": 25,
+          "sha256": "24c0c70e15804cc60a9af35bea02859d537d123886dd367011330765643230b0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-2h.json"
+        },
+        "turn-3s": {
+          "bytes": 189280,
+          "nodes": 25,
+          "sha256": "cf8175ce7e749a6c3535c4587e4f8bf6876651d8b0516e5eb81374b9e292a99e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-3s.json"
+        },
+        "turn-5c": {
+          "bytes": 209646,
+          "nodes": 25,
+          "sha256": "4dbc97d8c7aca92804d4bb3ff95b2c39fc4f48ba29cd14fb69138c36c089457d",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-5c.json"
+        },
+        "turn-6h": {
+          "bytes": 205907,
+          "nodes": 25,
+          "sha256": "137cb3bc43e661575c4c397ce989ea374aab5b37a7848f4b53c0ee5c1fb2b910",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-6h.json"
+        },
+        "turn-9s": {
+          "bytes": 203211,
+          "nodes": 25,
+          "sha256": "a50d4ad8e4e3d69bd0d2189b7a20e3a6cf09a4c62c23a5173c3220345174c871",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-9s.json"
+        },
+        "turn-Ac": {
+          "bytes": 171757,
+          "nodes": 25,
+          "sha256": "16e93a6de9345d7d4495a50b0b733914b739fc016ace9c263b4c0c57ff1bb5e3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-Ac.json"
+        },
+        "turn-Kd": {
+          "bytes": 192039,
+          "nodes": 25,
+          "sha256": "6553c8fb3c171b254f735b2a0a526811026968f704e3e1d70dd9880ee9ec3756",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-Kd.json"
+        },
+        "turn-Th": {
+          "bytes": 201872,
+          "nodes": 25,
+          "sha256": "2ff1dd651a337b5a91c8a1be491e126044df74ea47c20c8c9501643300f9a06a",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/turn-Th.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 0,
+        "cards": [
+          "5h",
+          "4c",
+          "2d"
+        ],
+        "gaps": [
+          1,
+          2
+        ],
+        "highRank": "5",
+        "pairing": "unpaired",
+        "ranks": [
+          "5",
+          "4",
+          "2"
+        ],
+        "straightPossible": true,
+        "suitPattern": "rainbow",
+        "texture": "low connected rainbow"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.569046,
+        "pctPot": 0.29195760091145834
+      },
+      "flop": [
+        "5h",
+        "4c",
+        "2d"
+      ],
+      "id": "btn-bb-3bp-v1-5h4c2d",
+      "iterations": 140,
+      "peakRssBytes": 897384448,
+      "riverBoards": [
+        [
+          "Kd",
+          "7c"
+        ],
+        [
+          "3s",
+          "Qh"
+        ]
+      ],
+      "root": {
+        "bytes": 15510,
+        "sha256": "92975037bee57a6dcf45d1e47813750c239cd09a4e69b546aac97e2ad362f830",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/root.json"
+      },
+      "slicePlanHash": "b85b007402e241e9c28e5725c2db2dd5ab85ad3d27a7db9e8b3a9655d7dec173",
+      "solveMs": 18160,
+      "spot": {
+        "bytes": 11473,
+        "sha256": "abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-5h4c2d/abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40/spot.json"
+      },
+      "spotHash": "abc64e1dea8b8187c1cb09fe793a227ad4911191b14f8658267c85c5e3d31d40",
+      "texture": "low connected rainbow",
+      "turnCards": [
+        "Ac",
+        "Kd",
+        "3s",
+        "6h",
+        "5c",
+        "9s",
+        "Th",
+        "2h"
+      ],
+      "value": [
+        104.83985078513491,
+        -104.8398638752049
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 85154,
+          "nodes": 10,
+          "sha256": "5421ac0afc4ca305da9994c56acc789f526083a899368a63fb22fd5a9b8cdeb7",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/flop.json"
+        },
+        "river-2cQd-b1485.c": {
+          "bytes": 57338,
+          "nodes": 14,
+          "sha256": "cb8eb5964d974aab1ed09c630450aef4bbd89740660f54c53d2f41e6673e7198",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-2cQd-b1485.c.json"
+        },
+        "river-2cQd-b743.c": {
+          "bytes": 86943,
+          "nodes": 15,
+          "sha256": "8082151019274ffb1daa12db813168abfb0e3621fedc9caa5d36b7272e99af6b",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-2cQd-b743.c.json"
+        },
+        "river-2cQd-x.b1485.c": {
+          "bytes": 75376,
+          "nodes": 14,
+          "sha256": "66b86aeb4e46dee2e6a5e21e4266ebf4dc4d5de0ac434c901209082e8c0db360",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-2cQd-x.b1485.c.json"
+        },
+        "river-2cQd-x.b743.c": {
+          "bytes": 77484,
+          "nodes": 15,
+          "sha256": "052c01bf6cbef5ac2aadcdacef6c1d667fb89c218a192482084954ce1b4b8991",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-2cQd-x.b743.c.json"
+        },
+        "river-2cQd-x.x": {
+          "bytes": 105004,
+          "nodes": 19,
+          "sha256": "21e51226d3bc3c40ce5932e8a98e6f3c2ec9e6756e69fdc74e072b95dcfacb81",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-2cQd-x.x.json"
+        },
+        "river-Kh5h-b1485.c": {
+          "bytes": 60792,
+          "nodes": 14,
+          "sha256": "780707af64d59b18aa6b6e85453406ae973d1375cf1287f0817c924ee11f657f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-Kh5h-b1485.c.json"
+        },
+        "river-Kh5h-b743.c": {
+          "bytes": 91437,
+          "nodes": 15,
+          "sha256": "31b12a608223a3817e781d079be98ff277d21357264e2faf98d4018526e93032",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-Kh5h-b743.c.json"
+        },
+        "river-Kh5h-x.b1485.c": {
+          "bytes": 77674,
+          "nodes": 14,
+          "sha256": "529e26ba7bcfbcd5b7a332ad690e985b69203cc1f7786ed634a78acd69f28b94",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-Kh5h-x.b1485.c.json"
+        },
+        "river-Kh5h-x.b743.c": {
+          "bytes": 85268,
+          "nodes": 15,
+          "sha256": "d9c84c109034f2ce64c0d9d0b1d5d8da2dbc19b5e2747d9671df7610fcd6b2e2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-Kh5h-x.b743.c.json"
+        },
+        "river-Kh5h-x.x": {
+          "bytes": 108271,
+          "nodes": 19,
+          "sha256": "9b8d158cf30d7469ee4c33c2df0e8332391112dbab9d80c033d01d546856c8a9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/river-Kh5h-x.x.json"
+        },
+        "turn-2c": {
+          "bytes": 184577,
+          "nodes": 25,
+          "sha256": "2746bd44e39efe3eedf538da4095d9745f1d6930c96cad234d5be93073deb572",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-2c.json"
+        },
+        "turn-4s": {
+          "bytes": 183010,
+          "nodes": 25,
+          "sha256": "6cfb07a900ecfc42d46bbf19f48a5036c6fbb1e3c6fab6b6ad677a4ea33e0ca1",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-4s.json"
+        },
+        "turn-6d": {
+          "bytes": 181756,
+          "nodes": 25,
+          "sha256": "a024901163d3884070a09954a9aa9d966b3f7fc818380e839cce8f03b8fa62c8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-6d.json"
+        },
+        "turn-8c": {
+          "bytes": 177594,
+          "nodes": 25,
+          "sha256": "f81dc38e38b8dc14b2f2b0c3993bf48c46b2f8a2c0fad1166a5fea8ce8931d31",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-8c.json"
+        },
+        "turn-As": {
+          "bytes": 161145,
+          "nodes": 25,
+          "sha256": "d82cf6cec3c1a3ab9151bca9a5e125aa2fef089f08b3283df39b81a3c5a55076",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-As.json"
+        },
+        "turn-Jh": {
+          "bytes": 170802,
+          "nodes": 25,
+          "sha256": "213cfc39e129d897749e8f64b73a71d4001281ed39d93e4edf478ef06ee1758c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-Jh.json"
+        },
+        "turn-Kh": {
+          "bytes": 170369,
+          "nodes": 25,
+          "sha256": "bdccaa6a381ba94f037f48d88f71f4a2878d94132672650db28332c31af61ec2",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-Kh.json"
+        },
+        "turn-Td": {
+          "bytes": 175078,
+          "nodes": 25,
+          "sha256": "9c9e4b1214da4296747c2a2305b0c0c12ef723f04de7efbf67c471ff01f90ace",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/turn-Td.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 1,
+        "cards": [
+          "Tc",
+          "9d",
+          "7s"
+        ],
+        "gaps": [
+          1,
+          2
+        ],
+        "highRank": "T",
+        "pairing": "unpaired",
+        "ranks": [
+          "T",
+          "9",
+          "7"
+        ],
+        "straightPossible": true,
+        "suitPattern": "rainbow",
+        "texture": "middle connected rainbow"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 5.9447975,
+        "pctPot": 0.26421322292751737
+      },
+      "flop": [
+        "Tc",
+        "9d",
+        "7s"
+      ],
+      "id": "btn-bb-3bp-v1-tc9d7s",
+      "iterations": 140,
+      "peakRssBytes": 834093056,
+      "riverBoards": [
+        [
+          "Kh",
+          "5h"
+        ],
+        [
+          "2c",
+          "Qd"
+        ]
+      ],
+      "root": {
+        "bytes": 14663,
+        "sha256": "524befed731266f06c917ca324d596927b0deb104189ba9d96dc99b060cb78dc",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/root.json"
+      },
+      "slicePlanHash": "4da87a3d14b89856eb91a2a4ade369b6e484dcef17339967129b49c1a2a1ebc6",
+      "solveMs": 18660,
+      "spot": {
+        "bytes": 10724,
+        "sha256": "69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-tc9d7s/69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d/spot.json"
+      },
+      "spotHash": "69029ae28a4f39a3ae98b71b4a3a77e0decdcde23a438a32c40c9a1e184efd7d",
+      "texture": "middle connected rainbow",
+      "turnCards": [
+        "As",
+        "Kh",
+        "8c",
+        "Jh",
+        "6d",
+        "2c",
+        "Td",
+        "4s"
+      ],
+      "value": [
+        -119.18485501970484,
+        119.18483893314655
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 72628,
+          "nodes": 10,
+          "sha256": "3de0a7345aa681db1e4e675a574720c5fdc159b0fa86905dc17b5fc758792004",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/flop.json"
+        },
+        "river-4c3h-b1485.c": {
+          "bytes": 50441,
+          "nodes": 14,
+          "sha256": "329b30fbb71827a9858121b5ee12931d5966cd95bd9666132d9a4b6afd8ec0dd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-4c3h-b1485.c.json"
+        },
+        "river-4c3h-b743.c": {
+          "bytes": 62118,
+          "nodes": 15,
+          "sha256": "b5210757af80dbfddee7a7c89491258605fb237c333f49defc28d70312f115da",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-4c3h-b743.c.json"
+        },
+        "river-4c3h-x.b1485.c": {
+          "bytes": 46279,
+          "nodes": 14,
+          "sha256": "f5af321f02e0598a2f0ce92fe25da96aaed1be8627ee669b1c8f554a22a7a8eb",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-4c3h-x.b1485.c.json"
+        },
+        "river-4c3h-x.b743.c": {
+          "bytes": 63904,
+          "nodes": 15,
+          "sha256": "7aa13eb2cc2b5a1330afec88e62943178d6d2473f820f6e3da581ec9cbf2b3d4",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-4c3h-x.b743.c.json"
+        },
+        "river-4c3h-x.x": {
+          "bytes": 86853,
+          "nodes": 19,
+          "sha256": "c10a44bf2b5aae98f5a4cbe5d562d62547cb0d1dd4d8a0211ff970ec41811677",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-4c3h-x.x.json"
+        },
+        "river-Kc9d-b1485.c": {
+          "bytes": 49149,
+          "nodes": 14,
+          "sha256": "576a638f4486d4e32c2daae544d8d63234779e5fe900a239330be3e2db2bf3c5",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-Kc9d-b1485.c.json"
+        },
+        "river-Kc9d-b743.c": {
+          "bytes": 60398,
+          "nodes": 15,
+          "sha256": "21b85de27168a148b8041b302129c4f12b7cefa5e76ad4e87662d9c9fb4398ff",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-Kc9d-b743.c.json"
+        },
+        "river-Kc9d-x.b1485.c": {
+          "bytes": 50099,
+          "nodes": 14,
+          "sha256": "63ca23587458d0954532e0e75db958c43b012c52297becb9bbbafac7def4d7c3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-Kc9d-x.b1485.c.json"
+        },
+        "river-Kc9d-x.b743.c": {
+          "bytes": 61909,
+          "nodes": 15,
+          "sha256": "8819eaa6a9f15035912a78ac9ea0e6b9d0946efaa87671821dfbca7b180b9672",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-Kc9d-x.b743.c.json"
+        },
+        "river-Kc9d-x.x": {
+          "bytes": 85540,
+          "nodes": 19,
+          "sha256": "ee3d05d03e6b617d64d444b0876b4446f7c74c491006cfa8dcd9093ca33b17e8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/river-Kc9d-x.x.json"
+        },
+        "turn-2h": {
+          "bytes": 146788,
+          "nodes": 25,
+          "sha256": "3c3e91d08848c1a7287051352f37457a0afe165f774c51baa28be43cc56ea256",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-2h.json"
+        },
+        "turn-4c": {
+          "bytes": 145571,
+          "nodes": 25,
+          "sha256": "d717f755e4a9c32fbcdadf9cf65d95e735ae9812e6addaa1132b26c2444b7cfc",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-4c.json"
+        },
+        "turn-5d": {
+          "bytes": 143757,
+          "nodes": 25,
+          "sha256": "819e962ffa2bdfba5cb1af16ba7fccef809085a1912258d3ea262b070d09f0ad",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-5d.json"
+        },
+        "turn-8s": {
+          "bytes": 144876,
+          "nodes": 25,
+          "sha256": "7a4819af4f3c3a0df9dbb5e1c522c79318cfd82a250d7d34453eab743ed48df6",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-8s.json"
+        },
+        "turn-Ad": {
+          "bytes": 123525,
+          "nodes": 25,
+          "sha256": "01c5870e1a3ae432a845372ae4f84c98cdc4ff5fa8da7cd81fa148354a2392dc",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-Ad.json"
+        },
+        "turn-Js": {
+          "bytes": 143434,
+          "nodes": 25,
+          "sha256": "d0693ad989934cc21e6aebc908422b10fed6db14643537a2e7f6a91360fa2e08",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-Js.json"
+        },
+        "turn-Kc": {
+          "bytes": 136947,
+          "nodes": 25,
+          "sha256": "f17a16ebd379486d0503ccf6fc7bb763f6e7d0787b4e7382c6afff713c993225",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-Kc.json"
+        },
+        "turn-Qh": {
+          "bytes": 138514,
+          "nodes": 25,
+          "sha256": "43d6afb91238ed53ec28060f9e2ce7664c843f9dd118c05b8721f73a88e96d11",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/turn-Qh.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 2,
+        "cards": [
+          "Ah",
+          "Th",
+          "5c"
+        ],
+        "gaps": [
+          4,
+          5
+        ],
+        "highRank": "A",
+        "pairing": "unpaired",
+        "ranks": [
+          "A",
+          "T",
+          "5"
+        ],
+        "straightPossible": false,
+        "suitPattern": "two-tone",
+        "texture": "ace-high two-tone"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.466461,
+        "pctPot": 0.28739827473958335
+      },
+      "flop": [
+        "Ah",
+        "Th",
+        "5c"
+      ],
+      "id": "btn-bb-3bp-v1-ahth5c",
+      "iterations": 110,
+      "peakRssBytes": 472973312,
+      "riverBoards": [
+        [
+          "Kc",
+          "9d"
+        ],
+        [
+          "4c",
+          "3h"
+        ]
+      ],
+      "root": {
+        "bytes": 13197,
+        "sha256": "4a76f916bdb1513a8a236ca1f32214dc7720d2cc7136ab65b6dcd0c1556db632",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/root.json"
+      },
+      "slicePlanHash": "77faf635641ea8a902380d815337ad6eec47faa121470526371d3a95dd17eb2d",
+      "solveMs": 8046,
+      "spot": {
+        "bytes": 9901,
+        "sha256": "8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-ahth5c/8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2/spot.json"
+      },
+      "spotHash": "8a5defb7631b6542a17aa587f808b52798f2f522e88a6d44f26b2ba6a0a39ca2",
+      "texture": "ace-high two-tone",
+      "turnCards": [
+        "Kc",
+        "Ad",
+        "2h",
+        "5d",
+        "Js",
+        "8s",
+        "4c",
+        "Qh"
+      ],
+      "value": [
+        127.59056101257487,
+        -127.59057076177483
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 86865,
+          "nodes": 10,
+          "sha256": "0fd7bacbf98ef7ae8608d45cc37116b7ba6237744fa469d2e6000b12b5cc01cc",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/flop.json"
+        },
+        "river-8hQs-b1485.c": {
+          "bytes": 85031,
+          "nodes": 14,
+          "sha256": "401697e020f199f4d5ac9a1dbedd8391cdeb5758e5faf1306a2d7d39d46e6edf",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-8hQs-b1485.c.json"
+        },
+        "river-8hQs-b743.c": {
+          "bytes": 81375,
+          "nodes": 15,
+          "sha256": "d07d8e8ab16a320e82f21958e77640b9ddbeb174fb70a92d48be247aa8ddffd3",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-8hQs-b743.c.json"
+        },
+        "river-8hQs-x.b1485.c": {
+          "bytes": 89087,
+          "nodes": 14,
+          "sha256": "54ebf825e53f6c9093957457e2ac51f824581aa9b900e6a7620d3d4f829d3dd9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-8hQs-x.b1485.c.json"
+        },
+        "river-8hQs-x.b743.c": {
+          "bytes": 102689,
+          "nodes": 15,
+          "sha256": "2924aad83bcab9ef7c93ed3c43b6fcc96403d07207d904ce4140b89c1629fab0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-8hQs-x.b743.c.json"
+        },
+        "river-8hQs-x.x": {
+          "bytes": 129822,
+          "nodes": 19,
+          "sha256": "5c9b678b49178bbca945f3341e9e2e145372f69fc12930a8bb915cf371d03dd7",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-8hQs-x.x.json"
+        },
+        "river-Ah5h-b1485.c": {
+          "bytes": 69660,
+          "nodes": 14,
+          "sha256": "b5994b1e04fa9a6497953c74b01727eef1263d2da5e0dbbe0e2bf928b1965eb0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-Ah5h-b1485.c.json"
+        },
+        "river-Ah5h-b743.c": {
+          "bytes": 73236,
+          "nodes": 15,
+          "sha256": "4f2139734ba37d8175fe2560a8b3df6a80af22030ef40491fc157c8aba6ea8cd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-Ah5h-b743.c.json"
+        },
+        "river-Ah5h-x.b1485.c": {
+          "bytes": 82592,
+          "nodes": 14,
+          "sha256": "5d1270242fc0a6a60f5f67850b1c08c5de223dbc11fd611915b146a5d014d4ae",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-Ah5h-x.b1485.c.json"
+        },
+        "river-Ah5h-x.b743.c": {
+          "bytes": 94007,
+          "nodes": 15,
+          "sha256": "e8c99a76d31940ab0f54bed3dddfe01a8adf476e6ac627bcebeefed0b10bc524",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-Ah5h-x.b743.c.json"
+        },
+        "river-Ah5h-x.x": {
+          "bytes": 117391,
+          "nodes": 19,
+          "sha256": "c6d79c24f5ed8705efa4c4a2de28501b84bbc4626edfd6c09951e86daa07504e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/river-Ah5h-x.x.json"
+        },
+        "turn-2c": {
+          "bytes": 196854,
+          "nodes": 25,
+          "sha256": "a426743514dfa69e85d9cf982b52705d7427431381fad47675ad29fe7a6962a8",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-2c.json"
+        },
+        "turn-4d": {
+          "bytes": 199807,
+          "nodes": 25,
+          "sha256": "dfa7ec95982f4f625beb51949133a0fc5048a5ba5b28b5a4e58c57c236bec813",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-4d.json"
+        },
+        "turn-6s": {
+          "bytes": 192734,
+          "nodes": 25,
+          "sha256": "e597521e7b5e9da018c5d9ba3338f652420e97580d39505fde687b944256bd9f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-6s.json"
+        },
+        "turn-8h": {
+          "bytes": 195952,
+          "nodes": 25,
+          "sha256": "affb03b445e2023bf391c50bd7ab516ca934c4194398a9cdbbf01d184286512f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-8h.json"
+        },
+        "turn-Ah": {
+          "bytes": 164408,
+          "nodes": 25,
+          "sha256": "d151990fb25bed3f28d5cbc1481adaa2bd82f52bda1caac75d970bb0066ba8b6",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-Ah.json"
+        },
+        "turn-Jh": {
+          "bytes": 191892,
+          "nodes": 25,
+          "sha256": "8eafadfc2a39bd82772e568e085366bb73a70756e382fc6eb8c69462322dfd17",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-Jh.json"
+        },
+        "turn-Kc": {
+          "bytes": 176474,
+          "nodes": 25,
+          "sha256": "65dad9458f005585f042a67d9c530085274dffb1f5e9db277965d0a0761bb763",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-Kc.json"
+        },
+        "turn-Tc": {
+          "bytes": 187810,
+          "nodes": 25,
+          "sha256": "20840e4369c346500f95ae44741efab2498f2be33d798b6965174bc6d234de58",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/turn-Tc.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 2,
+        "cards": [
+          "Jc",
+          "Jd",
+          "4s"
+        ],
+        "gaps": [
+          0,
+          7
+        ],
+        "highRank": "J",
+        "pairing": "paired",
+        "ranks": [
+          "J",
+          "J",
+          "4"
+        ],
+        "straightPossible": false,
+        "suitPattern": "rainbow",
+        "texture": "paired high"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.604721,
+        "pctPot": 0.2935431586371528
+      },
+      "flop": [
+        "Jc",
+        "Jd",
+        "4s"
+      ],
+      "id": "btn-bb-3bp-v1-jcjd4s",
+      "iterations": 180,
+      "peakRssBytes": 524402688,
+      "riverBoards": [
+        [
+          "Ah",
+          "5h"
+        ],
+        [
+          "8h",
+          "Qs"
+        ]
+      ],
+      "root": {
+        "bytes": 14246,
+        "sha256": "4cccb1a2175d75f3706704d893de067c22efadf7cae33654d9697dd1e4582f56",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/root.json"
+      },
+      "slicePlanHash": "4e1d78d3fa16c560d14d7b8b0b9347076a2cb1e66789c166f78ab6f42998e474",
+      "solveMs": 13889,
+      "spot": {
+        "bytes": 10589,
+        "sha256": "2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-jcjd4s/2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7/spot.json"
+      },
+      "spotHash": "2dbc3344078dc8408b1bf423c345dd14a30c31015d70f3817fe63fa159d6dbb7",
+      "texture": "paired high",
+      "turnCards": [
+        "Ah",
+        "Kc",
+        "Jh",
+        "4d",
+        "Tc",
+        "8h",
+        "6s",
+        "2c"
+      ],
+      "value": [
+        329.1010633473937,
+        -329.10107525387144
+      ]
+    },
+    {
+      "chunks": {
+        "flop": {
+          "bytes": 93283,
+          "nodes": 10,
+          "sha256": "6410f5cc3b93cb01e13b63dd1d92dc2034035af7ffbd34934827f19de3f941a9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/flop.json"
+        },
+        "river-2cJs-b1485.c": {
+          "bytes": 92717,
+          "nodes": 14,
+          "sha256": "cccce8fee03ffd8dd38540a616c5ffe60de162bb1e372ebe398fff23cc530f2f",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-2cJs-b1485.c.json"
+        },
+        "river-2cJs-b743.c": {
+          "bytes": 101329,
+          "nodes": 15,
+          "sha256": "0692a46701b6d04a2351f03e4dff031c06c5b709e0f3e1010fa6ab3613f2f711",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-2cJs-b743.c.json"
+        },
+        "river-2cJs-x.b1485.c": {
+          "bytes": 89176,
+          "nodes": 14,
+          "sha256": "987f6235bafaea20f7c991b90c6b91ddd720b03a1ac402882d0390253a4238f9",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-2cJs-x.b1485.c.json"
+        },
+        "river-2cJs-x.b743.c": {
+          "bytes": 100741,
+          "nodes": 15,
+          "sha256": "3c783b1296d52636a17ccfb6acfb2ec5b43aba1b6fd4add781bb01e3e10b13cd",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-2cJs-x.b743.c.json"
+        },
+        "river-2cJs-x.x": {
+          "bytes": 117072,
+          "nodes": 19,
+          "sha256": "59f22cb317ca7ea2ce3a79963755107a4b6ab77c0949da42652293cd927d61f0",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-2cJs-x.x.json"
+        },
+        "river-Kd9h-b1485.c": {
+          "bytes": 82838,
+          "nodes": 14,
+          "sha256": "b13c032b8295128e36f6f153cf40a0a525f5116a1c374f76dc75c996125139d1",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-Kd9h-b1485.c.json"
+        },
+        "river-Kd9h-b743.c": {
+          "bytes": 94342,
+          "nodes": 15,
+          "sha256": "a0cea6584016e08a4b7fb9206a13a034c7d535dd2a5c4294ce4db8d8f98cd986",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-Kd9h-b743.c.json"
+        },
+        "river-Kd9h-x.b1485.c": {
+          "bytes": 82770,
+          "nodes": 14,
+          "sha256": "8cbfed25df658ffa75d42849cd8eb640572984ea3ecb7c5e6202e8f79c54428e",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-Kd9h-x.b1485.c.json"
+        },
+        "river-Kd9h-x.b743.c": {
+          "bytes": 85959,
+          "nodes": 15,
+          "sha256": "239d959a0bb8a9313e6e59cd35fba39e392f4e0cad138d29bf934cfb7d7a0383",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-Kd9h-x.b743.c.json"
+        },
+        "river-Kd9h-x.x": {
+          "bytes": 106499,
+          "nodes": 19,
+          "sha256": "decbc866c35e7c77a0cb5a8948de5fd92bdcf8ea7e74dc42c283d36fc9888b89",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/river-Kd9h-x.x.json"
+        },
+        "turn-2c": {
+          "bytes": 205578,
+          "nodes": 25,
+          "sha256": "e6620a1bb73a7ad239828e866b4b428e364d489734dbbb3c21b6eff420144813",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-2c.json"
+        },
+        "turn-3d": {
+          "bytes": 212135,
+          "nodes": 25,
+          "sha256": "2910eebff6456c4e059d1782303fb1f72143a0132591c95af53c64b5cbca41ee",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-3d.json"
+        },
+        "turn-4s": {
+          "bytes": 211498,
+          "nodes": 25,
+          "sha256": "af87cf27a4b5f373b8c98ab851e8318bc2c815a9a5def93b88d1d6fb982f9a21",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-4s.json"
+        },
+        "turn-7h": {
+          "bytes": 208923,
+          "nodes": 25,
+          "sha256": "78d0bf6d9e87247e4f439f4bb1f05d91768fd7423070ba39d707e05155748473",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-7h.json"
+        },
+        "turn-8c": {
+          "bytes": 197207,
+          "nodes": 25,
+          "sha256": "e705ae97ac0b0db974fb171b1f6bf19f5369ec14c167bc3cfebd3a5c4ecec043",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-8c.json"
+        },
+        "turn-Ac": {
+          "bytes": 178865,
+          "nodes": 25,
+          "sha256": "1d020475927588a225002a6c90c6d5e5d704832c7348de2a64049b98330bde5c",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-Ac.json"
+        },
+        "turn-Kd": {
+          "bytes": 193832,
+          "nodes": 25,
+          "sha256": "fdf86e2fa5f9af7eded07965b2b758bf02b18e4ed1d057f9e98e1a727cfb13ec",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-Kd.json"
+        },
+        "turn-Th": {
+          "bytes": 198206,
+          "nodes": 25,
+          "sha256": "a0498c29d77d1110a0bdefd635f2e20d469d988c63e9a51f7a188c06cbafd528",
+          "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/turn-Th.json"
+        }
+      },
+      "descriptor": {
+        "broadwayCards": 0,
+        "cards": [
+          "7c",
+          "6c",
+          "5d"
+        ],
+        "gaps": [
+          1,
+          1
+        ],
+        "highRank": "7",
+        "pairing": "unpaired",
+        "ranks": [
+          "7",
+          "6",
+          "5"
+        ],
+        "straightPossible": true,
+        "suitPattern": "two-tone",
+        "texture": "low wet two-tone"
+      },
+      "engine": {
+        "precision": "float32",
+        "threads": 8
+      },
+      "exploitability": {
+        "chips": 6.6821594,
+        "pctPot": 0.29698486328125
+      },
+      "flop": [
+        "7c",
+        "6c",
+        "5d"
+      ],
+      "id": "btn-bb-3bp-v1-7c6c5d",
+      "iterations": 180,
+      "peakRssBytes": 544636928,
+      "riverBoards": [
+        [
+          "Kd",
+          "9h"
+        ],
+        [
+          "2c",
+          "Js"
+        ]
+      ],
+      "root": {
+        "bytes": 15342,
+        "sha256": "4676d87794db996a21c61614ce1caba541db2edfeaeb6d2349c45080b37249a4",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/root.json"
+      },
+      "slicePlanHash": "d93d024dbbbfb965e578c40c1c9934082277a617b5fd37860a66292f88be2c3c",
+      "solveMs": 14459,
+      "spot": {
+        "bytes": 11303,
+        "sha256": "f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100",
+        "url": "/solver-data/bridge-formations-v1/btn-bb-3bp-v1/btn-bb-3bp-v1-7c6c5d/f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100/spot.json"
+      },
+      "spotHash": "f21d95c5b4859f097f464bbc480e1ca3aa894b92998c7424f835f27f9b884100",
+      "texture": "low wet two-tone",
+      "turnCards": [
+        "Ac",
+        "8c",
+        "4s",
+        "Kd",
+        "7h",
+        "3d",
+        "Th",
+        "2c"
+      ],
+      "value": [
+        -341.9731236543359,
+        341.973085977766
+      ]
+    }
+  ],
+  "totals": {
+    "files": 253,
+    "gzipBytes": 7416975,
+    "rawBytes": 27442733
+  },
+  "verification": {
+    "observations": "fresh-reproduction",
+    "originalReproductionRecordHash": "5bf7bf86312ae9d48ce6fdf3ba238c6836347f66f900dc68bae9bc3432d5cafc",
+    "revision": 2,
+    "sourceHashes": {
+      "scripts/audit-formation-release.ts": "ed821dfcb28109794c5455599ad13190f83e1c456573f8367ce1eeb8a43a3dc7",
+      "scripts/reproduce-formation-libraries.ts": "1669edfb8586772505f5bc9e26b5ae07c24040a3dc9707122b8eca32c7fa5222",
+      "tasks/artifacts/formation-libraries-v1/reproduction-v2/contract.md": "8bbfd4bc9379e77f80b217388a5ddcf80054af219ce77ca96755ed95e66d1269"
+    }
+  },
+  "version": 1
+}

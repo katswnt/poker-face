@@ -1,9 +1,25 @@
 {
+  "compression": {
+    "algorithm": "gzip",
+    "header": {
+      "os": 255,
+      "text": false,
+      "time": 0
+    },
+    "level": 9,
+    "memLevel": 8,
+    "packageIntegrity": "sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==",
+    "packageName": "pako",
+    "packageVersion": "2.1.0",
+    "strategy": 0,
+    "windowBits": 15
+  },
   "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
   "format": "poker-face-formation-library",
   "formation": "sb-bb-srp-v1",
   "generationRecordHash": "f3ce16febc3894af832190f6366412632c3a3399c668ffa48f6e665be98454ad",
-  "payloadHash": "732787bc05777d2eba9eebcc167eb14024bd876099db05fa43f14aa0deac549b",
+  "payloadHash": "ed69f5617302b2c234f94c614ffdba85fa6b76def67a61960406b54aff4b8df4",
+  "previousPublicationManifestHash": "f1aae3dffb9a93ed08e22530883cde4cbf81c2bc5dd42bb2b558b9e36cc0931c",
   "provenance": {
     "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
     "engineLicense": "AGPL-3.0",
@@ -11,11 +27,12 @@
     "ranges": "Hand-written teaching approximations, not solved preflop ranges. No preflop-v1/v2 promotion."
   },
   "publication": {
-    "revision": 3,
+    "revision": 5,
     "sourceHashes": {
-      "scripts/publish-formation-libraries.ts": "742562c343917e9e96cdd97edd22beb76dede8f7d8504d60739f87c9d1daaeaf",
-      "src/lib/solver/bridge/formations/publication.ts": "9b4194b3045cd353b08d030e9f3ae2c88af9406e8334ae033725b24157d99fc7",
-      "tasks/artifacts/formation-libraries-v1/publication-v3/contract.md": "2a5af24cb70340e43bdb433f46eae1b6d9c0d421843773ffc7da556047015a25"
+      "scripts/publish-portable-formations.ts": "f90be8bf8d6b6021fecec519568868ed7af6cf829ca995b518f1b25f38bfd4e9",
+      "src/lib/solver/bridge/formations/portable-compression.ts": "606031e3a206e7b468e473890f22b4808119fe959c130878fdfe5014a1453178",
+      "src/lib/solver/bridge/formations/portable-publication.ts": "ee46e64b73448808de190b9c0a6e278899f58e92a1a66d13180f940787085226",
+      "tasks/artifacts/formation-libraries-v1/compression-v5/contract.md": "ce46ed8c914706f9d0e31dbec3a401d49be9023a352d57c881b1256f7b840854"
     }
   },
   "quantization": {

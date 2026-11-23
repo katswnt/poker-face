@@ -640,6 +640,8 @@ their respective river pots. These are conditional local measurements, not a gua
 for every later node. See the [inputs, costs, failures and reproduction record](tasks/formation-libraries-v1-spec.md).
 Run `npm run audit:bridge:formations` without Rust to verify all published bytes, saved-node
 invariants, source identities and river grades. This does not repeat the large native solves.
+Compressed-size accounting uses a pinned JavaScript compressor so Mac and Linux reproduce
+the same numbers; the original host-compressor CI failure is preserved in the release record.
 `npm run reproduce:bridge:formations` replays existing evidence without re-solving; the
 [reproduction recipe](tasks/formation-libraries-v1-spec.md#commands-and-reproduction-semantics)
 explains how to run a separate fresh experiment without overwriting the release.

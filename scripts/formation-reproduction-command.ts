@@ -91,7 +91,7 @@ async function main() {
     const outcome = await child("scripts/reproduce-formation-libraries.ts", ["--reproduce"], log);
     writeFileSync(`${log}.exit.json`, prettyJson(outcome), { flag: "wx" }); return outcome;
   }, publish: async () => {
-    archiveUnpublishedLegacyManifests(); const outcome = await child("scripts/publish-formation-libraries.ts", ["--publish"]);
+    archiveUnpublishedLegacyManifests(); const outcome = await child("scripts/publish-portable-formations.ts", ["--publish"]);
     assert.equal(outcome.signal, null); assert.equal(outcome.code, 0, "current publication audit failed");
   } });
 }

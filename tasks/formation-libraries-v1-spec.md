@@ -250,12 +250,12 @@ report still governs publication and is not used as the corrected release audit.
 All **24/24 eligible roots** freshly reproduce the original 506 data files byte for byte,
 with identical iteration counts. Corrected reproduction record:
 `7d9bf496eb4e64214b4c2a31027ec9d302e2a21a8a5686e9b53b850e001701d5`.
-The two manifests make **508 files / 123,480,903 raw bytes** including manifests.
+The two manifests make **508 files / 123,482,163 raw bytes** including the portable-compression v5 manifests.
 
 | Pack | Reproduction wall ms | Iterations | Max native gap (% starting pot) | Max native RSS bytes | Raw bytes incl. manifest | Gzip bytes incl. manifest |
 | --- | --- | --- | --- | --- | --- | --- |
-| SB–BB | 2,894,826.589374 | 140–210 | 0.2992648363113403 | 9,457,942,528 | 95,929,667 | 24,070,109 |
-| BTN–BB 3BP | 160,073.550708 | 110–180 | 0.29698486328125 | 897,384,448 | 27,551,236 | 7,436,459 |
+| SB–BB | 2,894,826.589374 | 140–210 | 0.2992648363113403 | 9,457,942,528 | 95,930,297 | 24,070,489 |
+| BTN–BB 3BP | 160,073.550708 | 110–180 | 0.29698486328125 | 897,384,448 | 27,551,866 | 7,436,832 |
 
 The complete experiment charges **6,927,635.488289 ms / 115.460591 minutes** of native
 work, including generation, the two original false-negative attempts and corrected
@@ -329,3 +329,28 @@ six public engine/source files byte for byte against the retained clean `de7f0d6
 plus source links/build identity on `/play` and `/solver/live` and the visible 23.4% warning.
 No deployment occurred. Build `a34c636fd90da5bcef285d97ce3af961b4550e7e78f77960357056982d2fdb4a`;
 AGPL archive `268ec4566f9caecf08cd1411f98d71666050ecf784fed91c4a05bff957a8238f`.
+
+
+### Hosted compression failure and portable correction
+
+The first release's [CI run 45092458537](https://github.com/katswnt/poker-face/actions/runs/45092458537)
+passed seven jobs, including the native bridge and all five multiplayer audits. Its main
+job failed exact gzip accounting: Linux compressed the unchanged 95,821,613 SB–BB data
+bytes to 23,929,879 bytes, while the Mac's zlib 1.2.12 observation was 24,050,604. Raw file
+hashes and numerical checks did not change. This is preserved in the
+[v5 compression record](formation-compression-v5-spec.md); do not report that run as green.
+
+The current publisher/auditor uses pinned **pako 2.1.0** with a fixed gzip header/options,
+independent of host zlib. Exact compressed-size comparison and the 40-MiB budget remain.
+Both data-file totals equal the original Mac measurements; the two manifests grow by
+1,260 raw bytes total to bind the profile and current publication sources. They total
+**31,507,321 gzip bytes** including manifests. Original v3 manifests are retained verbatim
+under `tasks/artifacts/formation-libraries-v1/compression-v5/original-manifests/`.
+All 506 original data files, native observations and frozen v1/v2/v3 sources are unchanged.
+The current entry points use `publish-portable-formations.ts`; the v3 script remains
+historical source. A fail-first migration check permits only the two exact archived prior
+manifests; normal publication refuses any unknown overwrite.
+
+The command-only commit `62030ce` separately passed 1,174/1,174 isolated tests, zero skips,
+tsc/lint, all 22 audits and build, with unchanged diagnosis. It is followed by the portable
+compression correction before another push; it is not described as having passed hosted CI.

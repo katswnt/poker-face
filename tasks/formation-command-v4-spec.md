@@ -32,3 +32,9 @@ command against the checked-in release exits successfully, states that no fresh 
 solve occurred, and rechecks all 24 roots / 508 files / 123,480,903 raw bytes. No data,
 manifest, native source or original attempt/observation file changes. The previous native
 charge stays 6,927,635.488289 ms. Exact-commit/full-suite/CI verification follows.
+
+
+The [v5 compression correction](formation-compression-v5-spec.md) subsequently points this
+orchestrator at the portable publisher. Existing-report/no-native and cancellation rules
+remain unchanged. The v5 publisher has a narrowly scoped, hash-checked migration for the
+two archived v3 manifests; it never replaces strategy files or observation records.

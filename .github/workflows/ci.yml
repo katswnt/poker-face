@@ -19,6 +19,9 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Audit frozen formation coverage, bytes and independent referees
+        run: npm run audit:bridge:formations
+
       - name: Lint
         run: npm run lint
 
@@ -92,9 +95,6 @@ jobs:
 
       - name: Reproduce tiny preflop reference and verify frozen native research evidence
         run: npm run audit:preflop:v2:research
-
-      - name: Audit frozen formation coverage, bytes and independent referees
-        run: npm run audit:bridge:formations
 
       - name: Audit configurable river v3 artifact
         run: npm run audit:river:v3

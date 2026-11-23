@@ -1,0 +1,19 @@
+{
+  "commit": "ed097e2ceaa6c610f06fc8bd2872137ca11396bf",
+  "run": 45092458537,
+  "job": 137424856829,
+  "failedStep": "Audit frozen formation coverage, bytes and independent referees",
+  "actual": {
+    "files": 253,
+    "rawBytes": 95821613,
+    "gzipBytes": 23929879
+  },
+  "recorded": {
+    "files": 253,
+    "rawBytes": 95821613,
+    "gzipBytes": 24050604
+  },
+  "otherJobsPassed": 7,
+  "rawHashesChanged": false,
+  "numericalDiscrepancyReported": false
+}
