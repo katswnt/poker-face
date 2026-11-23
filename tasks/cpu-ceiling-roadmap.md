@@ -28,7 +28,12 @@ then finds a full-tree best-response error in pinned `mccfr` 1.2.0: a 0.40017-ch
 disagreement on the unchanged river fixture, diagnosed with an exhaustive five-state
 witness. Training and dependent turn/river work are blocked before attempting them.
 This does not invalidate our existing multiway artifacts or establish a convergence
-failure in the external trainer. The working rules below remain binding.
+failure in the external trainer. R0 evidence ships as `868d5bf`, with exact 1,180/1,180
+unit tests and all eight CI 45102016387 jobs green. One Firefox setup timeout passed
+on retry and is recorded alongside five successful unchanged local repetitions.
+The [closing handoff](codex-handoff-2026-11-22.md) lists shipped commits, open gates and
+untouched local work. The research program remains incomplete at these measured gates;
+the working rules below remain binding.
 
 ## What "the CPU ceiling" means
 

@@ -83,8 +83,9 @@ Later milestone ownership must be declared in its contract before implementation
 Safeguard: `build/cpu-finish-2026-11-22/` holds the starting HEAD/status, protected hashes
 and copies, the trainer README patch and current checkpoint. Step 10 was verified in the
 clean, copied-dependency checkout `/private/tmp/poker-pf10-exact-jhxtywnl`, subsequently retired after step 11 was preserved and independently verified.
-The current copied-dependency candidate is `/private/tmp/poker-pf11-exact-w6hr9eah`. Its redundant predecessor was retired only after all source matched the
-verified commit. Preserve
+The later copied-dependency R0 checkout is `/private/tmp/poker-r0-exact-4tdgtvjb`;
+the old pf11 candidate was retired after all committed source and 177 native evidence/cache
+files were safeguarded. See the [closing handoff](codex-handoff-2026-11-22.md). Preserve
 `/private/tmp/poker-h1-fixed-90bavjbh` as the exact deployed build until a verified successor.
 
 ## Progress
@@ -93,11 +94,14 @@ verified commit. Preserve
 - [x] Step 11 tiny reference and necessary coverage-failure evidence landed, CI green.
   The full-deck candidate was not fitted or validated.
 - [ ] Step 12 PF4 shipped **only if** step 11 passes; otherwise record the blocking evidence.
+- [x] Step 12 blocking evidence recorded; PF4 remains unshipped and its ranges unpromoted.
 - [x] Step 13 two complete formation packs landed, exact checks and all eight CI jobs green;
   CO–BTN withheld after its numerical audit failure. No app change/deployment.
 - [x] Step 14 R0 measured: full-tree scorer prerequisite fails. Training and follow-on
-  turn/river work blocked; evidence release verification remains pending below.
-- [ ] Closing documentation/handoff and all required release checks complete.
+  turn/river work blocked; evidence release verified and all eight CI jobs green.
+- [x] Closing documentation/handoff records the verified milestone commits, measured
+  failures and untouched work. The closing documentation commit follows the same
+  exact-checkout and hosted-CI release procedure; its final result is reported with the handoff.
 
 
 Step-11 measurement: [research record](preflop-v2-research.md). The tiny reference and
@@ -118,4 +122,7 @@ Step 14: [R0 record](robopoker-r0-spec.md). The pinned upstream full-tree score 
 from our checker by 0.400170643 chips on the unchanged weighted river fixture. A separate
 exhaustive witness proves its routine chooses against the player's later average policy,
 not an optimized continuation. The ≤1e-6 gate fails; no training, convergence assessment
-or turn/river expansion is claimed. Preserve the failure and finish release documentation.
+or turn/river expansion is claimed. `868d5bf` passes exact 1,180/1,180 units, three Rust
+tests, fresh R0 replay, tsc/lint, 24 audits/build and all eight CI 45102016387 jobs.
+One Firefox hand-setup timeout passes on retry; five unchanged local repetitions pass
+without retries. Its cause remains unconfirmed and is preserved in the closing handoff.

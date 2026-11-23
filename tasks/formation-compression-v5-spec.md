@@ -61,3 +61,13 @@ All five compression/command boundary tests pass under Node 20, with zero skips.
 All seventeen focused formation tests pass with zero skips, including native slice/export
 regressions. Full type-checking and lint pass. The existing CI formation audit is moved
 earlier in the main job; no check is removed or skipped. Exact-commit checks follow.
+
+## Release closure
+
+Portable correction `4a87f9a5ef090fce604064d91e50e9693bb8f012` passed exact isolated
+verification with real copied dependencies: 1,176/1,176 tests, zero skips, tsc/lint,
+22 audits, the separate Node 20 complete audit, unchanged diagnosis and production build.
+The actual public reproduction command replays existing evidence successfully and leaves
+the checkout clean. All eight jobs in [CI 45096583659](https://github.com/katswnt/poker-face/actions/runs/45096583659)
+passed before R0 began. Linux now agrees with the portable byte accounting. The original
+failed host-zlib CI and its observations remain preserved, not rewritten as a pass.

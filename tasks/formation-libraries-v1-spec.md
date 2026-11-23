@@ -116,7 +116,7 @@ failures instead of silently shrinking the frozen game.
 - [x] All preflights; complete per-formation solve gates or recorded independent failure.
 - [x] Publish only complete accepted coverage; byte/hash/quantization/referee audits.
 - [x] Fresh native reproduction for all published roots within original budgets.
-- [ ] Exact isolated commit, copied dependencies, full tests/tsc/lint/relevant audits/build;
+- [x] Exact isolated commit, copied dependencies, full tests/tsc/lint/relevant audits/build;
   explicit files/README hunks; push and every CI job green.
 
 ### Frozen identity and preflight observations

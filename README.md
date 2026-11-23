@@ -33,6 +33,14 @@ includes E1 live action values, and adds completed-hand review. All eight CI job
 103 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 Production continues to use guarded, explicit releases.
 
+**Repository research update (2026-11-22).** Two additional offline formation packs
+now contain 24 audited, freshly reproduced flop roots. Three research gates remain
+closed: complete preflop validation exceeded its frozen compute budget; CO–BTN exports
+failed a saved-value check; and pinned `mccfr` 1.2.0 failed an independently verified
+best-response prerequisite. No new preflop ranges or multiway engine were promoted into
+play. The [CPU continuation handoff](tasks/codex-handoff-2026-11-22.md) records commits,
+measured results, reproduction commands and the remaining work.
+
 | Experience | What is implemented | Important boundary |
 |---|---|---|
 | `/` — hold'em trainer | Observe or practice four-player hands, with worker-backed equity and price explanations | Heuristic strategy; exact heads-up river equity, sampled equity elsewhere; not an equilibrium solver |

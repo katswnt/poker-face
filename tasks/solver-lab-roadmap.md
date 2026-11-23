@@ -11,7 +11,10 @@ The continuation has now measured the preflop validation capacity failure (PF4 r
 blocked), published two complete offline formation packs while withholding CO–BTN, and
 found a pinned external MCCFR best-response prerequisite failure. See the
 [formation](formation-libraries-v1-spec.md) and [R0](robopoker-r0-spec.md) records.
-R0 training and dependent three-player turn/river work remain unattempted.
+R0 training and dependent three-player turn/river work remain unattempted. Its evidence
+release passes exact checks and all eight CI jobs. The [CPU continuation handoff](codex-handoff-2026-11-22.md)
+is the current repository research status; the November 21 handoff remains the deployed
+product release record. A Firefox hand-setup timeout passed on retry and is documented.
 
 The September status and recommendations below are historical design records, superseded
 for current completion by that handoff and the CPU roadmap's dated continuation records.

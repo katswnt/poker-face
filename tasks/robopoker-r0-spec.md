@@ -63,11 +63,11 @@ artifacts, native/WASM bridge, app and protected WIP remain unchanged.
 
 - [x] Pinned dependency/API/licence and lockfile recorded.
 - [x] Complete fixture identity, weighted measure and topology checks pass.
-- [ ] Full-tree scorer prerequisites pass (otherwise record failure and block training).
+- [ ] Full-tree scorer prerequisites pass — **failed**, with the evidence below; training blocked.
 - [ ] Both trained variants meet every original R0 gate; no Nash claim for 3+ players.
 - [ ] Tiny turn/river follow-on contract/work, **only if R0 passes**.
-- [ ] Exact isolated commit: full units, tsc, lint, relevant audits/build; push, all CI green.
-- [ ] Measured outcome and open gates in closing handoff.
+- [x] Exact isolated commit: full units, tsc, lint, relevant audits/build; push, all CI green.
+- [x] Measured outcome and open gates in [closing handoff](codex-handoff-2026-11-22.md).
 
 ## Measured outcome: prerequisite fails; dependent work blocked
 
@@ -161,5 +161,33 @@ existing evidence. The actual evidence command is frozen in its own source hash.
 
 ### Release verification
 
-Pending exact-commit verification and hosted CI; fill measured results after they run.
-No production app or WASM change; production remains the separately verified `de7f0d6`.
+Commit `868d5bf6d20a9894fa42d6f2c6f3ad621e5d7260`, pushed to origin/main after exact
+verification in `/private/tmp/poker-r0-exact-4tdgtvjb` with real copied dependencies:
+**1,180/1,180 units**, zero skips, 144,669.875333 ms; three Rust tests, fresh native
+numerical replay, tsc, lint, 24 audits, a separate Node 20 formation audit, unchanged
+preflop diagnosis and production build all pass. The timed warm Cargo build takes
+0.14 seconds, 66,519,040 peak RSS bytes; this is not a clean dependency-build benchmark.
+Fresh exact-checkout river grades take 69.488375 / 54.7795 ms with peak RSS
+11,550,720 / 11,583,488 bytes and identical numerical results.
+
+All eight jobs in [CI 45102016387](https://github.com/katswnt/poker-face/actions/runs/45102016387)
+are green. Main CI: 1,180 tests, 1,087 passes and 93 existing binary-environment skips,
+zero failures; 721,058.985745 ms. Separate binary jobs run their native/WASM checks.
+Main browser smoke: 104 pass, 17 existing saved-only skips. R0's Linux job passes all
+three Rust tests and exactly reproduces both full-tree numerical failures. River timing
+31.768753 / 36.004918 ms, peak process RSS 21,856,256 / 22,949,888 bytes. The initial
+Linux release compilation takes 45.11 seconds, plus 1.03 seconds for the CLI build;
+compile time is excluded from the prerequisite execution budget.
+
+WASM/browser CI: 34 live and 48 drill checks pass; play/review has 54 immediate passes
+and **one Firefox test passing on retry**, with four existing zoom skips across suites.
+The retry is the hand-setup `Hand complete` five-second wait in
+`e2e/play-review.spec.ts:102`, before its review assertions. Five unchanged focused Firefox
+repetitions on this exact commit then pass with zero retries (29.6 seconds total).
+The initial local attempt refused to build without prepared live assets; no browser test
+ran. Normal source/hash-verified preparation, the prepared production build and all five
+repetitions then passed. No timeout/assertion/source changes. The CI cause remains
+unconfirmed; do not describe the intermittent timeout as fixed or omit the first attempt.
+
+No production app or WASM source change or deployment. Public production still matches
+the retained exact `de7f0d6` build/source archive at `2026-11-23T02:45:55.868Z`.
