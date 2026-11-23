@@ -119,7 +119,7 @@
     "audit:preflop:v2:research": "node --import tsx scripts/audit-preflop-v2-research.ts --check",
     "build:bridge:formations": "node --import tsx scripts/build-formation-libraries.ts",
     "audit:bridge:formations": "node --import tsx scripts/publish-formation-libraries.ts --check",
-    "reproduce:bridge:formations": "node --import tsx scripts/reproduce-formation-libraries.ts --reproduce",
+    "reproduce:bridge:formations": "node --import tsx scripts/formation-reproduction-command.ts",
     "publish:bridge:formations": "node --import tsx scripts/publish-formation-libraries.ts --publish"
   },
   "dependencies": {

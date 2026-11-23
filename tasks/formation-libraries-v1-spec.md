@@ -216,7 +216,7 @@ files and the frozen contracts/inputs. In that separate checkout only, move the 
 `reproduction-v2/environment.json`, `reproduction-v2/reproduce.json` and published formation
 directory into an ignored reference directory; start with no
 `build/formation-reproduction-v2/` attempts or staged data. Run
-`npm run reproduce:bridge:formations`, then `npm run audit:bridge:formations`. The controller
+`npm run reproduce:bridge:formations`, then `npm run audit:bridge:formations`. The frozen native controller
 refuses a different native binary or source identity and compares all fresh bytes and
 iteration counts directly to the original generation record. It does not require the
 large original native-result cache. New timing/RSS/environment/report hashes are expected;
@@ -288,14 +288,16 @@ Current commands:
 ```sh
 npm run audit:bridge:formations        # all published evidence, files, nodes and referees
 npm run publish:bridge:formations      # package existing accepted observations; no solving
-npm run reproduce:bridge:formations    # frozen v2 native replay; see caveat below
+npm run reproduce:bridge:formations    # current replay/fresh orchestration; see semantics below
 ```
 
-The historical v2 command's publication phase retains the reporting defect; a fresh
-independent verification should finish its native phase, retain its failed publication
-manifest, remove only that unshipped staged manifest, then use the v3 packaging command.
-With a committed v3 manifest already present, do not use v2 as a packaging/resume command:
-it correctly refuses the different manifest. Read-only verification uses the current audit.
+The historical v2 script's publication phase retains the reporting defect. The
+[current command](formation-command-v4-spec.md) handles this without manual file edits:
+existing evidence goes directly to the strict current publisher; a fresh experiment runs
+the frozen native controller once, preserves its log/exit outcome, archives only a verified
+unpublished legacy manifest and then invokes the current publisher. Cancellation or missing
+evidence stops immediately. Published files and observations are never overwritten. The
+command explicitly labels replaying existing evidence as an audit, not a new native solve.
 The original negative CO–BTN result remains unchanged. The duplication of the frozen
 historical auditor/controller is deliberate evidence preservation, not two interchangeable
 current release paths. Original source-bound observations must remain reproducible.
@@ -308,3 +310,22 @@ Twelve focused tests pass with zero skips, including both native exporter regres
 type-checking and lint pass. An initial sandboxed focused run could not spawn the RSS
 sampler (`EPERM`); the same tests pass with the required process access. No assertion or
 numerical gate was changed for that environment limitation.
+
+### Exact-commit verification
+
+Committed as `ed097e2ceaa6c610f06fc8bd2872137ca11396bf`, with 541 explicitly staged files
+and only the owned README hunks. All sixteen protected non-README file hashes and the
+original trainer README changes remain unchanged. Fresh checkout
+`/private/tmp/poker-pf13-exact-0li1x_f9` uses copied node_modules, not a dependency symlink.
+The exact commit passes **1,171/1,171 tests**, zero skips, in 145,613.920583 ms; tsc, lint,
+22 relevant audits and the production build pass. The unchanged preflop diagnosis SHA-256
+is `d95b71e978f0c98650fe4583182d8ed99a2406060d0065a51b94590e96cc508d`.
+The verification script confirms the checkout remains clean. Logs are under the primary
+repository's ignored `build/cpu-finish-2026-11-22/step13-exact/` directory.
+Pushed to origin/main; hosted CI must finish before step 14 starts.
+
+A read-only production recheck at 2026-11-23 01:09:09 UTC (November 22 local) verifies all
+six public engine/source files byte for byte against the retained clean `de7f0d6` release,
+plus source links/build identity on `/play` and `/solver/live` and the visible 23.4% warning.
+No deployment occurred. Build `a34c636fd90da5bcef285d97ce3af961b4550e7e78f77960357056982d2fdb4a`;
+AGPL archive `268ec4566f9caecf08cd1411f98d71666050ecf784fed91c4a05bff957a8238f`.

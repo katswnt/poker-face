@@ -102,3 +102,11 @@ a float32 reporting-conversion defect; the separately documented
 Its original sources, report and rejected manifest remain frozen. Use the current
 `audit:bridge:formations` for read-only verification; this v2 command is historical native
 execution, not the current packaging command.
+
+
+The [current command wrapper](formation-command-v4-spec.md) now orchestrates the frozen
+native script and the current publisher. `npm run reproduce:bridge:formations` succeeds
+against existing release evidence without a fresh solve, and explicitly says so. Fresh
+experiments retain native exit/log evidence, archive only a verified unpublished legacy
+manifest, then pass the same strict current publication audit. Direct calls to this frozen
+v2 script remain historical; its source identity and observations are unchanged.

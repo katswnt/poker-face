@@ -39,3 +39,8 @@ limits and release verification. Native source, WASM and all original observatio
 hashes are unchanged. This record's prospective version is retained under
 `tasks/artifacts/formation-libraries-v1/publication-v3/contract.md`; the rejected original
 manifest is retained beside it. New manifests bind the new publication sources separately.
+
+
+The [current orchestration entry point](formation-command-v4-spec.md) connects the preserved
+native script to this publisher and removes the need for manual staged-manifest cleanup.
+The v3 publisher and audited data remain byte-identical to `ed097e2`.
