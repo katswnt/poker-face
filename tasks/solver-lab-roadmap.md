@@ -6,7 +6,12 @@ review have shipped. Production is the source-verified `de7f0d6` H1 release. Pre
 PF0–PF3 remains research-only; PF4 is gated. Physical-device checks remain unmeasured.
 The current work is CPU roadmap steps 10–14, beginning with the
 [prospective preflop validation contract](preflop-validation-v2-spec.md). See the
-[completion plan](cpu-ceiling-completion-plan.md) and [latest release handoff](codex-handoff-2026-11-21.md).
+[completion plan](cpu-ceiling-completion-plan.md) and [latest deployed release handoff](codex-handoff-2026-11-21.md).
+The continuation has now measured the preflop validation capacity failure (PF4 remains
+blocked), published two complete offline formation packs while withholding CO–BTN, and
+found a pinned external MCCFR best-response prerequisite failure. See the
+[formation](formation-libraries-v1-spec.md) and [R0](robopoker-r0-spec.md) records.
+R0 training and dependent three-player turn/river work remain unattempted.
 
 The September status and recommendations below are historical design records, superseded
 for current completion by that handoff and the CPU roadmap's dated continuation records.

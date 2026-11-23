@@ -354,3 +354,22 @@ manifests; normal publication refuses any unknown overwrite.
 The command-only commit `62030ce` separately passed 1,174/1,174 isolated tests, zero skips,
 tsc/lint, all 22 audits and build, with unchanged diagnosis. It is followed by the portable
 compression correction before another push; it is not described as having passed hosted CI.
+
+
+### Final fix-forward exact-commit verification
+
+The command correction is `62030ce24b1ea42c987f33a74732367d0607bab7`; portable compression
+is `4a87f9a5ef090fce604064d91e50e9693bb8f012`. Both are pushed after the final commit passes
+in `/private/tmp/poker-pf13-compression-exact-lwmfd44f` with real copied dependencies:
+**1,176/1,176 tests**, zero skips, 146,706.469084 ms; tsc, lint, 22 audits and build pass.
+An additional complete audit under official Node 20.20.2 matches the Mac audit JSON byte
+for byte (`6da9282f25223852c00534c3ed328c06a46b1ed197acbc4a675177eca4aff8a5`).
+The actual public reproduction command also passes with that same audit output, explicitly
+reports replaying existing evidence, creates no native-attempt directory, and leaves the
+exact checkout clean. Preflop diagnosis remains byte-identical. The protected local work
+is unchanged. All eight jobs in [CI 45096583659](https://github.com/katswnt/poker-face/actions/runs/45096583659)
+are green before step 14 starts. The main job has 1,176 tests: 1,083 pass and 93 existing
+native-environment skips; exact local verification above has zero skips. Its browser
+suite has 104 passes and 17 existing saved-only skips. The WASM job separately passes
+34 live, 48 drill and 55 play/review checks (four existing non-Chromium zoom skips).
+The original failed CI is preserved above; the portable fix is verified on Linux too.

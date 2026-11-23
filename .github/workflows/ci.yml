@@ -299,3 +299,21 @@ jobs:
 
       - name: Run ${{ matrix.audit }}
         run: npm run ${{ matrix.audit }}
+
+      - uses: dtolnay/rust-toolchain@master
+        if: matrix.audit == 'audit:multiway-river'
+        with:
+          toolchain: 1.98.1
+          components: rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+        if: matrix.audit == 'audit:multiway-river'
+        with:
+          workspaces: native/robopoker-referee
+
+      - name: Reproduce pinned MCCFR prerequisite failure without promoting the engine
+        if: matrix.audit == 'audit:multiway-river'
+        run: |
+          cargo fmt --check --manifest-path native/robopoker-referee/Cargo.toml
+          cargo test --release --locked --manifest-path native/robopoker-referee/Cargo.toml
+          npm run reproduce:robopoker:r0

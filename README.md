@@ -138,6 +138,18 @@ river proofs, including separate raise, bet-size, and three-player side-pot expe
 Those proofs are not a general multiway solver or the strategy behind the trainer.
 See the [multiway plan and completed stages](tasks/multiway-nlhe-solver-plan.md).
 
+**External multiway engine check (CPU step 14).** Our offline adapter tests the MIT
+[`mccfr` 1.2.0 library](https://docs.rs/mccfr/1.2.0/mccfr/) by Kelechi Ukah against our
+unchanged three-player river game. Its full-tree score fails the independent agreement
+gate by **0.40017 chips**; a five-state exhaustive example proves that its best-response
+routine can miss a player's profitable sequence of decisions. This is a scorekeeper
+failure, not evidence that its training cannot converge. Training and the dependent
+turn/river experiment remain unattempted. The [R0 record](tasks/robopoker-r0-spec.md)
+preserves exact inputs, measurements and the diagnosis. `npm run audit:robopoker:r0`
+verifies that evidence; `npm run reproduce:robopoker:r0` rebuilds the pinned CLI and
+repeats both full-tree checks. A passing evidence audit confirms the rejection, not an
+accepted engine. [Upstream MIT notice](native/robopoker-referee/THIRD_PARTY_NOTICES).
+
 **Exact game evaluation does not mean an exact equilibrium strategy.** The river engine
 enumerates compatible hands and showdowns without Monte Carlo sampling. Saved-strategy
 values and legal best responses are evaluated across the complete finite game, subject

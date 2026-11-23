@@ -22,8 +22,13 @@ The necessary coverage gate failed; **step 12/PF4 stays blocked**. This does not
 the untested additive candidate. Step 11 shipped as `2877408`, with all eight CI jobs green.
 [Step 13](formation-libraries-v1-spec.md) now has two complete, freshly reproduced offline
 formation packs (24 roots); CO–BTN is withheld after a saved-value audit failure. These
-manual-range datasets do not change `/play` or open PF4. Exact-commit release checks and
-CI precede independent step 14. The working rules below remain binding.
+manual-range datasets do not change `/play` or open PF4. Its final portable publisher
+`4a87f9a` passes all eight jobs in CI 45096583659. Independent [step 14 R0](robopoker-r0-spec.md)
+then finds a full-tree best-response error in pinned `mccfr` 1.2.0: a 0.40017-chip score
+disagreement on the unchanged river fixture, diagnosed with an exhaustive five-state
+witness. Training and dependent turn/river work are blocked before attempting them.
+This does not invalidate our existing multiway artifacts or establish a convergence
+failure in the external trainer. The working rules below remain binding.
 
 ## What "the CPU ceiling" means
 

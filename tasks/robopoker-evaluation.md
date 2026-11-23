@@ -1,5 +1,12 @@
 # robopoker evaluation — foundation for any-table-size play? (2026-09-25)
 
+**2026-11-22 executed follow-up:** [R0 prerequisite audit](robopoker-r0-spec.md) uses
+the actual crates.io 1.2.0 source at `72360adc7fbc6afa4119be3aefcc0e990d3789a7`, not the
+reviewed commit below. Its defaults include `server` and telemetry dependencies. Its
+unchanged full-tree best-response routine fails our checker; a five-state exhaustive
+witness identifies the sequential-optimization defect. No training or dependent turn/river
+experiment was attempted. The historical recommendation below is not an acceptance record.
+
 Read-only review of [krukah/robopoker](https://github.com/krukah/robopoker) (MIT, Rust,
 223 stars) at commit **`0849bfe89a338931c344be2035e00185093b38d2`** (2026-09-10). Read
 through `gh api`; nothing was cloned, built, or run. Paths below are relative to that repo.

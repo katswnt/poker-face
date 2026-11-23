@@ -93,8 +93,10 @@ verified commit. Preserve
 - [x] Step 11 tiny reference and necessary coverage-failure evidence landed, CI green.
   The full-deck candidate was not fitted or validated.
 - [ ] Step 12 PF4 shipped **only if** step 11 passes; otherwise record the blocking evidence.
-- [ ] Step 13 independently gated formation coverage landed and any UI release verified.
-- [ ] Step 14 R0 measured; follow-on work only if its frozen gate passes.
+- [x] Step 13 two complete formation packs landed, exact checks and all eight CI jobs green;
+  CO–BTN withheld after its numerical audit failure. No app change/deployment.
+- [x] Step 14 R0 measured: full-tree scorer prerequisite fails. Training and follow-on
+  turn/river work blocked; evidence release verification remains pending below.
 - [ ] Closing documentation/handoff and all required release checks complete.
 
 
@@ -109,4 +111,11 @@ SB–BB and BTN–BB 3BP have 12/12 complete roots each, freshly byte-identical 
 CO–BTN is blocked by a saved opponent-value inconsistency, with six unattempted roots and
 no partial publication. Total native work including failed attempts: 115.460591 minutes.
 A corrected byte comparator and exact float32 reporting conversion preserve all original
-sources/observations. No app deployment or PF4 promotion. Exact checks and CI precede R0.
+sources/observations. No app deployment or PF4 promotion. Final `4a87f9a` passes exact
+1,176/1,176 units, tsc/lint, 22 audits/build and all eight CI 45096583659 jobs before R0.
+
+Step 14: [R0 record](robopoker-r0-spec.md). The pinned upstream full-tree score differs
+from our checker by 0.400170643 chips on the unchanged weighted river fixture. A separate
+exhaustive witness proves its routine chooses against the player's later average policy,
+not an optimized continuation. The ≤1e-6 gate fails; no training, convergence assessment
+or turn/river expansion is claimed. Preserve the failure and finish release documentation.

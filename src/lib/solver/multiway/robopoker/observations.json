@@ -1,0 +1,857 @@
+{
+  "version": 1,
+  "status": "blocked-upstream-best-response-prerequisite",
+  "observedAt": "2026-11-23T02:30:53.928Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "sources": {
+    "native/robopoker-referee/Cargo.toml": "a0f43ee331554317ce46d368156dd87e2c305e041efa126f70e38b4c44be91d6",
+    "native/robopoker-referee/Cargo.lock": "5dc04dc42787135546564e7122d52207da85aa2db3cf72276b4e642d1355b9aa",
+    "native/robopoker-referee/src/main.rs": "4dfabab6ca2839627f4198e10b7b8fa12d6ba14f6a4624087e9e40399928dbf2",
+    "native/robopoker-referee/THIRD_PARTY_NOTICES": "a2415455e96d570cb0de770a16ae4f69e5ce59cb7e991adb08cbf606f15b4388",
+    "src/lib/solver/multiway/robopoker/contract.ts": "8966d4e0410bdbf55884e74f233ec4057e963db19e402df5556c5c4940a0572d",
+    "src/lib/solver/multiway/robopoker/audit.ts": "e1ecf0e059d4d04c07559c79a7a3a671c374e09aa3b4516379841d5d37c8904e",
+    "src/lib/solver/multiway/fixture.ts": "4350f91d131c10b8c360f6b5263c17a9f01f7a121a1bf17d2bb89ab6e7710a99",
+    "src/lib/solver/multiway/river-game.ts": "858b700ada13d7d344397d21677f2438427917e5b97a7810c93ef33a358ce59e",
+    "src/lib/solver/multiway/game.ts": "ead9bff29886f303fc2b615b4da22c0f38edce1455d9936d3a048054ea217317",
+    "src/lib/solver/multiway/best-response.ts": "92228b31f3d3864cd28067d7ff3fe21fb88acb69b11d246e2f0eef8ef252dbfb",
+    "scripts/audit-robopoker-r0.ts": "ff6e9753ff5553067ef1deea65b29b2b2e4308b7564eafe2e74bd2efd741a48f"
+  },
+  "attempts": [
+    {
+      "id": "three-player-river-v1",
+      "compiledInputHash": "85f2256aaea691098018b61af6cc81a502cb399b41408631f39c13f2f5acbdd3",
+      "repeats": [
+        {
+          "observation": {
+            "bestResponses": [
+              30.42145538330078,
+              23.947956085205078,
+              -1.251596450805664
+            ],
+            "crateVersion": "1.2.0",
+            "elapsedMs": 79.020541,
+            "fixtureHash": "472c36794c2ed0d267df57ebe88e361d8e12b03c2d874a58c8e1a86a1b96112b",
+            "fullNodeCount": 58726,
+            "id": "three-player-river-v1",
+            "mode": "uniform-full-tree-prerequisite",
+            "peakRssBytes": 11599872,
+            "profile": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "score": 17.7059383392334,
+            "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+            "values": [
+              13.513330459594727,
+              3.2986111640930176,
+              -16.811941146850586
+            ],
+            "version": 1
+          },
+          "assessment": {
+            "independent": {
+              "values": [
+                13.513330140485307,
+                3.298611111111117,
+                -16.81194125159643
+              ],
+              "bestResponses": [
+                31.6219667943806,
+                23.947956577266922,
+                -1.2515964240102222
+              ],
+              "unilateralGains": [
+                18.108636653895296,
+                20.649345466155804,
+                15.560344827586208
+              ],
+              "nashConvPerPlayer": 18.106108982545766
+            },
+            "scoreDifference": 0.40017064331236796,
+            "bestResponseDifferences": [
+              1.2005114110798196,
+              4.920618437154189e-7,
+              2.6795441865345992e-8
+            ],
+            "maximumValueDifference": 3.1910941977741913e-7,
+            "fullTreeAgreementPassed": false,
+            "runtimePassed": true,
+            "memoryPassed": true,
+            "passed": false
+          }
+        },
+        {
+          "observation": {
+            "bestResponses": [
+              30.42145538330078,
+              23.947956085205078,
+              -1.251596450805664
+            ],
+            "crateVersion": "1.2.0",
+            "elapsedMs": 52.710167000000006,
+            "fixtureHash": "472c36794c2ed0d267df57ebe88e361d8e12b03c2d874a58c8e1a86a1b96112b",
+            "fullNodeCount": 58726,
+            "id": "three-player-river-v1",
+            "mode": "uniform-full-tree-prerequisite",
+            "peakRssBytes": 11583488,
+            "profile": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "score": 17.7059383392334,
+            "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+            "values": [
+              13.513330459594727,
+              3.2986111640930176,
+              -16.811941146850586
+            ],
+            "version": 1
+          },
+          "assessment": {
+            "independent": {
+              "values": [
+                13.513330140485307,
+                3.298611111111117,
+                -16.81194125159643
+              ],
+              "bestResponses": [
+                31.6219667943806,
+                23.947956577266922,
+                -1.2515964240102222
+              ],
+              "unilateralGains": [
+                18.108636653895296,
+                20.649345466155804,
+                15.560344827586208
+              ],
+              "nashConvPerPlayer": 18.106108982545766
+            },
+            "scoreDifference": 0.40017064331236796,
+            "bestResponseDifferences": [
+              1.2005114110798196,
+              4.920618437154189e-7,
+              2.6795441865345992e-8
+            ],
+            "maximumValueDifference": 3.1910941977741913e-7,
+            "fullTreeAgreementPassed": false,
+            "runtimePassed": true,
+            "memoryPassed": true,
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "r0-sequential-response-witness-v1",
+      "compiledInputHash": "17d0aa57cd3f0993ae05351ada582dd33f963131a8dcf62240a1aab5904a27eb",
+      "repeats": [
+        {
+          "observation": {
+            "bestResponses": [
+              1,
+              -0.25,
+              -0.25
+            ],
+            "crateVersion": "1.2.0",
+            "elapsedMs": 0.04975,
+            "fixtureHash": "7fc785a08f6a0ab89cb09f9b0db933c4a0e806a8e8410f884a4126e900bb551e",
+            "fullNodeCount": 5,
+            "id": "r0-sequential-response-witness-v1",
+            "mode": "uniform-full-tree-prerequisite",
+            "peakRssBytes": 1622016,
+            "profile": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "score": 0.1666666716337204,
+            "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+            "values": [
+              0.5,
+              -0.25,
+              -0.25
+            ],
+            "version": 1
+          },
+          "assessment": {
+            "independent": {
+              "values": [
+                0.5,
+                -0.25,
+                -0.25
+              ],
+              "bestResponses": [
+                10,
+                -0.25,
+                -0.25
+              ],
+              "unilateralGains": [
+                9.5,
+                0,
+                0
+              ],
+              "nashConvPerPlayer": 3.1666666666666665
+            },
+            "scoreDifference": 2.999999995032946,
+            "bestResponseDifferences": [
+              9,
+              0,
+              0
+            ],
+            "maximumValueDifference": 0,
+            "fullTreeAgreementPassed": false,
+            "runtimePassed": true,
+            "memoryPassed": true,
+            "passed": false
+          }
+        },
+        {
+          "observation": {
+            "bestResponses": [
+              1,
+              -0.25,
+              -0.25
+            ],
+            "crateVersion": "1.2.0",
+            "elapsedMs": 0.031292,
+            "fixtureHash": "7fc785a08f6a0ab89cb09f9b0db933c4a0e806a8e8410f884a4126e900bb551e",
+            "fullNodeCount": 5,
+            "id": "r0-sequential-response-witness-v1",
+            "mode": "uniform-full-tree-prerequisite",
+            "peakRssBytes": 1622016,
+            "profile": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "score": 0.1666666716337204,
+            "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+            "values": [
+              0.5,
+              -0.25,
+              -0.25
+            ],
+            "version": 1
+          },
+          "assessment": {
+            "independent": {
+              "values": [
+                0.5,
+                -0.25,
+                -0.25
+              ],
+              "bestResponses": [
+                10,
+                -0.25,
+                -0.25
+              ],
+              "unilateralGains": [
+                9.5,
+                0,
+                0
+              ],
+              "nashConvPerPlayer": 3.1666666666666665
+            },
+            "scoreDifference": 2.999999995032946,
+            "bestResponseDifferences": [
+              9,
+              0,
+              0
+            ],
+            "maximumValueDifference": 0,
+            "fullTreeAgreementPassed": false,
+            "runtimePassed": true,
+            "memoryPassed": true,
+            "passed": false
+          }
+        }
+      ]
+    }
+  ],
+  "trainingAttempted": false,
+  "turnRiverAttempted": false,
+  "payloadHash": "efd765146bc9b7e86f3799598d7c42abfb961fbe5582b6f84292cc1734a715e8"
+}
