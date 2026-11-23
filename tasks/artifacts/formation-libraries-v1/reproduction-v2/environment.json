@@ -1,0 +1,23 @@
+{
+  "binaryHash": "7cbe699d9b3197606a80a4c8500a37cfdd9685d309d5120ab5bc57a69d5226c0",
+  "identity": {
+    "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+    "originalEnvironmentHash": "5fbbc98644206bc5ad25ed8b17252c526b6b3bedd22f065319dd4d3345095847",
+    "originalGenerationHash": "f3ce16febc3894af832190f6366412632c3a3399c668ffa48f6e665be98454ad",
+    "originalReproductionHash": "5bf7bf86312ae9d48ce6fdf3ba238c6836347f66f900dc68bae9bc3432d5cafc",
+    "sourceHashes": {
+      "scripts/audit-formation-release.ts": "ed821dfcb28109794c5455599ad13190f83e1c456573f8367ce1eeb8a43a3dc7",
+      "scripts/reproduce-formation-libraries.ts": "1669edfb8586772505f5bc9e26b5ae07c24040a3dc9707122b8eca32c7fa5222",
+      "tasks/artifacts/formation-libraries-v1/reproduction-v2/contract.md": "8bbfd4bc9379e77f80b217388a5ddcf80054af219ce77ca96755ed95e66d1269"
+    }
+  },
+  "identityHash": "85a1fb55c9fbfd238032e53c2450365832b2130a6f397d680960eaed37d530de",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "node": "v24.10.0",
+    "platform": "darwin",
+    "ramBytes": 34359738368
+  },
+  "measuredAt": "2026-11-22T23:57:08.673Z",
+  "payloadHash": "3e645accaa770d70b5f4cfe9018126e26dd9f5d15402495e20127f2acf1e5ac6"
+}

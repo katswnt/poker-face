@@ -82,15 +82,16 @@ Later milestone ownership must be declared in its contract before implementation
 
 Safeguard: `build/cpu-finish-2026-11-22/` holds the starting HEAD/status, protected hashes
 and copies, the trainer README patch and current checkpoint. Step 10 was verified in the
-clean, copied-dependency checkout `/private/tmp/poker-pf10-exact-jhxtywnl`, now the next
-candidate. Its redundant predecessor was retired only after all source matched the
+clean, copied-dependency checkout `/private/tmp/poker-pf10-exact-jhxtywnl`, subsequently retired after step 11 was preserved and independently verified.
+The current copied-dependency candidate is `/private/tmp/poker-pf11-exact-w6hr9eah`. Its redundant predecessor was retired only after all source matched the
 verified commit. Preserve
 `/private/tmp/poker-h1-fixed-90bavjbh` as the exact deployed build until a verified successor.
 
 ## Progress
 
 - [x] Step 10 contract and executable validation gates landed, CI green.
-- [ ] Step 11 candidate measured and its complete pass/fail result landed, CI green.
+- [x] Step 11 tiny reference and necessary coverage-failure evidence landed, CI green.
+  The full-deck candidate was not fitted or validated.
 - [ ] Step 12 PF4 shipped **only if** step 11 passes; otherwise record the blocking evidence.
 - [ ] Step 13 independently gated formation coverage landed and any UI release verified.
 - [ ] Step 14 R0 measured; follow-on work only if its frozen gate passes.
@@ -102,3 +103,10 @@ Step-11 measurement: [research record](preflop-v2-research.md). The tiny referen
 Zero accepted calibration/held-out observations and no fitted candidate. PF4 is blocked
 by incomplete required validation, not by an established failure of the untested additive
 model. Continue independent steps 13 and 14 only after this release's exact checks and CI.
+
+Step 13: [formation record](formation-libraries-v1-spec.md). All 36 estimates passed;
+SB–BB and BTN–BB 3BP have 12/12 complete roots each, freshly byte-identical to generation.
+CO–BTN is blocked by a saved opponent-value inconsistency, with six unattempted roots and
+no partial publication. Total native work including failed attempts: 115.460591 minutes.
+A corrected byte comparator and exact float32 reporting conversion preserve all original
+sources/observations. No app deployment or PF4 promotion. Exact checks and CI precede R0.

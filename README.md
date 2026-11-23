@@ -623,6 +623,24 @@ node, and re-grades one saved full-precision river subgame with our factorized g
 hand-written approximations, not solved, and the manifest labels the results as an
 approximate equilibrium of this finite game, not exact or universal GTO.
 
+**Additional offline formations (CPU step 13).** A separate
+[versioned collection](public/solver-data/bridge-formations-v1/) adds **24 solved roots**:
+12 SB-open/BB-call flops and 12 BTN-call/BB-three-bet flops, with explicit hand-written
+ranges. All 24 freshly reproduce byte for byte. Each complete native game passes the
+0.3%-of-starting-pot threshold; that grades its unrounded native policy, not the rounded
+partial download. The packs include every flop decision plus the declared turn/river
+slices: **123.5 MB raw / 31.5 MB gzip**, including manifests. They are separate research
+data; `/play` still uses its original 12-flop BTN–BB formation.
+
+The proposed CO–BTN pack is **withheld**: saved opponent-action values failed consistency
+checks by 29.3–258.25 chips on one frozen flop, despite native convergence. No tolerance or
+input was changed to admit it. Independent river referees reproduce the accepted packs'
+values within 0.000059 chips; their local exploitabilities are 0.0641% and **0.7201%** of
+their respective river pots. These are conditional local measurements, not a guarantee
+for every later node. See the [inputs, costs, failures and reproduction record](tasks/formation-libraries-v1-spec.md).
+Run `npm run audit:bridge:formations` without Rust to verify all published bytes, saved-node
+invariants, source identities and river grades. This does not repeat the large native solves.
+
 **Limits, stated plainly.**
 
 - **Heads-up postflop only.** No preflop, no multiway, no rake. Postflop-solver has one
@@ -641,7 +659,8 @@ approximate equilibrium of this finite game, not exact or universal GTO.
   button-open and big-blind-call ranges, not solved preflop ranges.
 - **Saved library plus live browser solving.** Saved drills use this library; `/solver/live`
   and `/play` also run the bounded turn/river bridge in a Web Worker. The saved B4 library
-  still covers this one formation; additional formation coverage is separate work.
+  still covers this one formation; the additional offline packs above have separate inputs
+  and are not integrated into play or drills.
 
 See the [bridge plan](tasks/postflop-solver-bridge-plan.md) and
 [contract, unit mapping, referee, benchmark and library results](tasks/postflop-solver-bridge-spec.md).
@@ -885,7 +904,11 @@ already powers solver-backed drills. The active path does not depend on a collab
 4. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
-5. **Separate multiway research.** Sampled multiway ranges retain their own Stage 4 gate; a three-player
+5. **Separate multiway research.** CPU step 13 adds two complete offline formation packs;
+   CO–BTN remains blocked by its saved-value audit. Step 14 is next: the pinned native
+   MCCFR adapter must pass the [R0 contract](tasks/robopoker-evaluation.md) before any
+   three-player turn/river continuation.
+   Sampled multiway ranges retain their own Stage 4 gate; a three-player
    turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
    exact-small-game parity. General multiway flop play and learned leaf values are not implemented.
 6. **Optional integration.** The benchmark exchange is available now. Build an adapter only

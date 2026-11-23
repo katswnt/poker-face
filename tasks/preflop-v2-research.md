@@ -106,7 +106,7 @@ production policies, protected trainer work and paused flop draft stay untouched
 - [x] All 504 native estimates captured and independently re-audited; pass/fail recorded.
 - [x] Conditional large candidate experiment completed, or its necessary blocking gate
   recorded without claiming the model was fitted or falsified.
-- [ ] Old artifacts/diagnosis/reference gates preserved; exact isolated commit, full tests,
+- [x] Old artifacts/diagnosis/reference gates preserved; exact isolated commit, full tests,
   typecheck, lint, relevant audits and build as needed; explicit files; push and all CI green.
 
 ## Execution record
@@ -203,3 +203,15 @@ Calibration report payload:
 original stderr checkpoints, coverage and summary; it does not rerun a ten-minute failure
 or claim to reproduce machine-dependent timing. Re-running the measurement command to a
 fresh destination is the explicit native reproduction path.
+
+
+Release: `287740824474b0adfa6ed6a213df00a6249352a2`, pushed to `origin/main`.
+An exact isolated checkout with a real copied `node_modules` directory passed 1,159/1,159
+unit tests, zero skips (144,572.174167 ms), typecheck, lint, 21 audits, unchanged diagnosis
+SHA `d95b71e978f0c98650fe4583182d8ed99a2406060d0065a51b94590e96cc508d`, and production build.
+All eight jobs in [CI 45073738933](https://github.com/katswnt/poker-face/actions/runs/45073738933)
+passed before step 13 started. Native CI: 23 Rust tests and 33 runner/referee/boundary tests;
+three-browser CI: 34 live-solver, 48 drill and 55 play/review checks. General smoke: 104
+passed, 17 existing skips. Binary-specific tests run in their native/WASM jobs; general
+CI's domain job had 1,068 passes and 91 environment skips. Existing zoom skips remain.
+No app behavior or deployment changed; all protected trainer/draft work stayed untouched.

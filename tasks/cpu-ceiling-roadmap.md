@@ -19,8 +19,11 @@ passes the independent nine-card reference and all 504 native preflights, but it
 full-range calibration root timed out at 600 seconds (last checkpoint 1.1334% pot versus
 the frozen 0.001% target). No final policy, fit or held-out observation was accepted.
 The necessary coverage gate failed; **step 12/PF4 stays blocked**. This does not falsify
-the untested additive candidate. Independent steps 13/14 are next after the evidence
-release passes CI. The working rules below remain binding.
+the untested additive candidate. Step 11 shipped as `2877408`, with all eight CI jobs green.
+[Step 13](formation-libraries-v1-spec.md) now has two complete, freshly reproduced offline
+formation packs (24 roots); CO–BTN is withheld after a saved-value audit failure. These
+manual-range datasets do not change `/play` or open PF4. Exact-commit release checks and
+CI precede independent step 14. The working rules below remain binding.
 
 ## What "the CPU ceiling" means
 

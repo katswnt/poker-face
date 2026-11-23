@@ -1,0 +1,51 @@
+{
+  "baseCommit": "287740824474b0adfa6ed6a213df00a6249352a2",
+  "binaryHash": "7cbe699d9b3197606a80a4c8500a37cfdd9685d309d5120ab5bc57a69d5226c0",
+  "identity": {
+    "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+    "engineCommit": "9d1509fe5077d019825f833eed04b16d342dfda1",
+    "nativeInputs": {
+      "native/solver-bridge/.gitignore": "b53ee26e6ff1da219b0563333a76d2c9ec19eec713d6ee54e11a1edacb0e9f3d",
+      "native/solver-bridge/Cargo.lock": "721b038673be507a9a7dd69b998420d34b20268edf7534b4a2027c008344ec07",
+      "native/solver-bridge/Cargo.toml": "f5d9fcf357f81f9edb067b3ab66eb2fe17f9011c2972696ba1be6fcd888380f8",
+      "native/solver-bridge/rust-toolchain.toml": "4d7d5425fe623392e565a964fc135c563c316ce125058199eb40b2953ba6ecbb",
+      "native/solver-bridge/rustfmt.toml": "e090969e99df9360705680cc0097cfaddae10c22dc2e01470592cf3b9787fd36",
+      "native/solver-bridge/src/export_estimate.rs": "7d443010c34079361be376f1727340a4250bdf2bc45c07fd55dcce5219b83f9a",
+      "native/solver-bridge/src/lib.rs": "300c3ca698086fbab1b00372345f4cf0d22ec4110d20e00e49e860376ccd5d3f",
+      "native/solver-bridge/src/main.rs": "4cfca681bd550301b9d20db80534d7b66ec074b4e8314c2d44aa2878033a4675",
+      "native/solver-bridge/src/slices.rs": "300501a22afb367b80e9eed29c275e46146dde94aca08e4e255f07a50a71e5d9",
+      "native/solver-bridge/src/spot.rs": "9882345ec6da4d5354d70cd3422c01a99f4e0a3eb4c53530f60837b208baf2d0",
+      "native/solver-bridge/tests/bridge.rs": "557d56a952049d2a0db8ec0ef8db558def79dc882e9a661e4e0908203bf5664c"
+    },
+    "sourceHashes": {
+      "scripts/bridge-runner.ts": "1f0886734e5a02982b34cb235d770e54268fc3c397ae05d724738f60671770cc",
+      "scripts/build-formation-libraries.ts": "56348e03ed417e5a6dd74589f93a844cf9bbf3c76d1c1bbbad7d32e29ed53f66",
+      "src/lib/solver/bridge/contract-node.ts": "43fb834c8dec53c0c8697deaa859b616ae6321adf95b6e910dd26a987e490657",
+      "src/lib/solver/bridge/contract.ts": "c88e83271934c78d0645bcc7d149bea8252b2a7243e88fb1e24666818f5fef2f",
+      "src/lib/solver/bridge/fixtures.ts": "cdf01daeea6f39991bf8e38f388c73e46b7016292d4b0d911ec6844b8586052c",
+      "src/lib/solver/bridge/formations/fixtures.ts": "7f1ffa04f18081234f9a84712b1eaecaa72cf9eddd6b72010138c9424852a7d9",
+      "src/lib/solver/bridge/formations/inputs.json": "adc8f915d2fdf31a96867c17c19cadadcb821effd5ce22e520a79976f97ae1b2",
+      "src/lib/solver/bridge/formations/library.ts": "944c0c89e36ffc4cd2f80021a89f07b29d3617ff6abf902937a4ac529c651f5b",
+      "src/lib/solver/bridge/formations/manifest.json": "292b2af0e53ec16849c681f5a60495e6ec53a51319f8d59a6657806a2e3002f8",
+      "src/lib/solver/bridge/library/encode.ts": "77777de58892cbca402a2b5ee165c1c738da03a52b0d6720d587239b1f7c3db1",
+      "src/lib/solver/bridge/library/invariants.ts": "ffa4cb9de46cc454fcb8f77d6be1f9d9577952d70d04b3a14e54f89986f39a69",
+      "src/lib/solver/bridge/library/load.ts": "8e37a236d167e87cccd92c3353914b48329b9336a803c80f81cc3843a9b51ae7",
+      "src/lib/solver/bridge/library/model.ts": "e875a51ad8efcf36d2572ce1bd625d313ecce947d5cca4d2e73c75e509c5546e",
+      "src/lib/solver/bridge/library/spots.ts": "657028557c26b077468f9df3a5fb4e9d8d7cd6741f70d9ead8010426e8a54415",
+      "src/lib/solver/bridge/subgame-referee.ts": "a0574266e2708de6c64ed23e163dda72c4ee42b44ad2046bd01264a742cfef88",
+      "src/lib/solver/preflop-v2/preflight.ts": "817e243ebcbc8f08a0db147733b3d1c6674bd09f4305884d640c664e2d618b1a",
+      "src/lib/solver/river/configurable/range.ts": "fce9b9a74d1c299cfaab3058efa63c6536475d61766593760b59d95eed161007",
+      "tasks/artifacts/formation-libraries-v1/contract.md": "f45819c77da26db1ec38a2eab0b957b0da4865b45834e570e37a8936db901737"
+    }
+  },
+  "identityHash": "78ed6180c522ca86d344b7208068db2196c35ab71c59963ac02d30b2d37550ad",
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "node": "v24.10.0",
+    "osRelease": "25.4.0",
+    "platform": "darwin",
+    "ramBytes": 34359738368
+  },
+  "measuredAt": "2026-11-22T22:36:31.998Z",
+  "payloadHash": "5fbbc98644206bc5ad25ed8b17252c526b6b3bedd22f065319dd4d3345095847"
+}
