@@ -5,6 +5,13 @@ current run; steps 10–14 are specified here so their contracts are not re-inve
 
 ## Current continuation — 2026-11-22
 
+**2026-11-24 follow-up:** the [CO–BTN export diagnosis](formation-export-diagnostic-v1-spec.md)
+now reproduces the original 14 failures twice and isolates reach quantization after card
+removal as their cause. Unrounded values agree within 0.000812 chip; rounding reach alone
+creates 258.197872 chips of error. CO–BTN stays withheld pending a separately versioned
+representation fix and the unchanged full publication gates. The [new handoff](codex-handoff-2026-11-24.md)
+records this bounded investigation; the results below remain historical evidence.
+
 Steps 1–9, E1 live values, D1/D2 drills and H1 completed-hand review have shipped.
 The [November 21 handoff](codex-handoff-2026-11-21.md) records the verified `de7f0d6`
 production release and `16f6460` closing documentation. The old status tables below

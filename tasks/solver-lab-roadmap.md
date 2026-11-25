@@ -1,5 +1,12 @@
 # Explainable solver lab — guiding plan
 
+**2026-11-24 follow-up:** two identical captured CO–BTN exports isolate the saved-value
+failure to rounding tiny range weights after blockers remove the dominant hands.
+Full-precision disagreement is below 0.000812 chip; saved-data disagreement remains up
+to 258.25 chips. See the [diagnostic record](formation-export-diagnostic-v1-spec.md) and
+[current research handoff](codex-handoff-2026-11-24.md). CO–BTN publication, PF4 and external
+multiway training remain gated. Production and the existing published packs are unchanged.
+
 **Status (2026-11-22):** CPU-first M0–M6, Rust bridge B0–B4, the saved 12-flop library,
 W1–W4 browser solving, P1–P5 `/play`, E1 live action values, D1/D2 drills and H1 completed-hand
 review have shipped. Production is the source-verified `de7f0d6` H1 release. Preflop

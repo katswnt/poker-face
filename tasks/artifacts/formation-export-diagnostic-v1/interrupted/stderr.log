@@ -1,0 +1,19 @@
+{"ordinal":0,"elapsedMs":0,"stage":"building","type":"progress"}
+{"ordinal":0,"compression":false,"elapsedMs":41,"estimatedBytes":2073752704,"estimatedCompressedBytes":1070710900,"stage":"allocating","type":"progress"}
+node:internal/child_process:421
+    throw new ErrnoException(err, 'spawn');
+    ^
+
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at spawn (node:child_process:796:9)
+    at execFile (node:child_process:349:17)
+    at Timeout._onTimeout (/Users/kathrynswint/Documents/poker-face/scripts/bridge-runner.ts:80:9)
+    at listOnTimeout (node:internal/timers:608:17)
+    at process.processTimers (node:internal/timers:543:7) {
+  errno: -1,
+  code: 'EPERM',
+  syscall: 'spawn'
+}
+
+Node.js v24.10.0

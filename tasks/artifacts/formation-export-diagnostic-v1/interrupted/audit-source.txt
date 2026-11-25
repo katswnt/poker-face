@@ -1,0 +1,52 @@
+/** Replay numerical diagnosis without solving or promoting the rejected formation. */
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { diagnoseExport, DIAGNOSTIC_PATH } from "../src/lib/solver/bridge/formations/export-diagnostic";
+import { FORMATION_BUDGETS as B } from "../src/lib/solver/bridge/formations/fixtures";
+import { hashJson } from "../src/lib/solver/preflop-v2/corpus";
+import { DIAGNOSTIC_DIR, ORIGINAL_DIR, diagnosticContext, readHashed, type DiagnosticObservation } from "./capture-formation-export-diagnostic";
+
+export function auditExportObservation(observation: DiagnosticObservation) {
+  const { payloadHash, ...payload } = observation; assert.equal(payloadHash, hashJson(payload));
+  assert.equal(observation.format, "poker-face-formation-export-diagnostic"); assert.equal(observation.version, 1);
+  const { identity, spot } = diagnosticContext(); assert.deepEqual(observation.identity, identity);
+  assert.deepEqual(observation.sample.hands, spot.ranges.map(r => r.combos.map(h => h.combo)));
+  assert.equal(observation.sample.parent.path.join(" "), DIAGNOSTIC_PATH);
+  assert.deepEqual(observation.sample.parent.board, [...spot.board.flop, "4c", "3s"]);
+  assert.equal(observation.runs.length, 2);
+  let charged = identity.priorChargedNativeMs;
+  const previous = JSON.parse(readFileSync(`${ORIGINAL_DIR}/generate.json`, "utf8"));
+  const failed = previous.groups.find((g: { formation: string }) => g.formation === identity.root.formation).rows.at(-1);
+  assert.equal(failed.status, "failed"); assert.equal(failed.spotHash, identity.root.spotHash);
+  observation.runs.forEach((run, ordinal) => {
+    assert.equal(run.ordinal, ordinal); assert.equal(run.sampleHash, hashJson(observation.sample));
+    assert.match(run.resultHash, /^[0-9a-f]{64}$/);
+    assert.ok(Number.isSafeInteger(run.resultBytes) && run.resultBytes > 0 && run.resultBytes <= B.rawResultBytes);
+    assert.ok(Number.isFinite(run.elapsedMs) && run.elapsedMs > 0 && run.elapsedMs <= B.perSolveMs);
+    assert.ok(Number.isSafeInteger(run.peakRssBytes) && run.peakRssBytes > 0 && run.peakRssBytes <= B.rssBytes);
+    assert.equal(run.iterations, failed.lastCheckpoint.iteration);
+    assert.equal(run.pctPot, failed.lastCheckpoint.exploitability / spot.startingPot * 100);
+    assert.ok(run.pctPot <= B.gatePctPot);
+    assert.ok(run.invariants.nodes > 0 && run.invariants.reachChecked > 0 && run.invariants.opponentEvChecked > 0);
+    assert.equal(run.invariants.failures.length, 14);
+    run.invariants.failures.forEach(f => assert.ok(failed.error.includes(f), "new failure differs from original"));
+    assert.deepEqual(run.invariants, observation.runs[0].invariants);
+    charged += run.elapsedMs;
+  });
+  assert.equal(observation.chargedNativeMs, charged); assert.ok(charged <= B.totalNativeMs);
+  const report = diagnoseExport(observation.sample);
+  const failing = report.hands.filter(r => r.saved.error !== null && r.saved.error > r.saved.savedTolerance);
+  assert.equal(failing.length, 14);
+  failing.forEach(row => {
+    const message = `${DIAGNOSTIC_PATH}: opponent EV of ${row.combo} ${row.saved.parentValue} ≠ ${row.saved.responseValue}`;
+    // Independent summation order may differ at the last floating-point bit.
+    assert.ok(observation.runs[0].invariants.failures.some(f => f.startsWith(message.split(" ≠ ")[0] + " ≠ ")));
+  });
+  return { ...report, evidenceHash: payloadHash, chargedNativeMs: charged };
+}
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const report = auditExportObservation(readHashed<DiagnosticObservation>(`${DIAGNOSTIC_DIR}/observation.json`));
+  console.log(JSON.stringify({ ...report, hands: report.hands.filter(r => r.saved.error !== null && r.saved.error > r.saved.savedTolerance) }, null, 2));
+}

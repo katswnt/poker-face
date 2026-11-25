@@ -1,0 +1,39 @@
+{
+  "baseCommit": "90ffee3db02645e5cbc1ce18db640452f6ccdd80",
+  "identity": {
+    "binaryHash": "7cbe699d9b3197606a80a4c8500a37cfdd9685d309d5120ab5bc57a69d5226c0",
+    "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+    "originalEnvironmentHash": "5fbbc98644206bc5ad25ed8b17252c526b6b3bedd22f065319dd4d3345095847",
+    "originalIdentityHash": "78ed6180c522ca86d344b7208068db2196c35ab71c59963ac02d30b2d37550ad",
+    "preflightHash": "1b786425696cff4c4a146279de169fc19e71d53f7a165033c7daddeb19bf3c70",
+    "priorChargedNativeMs": 6927635.4882890005,
+    "priorRecordHash": "7d9bf496eb4e64214b4c2a31027ec9d302e2a21a8a5686e9b53b850e001701d5",
+    "root": {
+      "benchmark": false,
+      "boardId": "srp-btn-bb-td7d3c",
+      "formation": "co-btn-srp-v1",
+      "hands": [
+        298,
+        224
+      ],
+      "id": "co-btn-srp-v1-td7d3c",
+      "planHash": "937d8561c675239f5e209184aa67504fcc59efbb0d0c86ce44fa905024cfdb48",
+      "spotHash": "d388076709f6a09d359c83e8dc94ddd36ceb1eaeb06deca1eab7a26821fa3765"
+    },
+    "sourceHashes": {
+      "scripts/audit-formation-export-diagnostic.ts": "0144873a4c988787ae773cee2b2f44c83bc47c3d02bf37ba216ea6b1dc913d20",
+      "scripts/capture-formation-export-diagnostic.ts": "fab0aa66711b9b7b90d6d6da7b95d2ce4d53c1b23f7c596d6b13c96c9f2465f1",
+      "src/lib/solver/bridge/formations/export-diagnostic.ts": "e2cbe09316bc6a853ae660fb234f2250d1d61f762f7118f10dfc6d3fc1967239",
+      "tasks/artifacts/formation-export-diagnostic-v1/contract.md": "5e3f1b9eeba9c13cc9eaa3f061a134fd11c48b4d95e8cce881c3cfacb96c6ea5"
+    }
+  },
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "node": "v24.10.0",
+    "osRelease": "25.4.0",
+    "platform": "darwin",
+    "ramBytes": 34359738368
+  },
+  "measuredAt": "2026-11-24T21:04:12.804Z",
+  "payloadHash": "b1e219bd41c02c56e79b6b8f128cc9dea71e7af151b865bfec5c76edb5ab4d6d"
+}

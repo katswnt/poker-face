@@ -1,0 +1,117 @@
+/** Separate bounded investigation: preserve unrounded output before any library encoder. */
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpus, platform, release, totalmem } from "node:os";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { BRIDGE_BINARY, runBridgeSpot, type BridgeProgress } from "./bridge-runner";
+import { hashJson, prettyJson, sha256 } from "../src/lib/solver/preflop-v2/corpus";
+import { FORMATION_BUDGETS as B, formationSpot, formationPlan, buildFormationManifest } from "../src/lib/solver/bridge/formations/fixtures";
+import { checkFormationResult, formationReservation } from "../src/lib/solver/bridge/formations/library";
+import { selectExportSample, type ExportSample } from "../src/lib/solver/bridge/formations/export-diagnostic";
+import { encodeSliceNode } from "../src/lib/solver/bridge/library/encode";
+import { auditLibrarySpot, type LibraryInvariantReport } from "../src/lib/solver/bridge/library/invariants";
+import { BRIDGE_LIBRARY_CHUNK_FORMAT } from "../src/lib/solver/bridge/library/model";
+
+export const DIAGNOSTIC_DIR = "tasks/artifacts/formation-export-diagnostic-v1";
+export const ORIGINAL_DIR = "tasks/artifacts/formation-libraries-v1";
+export const DIAGNOSTIC_SOURCES = [
+  `${DIAGNOSTIC_DIR}/contract.md`, "src/lib/solver/bridge/formations/export-diagnostic.ts",
+  "scripts/capture-formation-export-diagnostic.ts", "scripts/audit-formation-export-diagnostic.ts",
+] as const;
+export const hashes = (paths: readonly string[]) => Object.fromEntries(paths.map(p => [p, sha256(readFileSync(p))]));
+export function readHashed<T extends { payloadHash: string }>(path: string): T {
+  const bytes = readFileSync(path, "utf8"), v: T = JSON.parse(bytes), { payloadHash, ...payload } = v;
+  assert.equal(hashJson(payload), payloadHash); assert.equal(bytes, prettyJson(v)); return v;
+}
+const withHash = <T extends object>(payload: T) => ({ ...payload, payloadHash: hashJson(payload) });
+function writeNew(path: string, value: unknown) {
+  mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, prettyJson(value), { flag: "wx" });
+}
+export function diagnosticContext() {
+  const environment = readHashed<{ payloadHash: string; binaryHash: string; identityHash: string;
+    identity: { sourceHashes: Record<string, string>; nativeInputs: Record<string, string> } }>(`${ORIGINAL_DIR}/environment.json`);
+  for (const expected of [environment.identity.sourceHashes, environment.identity.nativeInputs])
+    assert.deepEqual(hashes(Object.keys(expected)), expected, "original source identity changed");
+  const corpus = buildFormationManifest(), root = corpus.roots.find(r => r.id === "co-btn-srp-v1-td7d3c")!;
+  assert.ok(root);
+  const spot = formationSpot(root.formation, root.boardId), plan = formationPlan(root.formation, root.boardId);
+  const preflight = readHashed<{ payloadHash: string; rows: { id: string; rawEstimate: string; rawHash: string }[] }>(`${ORIGINAL_DIR}/preflight.json`);
+  const row = preflight.rows.find(r => r.id === root.id)!; assert.ok(row);
+  assert.equal(sha256(row.rawEstimate), row.rawHash); assert.ok(formationReservation(spot, row.rawEstimate).admitted);
+  const prior = readHashed<{ payloadHash: string; chargedNativeMs: number }>(`${ORIGINAL_DIR}/reproduction-v2/reproduce.json`);
+  assert.ok(prior.chargedNativeMs + 2 * B.perSolveMs <= B.totalNativeMs);
+  const identity = { originalEnvironmentHash: environment.payloadHash, originalIdentityHash: environment.identityHash,
+    priorRecordHash: prior.payloadHash, priorChargedNativeMs: prior.chargedNativeMs, preflightHash: preflight.payloadHash,
+    corpusHash: corpus.payloadHash, root, binaryHash: environment.binaryHash, sourceHashes: hashes(DIAGNOSTIC_SOURCES) };
+  return { identity, spot, plan };
+}
+export interface DiagnosticRun {
+  ordinal: number; elapsedMs: number; peakRssBytes: number; iterations: number; pctPot: number;
+  sampleHash: string; resultHash: string; resultBytes: number; invariants: LibraryInvariantReport;
+}
+export interface DiagnosticObservation {
+  format: "poker-face-formation-export-diagnostic"; version: 1;
+  identity: ReturnType<typeof diagnosticContext>["identity"];
+  measuredAt: string; baseCommit: string;
+  machine: { cpu: string; ramBytes: number; platform: string; osRelease: string; node: string };
+  sample: ExportSample; runs: DiagnosticRun[]; chargedNativeMs: number; payloadHash: string;
+}
+async function main() {
+  const [mode, destination, workdir, ...extra] = process.argv.slice(2);
+  assert.ok(mode === "--capture" && destination && workdir && extra.length === 0,
+    "Usage: --capture <new observation.json> <new ignored working directory>");
+  assert.ok(!existsSync(destination) && !existsSync(workdir), "refusing to retry/overwrite an experiment");
+  const { identity, spot, plan } = diagnosticContext();
+  assert.equal(sha256(readFileSync(BRIDGE_BINARY)), identity.binaryHash, "original binary required");
+  const metadata = { measuredAt: new Date().toISOString(), baseCommit: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+    machine: { cpu: cpus()[0].model, ramBytes: totalmem(), platform: platform(), osRelease: release(), node: process.version } };
+  mkdirSync(workdir, { recursive: true }); writeNew(`${workdir}/start.json`, withHash({ identity, ...metadata }));
+  const controller = new AbortController(), cancel = () => controller.abort();
+  process.on("SIGINT", cancel); process.on("SIGTERM", cancel);
+  const runs: DiagnosticRun[] = []; let sample: ExportSample | null = null;
+  try {
+    for (let ordinal = 0; ordinal < 2; ordinal++) {
+      let lastCheckpoint: BridgeProgress | null = null;
+      const started = performance.now();
+      writeNew(`${workdir}/${ordinal}.start.json`, { ordinal, startedAt: new Date().toISOString(), reservedMs: B.perSolveMs });
+      try {
+        const run = await runBridgeSpot(spot, { slices: plan, threads: B.threads, timeoutMs: B.perSolveMs,
+          rssLimitBytes: B.rssBytes, signal: controller.signal, onProgress: p => {
+            lastCheckpoint = p;
+            if (p.stage !== "solving" || p.iteration! % 50 === 0) console.log(JSON.stringify({ ordinal, ...p }));
+          } });
+        // This is the complete parsed JSON, before quantization. Preserve even rejected encodings.
+        const raw = JSON.stringify(run.result), resultBytes = Buffer.byteLength(raw);
+        assert.ok(resultBytes <= B.rawResultBytes);
+        writeFileSync(`${workdir}/${ordinal}.native.json`, raw, { flag: "wx" });
+        checkFormationResult(spot, plan, run.result);
+        const current = selectExportSample(run.result), sampleHash = hashJson(current);
+        writeNew(`${workdir}/${ordinal}.sample.json`, current);
+        const invariants = auditLibrarySpot([{ format: BRIDGE_LIBRARY_CHUNK_FORMAT, version: 1, key: "diagnostic",
+          spotId: spot.id, spotHash: identity.root.spotHash, nodes: run.result.slices!.nodes.map(encodeSliceNode) }],
+        { hands: run.result.hands, weights: [spot.ranges[0].combos.map(h => h.weight), spot.ranges[1].combos.map(h => h.weight)] }, spot);
+        const observation: DiagnosticRun = { ordinal, elapsedMs: performance.now() - started,
+          peakRssBytes: Math.max(run.sampledPeakRssBytes, run.result.memory.peakRssBytes), iterations: run.result.iterations,
+          pctPot: run.result.exploitability.pctPot, sampleHash, resultHash: sha256(raw), resultBytes, invariants };
+        writeNew(`${workdir}/${ordinal}.finish.json`, withHash(observation));
+        runs.push(observation); sample ??= current;
+        assert.equal(sampleHash, hashJson(sample), "target export changed on fresh repeat");
+        assert.equal(observation.iterations, runs[0].iterations);
+        assert.ok(observation.elapsedMs <= B.perSolveMs && observation.peakRssBytes <= B.rssBytes);
+        console.log(JSON.stringify({ ...observation, invariants: invariants.failures }));
+      } catch (error) {
+        writeNew(`${workdir}/${ordinal}.failure.json`, { error: String(error), elapsedMs: performance.now() - started, lastCheckpoint });
+        throw error;
+      }
+    }
+    assert.deepEqual(diagnosticContext().identity, identity); assert.ok(sample);
+    assert.equal(sha256(readFileSync(BRIDGE_BINARY)), identity.binaryHash);
+    const payload = { format: "poker-face-formation-export-diagnostic" as const, version: 1 as const, identity, ...metadata,
+      sample, runs, chargedNativeMs: identity.priorChargedNativeMs + runs.reduce((s, r) => s + r.elapsedMs, 0) };
+    writeNew(destination, withHash(payload));
+  } finally { process.off("SIGINT", cancel); process.off("SIGTERM", cancel); }
+}
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))
+  main().catch(e => { console.error(e); process.exitCode = 1; });

@@ -22,6 +22,9 @@ jobs:
       - name: Audit frozen formation coverage, bytes and independent referees
         run: npm run audit:bridge:formations
 
+      - name: Replay the rejected CO-BTN export diagnosis without publishing its policy
+        run: npm run audit:bridge:formation-export
+
       - name: Lint
         run: npm run lint
 

@@ -1,5 +1,10 @@
 # Additional formation libraries v1 — CPU step 13
 
+**Follow-up, 2026-11-24:** the [separate export diagnosis](formation-export-diagnostic-v1-spec.md)
+establishes reach quantization under blocker conditioning as the cause of the recorded
+CO–BTN saved-value failure. It preserves this original experiment and its rejected outcome.
+CO–BTN remains withheld; no published data, source identity or acceptance threshold changed.
+
 Prospective contract, 2026-11-22, after `2877408` and all eight jobs in CI 45073738933
 passed. No new formation estimate or solve has been taken. Step 12/PF4 remains blocked
 by the preflop validation timeout. These independently scoped postflop games use explicitly

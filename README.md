@@ -33,13 +33,17 @@ includes E1 live action values, and adds completed-hand review. All eight CI job
 103 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 Production continues to use guarded, explicit releases.
 
-**Repository research update (2026-11-22).** Two additional offline formation packs
+**Repository research update (2026-11-24).** Two additional offline formation packs
 now contain 24 audited, freshly reproduced flop roots. Three research gates remain
 closed: complete preflop validation exceeded its frozen compute budget; CO–BTN exports
 failed a saved-value check; and pinned `mccfr` 1.2.0 failed an independently verified
 best-response prerequisite. No new preflop ranges or multiway engine were promoted into
 play. The [CPU continuation handoff](tasks/codex-handoff-2026-11-22.md) records commits,
 measured results, reproduction commands and the remaining work.
+A [new diagnostic](tasks/formation-export-diagnostic-v1-spec.md) now isolates the CO–BTN
+export failure to rounding tiny range weights after card removal: unrounded values agree
+within 0.000812 chip, while saved values still differ by up to 258.25 chips. The pack
+remains withheld pending a versioned representation fix and full publication checks.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -654,7 +658,9 @@ data; `/play` still uses its original 12-flop BTN–BB formation.
 
 The proposed CO–BTN pack is **withheld**: saved opponent-action values failed consistency
 checks by 29.3–258.25 chips on one frozen flop, despite native convergence. No tolerance or
-input was changed to admit it. Independent river referees reproduce the accepted packs'
+input was changed to admit it. Two fresh captured exports now identify reach quantization
+under blocker conditioning as the cause; `npm run audit:bridge:formation-export` replays
+the diagnosis without a native solve. This does not admit the pack. Independent river referees reproduce the accepted packs'
 values within 0.000059 chips; their local exploitabilities are 0.0641% and **0.7201%** of
 their respective river pots. These are conditional local measurements, not a guarantee
 for every later node. See the [inputs, costs, failures and reproduction record](tasks/formation-libraries-v1-spec.md).
