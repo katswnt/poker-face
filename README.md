@@ -33,17 +33,14 @@ includes E1 live action values, and adds completed-hand review. All eight CI job
 103 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 Production continues to use guarded, explicit releases.
 
-**Repository research update (2026-11-24).** Two additional offline formation packs
-now contain 24 audited, freshly reproduced flop roots. Three research gates remain
-closed: complete preflop validation exceeded its frozen compute budget; CO–BTN exports
-failed a saved-value check; and pinned `mccfr` 1.2.0 failed an independently verified
-best-response prerequisite. No new preflop ranges or multiway engine were promoted into
-play. The [CPU continuation handoff](tasks/codex-handoff-2026-11-22.md) records commits,
-measured results, reproduction commands and the remaining work.
-A [new diagnostic](tasks/formation-export-diagnostic-v1-spec.md) now isolates the CO–BTN
-export failure to rounding tiny range weights after card removal: unrounded values agree
-within 0.000812 chip, while saved values still differ by up to 258.25 chips. The pack
-remains withheld pending a versioned representation fix and full publication checks.
+**Repository research update (2026-11-24).** Three additional offline formation packs
+now contain **36 audited, freshly reproduced flop roots**. The [CO–BTN v2 export](tasks/formation-full-reach-v2-spec.md)
+retains every positive native reach and fixes the blocker-conditioned value failure;
+all twelve roots pass the original numerical, size and reproduction gates. Its preserved
+publication correction restores float32 quality metadata without changing policy bytes
+or tolerances. Complete preflop validation and the pinned external MCCFR best-response
+prerequisite remain blocked. No new preflop ranges or multiway engine were promoted into
+play. The [current handoff](tasks/codex-handoff-2026-11-24.md) records the results and limits.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -656,16 +653,26 @@ partial download. The packs include every flop decision plus the declared turn/r
 slices: **123.5 MB raw / 31.5 MB gzip**, including manifests. They are separate research
 data; `/play` still uses its original 12-flop BTN–BB formation.
 
-The proposed CO–BTN pack is **withheld**: saved opponent-action values failed consistency
-checks by 29.3–258.25 chips on one frozen flop, despite native convergence. No tolerance or
-input was changed to admit it. Two fresh captured exports now identify reach quantization
-under blocker conditioning as the cause; `npm run audit:bridge:formation-export` replays
-the diagnosis without a native solve. This does not admit the pack. Independent river referees reproduce the accepted packs'
-values within 0.000059 chips; their local exploitabilities are 0.0641% and **0.7201%** of
-their respective river pots. These are conditional local measurements, not a guarantee
-for every later node. See the [inputs, costs, failures and reproduction record](tasks/formation-libraries-v1-spec.md).
-Run `npm run audit:bridge:formations` without Rust to verify all published bytes, saved-node
-invariants, source identities and river grades. This does not repeat the large native solves.
+The separate [CO–BTN v2 pack](public/solver-data/bridge-formations-v2/co-btn-srp-v1/manifest.json)
+adds **12 freshly reproduced roots and 5,040 saved decisions**, with the same hand-written
+ranges and 0.3%-of-starting-pot native quality gate. It retains every positive native
+float32 reach, fixing the original blocker-conditioned export error without widening a
+tolerance. Its 253 data files total **71,575,083 raw bytes / 18,420,200 gzip bytes**, before
+the manifest. Every data file reproduces exactly; the full-precision river referee's
+value agrees with the native engine within 0.00000361 chip and its local exploitability
+is 0.052612% of the river pot. These are conditional local measurements, not a guarantee
+for every later node or a certificate for the rounded partial download.
+
+The [original failure and diagnosis](tasks/formation-export-diagnostic-v1-spec.md), native
+results and source hashes remain preserved. A final metadata-only correction reconstructs
+the engine's float32 chip exploitability before checking its reported percentage; all
+policy bytes and numerical gates stay unchanged. See the [v2 contract, measurements and
+publication record](tasks/formation-full-reach-v2-spec.md). The two v1 packs remain unchanged;
+their independent river referee discrepancies are below 0.000059 chip, with local
+exploitabilities of 0.0641% and 0.7201% of their river pots.
+Run `npm run audit:bridge:formations` and `npm run audit:bridge:formations:v2` without Rust
+to verify all published formation bytes, source identities, journals, saved-node invariants
+and river grades. These replay evidence rather than repeat the large native solves.
 Compressed-size accounting uses a pinned JavaScript compressor so Mac and Linux reproduce
 the same numbers; the original host-compressor CI failure is preserved in the release record.
 `npm run reproduce:bridge:formations` replays existing evidence without re-solving; the
@@ -935,8 +942,8 @@ already powers solver-backed drills. The active path does not depend on a collab
 4. **More useful river teaching.** Comparisons cover opponent ranges, opening bet sizes,
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
-5. **Separate multiway research.** CPU step 13 adds two complete offline formation packs;
-   CO–BTN remains blocked by its saved-value audit. Step 14 is next: the pinned native
+5. **Separate multiway research.** CPU step 13 now has three complete offline formation packs,
+   including the corrected CO–BTN export. Step 14 remains gated: the pinned native
    MCCFR adapter must pass the [R0 contract](tasks/robopoker-evaluation.md) before any
    three-player turn/river continuation.
    Sampled multiway ranges retain their own Stage 4 gate; a three-player

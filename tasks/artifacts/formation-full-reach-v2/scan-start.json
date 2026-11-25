@@ -1,0 +1,27 @@
+{
+  "identity": {
+    "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+    "diagnosticHash": "9273095caa592b0e470dccd561fedf3a0d82e28920fa1e7d2d199964b8d4ed9a",
+    "generationHash": "f3ce16febc3894af832190f6366412632c3a3399c668ffa48f6e665be98454ad",
+    "originalEnvironmentHash": "5fbbc98644206bc5ad25ed8b17252c526b6b3bedd22f065319dd4d3345095847",
+    "priorChargedNativeMs": 8864077.594955001,
+    "sourceHashes": {
+      "scripts/measure-full-reach-v2.ts": "87780171dbf4287cf3ac9ddcfa66087e448cdad1ec98092a683e139fc8bc5e30",
+      "src/lib/solver/bridge/formations/full-reach-v2.ts": "3c9cacfdc9d6c00a450261e35798558fd1ecb14b79a702e9a5fcb001f32d44fa",
+      "src/lib/solver/bridge/formations/portable-compression.ts": "606031e3a206e7b468e473890f22b4808119fe959c130878fdfe5014a1453178",
+      "src/lib/solver/preflop-v2/corpus.ts": "dce0f0242797dc8d1e220ed977420a8c0a6072562766c46fb4e06327226e3cab",
+      "src/lib/solver/toy/artifact.ts": "b1e1cb99ee9e33b24b4e813270a5d7ede4a4f5ab81d63471790ed217276aa21a",
+      "tasks/artifacts/formation-full-reach-v2/contract.md": "b7aec1d0cc230b8fd79358a9bcda0acbdc7e8e0523a2e40b7bbcced12285afec"
+    }
+  },
+  "payloadHash": "37c3bca6f98a55ea27bc232ea3f1d6a041efd30eecb69320bf04096ddf013ebc",
+  "roots": [
+    "co-btn-srp-v1-ks7h2d",
+    "co-btn-srp-v1-ad8c3s",
+    "co-btn-srp-v1-khqdtc",
+    "co-btn-srp-v1-9h8h6c",
+    "co-btn-srp-v1-qs9s4s",
+    "co-btn-srp-v1-td7d3c"
+  ],
+  "startedAt": "2026-11-25T03:54:17.830Z"
+}

@@ -1,5 +1,11 @@
 # Additional formation libraries v1 — CPU step 13
 
+**Later completion:** the [full-reach v2 continuation](formation-full-reach-v2-spec.md)
+publishes all twelve CO–BTN roots in a separate namespace after exact fresh reproduction
+and the unchanged publication gates. It preserves this original v1 failure, every source
+and observation, and both published v1 packs. Step 13 now has 36 offline roots; production
+and preflop-range promotion are unchanged.
+
 **Follow-up, 2026-11-24:** the [separate export diagnosis](formation-export-diagnostic-v1-spec.md)
 establishes reach quantization under blocker conditioning as the cause of the recorded
 CO–BTN saved-value failure. It preserves this original experiment and its rejected outcome.

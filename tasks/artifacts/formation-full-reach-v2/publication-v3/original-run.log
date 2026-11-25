@@ -1,0 +1,78 @@
+{"starting":"generate-co-btn-srp-v1-8s8d3h","chargedNativeMs":8864077.594955001}
+{"id":"co-btn-srp-v1-8s8d3h","elapsedMs":34650,"exploitability":5.712830543518066,"iteration":100,"maxIterations":3000,"peakRssBytes":2141143040,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-8s8d3h","elapsedMs":69011,"exploitability":3.085923671722412,"iteration":200,"maxIterations":3000,"peakRssBytes":2141339648,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-8s8d3h","iterations":240,"pctPot":0.28888152195857125,"elapsedMs":84447.69,"peakRssBytes":2208481280}
+{"starting":"generate-co-btn-srp-v1-5h4c2d","chargedNativeMs":8950167.774663001}
+{"id":"co-btn-srp-v1-5h4c2d","elapsedMs":52108,"exploitability":3.747882843017578,"iteration":100,"maxIterations":3000,"peakRssBytes":3460956160,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-5h4c2d","iterations":150,"pctPot":0.26330272967998797,"elapsedMs":78788.44074999998,"peakRssBytes":3562766336}
+{"starting":"generate-co-btn-srp-v1-tc9d7s","chargedNativeMs":9030292.587747002}
+{"id":"co-btn-srp-v1-tc9d7s","elapsedMs":52215,"exploitability":5.208481788635254,"iteration":100,"maxIterations":3000,"peakRssBytes":3264970752,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-tc9d7s","elapsedMs":102681,"exploitability":1.7811565399169922,"iteration":200,"maxIterations":3000,"peakRssBytes":3264970752,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-tc9d7s","iterations":200,"pctPot":0.27402408306415266,"elapsedMs":103966.26658300002,"peakRssBytes":3362160640}
+{"starting":"generate-co-btn-srp-v1-ahth5c","chargedNativeMs":9135695.325580003}
+{"id":"co-btn-srp-v1-ahth5c","elapsedMs":29307,"exploitability":3.6952269077301025,"iteration":100,"maxIterations":3000,"peakRssBytes":1882161152,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-ahth5c","iterations":190,"pctPot":0.2800442989055927,"elapsedMs":57466.16716700001,"peakRssBytes":1943437312}
+{"starting":"generate-co-btn-srp-v1-jcjd4s","chargedNativeMs":9194529.325955003}
+{"id":"co-btn-srp-v1-jcjd4s","elapsedMs":31730,"exploitability":12.366888046264648,"iteration":100,"maxIterations":3000,"peakRssBytes":1990475776,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-jcjd4s","elapsedMs":61624,"exploitability":2.1315841674804688,"iteration":200,"maxIterations":3000,"peakRssBytes":1990524928,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-jcjd4s","iterations":210,"pctPot":0.2952424562894381,"elapsedMs":65494.98116600001,"peakRssBytes":2053521408}
+{"starting":"generate-co-btn-srp-v1-7c6c5d","chargedNativeMs":9261504.710746003}
+{"id":"co-btn-srp-v1-7c6c5d","elapsedMs":32132,"exploitability":3.63470458984375,"iteration":100,"maxIterations":3000,"peakRssBytes":2084634624,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-7c6c5d","elapsedMs":63980,"exploitability":3.2046432495117188,"iteration":200,"maxIterations":3000,"peakRssBytes":2085175296,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"generate-co-btn-srp-v1-7c6c5d","iterations":260,"pctPot":0.2820481520432692,"elapsedMs":84610.88158300001,"peakRssBytes":2151432192}
+{"starting":"reproduce-co-btn-srp-v1-ks7h2d","chargedNativeMs":9347205.343246004}
+{"id":"co-btn-srp-v1-ks7h2d","elapsedMs":51304,"exploitability":4.654501438140869,"iteration":100,"maxIterations":3000,"peakRssBytes":3276292096,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-ks7h2d","iterations":170,"pctPot":0.2980935573577881,"elapsedMs":87400.06737500004,"peakRssBytes":3373891584}
+{"starting":"reproduce-co-btn-srp-v1-ad8c3s","chargedNativeMs":9436026.332329003}
+{"id":"co-btn-srp-v1-ad8c3s","elapsedMs":50280,"exploitability":4.026461601257324,"iteration":100,"maxIterations":3000,"peakRssBytes":3171483648,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-ad8c3s","iterations":160,"pctPot":0.2996826171875,"elapsedMs":81112.73587500001,"peakRssBytes":3264593920}
+{"starting":"reproduce-co-btn-srp-v1-khqdtc","chargedNativeMs":9518359.760454003}
+{"id":"co-btn-srp-v1-khqdtc","elapsedMs":47257,"exploitability":2.8286056518554688,"iteration":100,"maxIterations":3000,"peakRssBytes":3018915840,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-khqdtc","iterations":130,"pctPot":0.27545947294968826,"elapsedMs":62168.54879199993,"peakRssBytes":3110354944}
+{"starting":"reproduce-co-btn-srp-v1-9h8h6c","chargedNativeMs":9581615.386788003}
+{"id":"co-btn-srp-v1-9h8h6c","elapsedMs":32007,"exploitability":4.253349304199219,"iteration":100,"maxIterations":3000,"peakRssBytes":2047148032,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-9h8h6c","iterations":140,"pctPot":0.29406151404747594,"elapsedMs":45381.402082999935,"peakRssBytes":2112225280}
+{"starting":"reproduce-co-btn-srp-v1-qs9s4s","chargedNativeMs":9628339.633829003}
+{"id":"co-btn-srp-v1-qs9s4s","elapsedMs":13951,"exploitability":4.358301162719727,"iteration":100,"maxIterations":3000,"peakRssBytes":944144384,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-qs9s4s","iterations":170,"pctPot":0.2739387658926157,"elapsedMs":23892.80504200002,"peakRssBytes":980451328}
+{"starting":"reproduce-co-btn-srp-v1-td7d3c","chargedNativeMs":9653405.562662004}
+{"id":"co-btn-srp-v1-td7d3c","elapsedMs":31287,"exploitability":4.552926540374756,"iteration":100,"maxIterations":3000,"peakRssBytes":2029568000,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-td7d3c","iterations":160,"pctPot":0.29541510802048904,"elapsedMs":50687.26258400001,"peakRssBytes":2094907392}
+{"starting":"reproduce-co-btn-srp-v1-8s8d3h","chargedNativeMs":9705543.821746003}
+{"id":"co-btn-srp-v1-8s8d3h","elapsedMs":34470,"exploitability":5.712830543518066,"iteration":100,"maxIterations":3000,"peakRssBytes":2140913664,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-8s8d3h","elapsedMs":68588,"exploitability":3.085923671722412,"iteration":200,"maxIterations":3000,"peakRssBytes":2141028352,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-8s8d3h","iterations":240,"pctPot":0.28888152195857125,"elapsedMs":83170.58533300005,"peakRssBytes":2209005568}
+{"starting":"reproduce-co-btn-srp-v1-5h4c2d","chargedNativeMs":9790358.743871003}
+{"id":"co-btn-srp-v1-5h4c2d","elapsedMs":53946,"exploitability":3.747882843017578,"iteration":100,"maxIterations":3000,"peakRssBytes":3460923392,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-5h4c2d","iterations":150,"pctPot":0.26330272967998797,"elapsedMs":82824.25854199997,"peakRssBytes":3563126784}
+{"starting":"reproduce-co-btn-srp-v1-tc9d7s","chargedNativeMs":9874536.300163003}
+{"id":"co-btn-srp-v1-tc9d7s","elapsedMs":53431,"exploitability":5.208481788635254,"iteration":100,"maxIterations":3000,"peakRssBytes":3264790528,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-tc9d7s","elapsedMs":104480,"exploitability":1.7811565399169922,"iteration":200,"maxIterations":3000,"peakRssBytes":3264790528,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-tc9d7s","iterations":200,"pctPot":0.27402408306415266,"elapsedMs":105771.41283299995,"peakRssBytes":3362013184}
+{"starting":"reproduce-co-btn-srp-v1-ahth5c","chargedNativeMs":9981722.760204002}
+{"id":"co-btn-srp-v1-ahth5c","elapsedMs":31792,"exploitability":3.6952269077301025,"iteration":100,"maxIterations":3000,"peakRssBytes":1882587136,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-ahth5c","iterations":190,"pctPot":0.2800442989055927,"elapsedMs":60727.311042000074,"peakRssBytes":1942913024}
+{"starting":"reproduce-co-btn-srp-v1-jcjd4s","chargedNativeMs":10043787.772454003}
+{"id":"co-btn-srp-v1-jcjd4s","elapsedMs":32784,"exploitability":12.366888046264648,"iteration":100,"maxIterations":3000,"peakRssBytes":1990541312,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-jcjd4s","elapsedMs":64770,"exploitability":2.1315841674804688,"iteration":200,"maxIterations":3000,"peakRssBytes":1990918144,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-jcjd4s","iterations":210,"pctPot":0.2952424562894381,"elapsedMs":68851.3381670001,"peakRssBytes":2054045696}
+{"starting":"reproduce-co-btn-srp-v1-7c6c5d","chargedNativeMs":10114141.704496004}
+{"id":"co-btn-srp-v1-7c6c5d","elapsedMs":32782,"exploitability":3.63470458984375,"iteration":100,"maxIterations":3000,"peakRssBytes":2084667392,"stage":"solving","target":1.95,"type":"progress"}
+{"id":"co-btn-srp-v1-7c6c5d","elapsedMs":64688,"exploitability":3.2046432495117188,"iteration":200,"maxIterations":3000,"peakRssBytes":2084798464,"stage":"solving","target":1.95,"type":"progress"}
+{"finished":"reproduce-co-btn-srp-v1-7c6c5d","iterations":260,"pctPot":0.2820481520432692,"elapsedMs":84605.55799999996,"peakRssBytes":2150989824}
+AssertionError [ERR_ASSERTION]: 0.2980935573577881 differs from 0.2980935538461538
+    at near (/Users/kathrynswint/Documents/poker-face/src/lib/solver/bridge/formations/full-reach-library-v2.ts:23:65)
+    at <anonymous> (/Users/kathrynswint/Documents/poker-face/src/lib/solver/bridge/formations/full-reach-library-v2.ts:121:97)
+    at Array.map (<anonymous>)
+    at auditFullReachLibrary (/Users/kathrynswint/Documents/poker-face/src/lib/solver/bridge/formations/full-reach-library-v2.ts:114:27)
+    at publish (/Users/kathrynswint/Documents/poker-face/scripts/build-full-reach-v2.ts:150:3)
+    at run (/Users/kathrynswint/Documents/poker-face/scripts/build-full-reach-v2.ts:130:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async main (/Users/kathrynswint/Documents/poker-face/scripts/build-full-reach-v2.ts:192:9) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

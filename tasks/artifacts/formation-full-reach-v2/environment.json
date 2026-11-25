@@ -1,0 +1,30 @@
+{
+  "baseCommit": "e0bc097efb541deb36b28c43316bf438170a5504",
+  "identity": {
+    "binaryHash": "7cbe699d9b3197606a80a4c8500a37cfdd9685d309d5120ab5bc57a69d5226c0",
+    "corpusHash": "8b37ece802208fbc45b6ca05681e92309c8639114fe554e43a06236398ae0b79",
+    "diagnosticHash": "9273095caa592b0e470dccd561fedf3a0d82e28920fa1e7d2d199964b8d4ed9a",
+    "preflightHash": "1b786425696cff4c4a146279de169fc19e71d53f7a165033c7daddeb19bf3c70",
+    "priorChargedNativeMs": 8864077.594955001,
+    "scanHash": "cf0c491a916133fbea9ef9687b28dc2b9e9e40debe6f2a22833e56714c62f420",
+    "sourceHashes": {
+      "scripts/build-full-reach-v2.ts": "4b2b535499dff9a201f52f25f5744292490bb05b021a6bd847c6507c97ccf0fd",
+      "scripts/measure-full-reach-v2.ts": "87780171dbf4287cf3ac9ddcfa66087e448cdad1ec98092a683e139fc8bc5e30",
+      "src/lib/solver/bridge/formations/full-reach-library-v2.ts": "d83bcb4fff5fe660f778ab694be9e02f95bec4612f0bd4f1b1f41686ee1c2ff8",
+      "src/lib/solver/bridge/formations/full-reach-v2.ts": "3c9cacfdc9d6c00a450261e35798558fd1ecb14b79a702e9a5fcb001f32d44fa",
+      "src/lib/solver/bridge/formations/portable-compression.ts": "606031e3a206e7b468e473890f22b4808119fe959c130878fdfe5014a1453178",
+      "src/lib/solver/preflop-v2/corpus.ts": "dce0f0242797dc8d1e220ed977420a8c0a6072562766c46fb4e06327226e3cab",
+      "src/lib/solver/toy/artifact.ts": "b1e1cb99ee9e33b24b4e813270a5d7ede4a4f5ab81d63471790ed217276aa21a",
+      "tasks/artifacts/formation-full-reach-v2/contract.md": "b7aec1d0cc230b8fd79358a9bcda0acbdc7e8e0523a2e40b7bbcced12285afec"
+    }
+  },
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "node": "v24.10.0",
+    "osRelease": "25.4.0",
+    "platform": "darwin",
+    "ramBytes": 34359738368
+  },
+  "measuredAt": "2026-11-25T03:59:19.912Z",
+  "payloadHash": "051b34a720d01652f8a16b7e9428137f44cf8278ce5133fe7a2a959506e39736"
+}

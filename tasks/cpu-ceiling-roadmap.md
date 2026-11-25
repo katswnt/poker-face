@@ -5,6 +5,14 @@ current run; steps 10–14 are specified here so their contracts are not re-inve
 
 ## Current continuation — 2026-11-22
 
+**2026-11-24 v2 completion:** the [full-reach CO–BTN pack](formation-full-reach-v2-spec.md)
+passes all twelve roots, every saved-value gate and exact fresh reproduction. Step 13
+has all three complete offline packs (36 roots). The new format retains every positive
+native reach; a preserved metadata correction restores float32 quality values without
+changing policies or tolerances. PF4 and the external MCCFR prerequisite remain blocked.
+Production and both v1 packs are unchanged. The following diagnostic and November 22
+entries are historical; see the [current handoff](codex-handoff-2026-11-24.md).
+
 **2026-11-24 follow-up:** the [CO–BTN export diagnosis](formation-export-diagnostic-v1-spec.md)
 now reproduces the original 14 failures twice and isolates reach quantization after card
 removal as their cause. Unrounded values agree within 0.000812 chip; rounding reach alone

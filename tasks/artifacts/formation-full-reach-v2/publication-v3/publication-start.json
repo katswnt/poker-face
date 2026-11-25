@@ -1,0 +1,22 @@
+{
+  "chargedNativeMs": 10199792.660663003,
+  "experimentHash": "7e47665f5d71938e12e8adeef7fbcb393789c6d14ff4fc34f0f1446cbf36f1e8",
+  "manifestHash": "3932520ed7c2608c80b6914480a4dcb3b773435ca1a9cfadffa5102c9ebcbfa8",
+  "payloadHash": "a10dba20935ca91abb46d4e7e9ef64ca728fad64575df711e87a8bf04d598322",
+  "publication": {
+    "change": "restore native float32 exploitability chip metadata; all policy bytes unchanged",
+    "originalManifestHash": "2d6394b2d9bec0ebe4a0bf39e93eea476bf7aacaea40490d03756fc95a4b945e",
+    "revision": 3,
+    "sourceHashes": {
+      "scripts/audit-full-reach-v2.ts": "1490a810d2ab47de0efef1b8b5a3cfa3f7e2d3df5f53cb98c6917941c1f1a745",
+      "scripts/publish-full-reach-v3.ts": "3a0fb5cfd60ddec144b6fe06ccfd5268059330fe8438f6d7ad3fdc2f7499af7b",
+      "tasks/artifacts/formation-full-reach-v2/publication-v3/contract.md": "ae4e789616bb8e5e3b1a7910a8434e2aa315d5e1e1d82deac5e1ebad9c7310f4",
+      "tasks/artifacts/formation-full-reach-v2/publication-v3/failure.json": "b038cf373b0edd99a78a3fa4d2aa35e107e9bf4ba7b280c01a52cb9d2fb39bc2",
+      "tasks/artifacts/formation-full-reach-v2/publication-v3/original-audit-source.txt": "52f9157c7cef20f820e71ae76d04e0d7fba14303ef10ce6c0f27d3f565def6cd",
+      "tasks/artifacts/formation-full-reach-v2/publication-v3/original-manifest.json": "2d6394b2d9bec0ebe4a0bf39e93eea476bf7aacaea40490d03756fc95a4b945e",
+      "tasks/artifacts/formation-full-reach-v2/publication-v3/original-run.log": "c59515a4c677ddd1b8e7e128c715e8280cd2e2b7909abea839703aad8be5825d"
+    }
+  },
+  "unchangedDataHashesHash": "fc9390d9579a683b05583364b21de749e08075c1dbfc736f773c03e8c4d485b8",
+  "unchangedFiles": 253
+}

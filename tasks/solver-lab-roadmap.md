@@ -1,5 +1,12 @@
 # Explainable solver lab — guiding plan
 
+**2026-11-24 v2 completion:** all twelve CO–BTN roots pass the original numerical,
+byte and fresh-reproduction gates in a [separate full-reach format](formation-full-reach-v2-spec.md).
+CPU step 13 has three complete offline packs and 36 roots. The original failed export
+and a subsequent float32 metadata publication correction are preserved. No native policy,
+tolerance, preflop range or production consumer changed. Preflop validation/PF4 and the
+external MCCFR prerequisite remain blocked; the entries below preserve earlier evidence.
+
 **2026-11-24 follow-up:** two identical captured CO–BTN exports isolate the saved-value
 failure to rounding tiny range weights after blockers remove the dominant hands.
 Full-precision disagreement is below 0.000812 chip; saved-data disagreement remains up

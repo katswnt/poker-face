@@ -1,0 +1,9 @@
+{
+  "phase": "publication",
+  "nativeExperimentComplete": true,
+  "published": false,
+  "experimentHash": "7e47665f5d71938e12e8adeef7fbcb393789c6d14ff4fc34f0f1446cbf36f1e8",
+  "originalManifestSha256": "2d6394b2d9bec0ebe4a0bf39e93eea476bf7aacaea40490d03756fc95a4b945e",
+  "error": "0.2980935573577881 differs from 0.2980935538461538 at fixed 1e-9 consistency tolerance",
+  "cause": "Native chips is f32 serialized as a shortest round-tripping decimal; pctPot uses f64::from(the same f32). JavaScript parsed the decimal as f64 without restoring f32."
+}

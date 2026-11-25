@@ -25,6 +25,9 @@ jobs:
       - name: Replay the rejected CO-BTN export diagnosis without publishing its policy
         run: npm run audit:bridge:formation-export
 
+      - name: Audit CO-BTN full-reach v2 evidence and published data
+        run: npm run audit:bridge:formations:v2
+
       - name: Lint
         run: npm run lint
 

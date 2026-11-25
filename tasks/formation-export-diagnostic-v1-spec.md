@@ -153,3 +153,13 @@ The final full suite runs alone, after these setup corrections; final commit/CI 
 are reported at release closure. All attempts remain under the ignored diagnostic work
 directory. Type-check, lint, prepared production build, diagnostic replay, formation-pack
 audit and original B4-library audit pass on the isolated staged source.
+
+Release closed as `e0bc097efb541deb36b28c43316bf438170a5504`, verified tree
+`424222ab336c2c0434da858dc06ba4f1a3c40628`. The final isolated suite passes
+**1,185/1,185**, zero skips, in 150,069.484958 ms. All eight jobs in
+[CI 45537891627](https://github.com/katswnt/poker-face/actions/runs/45537891627) are green.
+Hosted verify passes 1,092 unit tests with 93 existing native-environment skips and
+104 browser checks with 17 saved-only skips. The WASM job separately passes 34 live,
+48 drill and 55 play/review checks, with four existing non-Chromium zoom skips.
+No hosted test retried. The separately frozen [v2 continuation](formation-full-reach-v2-spec.md)
+starts only after all eight jobs passed; it preserves this failed v1 observation.
