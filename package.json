@@ -53,6 +53,8 @@
     "generate:river:benchmarks": "node --import tsx scripts/audit-river-exchange.ts --write",
     "profile:river:factorized": "node --import tsx scripts/profile-factorized-boundary.ts",
     "audit:robopoker:r0": "node --import tsx scripts/audit-robopoker-r0.ts --check",
+    "audit:robopoker:r0:v2": "node --import tsx scripts/audit-robopoker-r0-v2.ts --check",
+    "reproduce:robopoker:r0:v2": "cargo build --release --locked --manifest-path native/robopoker-referee-v2/Cargo.toml && node --import tsx scripts/audit-robopoker-r0-v2.ts --reproduce",
     "reproduce:robopoker:r0": "cargo build --release --locked --manifest-path native/robopoker-referee/Cargo.toml && node --import tsx scripts/audit-robopoker-r0.ts --reproduce",
     "audit:multiway-river": "node --import tsx scripts/solve-multiway-river.ts --check",
     "audit:multiway-raised-river": "node --import tsx scripts/solve-multiway-raised-river.ts --check",

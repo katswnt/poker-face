@@ -1,5 +1,13 @@
 # Explainable solver lab — guiding plan
 
+**2026-11-25 R0 v2:** the [separate local scorer repair](robopoker-r0-v2-results.md)
+passes all full-tree prerequisites. The fixed 100,000-epoch ExternalSampling run
+then fails convergence: maximum unilateral gain 0.7243983295 chips against 0.45.
+Scoring agreement, runtime and memory pass. Later modes and turn/river remain
+unattempted; PF4 remains independently blocked. All three formation packs remain
+complete. See the [current handoff](codex-handoff-2026-11-25.md); earlier dated
+entries below are preserved historical observations, not current gate status.
+
 **2026-11-24 v2 completion:** all twelve CO–BTN roots pass the original numerical,
 byte and fresh-reproduction gates in a [separate full-reach format](formation-full-reach-v2-spec.md).
 CPU step 13 has three complete offline packs and 36 roots. The original failed export

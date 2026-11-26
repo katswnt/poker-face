@@ -1,0 +1,2777 @@
+{
+  "version": 2,
+  "freezeHash": "260b81a760bfe21685c690619bb3ee912dc9f0cd777bc6e7ffb32e64f175baf3",
+  "status": "blocked-trained-convergence",
+  "attempts": [
+    {
+      "file": "00-uniform-0.json",
+      "hash": "5a4a25188737043a6c173def0c115d776e8b3d7ee12560f871ea442b052daa85",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            10,
+            -0.25,
+            -0.25
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.729958,
+          "epochs": 0,
+          "fixtureHash": "7fc785a08f6a0ab89cb09f9b0db933c4a0e806a8e8410f884a4126e900bb551e",
+          "fullNodeCount": 5,
+          "id": "r0-sequential-response-witness-v1",
+          "mode": "uniform",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            10,
+            -0.25,
+            -0.25
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 3.1666666666666665,
+          "rawValues": [
+            0.5,
+            -0.25,
+            -0.25
+          ],
+          "score": 3.1666666666666665,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            0.5,
+            -0.25,
+            -0.25
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              0.5,
+              -0.25,
+              -0.25
+            ],
+            "bestResponses": [
+              10,
+              -0.25,
+              -0.25
+            ],
+            "unilateralGains": [
+              9.5,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.1666666666666665
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 9.5,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "01-uniform-1.json",
+      "hash": "d851f1846ab7e64655cab16081b86dbeb0a664cfbfb41861afb6acf401552f0b",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            10,
+            -0.25,
+            -0.25
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.242417,
+          "epochs": 0,
+          "fixtureHash": "7fc785a08f6a0ab89cb09f9b0db933c4a0e806a8e8410f884a4126e900bb551e",
+          "fullNodeCount": 5,
+          "id": "r0-sequential-response-witness-v1",
+          "mode": "uniform",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            10,
+            -0.25,
+            -0.25
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 3.1666666666666665,
+          "rawValues": [
+            0.5,
+            -0.25,
+            -0.25
+          ],
+          "score": 3.1666666666666665,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            0.5,
+            -0.25,
+            -0.25
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              0.5,
+              -0.25,
+              -0.25
+            ],
+            "bestResponses": [
+              10,
+              -0.25,
+              -0.25
+            ],
+            "unilateralGains": [
+              9.5,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.1666666666666665
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 9.5,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "02-uniform-0.json",
+      "hash": "fe5169e2bc206b3632e6bca2d463832cadea3c8510a6bf1bd2da2736b197e8de",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            31.62196679437904,
+            23.947956577266858,
+            -1.2515964240101285
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 95.99808399999999,
+          "epochs": 0,
+          "fixtureHash": "472c36794c2ed0d267df57ebe88e361d8e12b03c2d874a58c8e1a86a1b96112b",
+          "fullNodeCount": 58726,
+          "id": "three-player-river-v1",
+          "mode": "uniform",
+          "peakRssBytes": 12517376,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            31.62196679437904,
+            23.947956577266858,
+            -1.2515964240101285
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 18.106108982545255,
+          "rawValues": [
+            13.51333014048409,
+            3.298611111111236,
+            -16.811941251596448
+          ],
+          "score": 18.106108982545255,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            13.51333014048409,
+            3.298611111111236,
+            -16.811941251596448
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              13.513330140485307,
+              3.298611111111117,
+              -16.81194125159643
+            ],
+            "bestResponses": [
+              31.6219667943806,
+              23.947956577266922,
+              -1.2515964240102222
+            ],
+            "unilateralGains": [
+              18.108636653895296,
+              20.649345466155804,
+              15.560344827586208
+            ],
+            "nashConvPerPlayer": 18.106108982545766
+          },
+          "scoreDifference": 5.115907697472721e-13,
+          "maximumValueDifference": 1.2168044349891716e-12,
+          "maximumResponseDifference": 1.55964130499342e-12,
+          "maximumRawValueDifference": 1.2168044349891716e-12,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 20.649345466155804,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "03-uniform-1.json",
+      "hash": "aebb300054f8fde4a9afe6537c143c1fade1f115e84cbd6502bbec407289e8bb",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            31.62196679437904,
+            23.947956577266858,
+            -1.2515964240101285
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 80.23375,
+          "epochs": 0,
+          "fixtureHash": "472c36794c2ed0d267df57ebe88e361d8e12b03c2d874a58c8e1a86a1b96112b",
+          "fullNodeCount": 58726,
+          "id": "three-player-river-v1",
+          "mode": "uniform",
+          "peakRssBytes": 12533760,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            31.62196679437904,
+            23.947956577266858,
+            -1.2515964240101285
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 18.106108982545255,
+          "rawValues": [
+            13.51333014048409,
+            3.298611111111236,
+            -16.811941251596448
+          ],
+          "score": 18.106108982545255,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            13.51333014048409,
+            3.298611111111236,
+            -16.811941251596448
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              13.513330140485307,
+              3.298611111111117,
+              -16.81194125159643
+            ],
+            "bestResponses": [
+              31.6219667943806,
+              23.947956577266922,
+              -1.2515964240102222
+            ],
+            "unilateralGains": [
+              18.108636653895296,
+              20.649345466155804,
+              15.560344827586208
+            ],
+            "nashConvPerPlayer": 18.106108982545766
+          },
+          "scoreDifference": 5.115907697472721e-13,
+          "maximumValueDifference": 1.2168044349891716e-12,
+          "maximumResponseDifference": 1.55964130499342e-12,
+          "maximumRawValueDifference": 1.2168044349891716e-12,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 20.649345466155804,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "04-uniform-0.json",
+      "hash": "0edc88d270e46ccacca02515f3c9c0b86c6ecc72ea73cd5fb9377263d6290747",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            17.5,
+            -3.5,
+            -3.5
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.08533400000000001,
+          "epochs": 0,
+          "fixtureHash": "7f17f79aa4506fea8137570fbe1eed9f9ea135be62537534f9a08f8b70cbed9f",
+          "fullNodeCount": 21,
+          "id": "r0-v2-weighted-hidden-sequential",
+          "mode": "uniform",
+          "peakRssBytes": 1818624,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            17.5,
+            -3.5,
+            -3.5
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 3.5,
+          "rawValues": [
+            7,
+            -3.5,
+            -3.5
+          ],
+          "score": 3.5,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            7,
+            -3.5,
+            -3.5
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              7,
+              -3.5,
+              -3.5
+            ],
+            "bestResponses": [
+              17.5,
+              -3.5,
+              -3.5
+            ],
+            "unilateralGains": [
+              10.5,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.5
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 10.5,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "05-uniform-1.json",
+      "hash": "0357f3e5f09b3171ea78879dce747c9aa99aab06156f0e62d979b5ad8845ca92",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            17.5,
+            -3.5,
+            -3.5
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.08887500000000001,
+          "epochs": 0,
+          "fixtureHash": "7f17f79aa4506fea8137570fbe1eed9f9ea135be62537534f9a08f8b70cbed9f",
+          "fullNodeCount": 21,
+          "id": "r0-v2-weighted-hidden-sequential",
+          "mode": "uniform",
+          "peakRssBytes": 1835008,
+          "profile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            17.5,
+            -3.5,
+            -3.5
+          ],
+          "rawProfile": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 3.5,
+          "rawValues": [
+            7,
+            -3.5,
+            -3.5
+          ],
+          "score": 3.5,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            7,
+            -3.5,
+            -3.5
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              7,
+              -3.5,
+              -3.5
+            ],
+            "bestResponses": [
+              17.5,
+              -3.5,
+              -3.5
+            ],
+            "unilateralGains": [
+              10.5,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.5
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 10.5,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "06-profile-0.json",
+      "hash": "53c26a923a7ba03445bf4ba51e34933ac54628e4556fd5f107b3037bae52dff2",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            2,
+            1.25,
+            -1
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.065542,
+          "epochs": 0,
+          "fixtureHash": "4cbdbe312841f3b7e69eaa1e15750fdec9dfd4b9d77fbf719651d6cfdb885bce",
+          "fullNodeCount": 7,
+          "id": "r0-v2-zero-opponent-reach",
+          "mode": "profile",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              1,
+              0
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            2,
+            1.25,
+            -1
+          ],
+          "rawProfile": [
+            [
+              1,
+              0
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 0.75,
+          "rawValues": [
+            2,
+            -1,
+            -1
+          ],
+          "score": 0.75,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            2,
+            -1,
+            -1
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              2,
+              -1,
+              -1
+            ],
+            "bestResponses": [
+              2,
+              1.25,
+              -1
+            ],
+            "unilateralGains": [
+              0,
+              2.25,
+              0
+            ],
+            "nashConvPerPlayer": 0.75
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 2.25,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "07-profile-1.json",
+      "hash": "ed237c4ff295617fedf59f0ca4ba082e3b54dcd2ea42734591720f05ce62f758",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            2,
+            1.25,
+            -1
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.06191599999999999,
+          "epochs": 0,
+          "fixtureHash": "4cbdbe312841f3b7e69eaa1e15750fdec9dfd4b9d77fbf719651d6cfdb885bce",
+          "fullNodeCount": 7,
+          "id": "r0-v2-zero-opponent-reach",
+          "mode": "profile",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              1,
+              0
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawBestResponses": [
+            2,
+            1.25,
+            -1
+          ],
+          "rawProfile": [
+            [
+              1,
+              0
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "rawScore": 0.75,
+          "rawValues": [
+            2,
+            -1,
+            -1
+          ],
+          "score": 0.75,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            2,
+            -1,
+            -1
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              2,
+              -1,
+              -1
+            ],
+            "bestResponses": [
+              2,
+              1.25,
+              -1
+            ],
+            "unilateralGains": [
+              0,
+              2.25,
+              0
+            ],
+            "nashConvPerPlayer": 0.75
+          },
+          "scoreDifference": 0,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0,
+          "normalizationResponseDelta": 0,
+          "maximumUnilateralGain": 2.25,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "08-uniform-0.json",
+      "hash": "79e53f3762e8e6030c5e52c7dfe67fa0ad23cb0bc236a81765e7f93c0f82964e",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            10,
+            -0.16666666666666674,
+            -0.16666666666666674
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.044334,
+          "epochs": 0,
+          "fixtureHash": "39f45c4fa6e0d2dbe893a8bc7fcef2bc7c18791abdc45cd85cc6d9eac8338306",
+          "fullNodeCount": 4,
+          "id": "r0-v2-thirds-normalization",
+          "mode": "uniform",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              0.3333333333333333,
+              0.3333333333333333,
+              0.3333333333333333
+            ]
+          ],
+          "rawBestResponses": [
+            10,
+            -0.1666666716337204,
+            -0.1666666716337204
+          ],
+          "rawProfile": [
+            [
+              0.3333333432674408,
+              0.3333333432674408,
+              0.3333333432674408
+            ]
+          ],
+          "rawScore": 3.222222218910853,
+          "rawValues": [
+            0.3333333432674408,
+            -0.1666666716337204,
+            -0.1666666716337204
+          ],
+          "score": 3.2222222222222228,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            0.3333333333333335,
+            -0.16666666666666674,
+            -0.16666666666666674
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              0.3333333333333335,
+              -0.16666666666666674,
+              -0.16666666666666674
+            ],
+            "bestResponses": [
+              10,
+              -0.16666666666666674,
+              -0.16666666666666674
+            ],
+            "unilateralGains": [
+              9.666666666666666,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.222222222222222
+          },
+          "scoreDifference": 8.881784197001252e-16,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 9.934107314535368e-9,
+          "normalizationResponseDelta": 4.967053657267684e-9,
+          "maximumUnilateralGain": 9.666666666666666,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "09-uniform-1.json",
+      "hash": "a5c6b24c30a9c1465e488a47e13ac20967e3e35512775f2572a8bc2a18cd1a9b",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            10,
+            -0.16666666666666674,
+            -0.16666666666666674
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 0.045042,
+          "epochs": 0,
+          "fixtureHash": "39f45c4fa6e0d2dbe893a8bc7fcef2bc7c18791abdc45cd85cc6d9eac8338306",
+          "fullNodeCount": 4,
+          "id": "r0-v2-thirds-normalization",
+          "mode": "uniform",
+          "peakRssBytes": 1802240,
+          "profile": [
+            [
+              0.3333333333333333,
+              0.3333333333333333,
+              0.3333333333333333
+            ]
+          ],
+          "rawBestResponses": [
+            10,
+            -0.1666666716337204,
+            -0.1666666716337204
+          ],
+          "rawProfile": [
+            [
+              0.3333333432674408,
+              0.3333333432674408,
+              0.3333333432674408
+            ]
+          ],
+          "rawScore": 3.222222218910853,
+          "rawValues": [
+            0.3333333432674408,
+            -0.1666666716337204,
+            -0.1666666716337204
+          ],
+          "score": 3.2222222222222228,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            0.3333333333333335,
+            -0.16666666666666674,
+            -0.16666666666666674
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              0.3333333333333335,
+              -0.16666666666666674,
+              -0.16666666666666674
+            ],
+            "bestResponses": [
+              10,
+              -0.16666666666666674,
+              -0.16666666666666674
+            ],
+            "unilateralGains": [
+              9.666666666666666,
+              0,
+              0
+            ],
+            "nashConvPerPlayer": 3.222222222222222
+          },
+          "scoreDifference": 8.881784197001252e-16,
+          "maximumValueDifference": 0,
+          "maximumResponseDifference": 0,
+          "maximumRawValueDifference": 0,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 9.934107314535368e-9,
+          "normalizationResponseDelta": 4.967053657267684e-9,
+          "maximumUnilateralGain": 9.666666666666666,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": true,
+          "passed": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "file": "10-external-0.json",
+      "hash": "797a1427c4b01d1bde322d3cbfa05f9579b975ee5d0e5258efa499df0aad3401",
+      "outcome": {
+        "observation": {
+          "bestResponses": [
+            10.822829667887992,
+            3.621497440854719,
+            -13.086981613310526
+          ],
+          "crateVersion": "1.2.0-poker-face.1",
+          "elapsedMs": 1836.765583,
+          "epochs": 100000,
+          "fixtureHash": "472c36794c2ed0d267df57ebe88e361d8e12b03c2d874a58c8e1a86a1b96112b",
+          "fullNodeCount": 58726,
+          "id": "three-player-river-v1",
+          "mode": "external",
+          "peakRssBytes": 12943360,
+          "profile": [
+            [
+              0.9993625011204808,
+              0.0006374988795192258
+            ],
+            [
+              0.6279638000715911,
+              0.37203619992840886
+            ],
+            [
+              0.9999060308430954,
+              0.00009396915690466024
+            ],
+            [
+              0.999996968261052,
+              0.000003031738947977508
+            ],
+            [
+              0.00029528221338886513,
+              0.9997047177866112
+            ],
+            [
+              0.9613731444649293,
+              0.03862685553507072
+            ],
+            [
+              0.005947947856661549,
+              0.9940520521433385
+            ],
+            [
+              0.00006839564074941248,
+              0.9999316043592505
+            ],
+            [
+              5.1210300430425076e-8,
+              0.9999999487896996
+            ],
+            [
+              0.5794352889060974,
+              0.4205647110939026
+            ],
+            [
+              0.000006738731402153654,
+              0.9999932612685979
+            ],
+            [
+              0.0000010512895469795008,
+              0.999998948710453
+            ],
+            [
+              0.9859679148482846,
+              0.014032085151715402
+            ],
+            [
+              0.773603545046064,
+              0.22639645495393604
+            ],
+            [
+              0.9902662917328496,
+              0.009733708267150372
+            ],
+            [
+              1,
+              8.619162646307658e-40
+            ],
+            [
+              0.1250944267944332,
+              0.8749055732055668
+            ],
+            [
+              0.9958420973348578,
+              0.004157902665142151
+            ],
+            [
+              0.832879900932312,
+              0.167120099067688
+            ],
+            [
+              0.9999965861996418,
+              0.0000034138003581427967
+            ],
+            [
+              8.121247855783856e-7,
+              0.9999991878752145
+            ],
+            [
+              0.015177815700238476,
+              0.9848221842997615
+            ],
+            [
+              8.570250235984479e-7,
+              0.9999991429749764
+            ],
+            [
+              0.000011919639306963334,
+              0.9999880803606931
+            ],
+            [
+              0.9999950984786246,
+              0.000004901521375448316
+            ],
+            [
+              0.18409351063053342,
+              0.8159064893694666
+            ],
+            [
+              0.9999999734728628,
+              2.6527137116009487e-8
+            ],
+            [
+              0.9999289706743039,
+              0.00007102932569619035
+            ],
+            [
+              0.000021801796104876364,
+              0.9999781982038951
+            ],
+            [
+              0.5112592730301402,
+              0.4887407269698598
+            ],
+            [
+              0.02694725446559817,
+              0.9730527455344018
+            ],
+            [
+              0.18158650398254395,
+              0.818413496017456
+            ],
+            [
+              0.668246547333999,
+              0.3317534526660009
+            ],
+            [
+              0.17004079640154818,
+              0.8299592035984519
+            ],
+            [
+              0.002510317347976121,
+              0.9974896826520239
+            ],
+            [
+              0.8859092327173513,
+              0.11409076728264865
+            ],
+            [
+              0.000007460039271259658,
+              0.9999925399607288
+            ],
+            [
+              0.0017444499521270453,
+              0.9982555500478729
+            ],
+            [
+              0.0000027845747982419552,
+              0.9999972154252018
+            ],
+            [
+              0.00013094392586652506,
+              0.9998690560741335
+            ],
+            [
+              0.34770681546371074,
+              0.6522931845362893
+            ],
+            [
+              0.856752872467041,
+              0.14324712753295898
+            ],
+            [
+              0.8163840053024292,
+              0.18361599469757087
+            ],
+            [
+              0.9952153049088555,
+              0.004784695091144575
+            ],
+            [
+              0.00041236567051733543,
+              0.9995876343294826
+            ],
+            [
+              0.41265408434433,
+              0.5873459156556701
+            ],
+            [
+              2.654968882279628e-7,
+              0.9999997345031117
+            ],
+            [
+              0.00027421444794798074,
+              0.999725785552052
+            ],
+            [
+              0.03302875062737612,
+              0.9669712493726239
+            ],
+            [
+              0.8962644338607788,
+              0.10373556613922119
+            ],
+            [
+              0.000001236656790252902,
+              0.9999987633432097
+            ],
+            [
+              0.2758476734161377,
+              0.7241523265838623
+            ],
+            [
+              0.9999839244516688,
+              0.0000160755483311357
+            ],
+            [
+              0.8524244554702112,
+              0.14757554452978885
+            ],
+            [
+              0.9999999904792053,
+              9.52079472855001e-9
+            ],
+            [
+              0.9999995710200885,
+              4.289799114386562e-7
+            ],
+            [
+              0.6096592545509338,
+              0.39034074544906616
+            ],
+            [
+              0.9999557478852141,
+              0.000044252114785889516
+            ],
+            [
+              0.8811664783433164,
+              0.11883352165668361
+            ],
+            [
+              0.9999994263047697,
+              5.736952303766987e-7
+            ],
+            [
+              0.9999930097116041,
+              0.000006990288395933175
+            ],
+            [
+              0.9531652054879325,
+              0.046834794512067554
+            ],
+            [
+              0.9995042777975376,
+              0.0004957222024624598
+            ],
+            [
+              0.9999996472366399,
+              3.527633600861712e-7
+            ],
+            [
+              0.00004968565380176394,
+              0.9999503143461982
+            ],
+            [
+              1.0676272162460112e-7,
+              0.9999998932372783
+            ],
+            [
+              9.027040709705184e-8,
+              0.9999999097295929
+            ],
+            [
+              0.0000016794472054055335,
+              0.9999983205527946
+            ],
+            [
+              0.9999996489252657,
+              3.510747342530351e-7
+            ],
+            [
+              0.9998254173261817,
+              0.00017458267381835607
+            ],
+            [
+              0.9998893363856924,
+              0.00011066361430753033
+            ],
+            [
+              0.9999978865278658,
+              0.000002113472134204352
+            ]
+          ],
+          "rawBestResponses": [
+            10.822830673558531,
+            3.6214966048312887,
+            -13.08698170790025
+          ],
+          "rawProfile": [
+            [
+              0.9993624687194824,
+              0.0006374988588504493
+            ],
+            [
+              0.6279637813568115,
+              0.3720361888408661
+            ],
+            [
+              0.999906063079834,
+              0.00009396915993420407
+            ],
+            [
+              0.9999969005584717,
+              0.0000030317387427203357
+            ],
+            [
+              0.0002952821960207075,
+              0.9997046589851379
+            ],
+            [
+              0.9613730907440186,
+              0.03862685337662697
+            ],
+            [
+              0.0059479475021362305,
+              0.994051992893219
+            ],
+            [
+              0.0000683956386637874,
+              0.9999315738677979
+            ],
+            [
+              5.121030000054816e-8,
+              0.9999999403953552
+            ],
+            [
+              0.5794352889060974,
+              0.4205647110939026
+            ],
+            [
+              0.000006738731826771982,
+              0.9999933242797852
+            ],
+            [
+              0.0000010512895869396743,
+              0.9999989867210388
+            ],
+            [
+              0.9859679341316223,
+              0.014032085426151752
+            ],
+            [
+              0.7736034989356995,
+              0.22639644145965576
+            ],
+            [
+              0.9902663230895996,
+              0.009733708575367928
+            ],
+            [
+              1,
+              8.619162646307658e-40
+            ],
+            [
+              0.1250944286584854,
+              0.8749055862426758
+            ],
+            [
+              0.9958420991897583,
+              0.0041579026728868484
+            ],
+            [
+              0.832879900932312,
+              0.167120099067688
+            ],
+            [
+              0.9999966025352478,
+              0.0000034138004139094846
+            ],
+            [
+              8.121247674353071e-7,
+              0.9999991655349731
+            ],
+            [
+              0.015177816152572632,
+              0.9848222136497498
+            ],
+            [
+              8.570250429329462e-7,
+              0.9999991655349731
+            ],
+            [
+              0.000011919639291591011,
+              0.9999880790710449
+            ],
+            [
+              0.9999950528144836,
+              0.000004901521151623456
+            ],
+            [
+              0.18409350514411926,
+              0.8159064650535583
+            ],
+            [
+              1,
+              2.652713781969851e-8
+            ],
+            [
+              0.9999289512634277,
+              0.00007102932431735098
+            ],
+            [
+              0.000021801795810461044,
+              0.9999781847000122
+            ],
+            [
+              0.5112592577934265,
+              0.4887407124042511
+            ],
+            [
+              0.026947254315018654,
+              0.9730527400970459
+            ],
+            [
+              0.18158650398254395,
+              0.818413496017456
+            ],
+            [
+              0.6682465672492981,
+              0.3317534625530243
+            ],
+            [
+              0.1700407862663269,
+              0.8299591541290283
+            ],
+            [
+              0.0025103173684328794,
+              0.9974896907806396
+            ],
+            [
+              0.8859091997146606,
+              0.11409076303243637
+            ],
+            [
+              0.000007460039341822267,
+              0.9999925494194031
+            ],
+            [
+              0.0017444499535486102,
+              0.9982555508613586
+            ],
+            [
+              0.0000027845749173138756,
+              0.9999972581863403
+            ],
+            [
+              0.00013094392488710582,
+              0.9998690485954285
+            ],
+            [
+              0.34770679473876953,
+              0.6522931456565857
+            ],
+            [
+              0.856752872467041,
+              0.14324712753295898
+            ],
+            [
+              0.8163840174674988,
+              0.18361599743366241
+            ],
+            [
+              0.9952153563499451,
+              0.004784695338457823
+            ],
+            [
+              0.00041236565448343754,
+              0.9995875954627991
+            ],
+            [
+              0.4126540720462799,
+              0.5873458981513977
+            ],
+            [
+              2.654968795923196e-7,
+              0.9999997019767761
+            ],
+            [
+              0.0002742144570220262,
+              0.9997258186340332
+            ],
+            [
+              0.033028751611709595,
+              0.9669712781906128
+            ],
+            [
+              0.8962644338607788,
+              0.10373556613922119
+            ],
+            [
+              0.0000012366567716526333,
+              0.9999987483024597
+            ],
+            [
+              0.2758476734161377,
+              0.7241523265838623
+            ],
+            [
+              0.9999839067459106,
+              0.000016075548046501353
+            ],
+            [
+              0.8524244427680969,
+              0.14757554233074188
+            ],
+            [
+              1,
+              9.520794819195544e-9
+            ],
+            [
+              0.9999995827674866,
+              4.289799164780561e-7
+            ],
+            [
+              0.6096592545509338,
+              0.39034074544906616
+            ],
+            [
+              0.9999557733535767,
+              0.00004425211591296829
+            ],
+            [
+              0.8811665177345276,
+              0.118833526968956
+            ],
+            [
+              0.9999994039535522,
+              5.736952175539045e-7
+            ],
+            [
+              0.9999930262565613,
+              0.000006990288511588005
+            ],
+            [
+              0.9531651735305786,
+              0.0468347929418087
+            ],
+            [
+              0.9995042085647583,
+              0.0004957221681252122
+            ],
+            [
+              0.9999997019767761,
+              3.527633793964924e-7
+            ],
+            [
+              0.00004968565554008819,
+              0.9999503493309021
+            ],
+            [
+              1.0676272665932629e-7,
+              0.9999999403953552
+            ],
+            [
+              9.02704044847269e-8,
+              0.9999998807907104
+            ],
+            [
+              0.0000016794472230685642,
+              0.9999983310699463
+            ],
+            [
+              0.9999996423721313,
+              3.5107473195239436e-7
+            ],
+            [
+              0.9998254179954529,
+              0.00017458267393521965
+            ],
+            [
+              0.9998893141746521,
+              0.00011066361184930429
+            ],
+            [
+              0.9999979138374329,
+              0.000002113472191922483
+            ]
+          ],
+          "rawScore": 0.4524485234965236,
+          "rawValues": [
+            10.290276237646125,
+            2.897098055972695,
+            -13.187374293618669
+          ],
+          "score": 0.4524484984773955,
+          "treeSeed": 20261122,
+          "upstreamCommit": "72360adc7fbc6afa4119be3aefcc0e990d3789a7",
+          "values": [
+            10.290275208517059,
+            2.897099111314609,
+            -13.187374319831692
+          ],
+          "version": 2,
+          "workers": 1
+        },
+        "assessment": {
+          "independent": {
+            "values": [
+              10.29027520851703,
+              2.8970991113146423,
+              -13.187374319831664
+            ],
+            "bestResponses": [
+              10.822829667888152,
+              3.6214974408548875,
+              -13.086981613310765
+            ],
+            "unilateralGains": [
+              0.5325544593711218,
+              0.7243983295402452,
+              0.10039270652089805
+            ],
+            "nashConvPerPlayer": 0.4524484984774217
+          },
+          "scoreDifference": 2.6201263381153694e-14,
+          "maximumValueDifference": 3.3306690738754696e-14,
+          "maximumResponseDifference": 2.398081733190338e-13,
+          "maximumRawValueDifference": 1.9673151996357774e-13,
+          "scoreArithmeticDifference": 0,
+          "rawScoreArithmeticDifference": 0,
+          "normalizationValueDelta": 0.0000010553419138581432,
+          "normalizationResponseDelta": 0.0000010056705388450382,
+          "maximumUnilateralGain": 0.7243983295402452,
+          "fullTreeAgreementPassed": true,
+          "runtimePassed": true,
+          "memoryPassed": true,
+          "convergencePassed": false,
+          "passed": false
+        },
+        "passed": false
+      }
+    }
+  ],
+  "unattempted": [
+    {
+      "id": "three-player-river-v1",
+      "mode": "external",
+      "repeat": 1
+    },
+    {
+      "id": "three-player-river-v1",
+      "mode": "pluribus",
+      "repeat": 0
+    },
+    {
+      "id": "three-player-river-v1",
+      "mode": "pluribus",
+      "repeat": 1
+    }
+  ],
+  "turnRiverAttempted": false,
+  "payloadHash": "3872c489ad7ebe55f488ace1158bfa27184bcde5f64f74cf1ad1aef955931030"
+}

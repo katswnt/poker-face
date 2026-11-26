@@ -1,0 +1,14 @@
+{
+  "step": {
+    "id": "r0-v2-thirds-normalization",
+    "mode": "uniform",
+    "repeat": 1
+  },
+  "startedAt": "2026-11-26T07:06:17.396Z",
+  "wallMs": 2.833291999999801,
+  "status": 0,
+  "signal": null,
+  "error": null,
+  "stdout": "{\"bestResponses\":[10.0,-0.16666666666666674,-0.16666666666666674],\"crateVersion\":\"1.2.0-poker-face.1\",\"elapsedMs\":0.045042,\"epochs\":0,\"fixtureHash\":\"39f45c4fa6e0d2dbe893a8bc7fcef2bc7c18791abdc45cd85cc6d9eac8338306\",\"fullNodeCount\":4,\"id\":\"r0-v2-thirds-normalization\",\"mode\":\"uniform\",\"peakRssBytes\":1802240,\"profile\":[[0.3333333333333333,0.3333333333333333,0.3333333333333333]],\"rawBestResponses\":[10.0,-0.1666666716337204,-0.1666666716337204],\"rawProfile\":[[0.3333333432674408,0.3333333432674408,0.3333333432674408]],\"rawScore\":3.222222218910853,\"rawValues\":[0.3333333432674408,-0.1666666716337204,-0.1666666716337204],\"score\":3.2222222222222228,\"treeSeed\":20261122,\"upstreamCommit\":\"72360adc7fbc6afa4119be3aefcc0e990d3789a7\",\"values\":[0.3333333333333335,-0.16666666666666674,-0.16666666666666674],\"version\":2,\"workers\":1}\n",
+  "stderr": ""
+}

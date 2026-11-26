@@ -83,7 +83,9 @@ Later milestone ownership must be declared in its contract before implementation
 Safeguard: `build/cpu-finish-2026-11-22/` holds the starting HEAD/status, protected hashes
 and copies, the trainer README patch and current checkpoint. Step 10 was verified in the
 clean, copied-dependency checkout `/private/tmp/poker-pf10-exact-jhxtywnl`, subsequently retired after step 11 was preserved and independently verified.
-The later copied-dependency R0 checkout is `/private/tmp/poker-r0-exact-4tdgtvjb`;
+The later copied-dependency R0 checkout `/private/tmp/poker-r0-exact-4tdgtvjb` was
+retired after its unique evidence was preserved. The retained CO–BTN exact checkout is
+`/private/tmp/poker-co-diagnostic-exact-7gbr0dck`;
 the old pf11 candidate was retired after all committed source and 177 native evidence/cache
 files were safeguarded. See the [closing handoff](codex-handoff-2026-11-22.md). Preserve
 `/private/tmp/poker-h1-fixed-90bavjbh` as the exact deployed build until a verified successor.
@@ -95,10 +97,13 @@ files were safeguarded. See the [closing handoff](codex-handoff-2026-11-22.md). 
   The full-deck candidate was not fitted or validated.
 - [ ] Step 12 PF4 shipped **only if** step 11 passes; otherwise record the blocking evidence.
 - [x] Step 12 blocking evidence recorded; PF4 remains unshipped and its ranges unpromoted.
-- [x] Step 13 two complete formation packs landed, exact checks and all eight CI jobs green;
-  CO–BTN withheld after its numerical audit failure. No app change/deployment.
-- [x] Step 14 R0 measured: full-tree scorer prerequisite fails. Training and follow-on
-  turn/river work blocked; evidence release verified and all eight CI jobs green.
+- [x] Step 13 all three complete formation packs landed (36 roots), including the
+  separately versioned full-reach CO–BTN correction. `0f23c2e` passes exact checks
+  and all eight CI 45713631596 jobs. No app change/deployment.
+- [x] Step 14 original R0 measured: pinned full-tree scorer fails; original release
+  verified with all eight CI jobs green. The separately versioned R0 v2 repair passes
+  scoring, then fails fixed training convergence (0.7244 chips versus 0.45).
+  Later training and turn/river remain blocked; see [v2 results](robopoker-r0-v2-results.md).
 - [x] Closing documentation/handoff records the verified milestone commits, measured
   failures and untouched work. The closing documentation commit follows the same
   exact-checkout and hosted-CI release procedure; its final result is reported with the handoff.
@@ -109,6 +114,10 @@ Step-11 measurement: [research record](preflop-v2-research.md). The tiny referen
 Zero accepted calibration/held-out observations and no fitted candidate. PF4 is blocked
 by incomplete required validation, not by an established failure of the untested additive
 model. Continue independent steps 13 and 14 only after this release's exact checks and CI.
+
+The following original Step 13/14 release observations are historical. Current
+CO–BTN completion is in [v2 formation results](formation-full-reach-v2-spec.md);
+current multiway status is in [R0 v2 results](robopoker-r0-v2-results.md).
 
 Step 13: [formation record](formation-libraries-v1-spec.md). All 36 estimates passed;
 SB–BB and BTN–BB 3BP have 12/12 complete roots each, freshly byte-identical to generation.

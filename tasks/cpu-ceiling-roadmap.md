@@ -1,5 +1,13 @@
 # CPU-ceiling roadmap: every step to "as far as it goes without a GPU"
 
+**2026-11-25 R0 v2:** the [separate local scorer repair](robopoker-r0-v2-results.md)
+passes all full-tree prerequisites. The fixed 100,000-epoch ExternalSampling run
+then fails convergence: maximum unilateral gain 0.7243983295 chips against 0.45.
+Scoring agreement, runtime and memory pass. Later modes and turn/river remain
+unattempted; PF4 remains independently blocked. All three formation packs remain
+complete. See the [current handoff](codex-handoff-2026-11-25.md); earlier dated
+entries below are preserved historical observations, not current gate status.
+
 Written 2026-09-30 for Codex (and any later agent). Steps 1–9 are the execution target of the
 current run; steps 10–14 are specified here so their contracts are not re-invented later.
 

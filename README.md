@@ -33,14 +33,15 @@ includes E1 live action values, and adds completed-hand review. All eight CI job
 103 applicable deployed three-browser checks passed (two explicit zoom-API skips).
 Production continues to use guarded, explicit releases.
 
-**Repository research update (2026-11-24).** Three additional offline formation packs
+**Repository research update (2026-11-25).** Three additional offline formation packs
 now contain **36 audited, freshly reproduced flop roots**. The [CO–BTN v2 export](tasks/formation-full-reach-v2-spec.md)
 retains every positive native reach and fixes the blocker-conditioned value failure;
 all twelve roots pass the original numerical, size and reproduction gates. Its preserved
 publication correction restores float32 quality metadata without changing policy bytes
-or tolerances. Complete preflop validation and the pinned external MCCFR best-response
-prerequisite remain blocked. No new preflop ranges or multiway engine were promoted into
-play. The [current handoff](tasks/codex-handoff-2026-11-24.md) records the results and limits.
+or tolerances. A [separate local MCCFR fork](tasks/robopoker-r0-v2-results.md) now passes
+the repaired best-response checks, but its fixed training run fails the original
+0.45-chip gain limit at 0.7244 chips. Complete preflop validation and further multiway
+work remain gated. The [current handoff](tasks/codex-handoff-2026-11-25.md) records the limits.
 
 | Experience | What is implemented | Important boundary |
 |---|---|---|
@@ -158,6 +159,16 @@ preserves exact inputs, measurements and the diagnosis. `npm run audit:robopoker
 verifies that evidence; `npm run reproduce:robopoker:r0` rebuilds the pinned CLI and
 repeats both full-tree checks. A passing evidence audit confirms the rejection, not an
 accepted engine. [Upstream MIT notice](native/robopoker-referee/THIRD_PARTY_NOTICES).
+
+**Separately versioned repair (2026-11-25).** The [local fork study](tasks/robopoker-r0-v2-results.md)
+fixes sequential best-response optimization and independently passes all full-tree
+prerequisites. The unchanged 100,000-epoch ExternalSampling experiment then reports
+per-player gains **[0.5326, 0.7244, 0.1004] chips**, exceeding the original **0.45-chip**
+maximum. It takes 1.84 seconds and 12.94 MB peak RSS; score agreement is within
+2.63e-14 chip. The experiment stops there: no PluribusSampling or turn/river follow-on.
+`npm run audit:robopoker:r0:v2` verifies the source-bound result;
+`npm run reproduce:robopoker:r0:v2` freshly replays it. This repairs the local scorer
+and records a failed convergence gate; it does not promote an engine into play.
 
 **Exact game evaluation does not mean an exact equilibrium strategy.** The river engine
 enumerates compatible hands and showdowns without Monte Carlo sampling. Saved-strategy
@@ -943,9 +954,9 @@ already powers solver-backed drills. The active path does not depend on a collab
    and stacks. Price, position, and board/blocker changes need explicit matching rules.
    An opponent-mistake lesson would compute a best response to a stated model, not rename it GTO.
 5. **Separate multiway research.** CPU step 13 now has three complete offline formation packs,
-   including the corrected CO–BTN export. Step 14 remains gated: the pinned native
-   MCCFR adapter must pass the [R0 contract](tasks/robopoker-evaluation.md) before any
-   three-player turn/river continuation.
+   including the corrected CO–BTN export. Step 14 remains gated: the repaired local
+   MCCFR fork passes scoring but fails the fixed [R0 v2 convergence gate](tasks/robopoker-r0-v2-results.md).
+   Three-player turn/river continuation remains unattempted.
    Sampled multiway ranges retain their own Stage 4 gate; a three-player
    turn experiment is still separate. GPU/WASM/native acceleration needs profiling and
    exact-small-game parity. General multiway flop play and learned leaf values are not implemented.

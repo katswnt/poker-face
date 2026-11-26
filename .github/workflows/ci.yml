@@ -28,6 +28,9 @@ jobs:
       - name: Audit CO-BTN full-reach v2 evidence and published data
         run: npm run audit:bridge:formations:v2
 
+      - name: Audit repaired MCCFR scorer and the unchanged convergence rejection
+        run: npm run audit:robopoker:r0:v2
+
       - name: Lint
         run: npm run lint
 
@@ -315,7 +318,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         if: matrix.audit == 'audit:multiway-river'
         with:
-          workspaces: native/robopoker-referee
+          workspaces: |
+            native/robopoker-referee
+            native/robopoker-referee-v2
 
       - name: Reproduce pinned MCCFR prerequisite failure without promoting the engine
         if: matrix.audit == 'audit:multiway-river'
@@ -323,3 +328,11 @@ jobs:
           cargo fmt --check --manifest-path native/robopoker-referee/Cargo.toml
           cargo test --release --locked --manifest-path native/robopoker-referee/Cargo.toml
           npm run reproduce:robopoker:r0
+
+      - name: Reproduce the local scorer repair and frozen training outcome
+        if: matrix.audit == 'audit:multiway-river'
+        run: |
+          cargo fmt --check --manifest-path native/robopoker-referee-v2/Cargo.toml
+          cargo test --release --locked --manifest-path native/robopoker-referee-v2/Cargo.toml
+          npm run reproduce:robopoker:r0:v2
+          node --import tsx --test test/robopoker-r0-v2.test.ts

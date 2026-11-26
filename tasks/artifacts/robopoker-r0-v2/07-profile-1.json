@@ -1,0 +1,14 @@
+{
+  "step": {
+    "id": "r0-v2-zero-opponent-reach",
+    "mode": "profile",
+    "repeat": 1
+  },
+  "startedAt": "2026-11-26T07:06:17.389Z",
+  "wallMs": 3.0919160000003103,
+  "status": 0,
+  "signal": null,
+  "error": null,
+  "stdout": "{\"bestResponses\":[2.0,1.25,-1.0],\"crateVersion\":\"1.2.0-poker-face.1\",\"elapsedMs\":0.06191599999999999,\"epochs\":0,\"fixtureHash\":\"4cbdbe312841f3b7e69eaa1e15750fdec9dfd4b9d77fbf719651d6cfdb885bce\",\"fullNodeCount\":7,\"id\":\"r0-v2-zero-opponent-reach\",\"mode\":\"profile\",\"peakRssBytes\":1802240,\"profile\":[[1.0,0.0],[0.5,0.5],[0.5,0.5]],\"rawBestResponses\":[2.0,1.25,-1.0],\"rawProfile\":[[1.0,0.0],[0.5,0.5],[0.5,0.5]],\"rawScore\":0.75,\"rawValues\":[2.0,-1.0,-1.0],\"score\":0.75,\"treeSeed\":20261122,\"upstreamCommit\":\"72360adc7fbc6afa4119be3aefcc0e990d3789a7\",\"values\":[2.0,-1.0,-1.0],\"version\":2,\"workers\":1}\n",
+  "stderr": ""
+}
